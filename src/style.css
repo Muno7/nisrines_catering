@@ -1,3 +1,54 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+.nav-item {
+    display: flex;
+    gap: 1rem;
+    color: black;
+    text-align: left;
+    list-style-type: none;
+    font-size: 1rem;
+    padding-top: 20px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid lightgray;
+    cursor: pointer;
+}
+
+.nav-item:active {
+    color: #ed202c;
+}
+
+.custom-red {
+    color: #ed202c;
+}
+
+.bar {
+    width: 100%; /* Bar spans the full button width */
+    height: 3px; /* Bar thickness */
+    background-color: #333; /* Bar color */
+    border-radius: 1.5px; /* Smooth edges */
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth animations */
+}
+
+/* Toggled state styles */
+.hamburger.open #bar1 {
+    transform: translateY(8.7px) rotate(45deg); /* Adjusted spacing */
+}
+
+.hamburger.open #bar2 {
+    opacity: 0; /* Hide the middle bar */
+}
+
+.hamburger.open #bar3 {
+    transform: translateY(-8.7px) rotate(-45deg); /* Adjusted spacing */
+}
