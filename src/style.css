@@ -39,7 +39,7 @@
 }
 
 .nav-item:active {
-    color: rgba(237, 43, 43, 0.7);
+    color: #E8D9CF;
 }
 
 .bar {
@@ -66,3 +66,7 @@
 .no-scroll {
     overflow: hidden;
 }
+
+.js-is-added-to-cart {
+    opacity: 1;
+  }
