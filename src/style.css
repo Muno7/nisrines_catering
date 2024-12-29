@@ -6,10 +6,24 @@
 
 * {
     margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
+    padding: 0; 
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
+@layer base {
+    /* Apply Lora to all body text */
+    body {
+      font-family: 'Lora', serif;
+    }
+  
+    /* Apply Playfair Display to headers */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Playfair Display', serif;
+    }
+  }
 
 .nav-item {
     display: flex;
@@ -25,11 +39,7 @@
 }
 
 .nav-item:active {
-    color: #ed202c;
-}
-
-.custom-red {
-    color: #ed202c;
+    color: rgba(237, 43, 43, 0.7);
 }
 
 .bar {
@@ -51,4 +61,8 @@
 
 .hamburger.open #bar3 {
     transform: translateY(-8.7px) rotate(-45deg); /* Adjusted spacing */
+}
+
+.no-scroll {
+    overflow: hidden;
 }
