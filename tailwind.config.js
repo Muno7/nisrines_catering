@@ -5,7 +5,16 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        header: ['Playfair Display', 'serif'],
+        body: ['Lora', 'serif'],
+      },
+      colors: {
+        customRed: "rgba(237, 43, 43, 0.7)",
+        offWhite: '#E8D9CF'
+      }
+    },
   },
   plugins: [],
 }
