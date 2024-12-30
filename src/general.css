@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+  --offWhite: #E8D9CF;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+@layer base {
+  body {
+    font-family: 'Lora', serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+.button-primary {
+  background-color: var(--offWhite);
+  font-weight: bold;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-radius: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.1s ease;
+}
+
+.button-primary:active {
+  box-shadow: none;
+  transform: translateY(2px);
+}
+
+.button-primary:focus {
+  outline: none;
+}
+  
+@media (min-width: 1024px) { /* Assuming lg breakpoint is at 1024px */
+  .button-primary:hover {
+    transform: translateY(-2px);
+  }
+
+  .button-primary:active {
+    transform: translateY(0px);
+  }
+}
+  
+.button-secondary {
+  padding: 0.5rem; /* 2 * 0.25rem */
+  border-radius: 9999px; /* rounded-full */
+  border: 2px solid var(--offWhite);
+  background-color: transparent; /* Default background */
+  transition: all 0.1s ease;
+}
+
+.button-secondary:active {
+  background-color: var(--offWhite);
+}
+
+.button-secondary:focus {
+  outline: none;
+}
+
+@media (min-width: 1024px) { /* Assuming lg breakpoint is at 1024px */
+  .button-secondary:hover {
+    background-color: var(--offWhite);
+    opacity: 0.8; /* Hover effect */
+  }
+
+  .button-secondary:active {
+    background-color: var(--offWhite);
+    opacity: 0.8; /* Active effect on lg breakpoint */
+  }
+}
+

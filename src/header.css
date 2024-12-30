@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.nav-item {
+    display: flex;
+    gap: 1rem;
+    color: black;
+    text-align: left;
+    list-style-type: none;
+    font-size: 1rem;
+    padding-top: 20px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid lightgray;
+    cursor: pointer;
+}
+
+.nav-item:active {
+    color: #E8D9CF;
+}
+
+.bar {
+    width: 100%; 
+    height: 3px; 
+    background-color: #333;
+    border-radius: 1.5px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Toggled state styles */
+.hamburger.open #bar1 {
+    transform: translateY(8.7px) rotate(45deg); 
+}
+
+.hamburger.open #bar2 {
+    opacity: 0;
+}
+
+.hamburger.open #bar3 {
+    transform: translateY(-8.7px) rotate(-45deg);
+}
+
+.no-scroll {
+    overflow: hidden;
+}
