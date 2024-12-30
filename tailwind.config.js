@@ -12,7 +12,8 @@ export default {
       },
       colors: {
         customRed: "rgba(237, 43, 43, 0.7)",
-        offWhite: '#E8D9CF'
+        customBeige: '#E8D9CF',
+        customBrown: '#2a1810'
       }
     },
   },
