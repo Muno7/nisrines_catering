@@ -17,12 +17,12 @@
     animation: dislike_effect 400ms ease;
 }
   
-.meal-heart-button input:checked ~ .heart-checkmark path {
+.product-heart-button input:checked ~ .heart-checkmark path {
     fill: #ff5353;
     stroke-width: 0;
 }
   
-.meal-heart-button input:checked ~ .heart-checkmark {
+.product-heart-button input:checked ~ .heart-checkmark {
     animation: like_effect 400ms ease;
 }
   
