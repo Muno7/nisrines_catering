@@ -10,13 +10,13 @@
 }
 
 :root {
-  --customBeige: #E8D9CF;
-  --customBrown: #2a1810;
+  --lightGray: #818589;
+  --darkGray: #3C4147;
 }
 
 main,
 header {
-  color: var(--customBrown);
+  color: var(--darkGray);
 }
 
 
@@ -35,7 +35,7 @@ header {
 }
 
 .button-primary {
-  background-color: var(--customBeige);
+  background-color: var(--lightGray);
   font-weight: bold;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
@@ -67,13 +67,13 @@ header {
 .button-secondary {
   padding: 0.5rem;
   border-radius: 100%;
-  border: 2px solid var(--customBeige);
+  border: 2px solid var(--lightGray);
   background-color: transparent;
   transition: all 0.1s ease;
 }
 
 .button-secondary:active {
-  background-color: var(--customBeige);
+  background-color: var(--lightGray);
   transform: translateY(2px);
 }
 
@@ -83,24 +83,24 @@ header {
 
 @media (min-width: 1024px) {
   .button-secondary:hover {
-    background-color: var(--customBeige);
+    background-color: var(--lightGray);
   }
 }
 
 .button-social-media {
-  background-color: #3a2820;
+  background-color: var(--lightGray);
   padding: 0.5rem;
   border-radius: 100%;
   transition: background-color 0.2s;
 }
 
 .button-social-media:active {
-  background-color: #4a3830; 
+  background-color: rgb(88, 87, 87);
 }
 
 @media (min-width: 1024px) {
   .button-social-media:hover {
-    background-color: #4a3830;
+    background-color: rgb(88, 87, 87);
   }
 }
 
