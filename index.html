@@ -87,7 +87,7 @@
         <h1 class="text-4xl font-bold sm:text-center">What we offer</h1>
         <p class="text-2xl sm:text-center">Home cooked meals made from scratch, delivered to your door</p>
       </div>
-      <button class="text-white max-w-[10rem] button-primary">
+      <button class="max-w-[10rem] button-primary">
         View menu
       </button>
       <div class="grid grid-cols-2 grid-rows-3 gap-4">
@@ -240,7 +240,7 @@
         </div>
       </div>
       <div class="px-4">
-        <button class="text-white button-primary w-full">
+        <button class="button-primary w-full">
           Order Now
         </button>
       </div>
@@ -252,8 +252,8 @@
           <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-white"></path>
         </svg>
       </div>
-      <div class="container mx-auto px-6 pt-24 pb-12">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div class="container mx-auto px-6 pt-24 md:flex flex-col justify-center items-center pb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 md:gap-40 gap-12 min-w-0">
           <!-- Contact Info -->
           <div class="space-y-6">
             <h3 class="text-xl font-semibold">Contact us</h3>
@@ -314,8 +314,64 @@
         <p class="text-center mt-8">&copy; 2024 Nisrine's Kitchen. All rights reserved.</p>
       </div>
     </footer>
+    <!-- Full-screen Overlay -->
+    <div class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
+      <!-- Product Card (responsive layout) -->
+      <div class="relative bg-white rounded-xl shadow-lg w-[360px] h-[640px] md:w-[720px] md:h-[480px] flex flex-col md:flex-row overflow-y-auto md:overflow-hidden">
+        <!-- Back Button -->
+        <button id="closeOverlay" class="absolute top-4 left-4 z-10 bg-white rounded-full p-2 shadow-md lg:hover:bg-gray-100 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#2a1810]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+        </button>
+        <!-- Image Container -->
+        <div class="w-full md:w-1/2 h-[320px] md:h-full">
+          <img src="images/strawberry-salad.jpg" alt="Lingonberry pit" class="w-full h-full object-cover object-center">
+        </div>
+        <!-- Product Details -->
+        <div class="flex-grow p-6 md:w-1/2 md:overflow-y-auto flex flex-col">
+          <div class="space-y-4 flex-grow">
+            <!-- Product Title and Basic Info -->
+            <div>
+              <h1 class="text-2xl font-bold leading-tight">Strawberry Salad</h1>
+            </div>
+
+            <!-- Price and Discount -->
+            <div class="flex items-center gap-2">
+              <span class="text-2xl font-bold"><span translate="no">$</span>7.00</span>
+            </div>
+            
+            <!-- Quantity Controls -->
+            <div class="flex items-center gap-4">
+              <button class="button-secondary rounded-full w-10 h-10 flex items-center justify-center text-xl">
+                -
+              </button>
+              <span class="text-xl font-medium w-8 text-center">0</span>
+              <button class="button-secondary rounded-full w-10 h-10 flex items-center justify-center text-xl">
+                +
+              </button>
+            </div>
+            <!-- Description -->
+            <div class="border-t border-gray-200 pt-4">
+              <h2 class="font-bold text-l mb-1">Ingridients</h2>
+              <p class="text-md">
+                Mixed Greens, grilled chicken, strawberry, walnuts, almonds, cranberies, pumpkin seed, fennel, served with balsamic vinaigrette dressing.
+              </p>
+            </div>
+          </div>
+
+          <div class="space-y-4 mt-4">
+            <!-- Add to Cart Button -->
+            <button class="w-full button-primary">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
   <script src="scripts/sidebar.js"></script>
   <script src="scripts/cart.js"></script>
+  <script src="scripts/popularMeals.js" type="module"></script>
 </body>
 </html>
