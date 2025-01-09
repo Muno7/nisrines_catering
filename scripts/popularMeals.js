@@ -12,7 +12,7 @@ async function loadHomePage() {
 function renderPopularMealsGrid() {
   const container = document.querySelector('.products-container');
   products.forEach(product => {
-    const {id, name, priceCents, image} = product;
+    const {id, name, image} = product;
     const productCard = `
     <div class="product-container w-[12rem] relative flex flex-col gap-2 shadow-[0_0_10px_rgba(0,0,0,0.1)] p-4 rounded-[10px] ">
       <img class="w-[10rem] h-[10rem] object-cover rounded-[10px]" src="${image}" alt="">

@@ -16,5 +16,12 @@
     "name": "Tabbouli",
     "priceCents": 350,
     "image": "images/salad-1.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Strawberry Chicken Salad",
+    "priceCents": 750,
+    "image": "images/strawberry-salad.jpg"
   }
+  
 ]
