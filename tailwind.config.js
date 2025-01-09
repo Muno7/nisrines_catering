@@ -12,7 +12,7 @@ export default {
         body: ['Lora', 'serif'],
       },
       colors: {
-        customRed: "rgba(237, 43, 43, 0.7)",
+        customRed: "#ec1c2a",
         lightGray: '#818589',
         darkGray: '#3C4147'
       }
