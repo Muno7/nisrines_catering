@@ -61,7 +61,7 @@ function renderMenuGrid() {
           </label>    
         </button> 
         <div class="flex flex-col gap-2">
-          <p class="product-name-js text-xl font-bold h-[3.125rem] line-clamp-2 text-wrap">${name}</p>
+          <p class="product-name-js text-xl font-bold h-[3.4rem] line-clamp-2 text-wrap">${name}</p>
           <div class="flex items-center gap-2">
             <p class="price-js"><span translate="no">$</span>${product.getPrice()}</p>
             <div class="js-added-to-cart-${id} flex gap-1 opacity-0 transition-all items-center text-sm text-customBrown">
