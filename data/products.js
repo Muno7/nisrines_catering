@@ -15,12 +15,14 @@ export class Product {
   image;
   name;
   priceCents;
+  category;
 
   constructor(productDetails) {
     this.id = productDetails.id;
     this.image = productDetails.image;
     this.name = productDetails.name;
     this.priceCents = productDetails.priceCents;
+    this.category = productDetails.category;
   }
 
   getPrice() {
