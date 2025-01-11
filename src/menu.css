@@ -3,9 +3,8 @@
 @tailwind utilities;
 
 section {
-  scroll-margin-top: 120px; /* Adjust for the header height */
+  scroll-margin-top: 116px; /* Adjust for the header height */
 }
-
 
 .menu-links {
   text-align: center;

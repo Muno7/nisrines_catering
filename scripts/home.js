@@ -1,5 +1,5 @@
 import { products, loadProducts } from "../data/products.js";
-import { renderAddedMessage } from "./utils/addedMessage.js";
+import { renderAddedMessage } from "./utils/ui-interactions.js";
 
 async function loadHomePage() {
   try {

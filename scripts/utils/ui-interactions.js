@@ -83,3 +83,48 @@ menuLinks.forEach(link => {
     event.currentTarget.classList.add('active');
   });
 });
+
+// Get all section elements and nav links
+const sections = document.querySelectorAll("section");
+const navLinks = document.querySelectorAll(".menu-links a");
+
+// Create an Intersection Observer
+const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const id = entry.target.getAttribute("id");
+        const link = document.querySelector(`.menu-links a[href="#${id}"]`);
+  
+        if (entry.isIntersecting) {
+          // Add 'active' class to the corresponding link
+          link.classList.add("active");
+        } else {
+          // Remove 'active' class from the link
+          link.classList.remove("active");
+        }
+      });
+      entries.forEach((entry) => {
+        const id = entry.target.getAttribute("id");
+        const link = document.querySelector(`.menu-links a[href="#${id}"]`);
+      
+        if (entry.isIntersecting) {
+          link.classList.add("active");
+      
+          // Scroll the nav to bring the link into view
+          link.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "end", // Works for horizontal scrolling
+          });
+        } else {
+          link.classList.remove("active");
+        }
+      });
+      
+    },
+    {
+      rootMargin: "-20% 0px -70% 0px", // Offset the section view
+    }
+  );
+// Observe each section
+sections.forEach((section) => observer.observe(section));
