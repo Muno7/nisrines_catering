@@ -1,4 +1,5 @@
 import { products, loadProducts } from "../data/products.js";
+import { renderAddedMessage } from "./utils/addedMessage.js";
 
 async function loadHomePage() {
   try {
@@ -12,7 +13,10 @@ async function loadHomePage() {
 function renderPopularMealsGrid() {
   const container = document.querySelector('.products-container');
   products.forEach(product => {
-    const {id, name, image} = product;
+    const {id, name, image, category} = product;
+    if (category !== "star-of-the-week") {
+      return;
+    }
     const productCard = `
     <div class="product-container w-[12rem] relative flex flex-col gap-2 shadow-[0_0_10px_rgba(0,0,0,0.1)] p-4 rounded-[10px] ">
       <img class="w-[10rem] h-[10rem] object-cover rounded-[10px]" src="${image}" alt="">
@@ -52,21 +56,6 @@ function renderPopularMealsGrid() {
     </div>`;
     container.innerHTML += productCard;
   });
-
-  let timeoutState = new Map();
-  function renderAddedMessage(messageElement) {
-      if (timeoutState.has(messageElement)) {
-          clearTimeout(timeoutState.get(messageElement));
-      }
-      messageElement.classList.add("js-is-added-to-cart");
-
-      const timeoutId = setTimeout(() => {
-          messageElement.classList.remove("js-is-added-to-cart");
-          timeoutState.delete(messageElement);
-      }, 1000);
-
-      timeoutState.set(messageElement, timeoutId);
-  }   
 
   const addToCartButtonElement = document.querySelectorAll(".js-add-to-cart-button");
 
