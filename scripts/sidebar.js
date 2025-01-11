@@ -49,3 +49,6 @@ function adjustViewportHeight() {
         mainContent.style.height = `${windowHeight}px`;
     }
 }
+// Call the function on load and resize to handle different screen sizes
+window.addEventListener('load', adjustViewportHeight);
+window.addEventListener('resize', adjustViewportHeight);
