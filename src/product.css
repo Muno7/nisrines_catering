@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.js-is-added-to-cart {
-    opacity: 1;
-}
-
 /*Heart button animation*/ 
   
 .heart-checkmark {
