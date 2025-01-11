@@ -1,3 +1,20 @@
+export let timeoutState = new Map();
+export function renderAddedMessage(messageElement) {
+    if (timeoutState.has(messageElement)) {
+        clearTimeout(timeoutState.get(messageElement));
+    }
+    messageElement.classList.add("opacity-1");
+    messageElement.classList.remove("opacity-0");
+
+    const timeoutId = setTimeout(() => {
+        messageElement.classList.remove("opacity-1");
+        messageElement.classList.add("opacity-0");
+        timeoutState.delete(messageElement);
+    }, 1000);
+
+    timeoutState.set(messageElement, timeoutId);
+}
+
 // Function to toggle the sidebar visibility
 function show(event) {
     event.stopPropagation(); // Prevent click from bubbling to the document listener
@@ -52,3 +69,17 @@ function adjustViewportHeight() {
 // Call the function on load and resize to handle different screen sizes
 window.addEventListener('load', adjustViewportHeight);
 window.addEventListener('resize', adjustViewportHeight);
+
+// Select all menu links
+const menuLinks = document.querySelectorAll('.menu-links a');
+
+// Add event listeners to each menu link
+menuLinks.forEach(link => {
+  link.addEventListener('click', (event) => {
+    // Remove 'active' class from all links
+    menuLinks.forEach(item => item.classList.remove('active'));
+
+    // Add 'active' class to the clicked link
+    event.currentTarget.classList.add('active');
+  });
+});
