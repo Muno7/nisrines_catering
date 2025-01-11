@@ -9,6 +9,10 @@
     padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --lightGray: #818589;
   --darkGray: #3C4147;

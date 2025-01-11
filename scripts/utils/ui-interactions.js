@@ -1,4 +1,4 @@
-export let timeoutState = new Map();
+let timeoutState = new Map();
 export function renderAddedMessage(messageElement) {
     if (timeoutState.has(messageElement)) {
         clearTimeout(timeoutState.get(messageElement));
