@@ -49,23 +49,3 @@ function adjustViewportHeight() {
         mainContent.style.height = `${windowHeight}px`;
     }
 }
-
-// Call the function on load and resize to handle different screen sizes
-window.addEventListener('load', adjustViewportHeight);
-window.addEventListener('resize', adjustViewportHeight);
-
-// Scroll effect to hide/show header on scroll
-let lastScrollY = 0;
-const header = document.querySelector('.header-js');
-
-window.addEventListener('scroll', () => {
-  const currentScrollY = window.scrollY;
-
-  if (currentScrollY > lastScrollY) {
-    header.style.transform = 'translateY(-100%)'; // Hide header when scrolling down
-  } else {
-    header.style.transform = 'translateY(0)'; // Show header when scrolling up
-  }
-
-  lastScrollY = currentScrollY;
-});

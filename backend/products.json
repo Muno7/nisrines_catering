@@ -612,13 +612,6 @@
     "category": "special-items"
   },
   {
-    "id": "e4659e52-7077-4a4d-b05a-61b5396637c9",
-    "name": "Aside Olive Oil",
-    "priceCents": 0,
-    "image": "images/special-3.jpg",
-    "category": "special-items"
-  },
-  {
     "id": "9d35dba4-7f9d-4634-b502-c0e7cbf2d83f",
     "name": "Cheese Nest (Dozen)",
     "priceCents": 900,
