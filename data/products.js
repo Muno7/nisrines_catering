@@ -18,21 +18,37 @@ export class Product {
   name;
   priceCents;
   category;
-  portion;
+  single;
+  family;
 
   constructor(productDetails) {
     this.id = productDetails.id;
     this.image = productDetails.image;
     this.name = productDetails.name;
-    this.priceCents = productDetails.priceCents;
     this.category = productDetails.category;
-    this.portion = productDetails.portion;
+
+    // Handle the case where either priceCents or price object is provided
+    if (productDetails.priceCents) {
+      this.priceCents = productDetails.priceCents;
+      this.single = null;
+      this.family = null;
+    } else if (productDetails.price) {
+      this.priceCents = null;
+      this.single = productDetails.price.single;
+      this.family = productDetails.price.family;
+    }
   }
 
+  // Updated getPrice method to handle both scenarios
   getPrice() {
-    return `${formatCurrency(this.priceCents)}`;
+    if (this.single && this.family) {
+      return formatCurrency(this.single);
+    } else if (this.priceCents) {
+      return formatCurrency(this.priceCents);
+    }
   };
 }
+
 
 export let products = [];
 
