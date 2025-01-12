@@ -1,5 +1,6 @@
 import { products, loadProducts } from "../data/products.js";
-import { renderAddedMessage } from "./utils/ui-interactions.js";
+import { renderAddedMessage } from "../data/products.js";
+import { openOverlay } from "../data/products.js";
 
 async function loadMenuPage() {
   try {
@@ -7,8 +8,59 @@ async function loadMenuPage() {
   } catch (error) {
     console.log('unexpected error')
   }
+  makeMenuLinksActive();
   renderMenuGrid();
+  openOverlay();
 }
+
+function makeMenuLinksActive() {
+  const menuLinks = document.querySelectorAll('.menu-links a');
+  menuLinks.forEach(link => {
+    link.addEventListener('click', (event) => {
+      menuLinks.forEach(item => item.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+    });
+  });
+  const sections = document.querySelectorAll("section");
+  const navLinks = document.querySelectorAll(".menu-links a");
+  const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const id = entry.target.getAttribute("id");
+          const link = document.querySelector(`.menu-links a[href="#${id}"]`);
+    
+          if (entry.isIntersecting) {
+            link.classList.add("active");
+          } else {
+            link.classList.remove("active");
+          }
+        });
+        entries.forEach((entry) => {
+          const id = entry.target.getAttribute("id");
+          const link = document.querySelector(`.menu-links a[href="#${id}"]`);
+        
+          if (entry.isIntersecting) {
+            link.classList.add("active");
+        
+            // Scroll the nav to bring the link into view
+            link.scrollIntoView({
+              behavior: "smooth",
+              block: "nearest",
+              inline: "end",
+            });
+          } else {
+            link.classList.remove("active");
+          }
+        });
+        
+      },
+      {
+        rootMargin: "-20% 0px -70% 0px",
+      }
+    );
+  sections.forEach((section) => observer.observe(section));
+}
+
 function renderMenuGrid() {
   const categories = [
     "plat-du-jour",
@@ -43,7 +95,7 @@ function renderMenuGrid() {
     categoryProducts.forEach(product => {
       const {id, name, image} = product;
       const productCard = `
-      <div class="product-container w-[12rem] relative flex flex-col gap-2 shadow-[0_0_10px_rgba(0,0,0,0.1)] p-4 rounded-[10px] ">
+      <div class="product-container w-[12rem] relative flex flex-col gap-2 shadow-[0_0_10px_rgba(0,0,0,0.15)] p-4 rounded-[10px]" data-product-id="${id}">
         <img class="w-[10rem] h-[10rem] object-cover rounded-[10px]" src="${image}" alt="">
         <button class="">
           <label class="product-heart-button absolute bg-white rounded-full p-[7px] top-6 right-6 cursor-pointer text-[8px] select-none transition duration-100">
@@ -94,6 +146,7 @@ function renderMenuGrid() {
           renderAddedMessage(messageElement);
       });
   });
+
 }
 
 loadMenuPage();

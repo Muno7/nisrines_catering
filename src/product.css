@@ -50,3 +50,14 @@
     }
 }
 
+#overlay {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
+
+#overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+

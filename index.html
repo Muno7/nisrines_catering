@@ -13,7 +13,7 @@
   <header class="header-js bg-white fixed top-0 left-0 w-full z-10 transition-transform duration-200 ease-in-out">
     <div class="flex items-center justify-between shadow-sm px-2 sm:px-4 lg:px-8 py-1 sm:py-3">
       <!-- Hamburger Menu -->
-      <button class="z-30 p-4 lg:hover:bg-gray-100 rounded-full transition duration-200 " id="hamburger-button" onclick="show()">
+      <button class="z-30 p-4 lg:hover:bg-gray-100 rounded-full transition duration-200 " id="hamburger-button">
         <div class="hamburger flex flex-col justify-around pointer w-[26px] h-[26px]">
           <div id="bar1" class="bar"></div>
           <div id="bar2" class="bar"></div>
@@ -208,7 +208,7 @@
       </div>
     </footer>
     <!-- Full-screen Overlay -->
-    <div class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
+    <div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" id="overlay">
       <!-- Product Card (responsive layout) -->
       <div class="relative bg-white rounded-xl shadow-lg w-[360px] h-[640px] md:w-[720px] md:h-[480px] flex flex-col md:flex-row overflow-y-auto md:overflow-hidden">
         <!-- Back Button -->
@@ -219,19 +219,19 @@
         </button>
         <!-- Image Container -->
         <div class="w-full md:w-1/2 h-[320px] md:h-full">
-          <img src="images/strawberry-salad.jpg" alt="Lingonberry pit" class="w-full h-full object-cover object-center">
+          <img id="overlay-product-image" src="" alt="" class="w-full h-full object-cover object-center">
         </div>
         <!-- Product Details -->
-        <div class="flex-grow p-6 md:w-1/2 md:overflow-y-auto flex flex-col">
-          <div class="space-y-4 flex-grow">
+        <div class="p-6 md:w-1/2 md:overflow-y-auto flex flex-col">
+          <div class="space-y-4">
             <!-- Product Title and Basic Info -->
             <div>
-              <h1 class="text-2xl font-bold leading-tight">Strawberry Salad</h1>
+              <h1 id="overlay-product-title" class="text-2xl font-bold leading-tight"></h1>
             </div>
 
             <!-- Price and Discount -->
             <div class="flex items-center gap-2">
-              <span class="text-2xl font-bold"><span translate="no">$</span>7.00</span>
+              <span id="overlay-product-price" class="text-2xl font-bold"></span>
             </div>
             
             <!-- Quantity Controls -->
@@ -247,8 +247,8 @@
             <!-- Description -->
             <div class="border-t border-gray-200 pt-4">
               <h2 class="font-bold text-l mb-1">Ingridients</h2>
-              <p class="text-md">
-                Mixed Greens, grilled chicken, strawberry, walnuts, almonds, cranberies, pumpkin seed, fennel, served with balsamic vinaigrette dressing.
+              <p id="overlay-product-description" class="text-md">
+                
               </p>
             </div>
           </div>

@@ -1,5 +1,7 @@
 import { products, loadProducts } from "../data/products.js";
-import { renderAddedMessage } from "./utils/ui-interactions.js";
+import { renderAddedMessage } from "../data/products.js";
+import { getProduct } from "../data/products.js";
+import { openOverlay } from "../data/products.js";
 
 async function loadHomePage() {
   try {
@@ -8,6 +10,7 @@ async function loadHomePage() {
     console.log('unexpected error')
   }
   renderPopularMealsGrid();
+  openOverlay();
 }
 
 function renderPopularMealsGrid() {
@@ -18,7 +21,7 @@ function renderPopularMealsGrid() {
       return;
     }
     const productCard = `
-    <div class="product-container w-[12rem] relative flex flex-col gap-2 shadow-[0_0_10px_rgba(0,0,0,0.1)] p-4 rounded-[10px] ">
+    <div class="product-container w-[12rem] relative flex flex-col gap-2 shadow-[0_0_10px_rgba(0,0,0,0.1)] p-4 rounded-[10px] " data-product-id="${id}" >
       <img class="w-[10rem] h-[10rem] object-cover rounded-[10px]" src="${image}" alt="">
       <button class="">
         <label class="product-heart-button absolute bg-white rounded-full p-[7px] top-6 right-6 cursor-pointer text-[8px] select-none transition duration-100">
