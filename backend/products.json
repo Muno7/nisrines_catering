@@ -1,943 +1,943 @@
 [
-  {
-    "id": "75b80f07-3649-4a9e-b51d-01d71d4201b1",
-    "name": "Chicken Mloukhiyah Served With Rice",
-    "priceCents": 1000,
-    "image": "images/plat-du-jour-1.jpg",
-    "category": "plat-du-jour",
-    "day": "monday"
-  },
-  {
-    "id": "e42fa716-1f8c-467d-a3d5-b9e89b4968ca",
-    "name": "Mraba El Laban Served With Rice",
-    "priceCents": 1200,
-    "image": "images/plat-du-jour-2.jpg",
-    "category": "plat-du-jour",
-    "day": "monday"
-  },
-  {
-    "id": "1cfcda51-c8e3-4da0-90a4-773a44f346f1",
-    "name": "Chicken Moghrabieh",
-    "priceCents": 1000,
-    "image": "images/plat-du-jour-3.jpg",
-    "category": "plat-du-jour",
-    "day": "tuesday"
-  },
-  {
-    "id": "b4b8a00d-4b60-4644-bb1b-04a31cf3d4f1",
-    "name": "Turkish Kuru Fasuiye Served With Rice",
-    "priceCents": 1000,
-    "image": "images/plat-du-jour-4.jpg",
-    "category": "plat-du-jour",
-    "day": "tuesday"
-  },
-  {
-    "id": "7f20e33b-bdc5-4b7c-a105-129b8fe7728e",
-    "name": "Kebbeh Arnabieh Served With Rice",
-    "priceCents": 1200,
-    "image": "images/plat-du-jour-5.jpg",
-    "category": "plat-du-jour",
-    "day": "wednesday"
-  },
-  {
-    "id": "d17f3e92-8c69-42a9-b23b-dc5d7b0f23f4",
-    "name": "Chicken Beryani Served With Red Sauce",
-    "priceCents": 1200,
-    "image": "images/plat-du-jour-6.jpg",
-    "category": "plat-du-jour",
-    "day": "wednesday"
-  },
-  {
-    "id": "3497ac64-1f6a-47a7-8d47-905084a7b808",
-    "name": "Asian Shrimp Served With Rice",
-    "priceCents": 1200,
-    "image": "images/plat-du-jour-7.jpg",
-    "category": "plat-du-jour",
-    "day": "thursday"
-  },
-  {
-    "id": "bfcfd54a-3b0a-49ec-9c5c-0844156171f7",
-    "name": "Chicken Liver/Humus/Batata Hara",
-    "priceCents": 800,
-    "image": "images/plat-du-jour-8.jpg",
-    "category": "plat-du-jour",
-    "day": "thursday"
-  },
-  {
-    "id": "6bb5b5b3-2675-40b8-944d-8973f5e9d881",
-    "name": "Fawerigh & Stuffed Vine Leaves & Kousa With Kastaletas",
-    "priceCents": 1200,
-    "image": "images/plat-du-jour-9.jpg",
-    "category": "plat-du-jour",
-    "day": "friday"
-  },
-  {
-    "id": "578e9c8f-1a02-47e5-9c49-60d8c30c5c26",
-    "name": "Kebbeh Bil Sanieh",
-    "priceCents": 1000,
-    "image": "images/plat-du-jour-10.jpg",
-    "category": "plat-du-jour",
-    "day": "friday"
-  },
-  {
-    "id": "75b80f07-3649-4a9e-b51d-01d71d4201b1",
-    "name": "Baked Fish Aside Veggies",
-    "priceCents": 900,
-    "image": "images/plat-du-jour-11.jpg",
-    "category": "plat-du-jour",
-    "day": "saturday"
-  },
-  {
-    "id": "e42fa716-1f8c-467d-a3d5-b9e89b4968ca",
-    "name": "Vine Leaves In Olive Oil 12 Pcs",
-    "priceCents": 500,
-    "image": "images/appetizers-1.jpg",
-    "category": "appetizers"
-  },
-  {
-    "id": "1cfcda51-c8e3-4da0-90a4-773a44f346f1",
-    "name": "Hommos Tahina",
-    "priceCents": 300,
-    "image": "images/appetizers-2.jpg",
-    "category": "appetizers"
-  },
-  {
-    "id": "b4b8a00d-4b60-4644-bb1b-04a31cf3d4f1",
-    "name": "Eggplant Moutabal",
-    "priceCents": 300,
-    "image": "images/appetizers-3.jpg",
-    "category": "appetizers"
-  },
-  {
-    "id": "7f20e33b-bdc5-4b7c-a105-129b8fe7728e",
-    "name": "Beetroot Moutabal",
-    "priceCents": 300,
-    "image": "images/appetizers-4.jpg",
-    "category": "appetizers"
-  },
-  {
-    "id": "d17f3e92-8c69-42a9-b23b-dc5d7b0f23f4",
-    "name": "Loubieh Bzeit",
-    "priceCents": 300,
-    "image": "images/appetizers-5.jpg",
-    "category": "appetizers"
-  },
-  {
-    "id": "3497ac64-1f6a-47a7-8d47-905084a7b808",
-    "name": "Hindbeh",
-    "priceCents": 350,
-    "image": "images/appetizers-6.jpg",
-    "category": "appetizers"
-  },
-  {
-    "id": "bfcfd54a-3b0a-49ec-9c5c-0844156171f7",
-    "name": "Batata Hara",
-    "priceCents": 300,
-    "image": "images/appetizers-7.jpg",
-    "category": "appetizers"
-  },
-  {
-    "id": "6bb5b5b3-2675-40b8-944d-8973f5e9d881",
-    "name": "Wedges Potato",
-    "priceCents": 300,
-    "image": "images/appetizers-8.jpg",
-    "category": "appetizers"
-  },
-  {
-    "id": "578e9c8f-1a02-47e5-9c49-60d8c30c5c26",
-    "name": "Wedges Potato",
-    "priceCents": 300,
-    "image": "images/appetizers-9.jpg",
-    "category": "appetizers"
-  },
-  {
-    "id": "75b80f07-3649-4a9e-b51d-01d71d4201b1",
-    "name": "Makanik",
-    "priceCents": 500,
-    "image": "images/appetizers-10.jpg",
-    "category": "appetizers"
-  },
-  {
-    "id": "e42fa716-1f8c-467d-a3d5-b9e89b4968ca",
-    "name": "Moghlee Cup",
-    "priceCents": 450,
-    "image": "images/star-of-the-week-1.jpg",
-    "category": "star-of-the-week"
-  },
-  {
-    "id": "a1c98d3b-27b1-45a2-b6ad-92d54fd010a6",
-    "name": "Fattoush",
-    "priceCents": 350,
-    "image": "images/salad-1.jpg",
-    "category": "salad"
-  },
-  {
-    "id": "b72f3e7e-4c44-46b7-99c9-9295fa9f4a9d",
-    "name": "Tabbouli",
-    "priceCents": 350,
-    "image": "images/salad-2.jpg",
-    "category": "salad"
-  },
-  {
-    "id": "9b38f89d-5b9c-42b1-9c8d-9f1c45c599ed",
-    "name": "Crab Salad",
-    "priceCents": 600,
-    "image": "images/salad-3.jpg",
-    "category": "salad"
-  },
-  {
-    "id": "fc7e4b3f-4924-4f49-8d57-58a02e2c1d25",
-    "name": "Chicken Caesar Salad",
-    "priceCents": 650,
-    "image": "images/salad-4.jpg",
-    "category": "salad"
-  },
-  {
-    "id": "9a17c1b9-0cf7-47a1-b1a5-eed0f75d0201",
-    "name": "Caesar Salad",
-    "priceCents": 500,
-    "image": "images/salad-5.jpg",
-    "category": "salad"
-  },
-  {
-    "id": "7d68b432-016d-450b-85ff-d8a00b2c2d4a",
-    "name": "Strawberry Chicken Salad",
-    "priceCents": 750,
-    "image": "images/salad-6.jpg",
-    "category": "salad"
-  },
-  {
-    "id": "07318b9c-1a87-4e65-8b99-c7d61e601375",
-    "name": "Tuna Pasta Salad",
-    "priceCents": 650,
-    "image": "images/salad-7.jpg",
-    "category": "salad"
-  },
-  {
-    "id": "df3c6ecf-e6fe-41e3-b43d-4c125080e768",
-    "name": "Beetroot Rocca Salad",
-    "priceCents": 650,
-    "image": "images/salad-8.jpg",
-    "category": "salad"
-  },
-  {
-    "id": "ff019282-6b5b-4c2f-b0f9-86cc5fa7c907",
-    "name": "Black Lentil Soup",
-    "priceCents": 250,
-    "image": "images/soup-1.jpg",
-    "category": "soup",
-    "day": "monday"
-  },
-  {
-    "id": "d7de7a8a-c1a5-42b6-9f34-7d6508e5a00b",
-    "name": "Pumpkin Soup",
-    "priceCents": 350,
-    "image": "images/soup-2.jpg",
-    "category": "soup",
-    "day": "tuesday"
-  },
-  {
-    "id": "9b43c5c0-1a57-470b-bbe4-b1a5288fba83",
-    "name": "Onion Soup",
-    "priceCents": 400,
-    "image": "images/soup-3.jpg",
-    "category": "soup",
-    "day": "wednesday"
-  },
-  {
-    "id": "b0e33e2e-b86c-4650-bfa7-8a8b85560de1",
-    "name": "Onion Soup",
-    "priceCents": 400,
-    "image": "images/soup-4.jpg",
-    "category": "soup",
-    "day": "thursday"
-  },
-  {
-    "id": "61a257b1-2a72-4b43-b4a4-9b598a3f9e89",
-    "name": "Chicken Vermicelli Soup",
-    "priceCents": 250,
-    "image": "images/soup-5.jpg",
-    "category": "soup",
-    "day": "friday"
-  },
-  {
-    "id": "f33fcbe5-345f-4a2a-b8b7-81f3e84db6e1",
-    "name": "Chicken Vermicelli Soup",
-    "priceCents": 250,
-    "image": "images/soup-6.jpg",
-    "category": "soup",
-    "day": "saturday"
-  },
-  {
-    "id": "fd492c56-2097-4269-9de4-063cbba44a99",
-    "name": "Marinated Chicken Served with Wedges and Veggies",
-    "priceCents": 900,
-    "image": "images/healthy-zone-1.jpg",
-    "category": "healthy-zone"
-  },
-  {
-    "id": "36cbe77c-3051-40a4-a4ff-43c960ad6edb",
-    "name": "Fish Fillet Served with Wedges and Veggies",
-    "priceCents": 900,
-    "image": "images/healthy-zone-2.jpg",
-    "category": "healthy-zone"
-  },
-  {
-    "id": "51766be5-d80b-4207-91d6-d61760e5d0d0",
-    "name": "Steak Served with Wedges and Veggies",
-    "priceCents": 1300,
-    "image": "images/healthy-zone-3.jpg",
-    "category": "healthy-zone"
-  },
-  {
-    "id": "d6890b08-98da-4330-85c5-80cf233d51c1",
-    "name": "Tawouk Served with Wedges and Veggies",
-    "priceCents": 900,
-    "image": "images/healthy-zone-4.jpg",
-    "category": "healthy-zone"
-  },
-  {
-    "id": "3c1e3a5b-02b1-402d-b2b1-d54078b99c82",
-    "name": "Kebbeh Bel Laban (Portion)",
-    "priceCents": 1000,
-    "image": "images/served-daily-1.jpg",
-    "category": "served daily"
-  },
-  {
-    "id": "ff8979d1-7fd2-4c97-93fc-636e5ad9bbcf",
-    "name": "Kebbeh Bel Laban (Family Portion)",
-    "priceCents": 3000,
-    "image": "images/served-daily-2.jpg",
-    "category": "served daily"
-  },
-  {
-    "id": "27cb0a6a-65de-4265-88b4-b28b0b5a5be6",
-    "name": "Shish Barak (Portion)",
-    "priceCents": 900,
-    "image": "images/served-daily-3.jpg",
-    "category": "served daily"
-  },
-  {
-    "id": "33d49fa7-9ebf-4bda-9510-8be3d50b8b9b",
-    "name": "Shish Barak (Family Portion)",
-    "priceCents": 2700,
-    "image": "images/served-daily-4.jpg",
-    "category": "served daily"
-  },
-  {
-    "id": "e5c9c75d-b458-4f75-9c09-e68ad7e13c1a",
-    "name": "Lasagne Bolognese (Portion)",
-    "priceCents": 1200,
-    "image": "images/served-daily-5.jpg",
-    "category": "served daily"
-  },
-  {
-    "id": "b63d0e74-f50b-4ac5-84ea-d2a55f4269fd",
-    "name": "Lasagne Bolognese (Family Portion)",
-    "priceCents": 3600,
-    "image": "images/served-daily-6.jpg",
-    "category": "served daily"
-  },
-  {
-    "id": "d8eaa8b7-cb7a-4d94-bd11-d15c126e7cd0",
-    "name": "Veggie Potato Souffle (Portion)",
-    "priceCents": 700,
-    "image": "images/served-daily-7.jpg",
-    "category": "served daily"
-  },
-  {
-    "id": "50c9d8b7-bd8d-44c0-b95e-1d444a72f990",
-    "name": "Veggie Potato Souffle (Family Portion)",
-    "priceCents": 2100,
-    "image": "images/served-daily-8.jpg",
-    "category": "served daily"
-  },
-  {
-    "id": "c7f8005a-b9ae-45e0-a7b6-82bb0d0101fe",
-    "name": "Beef Potato Souffle (One Portion)",
-    "priceCents": 800,
-    "image": "images/served-daily-9.jpg",
-    "category": "served daily"
-  },
-  {
-    "id": "23e6fae0-3747-4a6f-aee1-9d16998f4b0f",
-    "name": "Beef Potato Souffle (Family Portion)",
-    "priceCents": 2400,
-    "image": "images/served-daily-10.jpg",
-    "category": "served daily"
-  },
-  {
-    "id": "17411570-b8db-45f9-a9f0-d07c515b0c8b",
-    "name": "Kebbeh Bel Soniyeh (Portion)",
-    "priceCents": 1000,
-    "image": "images/served-daily-11.jpg",
-    "category": "served daily"
-  },
-  {
-    "id": "d0f767b3-b7e7-4c0b-a11e-b446bc918a97",
-    "name": "Kebbeh Bel Soniyeh (Family Portion)",
-    "priceCents": 3000,
-    "image": "images/served-daily-12.jpg",
-    "category": "served daily"
-  },
-  {
-    "id": "83a9f6be-3f7d-47e6-bb64-c0eae1cdb592",
-    "name": "Pasta Bolognese (Family Portion)",
-    "priceCents": 1800,
-    "image": "images/served-daily-13.jpg",
-    "category": "served daily"
-  },
-  {
-    "id": "b1a2288b-3ab7-40e9-973d-ef653557ccfe",
-    "name": "Pasta Bolognese (Portion)",
-    "priceCents": 600,
-    "image": "images/served-daily-14.jpg",
-    "category": "served daily"
-  },
-  {
-    "id": "d5e59c10-24f2-4cc9-a2b4-bc73eb689cb6",
-    "name": "Frozen Kebbeh (Dozen)",
-    "priceCents": 900,
-    "image": "images/frozen-1.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "f8d74a6f-e7f9-45c5-b734-04d0e4b6f235",
-    "name": "Frozen Shishbarak (Dozen)",
-    "priceCents": 250,
-    "image": "images/frozen-2.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "de5e0f7b-1c51-4411-a27c-90066d456d50",
-    "name": "Frozen Beef Shawarma Rolls (Dozen)",
-    "priceCents": 1200,
-    "image": "images/frozen-3.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "ee49b0b4-b07f-4337-bcf7-f17c61c24968",
-    "name": "Frozen Chicken Shawarma Rolls (Dozen)",
-    "priceCents": 1200,
-    "image": "images/frozen-4.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "93e4e07a-b22b-43db-aef6-40a06adca473",
-    "name": "Frozen Sambousek Beef (Dozen)",
-    "priceCents": 1000,
-    "image": "images/frozen-5.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "66b758f5-5512-4c4a-8b76-8257e3408b67",
-    "name": "Frozen Sambousek Chicken (Dozen)",
-    "priceCents": 800,
-    "image": "images/frozen-6.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "4d1db5e4-2fa2-4bb9-bfe9-0a3f1f46e4f6",
-    "name": "Frozen Sambousek Cheese (Dozen)",
-    "priceCents": 800,
-    "image": "images/frozen-7.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "bbef84e4-b9f6-4b64-8eb9-85bc3b4a9d1d",
-    "name": "Frozen Pesto Pizza (Dozen)",
-    "priceCents": 1200,
-    "image": "images/frozen-8.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "4081d4a4-f1f2-45e7-ae9a-84fa3c9ab256",
-    "name": "Frozen Pizza (Dozen)",
-    "priceCents": 800,
-    "image": "images/frozen-9.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "8796019f-2269-474a-b80a-d9db1c30ec43",
-    "name": "Frozen Manaeesh Keshek (Dozen)",
-    "priceCents": 500,
-    "image": "images/frozen-10.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "9c66ebd0-3519-4b57-bad9-b05fba5b481e",
-    "name": "Frozen Manaeesh Zaatar (Dozen)",
-    "priceCents": 400,
-    "image": "images/frozen-11.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "ec13e4e3-6225-4a38-bf8f-d42e575dd1e4",
-    "name": "Frozen Cheese Roll (Dozen)",
-    "priceCents": 800,
-    "image": "images/frozen-12.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "21c7bb3d-e0f9-467f-9a4b-97e1305e2cc2",
-    "name": "Frozen Spring Rolls (Dozen)",
-    "priceCents": 800,
-    "image": "images/frozen-13.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "2ed19f5d-54d9-4783-b6ad-dc4f90e48e0d",
-    "name": "Frozen Chicken Fajita Rolls (Dozen)",
-    "priceCents": 800,
-    "image": "images/frozen-14.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "110b278d-c474-4f65-bf94-2e19f205e2d3",
-    "name": "Frozen Pesto Cheese Rolls (Dozen)",
-    "priceCents": 1200,
-    "image": "images/frozen-15.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "0fbed20b-b66c-40e6-a270-3e620a3815b9",
-    "name": "Frozen Brazilian Chicken Coxinha (Dozen)",
-    "priceCents": 800,
-    "image": "images/frozen-16.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "1b0538ca-7d83-47ba-b3ea-0acfe518a15e",
-    "name": "Frozen Mtabaa Fresh Zaatar and Cheese (Dozen)",
-    "priceCents": 900,
-    "image": "images/frozen-17.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "1e3f8699-bc65-42e4-81b5-25cb58a7aaf8",
-    "name": "Frozen Msakhan (Dozen)",
-    "priceCents": 1000,
-    "image": "images/frozen-18.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "bf875c09-bdb3-4d8d-b2a3-28be88e7b47a",
-    "name": "Frozen Fatayer Spinach (Dozen)",
-    "priceCents": 500,
-    "image": "images/frozen-19.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "0fdbcc23-0b30-43d9-b16b-0439ae4177d0",
-    "name": "Frozen Wara Enab Bzeet (Kilo)",
-    "priceCents": 1300,
-    "image": "images/frozen-20.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "bc9f032f-4ff5-4857-b1f4-6c46402f2d7f",
-    "name": "Frozen Wara Enab Bel Lahme (Kilo)",
-    "priceCents": 1500,
-    "image": "images/frozen-21.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "446c63f4-2641-485a-9b91-85b4315ed101",
-    "name": "Frozen Veggie Potato Souffle (Portion)",
-    "priceCents": 600,
-    "image": "images/frozen-22.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "56b8612b-35c7-47ac-bdb4-73a0c45b84d3",
-    "name": "Frozen Veggie Potato Souffle (Family)",
-    "priceCents": 1800,
-    "image": "images/frozen-23.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "f27bc876-1417-4194-914e-4c20fa8045c6",
-    "name": "Frozen Beef Potato Souffle (One Portion)",
-    "priceCents": 700,
-    "image": "images/frozen-24.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "ef8976ac-3d85-4eb8-b825-799edca2a4b2",
-    "name": "Frozen Beef Potato Souffle (Family Portion)",
-    "priceCents": 2200,
-    "image": "images/frozen-25.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "9c1845f4-39f8-44e9-9437-62be9e4f1897",
-    "name": "Frozen Kebbeh Bel Soniyeh (One Portion)",
-    "priceCents": 900,
-    "image": "images/frozen-26.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "937b4b2c-3122-44cd-b5cf-11c05d1b43a5",
-    "name": "Frozen Kebbeh Bel Soniyeh (Family Portion)",
-    "priceCents": 2700,
-    "image": "images/frozen-27.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "d0e3b85b-c458-4fa3-b7e0-bde9c7c20e6f",
-    "name": "Frozen Lasagne Bolognese (Family Portion)",
-    "priceCents": 3300,
-    "image": "images/frozen-28.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "0ec8b0f7-d1cd-4e69-90db-ef2b8e86c431",
-    "name": "Frozen Lasagne Bolognese (Portion)",
-    "priceCents": 1200,
-    "image": "images/frozen-29.jpg",
-    "category": "frozen"
-  },
-  {
-    "id": "fb1f2f66-264d-4a07-b0ca-44bdb36b7242",
-    "name": "Stuffed Portobello Mushroom (Dozen)",
-    "priceCents": 4800,
-    "image": "images/special-1.jpg",
-    "category": "special-items"
-  },
-  {
-    "id": "d4ab4ccf-4e1e-4f06-b2d4-7f83f992bd98",
-    "name": "Focaccia Bread Tray",
-    "priceCents": 1100,
-    "image": "images/special-2.jpg",
-    "category": "special-items"
-  },
-  {
-    "id": "9d35dba4-7f9d-4634-b502-c0e7cbf2d83f",
-    "name": "Cheese Nest (Dozen)",
-    "priceCents": 900,
-    "image": "images/special-4.jpg",
-    "category": "special-items"
-  },
-  {
-    "id": "bc587ce9-9ab2-4a4c-819d-0c388a263da5",
-    "name": "Chicken Pesto Nest",
-    "priceCents": 1200,
-    "image": "images/special-5.jpg",
-    "category": "special-items"
-  },
-  {
-    "id": "f8b46030-93a1-4b07-b1a3-4665be4da741",
-    "name": "Msakhan (Dozen)",
-    "priceCents": 1200,
-    "image": "images/pastry-1.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "aa5e4c74-b7c0-42d9-9c76-9d25c71a3479",
-    "name": "Mtaba'a Fresh Zaatar and Cheese (Dozen)",
-    "priceCents": 1200,
-    "image": "images/pastry-2.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "d1f74b6a-d98f-4e42-b648-58b14e6174d9",
-    "name": "Fatayer Spinach (Dozen)",
-    "priceCents": 600,
-    "image": "images/pastry-3.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "e76da3e6-5cf5-4f4b-a14a-bd53b399e1a6",
-    "name": "Beef Shawarma Rolls (Dozen)",
-    "priceCents": 1500,
-    "image": "images/pastry-4.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "1dbf3d69-2b67-4fbd-9183-1267849e6a9e",
-    "name": "Brazilian Chicken Coxinha (Dozen)",
-    "priceCents": 900,
-    "image": "images/pastry-5.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "acfa5efb-dad1-4672-a732-72be0f72c6e0",
-    "name": "Manakeesh Keshek (Dozen)",
-    "priceCents": 600,
-    "image": "images/pastry-6.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "b49a9256-f76e-4015-bb66-56b0a8463d9f",
-    "name": "Kebbeh (Dozen)",
-    "priceCents": 900,
-    "image": "images/pastry-7.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "456ef240-0a73-43b0-82f6-c4269f33a0d6",
-    "name": "Cheese Roll (Dozen)",
-    "priceCents": 900,
-    "image": "images/pastry-8.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "a1c8a9f9-11d1-40d5-bd30-85c73488fc5b",
-    "name": "Chicken Shawarma Rolls (Dozen)",
-    "priceCents": 1200,
-    "image": "images/pastry-9.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "19c31207-b5b2-46b4-9d61-21784652c26f",
-    "name": "Chicken Fajita Rolls (Dozen)",
-    "priceCents": 900,
-    "image": "images/pastry-10.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "3a755b35-b2a4-40fe-bc79-d1a4b7033464",
-    "name": "Spring Rolls (Dozen)",
-    "priceCents": 900,
-    "image": "images/pastry-11.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "c79560c1-0395-487b-a2f9-82b773b808fa",
-    "name": "Sambousek Cheese (Dozen)",
-    "priceCents": 900,
-    "image": "images/pastry-12.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "63e9ff8a-9a1e-4ad0-b8b3-c4764509005c",
-    "name": "Sambousek Beef (Dozen)",
-    "priceCents": 1200,
-    "image": "images/pastry-13.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "00d1981e-39c4-4978-a2f9-f552e1da5e11",
-    "name": "Sambousek Chicken (Dozen)",
-    "priceCents": 900,
-    "image": "images/pastry-14.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "fd5f7a6f-8ec7-4094-b7e2-5e8cb0ab200a",
-    "name": "Mini Pizza (Dozen)",
-    "priceCents": 900,
-    "image": "images/pastry-15.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "35e3fd73-d49b-4e71-b440-6bc91a61b0bc",
-    "name": "Mini Pesto Pizza (Dozen)",
-    "priceCents": 1500,
-    "image": "images/pastry-16.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "9ea7d61c-462f-40b9-bd61-5bc205b7a4a7",
-    "name": "Mini Croissant (Dozen)",
-    "priceCents": 900,
-    "image": "images/pastry-17.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "d50385a2-e5e2-4212-a1d2-9e07b2113c7d",
-    "name": "Manakeesh Zaatar (Dozen)",
-    "priceCents": 450,
-    "image": "images/pastry-18.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "58102f62-8b78-4a73-b7fe-3932730f1f95",
-    "name": "Pesto Cheese Rolls (Dozen)",
-    "priceCents": 1500,
-    "image": "images/pastry-19.jpg",
-    "category": "pastries"
-  },
-  {
-    "id": "3347362f-85ca-47ed-bc95-e61722e6baf1",
-    "name": "Kebbeh (Dozen)",
-    "priceCents": 750,
-    "image": "images/soiree-1.jpg",
-    "category": "soiree"
-  },
-  {
-    "id": "a05cf244-973d-4d59-b9e3-f9a580a3d1bb",
-    "name": "Fajita Rolls (Dozen)",
-    "priceCents": 600,
-    "image": "images/soiree-2.jpg",
-    "category": "soiree"
-  },
-  {
-    "id": "fc6823db-3a0c-421b-8cc6-cd7e7d11cf4d",
-    "name": "Spring Rolls (Dozen)",
-    "priceCents": 600,
-    "image": "images/soiree-3.jpg",
-    "category": "soiree"
-  },
-  {
-    "id": "70f05742-01f2-418f-82d5-c48f432c4519",
-    "name": "Sambousek Chicken (Dozen)",
-    "priceCents": 600,
-    "image": "images/soiree-4.jpg",
-    "category": "soiree"
-  },
-  {
-    "id": "b8b4c229-cf4b-4e6a-8ac4-7ccfa7e5c5f5",
-    "name": "Sambousek Cheese (Dozen)",
-    "priceCents": 600,
-    "image": "images/soiree-5.jpg",
-    "category": "soiree"
-  },
-  {
-    "id": "6d73ec78-c9e0-4425-b98f-d6f29ca4c5d1",
-    "name": "Pizza (Dozen)",
-    "priceCents": 600,
-    "image": "images/soiree-6.jpg",
-    "category": "soiree"
-  },
-  {
-    "id": "fce39fc4-62d2-4b2f-b7b2-5a980424aff4",
-    "name": "Manakeesh Keshek (Dozen)",
-    "priceCents": 300,
-    "image": "images/soiree-7.jpg",
-    "category": "soiree"
-  },
-  {
-    "id": "02f1ef47-f67a-4f52-9a95-23a8b93c0b1e",
-    "name": "Manakeesh Zaatar (Dozen)",
-    "priceCents": 300,
-    "image": "images/soiree-8.jpg",
-    "category": "soiree"
-  },
-  {
-    "id": "e08f3978-dbb2-4f01-92f6-3f15965d05fc",
-    "name": "Msakhan (Dozen)",
-    "priceCents": 750,
-    "image": "images/soiree-9.jpg",
-    "category": "soiree"
-  },
-  {
-    "id": "4f80c72e-4c7d-4ea7-95cf-e9d280d62f60",
-    "name": "Shawarma Beef Rolls (Dozen)",
-    "priceCents": 900,
-    "image": "images/soiree-10.jpg",
-    "category": "soiree"
-  },
-  {
-    "id": "72a3fe9d-5ecb-4b95-9f27-b54088b73155",
-    "name": "Shawarma Chicken Rolls (Dozen)",
-    "priceCents": 750,
-    "image": "images/soiree-11.jpg",
-    "category": "soiree"
-  },
-  {
-    "id": "625dc3ca-f87f-4028-94ed-bf94866a18f3",
-    "name": "Cheese Rolls (Dozen)",
-    "priceCents": 600,
-    "image": "images/soiree-12.jpg",
-    "category": "soiree"
-  },
-  {
-    "id": "9be529f7-c872-4634-89f2-9c0a1469926b",
-    "name": "Pesto Pizza (Dozen)",
-    "priceCents": 900,
-    "image": "images/soiree-13.jpg",
-    "category": "soiree"
-  },
-  {
-    "id": "9bb83ebd-83b8-4193-bc57-8b8c6c59f4d5",
-    "name": "Pesto Rolls (Dozen)",
-    "priceCents": 750,
-    "image": "images/soiree-14.jpg",
-    "category": "soiree"
-  },
-  {
-    "id": "ecff2265-01bc-4603-a622-98b72b5712ba",
-    "name": "Sambousek Meat (Dozen)",
-    "priceCents": 600,
-    "image": "images/soiree-15.jpg",
-    "category": "soiree"
-  },
-  {
-    "id": "73698d92-9395-4f9d-8b02-c8a7585f7360",
-    "name": "Osmaliye Twist",
-    "priceCents": 2700,
-    "image": "images/dessert-1.jpg",
-    "category": "desserts"
-  },
-  {
-    "id": "a6c34f4e-0411-49b6-94c4-8f6d18b2ef93",
-    "name": "Lemon Cake with Icing",
-    "priceCents": 1300,
-    "image": "images/dessert-2.jpg",
-    "category": "desserts"
-  },
-  {
-    "id": "cf698764-bd5d-4975-baf6-83b9ef49f2f2",
-    "name": "Orange Cake with Icing",
-    "priceCents": 1300,
-    "image": "images/dessert-3.jpg",
-    "category": "desserts"
-  },
-  {
-    "id": "a187f69f-b07c-4b3d-b52d-bff3069e9bfa",
-    "name": "Vanilla Cake with Icing",
-    "priceCents": 1300,
-    "image": "images/dessert-4.jpg",
-    "category": "desserts"
-  },
-  {
-    "id": "0a9e5e5d-e41d-4fe9-bce1-cb9984cc3ff1",
-    "name": "Carrot Cake with Icing",
-    "priceCents": 1700,
-    "image": "images/dessert-5.jpg",
-    "category": "desserts"
-  },
-  {
-    "id": "e457b34e-d2d2-47d4-9a75-971fce3d014f",
-    "name": "Cake Balls (Dozen)",
-    "priceCents": 1200,
-    "image": "images/dessert-6.jpg",
-    "category": "desserts"
-  },
-  {
-    "id": "5b39ad3f-4c62-4f02-b2d6-b9db27926475",
-    "name": "Carrot Cake with Cream Cheese Frosting",
-    "priceCents": 2400,
-    "image": "images/dessert-7.jpg",
-    "category": "desserts"
-  },
-  {
-    "id": "eddb4a89-7b72-4b11-9ea9-5829e1c40e27",
-    "name": "Cinnamon Rolls with Cream Cheese Frosting (Dozen)",
-    "priceCents": 1800,
-    "image": "images/dessert-8.jpg",
-    "category": "desserts"
-  },
-  {
-    "id": "24b292db-5ac7-4b9c-b325-b1e0c906f9ae",
-    "name": "Mogleh (Dozen)",
-    "priceCents": 4800,
-    "image": "images/dessert-9.jpg",
-    "category": "desserts"
-  },
-  {
-    "id": "9c1023e1-e3e7-4fe7-8db9-12d290c4fa35",
-    "name": "Rez Bhalib (Dozen)",
-    "priceCents": 2400,
-    "image": "images/dessert-10.jpg",
-    "category": "desserts"
-  },
-  {
-    "id": "c0d7f3a4-2db1-4a12-8d93-1d5310571ef6",
-    "name": "Jello (Dozen)",
-    "priceCents": 1200,
-    "image": "images/dessert-11.jpg",
-    "category": "desserts"
-  }
+    {
+        "id": "a340bfd3-ab33-4a7b-a674-99e316f7f5ef",
+        "name": "Chicken Mloukhiyah Served With Rice",
+        "priceCents": 1000,
+        "image": "images/plat-du-jour-1.jpg",
+        "category": "plat-du-jour",
+        "day": "monday"
+    },
+    {
+        "id": "19065253-0f98-4d61-8300-b262b316a3e7",
+        "name": "Mraba El Laban Served With Rice",
+        "priceCents": 1200,
+        "image": "images/plat-du-jour-2.jpg",
+        "category": "plat-du-jour",
+        "day": "monday"
+    },
+    {
+        "id": "da0c19b6-808a-4235-8acd-940877b07844",
+        "name": "Chicken Moghrabieh",
+        "priceCents": 1000,
+        "image": "images/plat-du-jour-3.jpg",
+        "category": "plat-du-jour",
+        "day": "tuesday"
+    },
+    {
+        "id": "aef2c79e-d3fd-4923-8d74-9d06b50368cc",
+        "name": "Turkish Kuru Fasuiye Served With Rice",
+        "priceCents": 1000,
+        "image": "images/plat-du-jour-4.jpg",
+        "category": "plat-du-jour",
+        "day": "tuesday"
+    },
+    {
+        "id": "f294f3b1-b739-4121-b67a-53ae5fd03f21",
+        "name": "Kebbeh Arnabieh Served With Rice",
+        "priceCents": 1200,
+        "image": "images/plat-du-jour-5.jpg",
+        "category": "plat-du-jour",
+        "day": "wednesday"
+    },
+    {
+        "id": "7ffaacd7-b263-4a46-ba80-b551ef4461fe",
+        "name": "Chicken Beryani Served With Red Sauce",
+        "priceCents": 1200,
+        "image": "images/plat-du-jour-6.jpg",
+        "category": "plat-du-jour",
+        "day": "wednesday"
+    },
+    {
+        "id": "fb82a95e-3da5-4a76-b9cd-0b2a32b95f30",
+        "name": "Asian Shrimp Served With Rice",
+        "priceCents": 1200,
+        "image": "images/plat-du-jour-7.jpg",
+        "category": "plat-du-jour",
+        "day": "thursday"
+    },
+    {
+        "id": "3db5a3f3-17aa-48e9-8a5c-b05825cba843",
+        "name": "Chicken Liver/Humus/Batata Hara",
+        "priceCents": 800,
+        "image": "images/plat-du-jour-8.jpg",
+        "category": "plat-du-jour",
+        "day": "thursday"
+    },
+    {
+        "id": "be24bc07-9083-496f-b9c7-c711d6a85aab",
+        "name": "Fawerigh & Stuffed Vine Leaves & Kousa With Kastaletas",
+        "priceCents": 1200,
+        "image": "images/plat-du-jour-9.jpg",
+        "category": "plat-du-jour",
+        "day": "friday"
+    },
+    {
+        "id": "141e29dc-e008-4daf-ad90-b1e7213bafc3",
+        "name": "Kebbeh Bil Sanieh",
+        "priceCents": 1000,
+        "image": "images/plat-du-jour-10.jpg",
+        "category": "plat-du-jour",
+        "day": "friday"
+    },
+    {
+        "id": "12961403-f9cd-4516-97de-114e7eb14acd",
+        "name": "Baked Fish Aside Veggies",
+        "priceCents": 900,
+        "image": "images/plat-du-jour-11.jpg",
+        "category": "plat-du-jour",
+        "day": "saturday"
+    },
+    {
+        "id": "c2ce8d48-5a0f-488d-9c97-0338f4ca0a07",
+        "name": "Vine Leaves In Olive Oil 12 Pcs",
+        "priceCents": 500,
+        "image": "images/appetizers-1.jpg",
+        "category": "appetizers"
+    },
+    {
+        "id": "3c473e27-7c0a-41a9-be76-56228fccb762",
+        "name": "Hommos Tahina",
+        "priceCents": 300,
+        "image": "images/appetizers-2.jpg",
+        "category": "appetizers"
+    },
+    {
+        "id": "c1ab0a19-7d11-47d0-8d04-8abf4a166dce",
+        "name": "Eggplant Moutabal",
+        "priceCents": 300,
+        "image": "images/appetizers-3.jpg",
+        "category": "appetizers"
+    },
+    {
+        "id": "f8feeeb8-5020-4cda-a0f3-04d2a1505959",
+        "name": "Beetroot Moutabal",
+        "priceCents": 300,
+        "image": "images/appetizers-4.jpg",
+        "category": "appetizers"
+    },
+    {
+        "id": "9027a762-fc00-4ed6-9829-0a0c2d8a58bd",
+        "name": "Loubieh Bzeit",
+        "priceCents": 300,
+        "image": "images/appetizers-5.jpg",
+        "category": "appetizers"
+    },
+    {
+        "id": "8e6b9444-3fb7-4d32-8828-b6bf74cca5f9",
+        "name": "Hindbeh",
+        "priceCents": 350,
+        "image": "images/appetizers-6.jpg",
+        "category": "appetizers"
+    },
+    {
+        "id": "c81d7184-74af-4164-913a-1eb67abe08b9",
+        "name": "Batata Hara",
+        "priceCents": 300,
+        "image": "images/appetizers-7.jpg",
+        "category": "appetizers"
+    },
+    {
+        "id": "ecbdd25d-c6d6-4cd9-8c4e-81c98319b354",
+        "name": "Wedges Potato",
+        "priceCents": 300,
+        "image": "images/appetizers-8.jpg",
+        "category": "appetizers"
+    },
+    {
+        "id": "9b4a96c9-5adf-4ff1-ae29-983ac8e08f13",
+        "name": "Wedges Potato",
+        "priceCents": 300,
+        "image": "images/appetizers-9.jpg",
+        "category": "appetizers"
+    },
+    {
+        "id": "e3efcf33-9ea1-45e3-895e-a0d23c983bdf",
+        "name": "Makanik",
+        "priceCents": 500,
+        "image": "images/appetizers-10.jpg",
+        "category": "appetizers"
+    },
+    {
+        "id": "b2a80a21-f991-4b36-8ece-607c09f1223b",
+        "name": "Moghlee Cup",
+        "priceCents": 450,
+        "image": "images/star-of-the-week-1.jpg",
+        "category": "star-of-the-week"
+    },
+    {
+        "id": "26bae67c-22bf-4e37-ac6b-137706afab3d",
+        "name": "Fattoush",
+        "priceCents": 350,
+        "image": "images/salad-1.jpg",
+        "category": "salad"
+    },
+    {
+        "id": "9e16a290-f2fd-40dc-ab7f-02c9da8bce6b",
+        "name": "Tabbouli",
+        "priceCents": 350,
+        "image": "images/salad-2.jpg",
+        "category": "salad"
+    },
+    {
+        "id": "6e9a2bf8-eb8b-479e-84e9-28190b4f3315",
+        "name": "Crab Salad",
+        "priceCents": 600,
+        "image": "images/salad-3.jpg",
+        "category": "salad"
+    },
+    {
+        "id": "70baca8f-e295-4285-9b75-3ff6b66b1409",
+        "name": "Chicken Caesar Salad",
+        "priceCents": 650,
+        "image": "images/salad-4.jpg",
+        "category": "salad"
+    },
+    {
+        "id": "3adb7bf3-6a5e-41f0-b237-b17f77ad73a7",
+        "name": "Caesar Salad",
+        "priceCents": 500,
+        "image": "images/salad-5.jpg",
+        "category": "salad"
+    },
+    {
+        "id": "bcf531f3-7b56-4d45-9bbb-5b086e02f97c",
+        "name": "Strawberry Chicken Salad",
+        "priceCents": 750,
+        "image": "images/salad-6.jpg",
+        "category": "salad"
+    },
+    {
+        "id": "71471f9a-b469-4cb7-a814-36c0ae29ab4d",
+        "name": "Tuna Pasta Salad",
+        "priceCents": 650,
+        "image": "images/salad-7.jpg",
+        "category": "salad"
+    },
+    {
+        "id": "b2016f4e-2518-4c60-a9dc-e23eea741546",
+        "name": "Beetroot Rocca Salad",
+        "priceCents": 650,
+        "image": "images/salad-8.jpg",
+        "category": "salad"
+    },
+    {
+        "id": "b8ece3c2-ae6b-4587-9598-e84fbdd8404c",
+        "name": "Black Lentil Soup",
+        "priceCents": 250,
+        "image": "images/soup-1.jpg",
+        "category": "soup",
+        "day": "monday"
+    },
+    {
+        "id": "bffba790-3adb-40d2-838a-25b88432e9da",
+        "name": "Pumpkin Soup",
+        "priceCents": 350,
+        "image": "images/soup-2.jpg",
+        "category": "soup",
+        "day": "tuesday"
+    },
+    {
+        "id": "3a00f9d2-8660-4c65-af62-fc8d66ea1831",
+        "name": "Onion Soup",
+        "priceCents": 400,
+        "image": "images/soup-3.jpg",
+        "category": "soup",
+        "day": "wednesday"
+    },
+    {
+        "id": "2b51f846-64fd-403b-835a-bb8845409f9d",
+        "name": "Onion Soup",
+        "priceCents": 400,
+        "image": "images/soup-4.jpg",
+        "category": "soup",
+        "day": "thursday"
+    },
+    {
+        "id": "1354dbde-0bb6-4644-965e-4d18786c133f",
+        "name": "Chicken Vermicelli Soup",
+        "priceCents": 250,
+        "image": "images/soup-5.jpg",
+        "category": "soup",
+        "day": "friday"
+    },
+    {
+        "id": "a8a1a7fb-0cd3-40ba-bef4-8fd809152a16",
+        "name": "Chicken Vermicelli Soup",
+        "priceCents": 250,
+        "image": "images/soup-6.jpg",
+        "category": "soup",
+        "day": "saturday"
+    },
+    {
+        "id": "92f18224-6bae-45a2-9d48-cd71bdbf25da",
+        "name": "Marinated Chicken Served with Wedges and Veggies",
+        "priceCents": 900,
+        "image": "images/healthy-zone-1.jpg",
+        "category": "healthy-zone"
+    },
+    {
+        "id": "421b2483-096c-4fee-ab53-daf9ee89c517",
+        "name": "Fish Fillet Served with Wedges and Veggies",
+        "priceCents": 900,
+        "image": "images/healthy-zone-2.jpg",
+        "category": "healthy-zone"
+    },
+    {
+        "id": "b3d7289d-97f2-4a71-8f5a-922d76240830",
+        "name": "Steak Served with Wedges and Veggies",
+        "priceCents": 1300,
+        "image": "images/healthy-zone-3.jpg",
+        "category": "healthy-zone"
+    },
+    {
+        "id": "fa2e1e10-360c-4cf6-aade-f6118a71dd94",
+        "name": "Tawouk Served with Wedges and Veggies",
+        "priceCents": 900,
+        "image": "images/healthy-zone-4.jpg",
+        "category": "healthy-zone"
+    },
+    {
+        "id": "de68cbc5-64bd-42b0-a1f8-17a0da5b94ff",
+        "name": "Kebbeh Bel Laban (Portion)",
+        "priceCents": 1000,
+        "image": "images/served-daily-1.jpg",
+        "category": "served daily"
+    },
+    {
+        "id": "af6cc963-b2eb-4305-bbcb-840af659ddab",
+        "name": "Kebbeh Bel Laban (Family Portion)",
+        "priceCents": 3000,
+        "image": "images/served-daily-2.jpg",
+        "category": "served daily"
+    },
+    {
+        "id": "02709ce4-6f90-407c-a17b-ccb3b6e4025a",
+        "name": "Shish Barak (Portion)",
+        "priceCents": 900,
+        "image": "images/served-daily-3.jpg",
+        "category": "served daily"
+    },
+    {
+        "id": "9ab8c50e-17b4-4f42-b0f8-ac3b4328bb06",
+        "name": "Shish Barak (Family Portion)",
+        "priceCents": 2700,
+        "image": "images/served-daily-4.jpg",
+        "category": "served daily"
+    },
+    {
+        "id": "4c7ee2c2-7857-469e-9f8e-0e3a738dcbf8",
+        "name": "Lasagne Bolognese (Portion)",
+        "priceCents": 1200,
+        "image": "images/served-daily-5.jpg",
+        "category": "served daily"
+    },
+    {
+        "id": "139fd993-1cd8-4507-9692-6eedd66d33ad",
+        "name": "Lasagne Bolognese (Family Portion)",
+        "priceCents": 3600,
+        "image": "images/served-daily-6.jpg",
+        "category": "served daily"
+    },
+    {
+        "id": "80bde9b2-e725-4477-825d-18d1e59eb71e",
+        "name": "Veggie Potato Souffle (Portion)",
+        "priceCents": 700,
+        "image": "images/served-daily-7.jpg",
+        "category": "served daily"
+    },
+    {
+        "id": "27a0b5ce-9c3c-427f-9daf-87a2e493e971",
+        "name": "Veggie Potato Souffle (Family Portion)",
+        "priceCents": 2100,
+        "image": "images/served-daily-8.jpg",
+        "category": "served daily"
+    },
+    {
+        "id": "c96e4f13-25cb-4c85-ac6b-8970fc518f9c",
+        "name": "Beef Potato Souffle (One Portion)",
+        "priceCents": 800,
+        "image": "images/served-daily-9.jpg",
+        "category": "served daily"
+    },
+    {
+        "id": "38c6c96a-cfb4-4609-813e-d202789b3be1",
+        "name": "Beef Potato Souffle (Family Portion)",
+        "priceCents": 2400,
+        "image": "images/served-daily-10.jpg",
+        "category": "served daily"
+    },
+    {
+        "id": "b6503146-f02f-49b7-9a13-0cefa557954a",
+        "name": "Kebbeh Bel Soniyeh (Portion)",
+        "priceCents": 1000,
+        "image": "images/served-daily-11.jpg",
+        "category": "served daily"
+    },
+    {
+        "id": "fc5cf1c7-7fc1-4bb6-931f-87e6d07f87c0",
+        "name": "Kebbeh Bel Soniyeh (Family Portion)",
+        "priceCents": 3000,
+        "image": "images/served-daily-12.jpg",
+        "category": "served daily"
+    },
+    {
+        "id": "c21ecbd9-e45d-4284-bf9b-047b961db33e",
+        "name": "Pasta Bolognese (Family Portion)",
+        "priceCents": 1800,
+        "image": "images/served-daily-13.jpg",
+        "category": "served daily"
+    },
+    {
+        "id": "299c5e77-9ab4-4c58-860e-3e5f6db4e623",
+        "name": "Pasta Bolognese (Portion)",
+        "priceCents": 600,
+        "image": "images/served-daily-14.jpg",
+        "category": "served daily"
+    },
+    {
+        "id": "d0e7ca51-3c91-486e-81f5-b322babe025a",
+        "name": "Frozen Kebbeh (Dozen)",
+        "priceCents": 900,
+        "image": "images/frozen-1.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "b7d8f348-ff7b-4c3a-958e-00794aaef30d",
+        "name": "Frozen Shishbarak (Dozen)",
+        "priceCents": 250,
+        "image": "images/frozen-2.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "a07d279f-00b7-47d2-bd29-3dc760d6df0c",
+        "name": "Frozen Beef Shawarma Rolls (Dozen)",
+        "priceCents": 1200,
+        "image": "images/frozen-3.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "77967b7d-1c53-4b2a-98f0-0e21bc653d65",
+        "name": "Frozen Chicken Shawarma Rolls (Dozen)",
+        "priceCents": 1200,
+        "image": "images/frozen-4.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "4fbe0a8c-9e1d-4c14-9d41-a67456bd9617",
+        "name": "Frozen Sambousek Beef (Dozen)",
+        "priceCents": 1000,
+        "image": "images/frozen-5.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "f85b29f5-a30a-412f-8e2f-25d1a56477b8",
+        "name": "Frozen Sambousek Chicken (Dozen)",
+        "priceCents": 800,
+        "image": "images/frozen-6.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "671a31c4-fd52-46e8-a456-76d98af0d0cd",
+        "name": "Frozen Sambousek Cheese (Dozen)",
+        "priceCents": 800,
+        "image": "images/frozen-7.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "093be47b-378e-4d42-bdab-c929299c92d8",
+        "name": "Frozen Pesto Pizza (Dozen)",
+        "priceCents": 1200,
+        "image": "images/frozen-8.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "31031956-a45a-4fee-b750-8adc4ce269d0",
+        "name": "Frozen Pizza (Dozen)",
+        "priceCents": 800,
+        "image": "images/frozen-9.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "2e85e782-3049-459c-b169-b0603404da9d",
+        "name": "Frozen Manaeesh Keshek (Dozen)",
+        "priceCents": 500,
+        "image": "images/frozen-10.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "85eb7266-3fc4-488f-be8c-21f11c327491",
+        "name": "Frozen Manaeesh Zaatar (Dozen)",
+        "priceCents": 400,
+        "image": "images/frozen-11.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "f191fe1b-aae4-47b9-aa0a-a135310b86c4",
+        "name": "Frozen Cheese Roll (Dozen)",
+        "priceCents": 800,
+        "image": "images/frozen-12.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "02aecb8e-321b-4849-970a-de7141e96c9a",
+        "name": "Frozen Spring Rolls (Dozen)",
+        "priceCents": 800,
+        "image": "images/frozen-13.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "645ac7e6-5f06-4589-9201-f5373cff552b",
+        "name": "Frozen Chicken Fajita Rolls (Dozen)",
+        "priceCents": 800,
+        "image": "images/frozen-14.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "9c9df51f-e6a5-41d2-ab0c-9f6e2ca84a84",
+        "name": "Frozen Pesto Cheese Rolls (Dozen)",
+        "priceCents": 1200,
+        "image": "images/frozen-15.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "fcd2022d-1b28-44eb-97db-f97b91b295a3",
+        "name": "Frozen Brazilian Chicken Coxinha (Dozen)",
+        "priceCents": 800,
+        "image": "images/frozen-16.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "c7d5e71d-ad7d-4d32-8822-ec0822c73ad0",
+        "name": "Frozen Mtabaa Fresh Zaatar and Cheese (Dozen)",
+        "priceCents": 900,
+        "image": "images/frozen-17.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "615b9d0c-57a3-4dfd-961d-84b3d64e2d6b",
+        "name": "Frozen Msakhan (Dozen)",
+        "priceCents": 1000,
+        "image": "images/frozen-18.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "54662ec8-e0d4-4533-827f-e3a3d97b2c8e",
+        "name": "Frozen Fatayer Spinach (Dozen)",
+        "priceCents": 500,
+        "image": "images/frozen-19.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "9f6ded86-9a0f-46b5-a143-e84f4d1cd6f2",
+        "name": "Frozen Wara Enab Bzeet (Kilo)",
+        "priceCents": 1300,
+        "image": "images/frozen-20.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "40b4be1d-7df0-4c9c-908e-7de031a585bf",
+        "name": "Frozen Wara Enab Bel Lahme (Kilo)",
+        "priceCents": 1500,
+        "image": "images/frozen-21.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "02536189-7791-4aed-adbe-8ef78080aace",
+        "name": "Frozen Veggie Potato Souffle (Portion)",
+        "priceCents": 600,
+        "image": "images/frozen-22.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "86750219-2fd2-4f44-9b3c-d73761026efc",
+        "name": "Frozen Veggie Potato Souffle (Family)",
+        "priceCents": 1800,
+        "image": "images/frozen-23.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "9e969171-e767-48a0-8264-ca4572b54711",
+        "name": "Frozen Beef Potato Souffle (One Portion)",
+        "priceCents": 700,
+        "image": "images/frozen-24.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "a2646fc9-cdf3-4ab2-b268-5dc9a40c7cab",
+        "name": "Frozen Beef Potato Souffle (Family Portion)",
+        "priceCents": 2200,
+        "image": "images/frozen-25.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "325ea17b-798c-416e-a028-6e837f3b5fbe",
+        "name": "Frozen Kebbeh Bel Soniyeh (One Portion)",
+        "priceCents": 900,
+        "image": "images/frozen-26.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "08853c84-d269-4e94-a46e-514125ad3bd1",
+        "name": "Frozen Kebbeh Bel Soniyeh (Family Portion)",
+        "priceCents": 2700,
+        "image": "images/frozen-27.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "7d5fed8b-b9c2-4f8d-938f-f0d2d7023981",
+        "name": "Frozen Lasagne Bolognese (Family Portion)",
+        "priceCents": 3300,
+        "image": "images/frozen-28.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "eec0db57-aadb-4c30-b88b-0ae1c98163d5",
+        "name": "Frozen Lasagne Bolognese (Portion)",
+        "priceCents": 1200,
+        "image": "images/frozen-29.jpg",
+        "category": "frozen"
+    },
+    {
+        "id": "f5cae573-5d42-4d67-aeec-a640d6a9deb1",
+        "name": "Stuffed Portobello Mushroom (Dozen)",
+        "priceCents": 4800,
+        "image": "images/special-1.jpg",
+        "category": "special-items"
+    },
+    {
+        "id": "44786ff1-0bb4-4bca-9186-67c7a39dcd64",
+        "name": "Focaccia Bread Tray",
+        "priceCents": 1100,
+        "image": "images/special-2.jpg",
+        "category": "special-items"
+    },
+    {
+        "id": "69e7c200-3f07-4fab-b4d8-71ebf28f6150",
+        "name": "Cheese Nest (Dozen)",
+        "priceCents": 900,
+        "image": "images/special-4.jpg",
+        "category": "special-items"
+    },
+    {
+        "id": "841df864-beaf-4e32-bca9-93f6bb21c3bc",
+        "name": "Chicken Pesto Nest",
+        "priceCents": 1200,
+        "image": "images/special-5.jpg",
+        "category": "special-items"
+    },
+    {
+        "id": "187bedcd-605d-4ec0-890b-4ac1fd3495cd",
+        "name": "Msakhan (Dozen)",
+        "priceCents": 1200,
+        "image": "images/pastry-1.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "4e621735-2eea-4c94-94bd-ddf519aad604",
+        "name": "Mtaba'a Fresh Zaatar and Cheese (Dozen)",
+        "priceCents": 1200,
+        "image": "images/pastry-2.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "3a414fd7-858a-49b2-b66f-b12722a79f40",
+        "name": "Fatayer Spinach (Dozen)",
+        "priceCents": 600,
+        "image": "images/pastry-3.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "525d6d02-f33b-47ca-aeb1-1f7db8343a7e",
+        "name": "Beef Shawarma Rolls (Dozen)",
+        "priceCents": 1500,
+        "image": "images/pastry-4.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "658878f9-76ec-444d-a327-b92660bd6b92",
+        "name": "Brazilian Chicken Coxinha (Dozen)",
+        "priceCents": 900,
+        "image": "images/pastry-5.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "5818915e-c86d-4a52-93e0-7ab76e3e5dc3",
+        "name": "Manakeesh Keshek (Dozen)",
+        "priceCents": 600,
+        "image": "images/pastry-6.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "eed254f9-2b2e-4f3d-837c-16949a802311",
+        "name": "Kebbeh (Dozen)",
+        "priceCents": 900,
+        "image": "images/pastry-7.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "9bfd2a85-7b18-4cc4-aa29-3a7bd1142fef",
+        "name": "Cheese Roll (Dozen)",
+        "priceCents": 900,
+        "image": "images/pastry-8.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "5f088f98-d8d0-4610-9c92-29eca96fdb5c",
+        "name": "Chicken Shawarma Rolls (Dozen)",
+        "priceCents": 1200,
+        "image": "images/pastry-9.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "9dee78b3-f2f9-499d-a2b4-5f6af250ebe7",
+        "name": "Chicken Fajita Rolls (Dozen)",
+        "priceCents": 900,
+        "image": "images/pastry-10.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "c76f83cc-f157-44a0-b626-d6feab0be2ac",
+        "name": "Spring Rolls (Dozen)",
+        "priceCents": 900,
+        "image": "images/pastry-11.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "290615d0-edae-4177-8fac-9271d77ea1c3",
+        "name": "Sambousek Cheese (Dozen)",
+        "priceCents": 900,
+        "image": "images/pastry-12.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "620fbb22-f0c0-4cb3-be3e-d6a51e8c18b3",
+        "name": "Sambousek Beef (Dozen)",
+        "priceCents": 1200,
+        "image": "images/pastry-13.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "cd975b15-8825-4aab-807a-84fa073994ce",
+        "name": "Sambousek Chicken (Dozen)",
+        "priceCents": 900,
+        "image": "images/pastry-14.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "bb005d8d-ec90-42f7-9a2a-3c790e3d57ad",
+        "name": "Mini Pizza (Dozen)",
+        "priceCents": 900,
+        "image": "images/pastry-15.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "6d99d0d5-0d0d-4efa-ae2b-1ce206bdfff6",
+        "name": "Mini Pesto Pizza (Dozen)",
+        "priceCents": 1500,
+        "image": "images/pastry-16.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "ace4f03d-8506-4553-8210-ed53f2f5f774",
+        "name": "Mini Croissant (Dozen)",
+        "priceCents": 900,
+        "image": "images/pastry-17.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "b2dc66cb-316b-4431-a968-f1e222b7782a",
+        "name": "Manakeesh Zaatar (Dozen)",
+        "priceCents": 450,
+        "image": "images/pastry-18.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "6c8ad808-0f30-46c4-ae21-ce884bf04586",
+        "name": "Pesto Cheese Rolls (Dozen)",
+        "priceCents": 1500,
+        "image": "images/pastry-19.jpg",
+        "category": "pastries"
+    },
+    {
+        "id": "53a9f333-bd61-48f6-b3c1-c475c440dc61",
+        "name": "Kebbeh (Dozen)",
+        "priceCents": 750,
+        "image": "images/soiree-1.jpg",
+        "category": "soiree"
+    },
+    {
+        "id": "965b8f33-ea55-43d5-a2fe-ef022c283e05",
+        "name": "Fajita Rolls (Dozen)",
+        "priceCents": 600,
+        "image": "images/soiree-2.jpg",
+        "category": "soiree"
+    },
+    {
+        "id": "b90cad01-a28f-404e-ac27-69c8de9bb626",
+        "name": "Spring Rolls (Dozen)",
+        "priceCents": 600,
+        "image": "images/soiree-3.jpg",
+        "category": "soiree"
+    },
+    {
+        "id": "5f2e9541-0cff-41f8-88b6-84407160b18a",
+        "name": "Sambousek Chicken (Dozen)",
+        "priceCents": 600,
+        "image": "images/soiree-4.jpg",
+        "category": "soiree"
+    },
+    {
+        "id": "ad18baa2-2fa5-4803-8801-817622132552",
+        "name": "Sambousek Cheese (Dozen)",
+        "priceCents": 600,
+        "image": "images/soiree-5.jpg",
+        "category": "soiree"
+    },
+    {
+        "id": "3ef7a5b8-8300-4152-afa3-f4110821958b",
+        "name": "Pizza (Dozen)",
+        "priceCents": 600,
+        "image": "images/soiree-6.jpg",
+        "category": "soiree"
+    },
+    {
+        "id": "43da0172-2314-4a47-8f24-a8b6efc91c74",
+        "name": "Manakeesh Keshek (Dozen)",
+        "priceCents": 300,
+        "image": "images/soiree-7.jpg",
+        "category": "soiree"
+    },
+    {
+        "id": "bdbc9790-4bb0-46bf-af0e-941c1ce8414b",
+        "name": "Manakeesh Zaatar (Dozen)",
+        "priceCents": 300,
+        "image": "images/soiree-8.jpg",
+        "category": "soiree"
+    },
+    {
+        "id": "b4810563-005d-4eca-a201-ea6dcb275ada",
+        "name": "Msakhan (Dozen)",
+        "priceCents": 750,
+        "image": "images/soiree-9.jpg",
+        "category": "soiree"
+    },
+    {
+        "id": "3c2a90b1-84a4-430e-8b8b-56333fcd505f",
+        "name": "Shawarma Beef Rolls (Dozen)",
+        "priceCents": 900,
+        "image": "images/soiree-10.jpg",
+        "category": "soiree"
+    },
+    {
+        "id": "18b9b8c6-d8dd-438a-bab8-7787baf2bdc9",
+        "name": "Shawarma Chicken Rolls (Dozen)",
+        "priceCents": 750,
+        "image": "images/soiree-11.jpg",
+        "category": "soiree"
+    },
+    {
+        "id": "4badfb5b-4d9d-414c-a131-c39ca1431409",
+        "name": "Cheese Rolls (Dozen)",
+        "priceCents": 600,
+        "image": "images/soiree-12.jpg",
+        "category": "soiree"
+    },
+    {
+        "id": "c5d2e577-54d8-40b5-9c0e-55ed0e4a3ae0",
+        "name": "Pesto Pizza (Dozen)",
+        "priceCents": 900,
+        "image": "images/soiree-13.jpg",
+        "category": "soiree"
+    },
+    {
+        "id": "0206b401-18ba-4a7e-965d-311011d313ec",
+        "name": "Pesto Rolls (Dozen)",
+        "priceCents": 750,
+        "image": "images/soiree-14.jpg",
+        "category": "soiree"
+    },
+    {
+        "id": "f967f1de-35df-4d3f-bc3b-7e13d0d9f37d",
+        "name": "Sambousek Meat (Dozen)",
+        "priceCents": 600,
+        "image": "images/soiree-15.jpg",
+        "category": "soiree"
+    },
+    {
+        "id": "dceb9fcc-1e97-47f0-9a52-9f462cde3309",
+        "name": "Osmaliye Twist",
+        "priceCents": 2700,
+        "image": "images/dessert-1.jpg",
+        "category": "desserts"
+    },
+    {
+        "id": "67afed56-ee98-455b-a3cb-30ec384affd3",
+        "name": "Lemon Cake with Icing",
+        "priceCents": 1300,
+        "image": "images/dessert-2.jpg",
+        "category": "desserts"
+    },
+    {
+        "id": "a76f092c-5bbd-4c9a-8cf5-367206951bca",
+        "name": "Orange Cake with Icing",
+        "priceCents": 1300,
+        "image": "images/dessert-3.jpg",
+        "category": "desserts"
+    },
+    {
+        "id": "aa7999dd-2f86-4798-b8f1-6db5a693de10",
+        "name": "Vanilla Cake with Icing",
+        "priceCents": 1300,
+        "image": "images/dessert-4.jpg",
+        "category": "desserts"
+    },
+    {
+        "id": "bac78f34-88a6-4aec-8d82-48f23703af37",
+        "name": "Carrot Cake with Icing",
+        "priceCents": 1700,
+        "image": "images/dessert-5.jpg",
+        "category": "desserts"
+    },
+    {
+        "id": "8c6f0fe3-013d-4fd6-8c1e-1d07b02d838e",
+        "name": "Cake Balls (Dozen)",
+        "priceCents": 1200,
+        "image": "images/dessert-6.jpg",
+        "category": "desserts"
+    },
+    {
+        "id": "84aeaffe-2132-48bf-83ce-e25cdc74fe5c",
+        "name": "Carrot Cake with Cream Cheese Frosting",
+        "priceCents": 2400,
+        "image": "images/dessert-7.jpg",
+        "category": "desserts"
+    },
+    {
+        "id": "d3abb6d8-ba40-45c9-8e50-e1fdd72a902c",
+        "name": "Cinnamon Rolls with Cream Cheese Frosting (Dozen)",
+        "priceCents": 1800,
+        "image": "images/dessert-8.jpg",
+        "category": "desserts"
+    },
+    {
+        "id": "dbfd575c-fb0b-41bb-81d3-af234a73226e",
+        "name": "Mogleh (Dozen)",
+        "priceCents": 4800,
+        "image": "images/dessert-9.jpg",
+        "category": "desserts"
+    },
+    {
+        "id": "65a3d99c-0f2b-4d4e-ac51-76dd3f92a769",
+        "name": "Rez Bhalib (Dozen)",
+        "priceCents": 2400,
+        "image": "images/dessert-10.jpg",
+        "category": "desserts"
+    },
+    {
+        "id": "d83d6a58-bb1d-4f67-b9b3-e261b426c5a7",
+        "name": "Jello (Dozen)",
+        "priceCents": 1200,
+        "image": "images/dessert-11.jpg",
+        "category": "desserts"
+    }
 ]
