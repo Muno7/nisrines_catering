@@ -1,6 +1,8 @@
 import { products, loadProducts } from "../data/products.js";
 import { renderAddedMessage } from "../data/products.js";
 import { openOverlay } from "../data/products.js";
+import { cart } from "../data/cart.js";
+import { updateCartQuantity } from "../data/cart.js";
 
 async function loadMenuPage() {
   try {
@@ -14,6 +16,7 @@ async function loadMenuPage() {
 }
 
 function makeMenuLinksActive() {
+  updateCartQuantity();
   const menuLinks = document.querySelectorAll('.menu-links a');
   menuLinks.forEach(link => {
     link.addEventListener('click', (event) => {
@@ -138,15 +141,17 @@ function renderMenuGrid() {
   const addToCartButtonElement = document.querySelectorAll(".js-add-to-cart-button");
 
   addToCartButtonElement.forEach((button) => {
-      button.addEventListener("click", () => {
-          const { productId } = button.dataset;
-          const messageElement = document.querySelector(
-          `.js-added-to-cart-${productId}`
-          );
-          renderAddedMessage(messageElement);
-      });
+    button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const { productId } = button.dataset;
+        cart.addToCartCard(productId);
+        updateCartQuantity();
+        const messageElement = document.querySelector(
+        `.js-added-to-cart-${productId}`
+        );
+        renderAddedMessage(messageElement);
+    });
   });
-
 }
 
 loadMenuPage();

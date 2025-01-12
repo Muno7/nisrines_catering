@@ -1,4 +1,6 @@
 import { formatCurrency } from "../scripts/utils/money.js";
+import { cart } from "./cart.js";
+import { updateCartQuantity } from "./cart.js";
 
 export function getProduct(productId) {
   let matchedproduct;
@@ -16,6 +18,7 @@ export class Product {
   name;
   priceCents;
   category;
+  portion;
 
   constructor(productDetails) {
     this.id = productDetails.id;
@@ -23,6 +26,7 @@ export class Product {
     this.name = productDetails.name;
     this.priceCents = productDetails.priceCents;
     this.category = productDetails.category;
+    this.portion = productDetails.portion;
   }
 
   getPrice() {
@@ -41,7 +45,7 @@ export async function loadProducts() {
 
     const productData = await response.json(); // Parse the JSON file
     products = productData.map((productDetails) => new Product(productDetails)); // Convert each product into an instance of Product
-    console.log('Products loaded:', products);
+    console.log('Products loaded');
   } catch (error) {
     console.error('Failed to load products:', error);
   }
@@ -78,11 +82,10 @@ export function openOverlay() {
   productContainers.forEach(container => {
     container.addEventListener('click', () => {
       const {productId} = container.dataset; // Get the id of the clicked container
-      console.log(productId)
-      
+      const addCartButton = document.querySelector('.overlay-add-to-cart');
+      addCartButton.dataset.productId = productId;
       // Get the product data based on the id
       const product = getProduct(productId);
-      console.log(product)
       // Update overlay content with the product data
       overlayTitle.innerHTML = product.name;
       overlayPrice.innerHTML = `<span translate="no">$</span>${product.getPrice()}`;
@@ -109,4 +112,39 @@ export function openOverlay() {
       document.body.style.overflow = '';
     }
   });
+  
+  const subtractBtn = document.querySelector('.overlay-subtract-quantity');
+  const addBtn = document.querySelector('.overlay-add-quantity');
+  const quantityDisplay = document.querySelector('.overlay-product-quantity');
+
+  // Initial quantity
+  let quantity = 1;
+
+  // Add event listeners
+  addBtn.addEventListener('click', () => {
+    quantity++; // Increase quantity
+    updateQuantityDisplay();
+  });
+
+  subtractBtn.addEventListener('click', () => {
+    if (quantity > 1) { // Prevent negative quantities
+      quantity--;
+    }
+    updateQuantityDisplay();
+  });
+
+  // Function to update the displayed quantity
+  function updateQuantityDisplay() {
+    quantityDisplay.textContent = quantity;
+  }
+
+  const addCartButton = document.querySelector('.overlay-add-to-cart');
+  addCartButton.addEventListener('click', () => {
+    const { productId } = addCartButton.dataset;
+    cart.addToCartOverlay(productId);
+    quantity = 1;
+    quantityDisplay.textContent = quantity;
+    updateCartQuantity();
+  });
+
 }
