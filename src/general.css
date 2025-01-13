@@ -58,13 +58,27 @@ header {
 .button-primary:focus {
   outline: none;
 }
-  
+
+.portion-button:active {
+  box-shadow: none;
+  transform: translateY(0px);
+}
+
+.portion-button.active {
+  box-shadow: 0 0 0 2px white, 0 0 0 4px var(--lightGray);
+}
+
 @media (min-width: 1024px) { /* Assuming lg breakpoint is at 1024px */
   .button-primary:hover {
     transform: translateY(-2px);
   }
 
   .button-primary:active {
+    transform: translateY(0px);
+  }
+
+  .portion-button:hover {
+    opacity: 0.9;
     transform: translateY(0px);
   }
 }

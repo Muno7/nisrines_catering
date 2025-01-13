@@ -84,6 +84,36 @@ export function renderAddedMessage(messageElement) {
     timeoutState.set(messageElement, timeoutId);
 }
 
+function renderPortionButtons(product) {
+  const checkProductCategory = (productCategory, targetCategories) => {
+    return targetCategories.includes(productCategory);
+  };
+  const targetedCategories = ["plat-du-jour", "soup", "salad"];
+  const portionDiv = document.querySelector(".portion-div");
+
+  if (checkProductCategory(product.category, targetedCategories)) {
+    portionDiv.classList.remove('hidden')
+    portionDiv.classList.add('flex')
+  } else {
+    portionDiv.classList.remove('flex')
+    portionDiv.classList.add('hidden')
+  }
+
+  const familyPortionButton = document.querySelector('.family-portion-button');
+  const singlePortionButton = document.querySelector('.single-portion-button');
+
+  familyPortionButton.addEventListener('click', () => {
+    document.getElementById('overlay-product-price').innerHTML = `<span translate="no">$</span>${formatCurrency(product.family)}`;
+    familyPortionButton.classList.add('active');
+    singlePortionButton.classList.remove('active');
+  });
+  singlePortionButton.addEventListener('click', () => { 
+    document.getElementById('overlay-product-price').innerHTML = `<span translate="no">$</span>${formatCurrency(product.single)}`;
+    singlePortionButton.classList.add('active');
+    familyPortionButton.classList.remove('active');
+  });
+}
+
 export function openOverlay() {
   const productContainers = document.querySelectorAll('.product-container');
   const overlay = document.getElementById('overlay');
@@ -100,16 +130,15 @@ export function openOverlay() {
       const {productId} = container.dataset; // Get the id of the clicked container
       const addCartButton = document.querySelector('.overlay-add-to-cart');
       addCartButton.dataset.productId = productId;
-      // Get the product data based on the id
       const product = getProduct(productId);
-      // Update overlay content with the product data
+
       overlayTitle.innerHTML = product.name;
       overlayPrice.innerHTML = `<span translate="no">$</span>${product.getPrice()}`;
       //overlayDescription.innerHTML = product.description;
       overlayImage.src = product.image;
 
       // Show the overlay
-
+      renderPortionButtons(product);
       overlay.classList.add('show');
       document.body.style.overflow = 'hidden';  // Prevent body scroll when overlay is open
     });
