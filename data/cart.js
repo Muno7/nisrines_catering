@@ -25,20 +25,7 @@ class Cart {
   #loadFromStorage() {
     this.cartItems = JSON.parse(
       localStorage.getItem(this.#localStorageKey)
-    ) || [
-      {
-        productId: "a340bfd3-ab33-4a7b-a674-99e316f7f5ef",
-        quantity: 1
-      },
-      {
-        productId: "19065253-0f98-4d61-8300-b262b316a3e7",
-        quantity: 2
-      },
-      {
-        productId: "da0c19b6-808a-4235-8acd-940877b07844",
-        quantity: 1
-      },
-    ];
+    ) || [];
   }
 
   _testHookLoadFromStorage() {
@@ -78,17 +65,22 @@ class Cart {
   }
 
   addToCartOverlay(productId) {
-    let productIdMatch = this.getCartItem(productId);
     const selectorElement = document.querySelector(
       `.overlay-product-quantity`
     );
     const quantity = Number(selectorElement.textContent);
+    const family = document.querySelector('.family-portion-button');
+    const portion = family.classList.contains('active') ? 'family' : 'single';
+    let productIdMatch = this.cartItems.find(
+      (item) => item.productId === productId && item.portion === portion
+    );
     if (productIdMatch) {
       productIdMatch.quantity += quantity;
     } else {
       this.cartItems.push({
         productId,
-        quantity: quantity
+        quantity: quantity,
+        portion: portion
       });
     }
     this.saveToStorage();
@@ -102,7 +94,8 @@ class Cart {
     } else {
       this.cartItems.push({
         productId,
-        quantity: quantity
+        quantity: quantity,
+        portion: 'single'
       });
     }
     this.saveToStorage();
