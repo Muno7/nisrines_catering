@@ -207,9 +207,8 @@
         <p class="text-center mt-8">&copy; 2024 Nisrine's Kitchen. All rights reserved.</p>
       </div>
     </footer>
-    <!-- Full-screen Overlay -->
+    <!-- Full-screen product Overlay -->
     <div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" id="overlay">
-      <!-- Product Card (responsive layout) -->
       <div class="relative bg-white rounded-xl shadow-lg w-[360px] h-[640px] md:w-[720px] md:h-[480px] flex flex-col md:flex-row overflow-y-auto md:overflow-hidden">
         <!-- Back Button -->
         <button id="closeOverlay" class="absolute top-4 left-4 z-10 bg-white rounded-full p-2 shadow-md lg:hover:bg-gray-100 transition-colors">
@@ -217,19 +216,15 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
         </button>
-        <!-- Image Container -->
         <div class="w-full md:w-1/2 h-[320px] md:h-full">
           <img id="overlay-product-image" src="" alt="" class="w-full h-full object-cover object-center">
         </div>
-        <!-- Product Details -->
         <div class="p-6 md:w-1/2 md:overflow-y-auto flex flex-col">
           <div class="space-y-4">
-            <!-- Product Title and Basic Info -->
             <div>
               <h1 id="overlay-product-title" class="text-2xl font-bold leading-tight"></h1>
             </div>
-
-            <!-- Price and Discount -->
+            <!-- Price and Portions -->
             <div class="flex items-center gap-4">
               <div class="flex items-center gap-2">
                 <span id="overlay-product-price" class="text-2xl font-bold"></span>
@@ -258,17 +253,19 @@
                 +
               </button>
             </div>
-            <!-- Description -->
             <div class="border-t border-gray-200 pt-4">
               <h2 class="font-bold text-l mb-1">Ingredients</h2>
               <p id="overlay-product-description" class="text-md">
-                
               </p>
             </div>
           </div>
-
           <div class="space-y-4 mt-4">
-            <!-- Add to Cart Button -->
+            <div class="overlay-added-to-cart flex gap-1 opacity-0 transition-all items-center text-sm text-customBrown">
+              <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" class="w-[16px] h-[16px] fill-current">
+                <path d="m12,0C5.383,0,0,5.383,0,12s5.383,12,12,12,12-5.383,12-12S18.617,0,12,0Zm-.091,15.419c-.387.387-.896.58-1.407.58s-1.025-.195-1.416-.585l-2.782-2.696,1.393-1.437,2.793,2.707,5.809-5.701,1.404,1.425-5.793,5.707Z"/>
+              </svg>
+              <span translate="no">Added</span>
+            </div>
             <button class="overlay-add-to-cart w-full button-primary">
               Add to Basket
             </button>

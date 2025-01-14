@@ -54,13 +54,13 @@ export let products = [];
 
 export async function loadProducts() {
   try {
-    const response = await fetch('./backend/products.json'); // Path to your JSON file
+    const response = await fetch('./backend/products.json');
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    const productData = await response.json(); // Parse the JSON file
-    products = productData.map((productDetails) => new Product(productDetails)); // Convert each product into an instance of Product
+    const productData = await response.json();
+    products = productData.map((productDetails) => new Product(productDetails));
     console.log('Products loaded');
   } catch (error) {
     console.error('Failed to load products:', error);
@@ -131,12 +131,11 @@ export function openOverlay() {
   const overlayPrice = document.getElementById('overlay-product-price');
   //const overlayDescription = document.getElementById('overlay-product-description');
   const overlayImage = document.getElementById('overlay-product-image');
-  
 
   // Open the overlay and populate data when a product container is clicked
   productContainers.forEach(container => {
     container.addEventListener('click', () => {
-      const {productId} = container.dataset; // Get the id of the clicked container
+      const {productId} = container.dataset;
       const addCartButton = document.querySelector('.overlay-add-to-cart');
       addCartButton.dataset.productId = productId;
       const product = getProduct(productId);
@@ -173,23 +172,19 @@ export function openOverlay() {
   const addBtn = document.querySelector('.overlay-add-quantity');
   const quantityDisplay = document.querySelector('.overlay-product-quantity');
 
-  // Initial quantity
   let quantity = 1;
-
-  // Add event listeners
   addBtn.addEventListener('click', () => {
-    quantity++; // Increase quantity
+    quantity++;
     updateQuantityDisplay();
   });
 
   subtractBtn.addEventListener('click', () => {
-    if (quantity > 1) { // Prevent negative quantities
+    if (quantity > 1) {
       quantity--;
     }
     updateQuantityDisplay();
   });
 
-  // Function to update the displayed quantity
   function updateQuantityDisplay() {
     quantityDisplay.textContent = quantity;
   }
@@ -198,6 +193,7 @@ export function openOverlay() {
   addCartButton.addEventListener('click', () => {
     const { productId } = addCartButton.dataset;
     cart.addToCartOverlay(productId);
+    renderAddedMessage(document.querySelector('.overlay-added-to-cart'));
     quantity = 1;
     quantityDisplay.textContent = quantity;
     updateCartQuantity();
