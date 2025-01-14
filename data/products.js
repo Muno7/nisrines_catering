@@ -114,6 +114,15 @@ function renderPortionButtons(product) {
   });
 }
 
+function updatePortionButtons() {
+  const familyPortionButton = document.querySelector('.family-portion-button');
+  const singlePortionButton = document.querySelector('.single-portion-button');
+
+  familyPortionButton.classList.remove('active');
+  singlePortionButton.classList.add('active');
+  
+}
+
 export function openOverlay() {
   const productContainers = document.querySelectorAll('.product-container');
   const overlay = document.getElementById('overlay');
@@ -147,6 +156,7 @@ export function openOverlay() {
   // Close the overlay when the close button is clicked
   closeOverlayButton.addEventListener('click', () => {
     overlay.classList.remove('show');
+    updatePortionButtons();
     document.body.style.overflow = '';  // Re-enable body scroll
   });
 
@@ -154,6 +164,7 @@ export function openOverlay() {
   overlay.addEventListener('click', (event) => {
     if (event.target === overlay) {
       overlay.classList.remove('show');
+      updatePortionButtons();
       document.body.style.overflow = '';
     }
   });
