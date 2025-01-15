@@ -79,59 +79,59 @@
   {
     "id": "26bae67c-22bf-4e37-ac6b-137706afab3d",
     "name": "Fattoush",
-    "priceCents": 350,
+    "price": { "single": 350, "family": 1000 },
     "image": "images/salad-1.jpg",
     "category": "salad"
   },
   {
     "id": "9e16a290-f2fd-40dc-ab7f-02c9da8bce6b",
     "name": "Tabbouli",
-    "priceCents": 350,
+    "price": { "single": 350, "family": 1000 },
     "image": "images/salad-2.jpg",
     "category": "salad"
   },
   {
     "id": "6e9a2bf8-eb8b-479e-84e9-28190b4f3315",
     "name": "Crab Salad",
-    "priceCents": 600,
+    "price": { "single": 600, "family": 1500 },
     "image": "images/salad-3.jpg",
     "category": "salad"
   },
   {
     "id": "70baca8f-e295-4285-9b75-3ff6b66b1409",
     "name": "Chicken Caesar Salad",
-    "priceCents": 650,
+    "price": { "single": 650, "family": 1600 },
     "image": "images/salad-4.jpg",
     "category": "salad"
   },
   {
     "id": "3adb7bf3-6a5e-41f0-b237-b17f77ad73a7",
     "name": "Caesar Salad",
-    "priceCents": 500,
+    "price": { "single": 500, "family": 1300 },
     "image": "images/salad-5.jpg",
     "category": "salad"
   },
   {
     "id": "bcf531f3-7b56-4d45-9bbb-5b086e02f97c",
     "name": "Strawberry Chicken Salad",
-    "priceCents": 750,
+    "price": { "single": 750, "family": 1900 },
     "image": "images/salad-6.jpg",
     "category": "salad"
   },
   {
     "id": "71471f9a-b469-4cb7-a814-36c0ae29ab4d",
     "name": "Tuna Pasta Salad",
-    "priceCents": 650,
+    "price": { "single": 650, "family": 1700 },
     "image": "images/salad-7.jpg",
     "category": "salad"
   },
   {
     "id": "b2016f4e-2518-4c60-a9dc-e23eea741546",
     "name": "Beetroot Rocca Salad",
-    "priceCents": 650,
+    "price": { "single": 650, "family": 1700 },
     "image": "images/salad-8.jpg",
     "category": "salad"
-  },
+  },  
   {
     "id": "92f18224-6bae-45a2-9d48-cd71bdbf25da",
     "name": "Marinated Chicken Served with Wedges and Veggies",

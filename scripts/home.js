@@ -3,6 +3,8 @@ import { renderAddedMessage } from "../data/products.js";
 import { openOverlay } from "../data/products.js";
 import { cart } from "../data/cart.js";
 import { updateCartQuantity } from "../data/cart.js";
+import { favorite } from "../data/favorites.js";
+import { getCheckedStatus } from "../data/favorites.js";
 
 async function loadHomePage() {
   try {
@@ -19,15 +21,15 @@ function renderPopularMealsGrid() {
   const container = document.querySelector('.products-container');
   products.forEach(product => {
     const {id, name, image, category} = product;
-    if (category !== "star-of-the-week") {
+    if (category !== "plat-du-jour") {
       return;
     }
+    const checked = getCheckedStatus(id) ? 'checked' : '';
     const productCard = `
     <div class="product-container w-[12rem] relative flex flex-col gap-2 shadow-[0_0_10px_rgba(0,0,0,0.1)] p-4 rounded-[10px] " data-product-id="${id}" >
       <img class="w-[10rem] h-[10rem] object-cover rounded-[10px]" src="${image}" alt="">
-      <button class="">
-        <label class="product-heart-button absolute bg-white rounded-full p-[7px] top-6 right-6 cursor-pointer text-[8px] select-none transition duration-100">
-          <input class="absolute opacity-0 cursor-pointer h-0 w-0"  type="checkbox" />
+        <label data-product-id="${id}" class="js-add-to-favorite-button product-heart-button absolute bg-white rounded-full p-[7px] top-6 right-6 cursor-pointer text-[8px] select-none transition duration-100">
+          <input class="absolute opacity-0 cursor-pointer h-0 w-0" type="checkbox" ${checked} />
           <div class="heart-checkmark">
             <svg viewBox="0 0 256 256">
               <rect fill="none" height="256" width="256"></rect>
@@ -39,10 +41,9 @@ function renderPopularMealsGrid() {
               ></path>
             </svg>
           </div>
-        </label>    
-      </button> 
+        </label>
       <div class="flex flex-col gap-2">
-        <p class="product-name-js text-xl font-bold h-[3.125rem] line-clamp-2 text-wrap">${name}</p>
+        <p class="product-name-js text-xl font-bold h-[3.4rem] line-clamp-2 text-wrap">${name}</p>
         <div class="flex items-center gap-2">
           <p class="price-js"><span translate="no">$</span>${product.getPrice()}</p>
           <div class="js-added-to-cart-${id} flex gap-1 opacity-0 transition-all items-center text-sm text-customBrown">
@@ -74,6 +75,16 @@ function renderPopularMealsGrid() {
         `.js-added-to-cart-${productId}`
         );
         renderAddedMessage(messageElement);
+    });
+  });
+  const addToFavoriteButtonElement = document.querySelectorAll(".js-add-to-favorite-button");
+  addToFavoriteButtonElement.forEach((button) => {
+    button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        if (event.target.tagName !== 'INPUT') return;
+        const { productId } = button.dataset;
+        favorite.addToFavorite(productId);
+        console.log('Favorite items after update:', favorite.favoriteItems);
     });
   });
 }
