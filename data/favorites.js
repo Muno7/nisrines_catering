@@ -87,8 +87,16 @@ class Favorite {
   }
 }
 
-export function getCheckedStatus(productId) {
-  return favorite.favoriteItems.some(item => item.productId === productId) ? true : false;
+export function addToFavoriteEventListeners(buttonElement) {
+  buttonElement.forEach((button) => {
+    button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        if (event.target.tagName !== 'INPUT') return;
+        const { productId } = button.dataset;
+        favorite.addToFavorite(productId);
+        console.log('Favorite items after update:', favorite.favoriteItems);
+    });
+  });
 }
 
 export let favorite = new Favorite("favorite");

@@ -119,6 +119,37 @@ export function updateCartQuantity() {
   document.querySelector(".js-cart-quantity").innerHTML = totalQuantity;
 }
 
+let timeoutState = new Map();
+export function renderAddedMessage(messageElement) {
+    if (timeoutState.has(messageElement)) {
+        clearTimeout(timeoutState.get(messageElement));
+    }
+    messageElement.classList.add("opacity-1");
+    messageElement.classList.remove("opacity-0");
+
+    const timeoutId = setTimeout(() => {
+        messageElement.classList.remove("opacity-1");
+        messageElement.classList.add("opacity-0");
+        timeoutState.delete(messageElement);
+    }, 1000);
+
+    timeoutState.set(messageElement, timeoutId);
+}
+
+export function addToCartEventListeners(buttonElement) {
+  buttonElement.forEach((button) => {
+    button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const { productId } = button.dataset;
+        cart.addToCartCard(productId);
+        updateCartQuantity();
+        const messageElement = document.querySelector(
+        `.js-added-to-cart-${productId}`
+        );
+        renderAddedMessage(messageElement);
+    });
+  });
+}
 
 
 export let cart = new Cart("cart");
