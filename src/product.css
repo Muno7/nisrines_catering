@@ -7,8 +7,6 @@
 .heart-checkmark {
     top: 0;
     left: 0;
-    height: 2em;
-    width: 2em;
     transition: 100ms;
     animation: dislike_effect 400ms ease;
 }

@@ -172,9 +172,9 @@ export function productCardHTML(product) {
   const productCard = `
   <div class="product-container w-[12rem] relative flex flex-col gap-2 shadow-[0_0_10px_rgba(0,0,0,0.15)] p-4 rounded-[10px]" data-product-id="${id}">
     <img class="w-[10rem] h-[10rem] object-cover rounded-[10px]" src="${image}" alt="">
-      <label data-product-id="${id}" class="js-add-to-favorite-button product-heart-button absolute bg-white rounded-full p-[7px] top-6 right-6 cursor-pointer text-[8px] select-none transition duration-100">
+      <label data-product-id="${id}" class="js-add-to-favorite-button shadow-sm product-heart-button absolute bg-white rounded-full p-[7px] top-6 right-6 cursor-pointer text-[8px] select-none transition duration-100">
         <input class="absolute opacity-0 cursor-pointer h-0 w-0"  type="checkbox" ${checked}/>
-        <div class="heart-checkmark">
+        <div class="heart-checkmark h-[16px] w-[16px]">
           <svg viewBox="0 0 256 256">
             <rect fill="none" height="256" width="256"></rect>
             <path
