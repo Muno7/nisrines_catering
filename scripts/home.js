@@ -1,4 +1,4 @@
-import { products, loadProducts, productCardHTML, openOverlay} from "../data/products.js";
+import { products, loadProducts, productCardHTML, renderProductOverlay } from "../data/products.js";
 import { updateCartQuantity, addToCartEventListeners } from "../data/cart.js";
 import { addToFavoriteEventListeners } from "../data/favorites.js";
 
@@ -9,7 +9,7 @@ async function loadHomePage() {
     console.log('unexpected error')
   }
   renderPopularMealsGrid();
-  openOverlay();
+  renderProductOverlay();
 }
 
 function renderPopularMealsGrid() {

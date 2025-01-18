@@ -1,5 +1,5 @@
 import { formatCurrency } from "../scripts/utils/money.js";
-import { cart, updateCartQuantity } from "./cart.js";
+import { cart, updateCartQuantity, renderAddedMessage } from "./cart.js";
 import { favorite } from "./favorites.js";
 
 export function getProduct(productId) {
@@ -49,37 +49,90 @@ export class Product {
   };
 }
 
-function renderPortionButtons(product) {
-  const checkProductCategory = (productCategory, targetCategories) => {
-    return targetCategories.includes(productCategory);
-  };
-  const targetedCategories = ["plat-du-jour", "soup", "salad"];
-  const portionDiv = document.querySelector(".portion-div");
+export function renderProductOverlay() {
+  const overlay = document.getElementById('overlay');
+  const overlayTitle = document.getElementById('overlay-product-title');
+  const overlayPrice = document.getElementById('overlay-product-price');
+  const overlayHeartInput = document.getElementById('heart-input');
+  const overlayImage = document.getElementById('overlay-product-image');
 
-  if (checkProductCategory(product.category, targetedCategories)) {
-    portionDiv.classList.remove('hidden')
-    portionDiv.classList.add('flex')
-  } else {
-    portionDiv.classList.remove('flex')
-    portionDiv.classList.add('hidden')
+  function attachOverlayOpenHandlers() {
+    const productContainers = document.querySelectorAll('.product-container');
+
+    productContainers.forEach((container) => {
+      container.addEventListener('click', () => {
+        openProductOverlay(container);
+      });
+    });
+  }
+  
+  function openProductOverlay(container) {
+    const { productId } = container.dataset;
+    const product = getProduct(productId);
+    
+    // Set overlay content
+    overlayTitle.textContent = product.name;
+    overlayPrice.innerHTML = `<span translate="no">$</span>${product.getPrice()}`;
+    overlayImage.src = product.image;
+    overlayHeartInput.checked = favorite.favoriteItems.some((item) => item.productId === productId);
+    
+    // Update Add to Cart button
+    const addCartButton = document.querySelector('.overlay-add-to-cart');
+    addCartButton.dataset.productId = productId;
+    
+    renderPortionButtons(product);
+    
+    // Show overlay
+    overlay.classList.add('show');
+    document.body.style.overflow = 'hidden'; // Prevent body scroll
   }
 
-  const familyPortionButton = document.querySelector('.family-portion-button');
-  const singlePortionButton = document.querySelector('.single-portion-button');
+  function renderPortionButtons(product) {
+    const checkProductCategory = (productCategory, targetCategories) => {
+      return targetCategories.includes(productCategory);
+    };
+    const targetedCategories = ["plat-du-jour", "soup", "salad"];
+    const portionDiv = document.querySelector(".portion-div");
+  
+    if (checkProductCategory(product.category, targetedCategories)) {
+      portionDiv.classList.remove('hidden')
+      portionDiv.classList.add('flex')
+    } else {
+      portionDiv.classList.remove('flex')
+      portionDiv.classList.add('hidden')
+    }
+  
+    const familyPortionButton = document.querySelector('.family-portion-button');
+    const singlePortionButton = document.querySelector('.single-portion-button');
+  
+    familyPortionButton.addEventListener('click', () => {
+      document.getElementById('overlay-product-price').innerHTML = `<span translate="no">$</span>${formatCurrency(product.family)}`;
+      familyPortionButton.classList.add('active');
+      singlePortionButton.classList.remove('active');
+    });
+    singlePortionButton.addEventListener('click', () => { 
+      document.getElementById('overlay-product-price').innerHTML = `<span translate="no">$</span>${formatCurrency(product.single)}`;
+      singlePortionButton.classList.add('active');
+      familyPortionButton.classList.remove('active');
+    });
+  }
+  
+  function attachOverlayCloseHandlers() {
+    const closeOverlayButton = document.getElementById('closeOverlay');
+    
+    closeOverlayButton.addEventListener('click', closeOverlay);
+    overlay.addEventListener('click', (event) => {
+      if (event.target === overlay) closeOverlay();
+    });
+  }
 
-  familyPortionButton.addEventListener('click', () => {
-    document.getElementById('overlay-product-price').innerHTML = `<span translate="no">$</span>${formatCurrency(product.family)}`;
-    familyPortionButton.classList.add('active');
-    singlePortionButton.classList.remove('active');
-  });
-  singlePortionButton.addEventListener('click', () => { 
-    document.getElementById('overlay-product-price').innerHTML = `<span translate="no">$</span>${formatCurrency(product.single)}`;
-    singlePortionButton.classList.add('active');
-    familyPortionButton.classList.remove('active');
-  });
-}
+  function closeOverlay() {
+    overlay.classList.remove('show');
+    updatePortionButtons();
+    document.body.style.overflow = ''; // Re-enable body scroll
+  }
 
-function updatePortionButtons() {
+  function updatePortionButtons() {
   const familyPortionButton = document.querySelector('.family-portion-button');
   const singlePortionButton = document.querySelector('.single-portion-button');
 
@@ -88,83 +141,59 @@ function updatePortionButtons() {
   
 }
 
-export function openOverlay() {
-  const productContainers = document.querySelectorAll('.product-container');
-  const overlay = document.getElementById('overlay');
-  const closeOverlayButton = document.getElementById('closeOverlay');
-  const overlayTitle = document.getElementById('overlay-product-title');
-  const overlayPrice = document.getElementById('overlay-product-price');
-  //const overlayDescription = document.getElementById('overlay-product-description');
-  const overlayImage = document.getElementById('overlay-product-image');
+  function attachQuantityHandlers() {
+    const subtractBtn = document.querySelector('.overlay-subtract-quantity');
+    const addBtn = document.querySelector('.overlay-add-quantity');
+    const quantityDisplay = document.querySelector('.overlay-product-quantity');
+    let quantity = 1;
 
-  // Open the overlay and populate data when a product container is clicked
-  productContainers.forEach(container => {
-    container.addEventListener('click', () => {
-      const {productId} = container.dataset;
-      const addCartButton = document.querySelector('.overlay-add-to-cart');
-      addCartButton.dataset.productId = productId;
-      const product = getProduct(productId);
+    function updateQuantityDisplay() {
+      quantityDisplay.textContent = quantity;
+    }
 
-      overlayTitle.innerHTML = product.name;
-      overlayPrice.innerHTML = `<span translate="no">$</span>${product.getPrice()}`;
-      //overlayDescription.innerHTML = product.description;
-      overlayImage.src = product.image;
-
-      // Show the overlay
-      renderPortionButtons(product);
-      overlay.classList.add('show');
-      document.body.style.overflow = 'hidden';  // Prevent body scroll when overlay is open
+    addBtn.addEventListener('click', () => {
+      quantity++;
+      updateQuantityDisplay();
     });
-  });
 
-  // Close the overlay when the close button is clicked
-  closeOverlayButton.addEventListener('click', () => {
-    overlay.classList.remove('show');
-    updatePortionButtons();
-    document.body.style.overflow = '';  // Re-enable body scroll
-  });
+    subtractBtn.addEventListener('click', () => {
+      if (quantity > 1) quantity--;
+      updateQuantityDisplay();
+    });
 
-  // close the overlay if clicked outside the content
-  overlay.addEventListener('click', (event) => {
-    if (event.target === overlay) {
-      overlay.classList.remove('show');
-      updatePortionButtons();
-      document.body.style.overflow = '';
-    }
-  });
-  
-  const subtractBtn = document.querySelector('.overlay-subtract-quantity');
-  const addBtn = document.querySelector('.overlay-add-quantity');
-  const quantityDisplay = document.querySelector('.overlay-product-quantity');
-
-  let quantity = 1;
-  addBtn.addEventListener('click', () => {
-    quantity++;
-    updateQuantityDisplay();
-  });
-
-  subtractBtn.addEventListener('click', () => {
-    if (quantity > 1) {
-      quantity--;
-    }
-    updateQuantityDisplay();
-  });
-
-  function updateQuantityDisplay() {
-    quantityDisplay.textContent = quantity;
+    const addCartButton = document.querySelector('.overlay-add-to-cart');
+    addCartButton.addEventListener('click', () => {
+      cart.addToCartOverlay(addCartButton.dataset.productId);
+      renderAddedMessage(document.querySelector('.overlay-added-to-cart'));
+      quantity = 1; // Reset quantity
+      updateQuantityDisplay();
+      updateCartQuantity();
+    });
   }
 
-  const addCartButton = document.querySelector('.overlay-add-to-cart');
-  addCartButton.addEventListener('click', () => {
-    const { productId } = addCartButton.dataset;
-    cart.addToCartOverlay(productId);
-    renderAddedMessage(document.querySelector('.overlay-added-to-cart'));
-    quantity = 1;
-    quantityDisplay.textContent = quantity;
-    updateCartQuantity();
-  });
+  function attachFavoriteHandler() {
+    const addToFavoriteButton = document.querySelector('.overlay-add-to-favorite');
 
+    addToFavoriteButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      if (event.target.tagName !== 'INPUT') return;
+      const { productId } = document.querySelector('.overlay-add-to-cart').dataset;
+      favorite.addToFavorite(productId);
+      /* Sync heart status for both overlay and prodcut card */
+      const hearInput = document.querySelector(`.js-heart-input-${productId}`)
+      const checked = favorite.favoriteItems.some(item => item.productId === productId) ? true : false;
+      hearInput.checked = checked
+      console.log('Favorite items after update:', favorite.favoriteItems);
+    });
+  }
+
+  // Initialize overlay functionality
+  attachOverlayOpenHandlers();
+  attachOverlayCloseHandlers();
+  attachQuantityHandlers();
+  attachFavoriteHandler();
 }
+
 
 export function productCardHTML(product) {
   const {id, name, image} = product;
@@ -173,7 +202,7 @@ export function productCardHTML(product) {
   <div class="product-container w-[12rem] relative flex flex-col gap-2 shadow-[0_0_10px_rgba(0,0,0,0.15)] p-4 rounded-[10px]" data-product-id="${id}">
     <img class="w-[10rem] h-[10rem] object-cover rounded-[10px]" src="${image}" alt="">
       <label data-product-id="${id}" class="js-add-to-favorite-button shadow-sm product-heart-button absolute bg-white rounded-full p-[7px] top-6 right-6 cursor-pointer text-[8px] select-none transition duration-100">
-        <input class="absolute opacity-0 cursor-pointer h-0 w-0"  type="checkbox" ${checked}/>
+        <input class="js-heart-input-${id} absolute opacity-0 cursor-pointer h-0 w-0" type="checkbox" ${checked}/>
         <div class="heart-checkmark h-[16px] w-[16px]">
           <svg viewBox="0 0 256 256">
             <rect fill="none" height="256" width="256"></rect>
