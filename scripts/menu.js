@@ -47,7 +47,7 @@ function makeMenuLinksActive() {
             link.scrollIntoView({
               behavior: "smooth",
               block: "nearest",
-              inline: "end",
+              inline: "center",
             });
           } else {
             link.classList.remove("active");
