@@ -12,10 +12,10 @@ class Cart {
     this.saveToStorage();
   }
 
-  getCartItem(productId) {
+  getCartItem(productId, portion) {
     let matchProduct;
     this.cartItems.forEach((product) => {
-      if (product.productId === productId) {
+      if (product.productId === productId && product.portion === portion) {
         matchProduct = product;
       }
     });
@@ -44,8 +44,8 @@ class Cart {
     return totalQuantity;
   }
 
-  updateQuantity(productId, newQuantity) {
-    let matchProduct = this.getCartItem(productId);
+  updateQuantity(productId, portion, newQuantity) {
+    let matchProduct = this.getCartItem(productId, portion);
     matchProduct.quantity = newQuantity;
     this.saveToStorage();
   }
@@ -71,9 +71,7 @@ class Cart {
     const quantity = Number(selectorElement.textContent);
     const family = document.querySelector('.family-portion-button');
     const portion = family.classList.contains('active') ? 'family' : 'single';
-    let productIdMatch = this.cartItems.find(
-      (item) => item.productId === productId && item.portion === portion
-    );
+    let productIdMatch = this.getCartItem(productId, portion)
     if (productIdMatch) {
       productIdMatch.quantity += quantity;
     } else {
@@ -87,7 +85,9 @@ class Cart {
   }
 
   addToCartCard(productId) {
-    let productIdMatch = this.getCartItem(productId);
+    let productIdMatch = this.cartItems.find(
+      (item) => item.productId === productId
+    );
     const quantity = 1;
     if (productIdMatch) {
       productIdMatch.quantity += quantity;

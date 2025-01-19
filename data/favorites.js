@@ -38,8 +38,8 @@ class Favorite {
 
   calculateFavoriteQuantity() {
     let totalQuantity = 0;
-    this.favoriteItems.forEach((item) => {
-      totalQuantity += item.quantity;
+    this.favoriteItems.forEach(() => {
+      totalQuantity += 1;
     });
     return totalQuantity;
   }
@@ -85,6 +85,11 @@ class Favorite {
       }
     });
   }
+}
+
+export function updateFavoriteQuantity() {
+  let totalQuantity = favorite.calculateFavoriteQuantity();
+  document.querySelector(".js-favorite-quantity").innerHTML = totalQuantity;
 }
 
 export function addToFavoriteEventListeners(buttonElement) {
