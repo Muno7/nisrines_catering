@@ -76,13 +76,21 @@
     </div>
   </header>
   <main class="">
-    <section class="relative h-screen bg-cover bg-center" style="background-image: url('your-image.jpg');">
+    <div class="fixed inset-0 -z-10">
+      <div class="js-slideshow-container relative h-screen flex">
+        <img src="/images/nisrine.jpg" alt="Kitchen scene 1" class="w-full h-full object-cover shrink-0">
+        <img src="/images/kitchen_col_2.jpg" alt="Kitchen scene 2" class="w-full h-full object-cover shrink-0">
+        <img src="/images/salad-6.jpg" alt="Kitchen scene 3" class="w-full h-full object-cover shrink-0">
+        <img src="/images/nisrine.jpg" alt="Kitchen scene 1" class="w-full h-full object-cover shrink-0">
+      </div>
+    </div>
+    <section class="relative h-screen overflow-hidden bg-transparent">
       <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-center text-white px-4">
         <h1 class="text-4xl md:text-6xl font-bold">Welcome to Nisrine's Kitchen</h1>
         <p class="mt-4 text-lg md:text-2xl">All made with love from our kitchen to your table</p>
       </div>
-    </section>  
-    <section class="flex flex-col gap-8 relative h-auto px-4 py-6 sm:px-8 sm:py-10 sm:items-center">
+    </section>
+    <section class="flex flex-col gap-8 relative h-auto px-4 py-6 sm:px-8 sm:py-10 sm:items-center bg-white">
       <div class="flex flex-col gap-4 sm:items-center">
         <h1 class="text-4xl font-bold sm:text-center">What we offer</h1>
         <p class="text-2xl sm:text-center">Home cooked meals made from scratch, delivered to your door</p>
@@ -125,7 +133,7 @@
       </div>
     </section>
     <!-- Popular meals section -->
-    <section class="flex flex-col gap-8 relative h-auto py-6 sm:px-8 sm:py-10">
+    <section class="flex flex-col gap-8 relative h-auto py-6 sm:px-8 sm:py-10 bg-white">
       <h1 class="text-4xl font-bold px-4">Plat du Jour</h1>
       <div class="products-wrapper overflow-x-auto whitespace-nowrap relative overflow-visible">
         <div class="products-container inline-flex space-x-2 p-4"> 
