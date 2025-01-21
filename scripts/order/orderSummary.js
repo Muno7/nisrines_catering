@@ -80,11 +80,11 @@ export function renderOrderSummary() {
                         <div class="flex gap-2">
                           <p class="price-js text-lg font-semibold">$${price}</p>
                           <div class="flex items-center rounded-full border-2">
-                            <button data-portion="${portion}" data-product-id="${productId}" class="subtract-quantity-js rounded-none w-6 h-6 flex items-center justify-center">
+                            <button data-portion="${portion}" data-product-id="${productId}" class="subtract-quantity-js rounded-full lg:hover:bg-gray-200 transition-all active:bg-gray-300 w-6 h-6 flex items-center justify-center">
                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current w-[12px] h-[12px]"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
                             </button>
                             <span class="item-quantity-js-${portion}-${productId} text-l font-medium w-8 text-center">${quantity}</span>
-                            <button data-portion="${portion}" data-product-id="${productId}" class="add-quantity-js add-quantity-js-${productId} rounded-none w-6 h-6 flex items-center justify-center text-l">
+                            <button data-portion="${portion}" data-product-id="${productId}" class="add-quantity-js rounded-full lg:hover:bg-gray-200 transition-all active:bg-gray-300 w-6 h-6 flex items-center justify-center text-l">
                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current w-[12px] h-[12px]"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
                             </button>
                           </div>
