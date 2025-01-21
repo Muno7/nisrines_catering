@@ -141,13 +141,18 @@ export function renderProductOverlay() {
   
 }
 
-  function attachQuantityHandlers() {
-    const subtractBtn = document.querySelector('.overlay-subtract-quantity');
-    const addBtn = document.querySelector('.overlay-add-quantity');
-    const quantityDisplay = document.querySelector('.overlay-product-quantity');
-    let quantity = 1;
+function attachQuantityHandlers() {
+  const subtractBtn = document.querySelector('.overlay-subtract-quantity');
+  const addBtn = document.querySelector('.overlay-add-quantity');
+  const quantityDisplay = document.querySelector('.overlay-product-quantity');
+  let quantity = 1;
 
     function updateQuantityDisplay() {
+      quantityDisplay.textContent = quantity;
+    }
+
+    function resetQuantity() {
+      quantity = 1
       quantityDisplay.textContent = quantity;
     }
 
@@ -168,6 +173,12 @@ export function renderProductOverlay() {
       quantity = 1; // Reset quantity
       updateQuantityDisplay();
       updateCartQuantity();
+    });
+
+    const closeOverlayButton = document.getElementById('closeOverlay');
+    closeOverlayButton.addEventListener('click', closeOverlay);
+    overlay.addEventListener('click', (event) => {
+      if (event.target === overlay) resetQuantity();;
     });
   }
 
