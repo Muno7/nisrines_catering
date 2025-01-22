@@ -38,14 +38,15 @@ function setPortionLabel (portion) {
 
 function cartEmptyHTML() {
   return `
-  <div class="js-cart-summary cart-summary">
-      <div data-testid="empty-cart-message">
-        Your cart is empty.
+  <div class="js-cart-summary cart-summary flex flex-col justify-center items-center gap-4">
+      <img class="w-20 h-20" src="images/empty_basket.png">
+      <div data-testid="empty-cart-message" class="text-xl">
+        Your basket is empty!
       </div>
-      <a class="button-primary view-products-link" href="amazon.html" data-testid="view-products-link">
+      <a class="button-primary view-products-link" href="menu.html" data-testid="view-products-link">
         View products
       </a>
-    </div>`
+  </div>`
 }
 
 export function renderOrderSummary() {
