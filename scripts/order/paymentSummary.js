@@ -9,11 +9,11 @@ export function updateTotalPrice() {
     subtotal += product.getPrice(cartItem.portion) * cartItem.quantity;
   });
   const subtotalEl = document.getElementById('subtotal');
-  subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+  subtotalEl.innerHTML = `<span translate="no">$</span>${subtotal.toFixed(2)}`;
   const fee = parseInt(document.getElementById('delivery-fee').textContent.slice(1)) || 0;
   const total = subtotal + fee;
   const totalEl = document.getElementById('total');
-  totalEl.textContent = `$${total.toFixed(2)}`;
+  totalEl.innerHTML = `<span translate="no">$</span>${total.toFixed(2)}`;
 }
 
 export function renderPaymentSummary() {
@@ -52,14 +52,14 @@ export function renderPaymentSummary() {
 
     if (!isDelivery) {
       deliveryAreaSelect.value = '';
-      deliveryFee.textContent = '$0.00';
+      deliveryFee.innerHTML = '<span translate="no">$</span>0.00';
       updateTotalPrice();
     }
   }
 
   deliveryAreaSelect.addEventListener('change', function() {
     const fee = parseInt(this.value) || 0;
-    deliveryFee.textContent = `$${formatCurrency(fee)}`;
+    deliveryFee.innerHTML = `<span translate="no">$</span>${formatCurrency(fee)}`;
     updateTotalPrice();
   });
 
