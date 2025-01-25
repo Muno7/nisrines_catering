@@ -23,7 +23,6 @@ function makeMenuLinksActive() {
     });
   });
   const sections = document.querySelectorAll("section");
-  const navLinks = document.querySelectorAll(".menu-links a");
   const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -77,60 +76,38 @@ function renderMenuGrid() {
     "desserts",
   ];
 
-  const skeletonLoaderHTML = `
-    <div class="product-container w-[12rem] h-[306px] relative flex flex-col gap-2 shadow-[0_0_10px_rgba(0,0,0,0.15)] p-4 rounded-[10px] animate-pulse">
-      <div class="w-[10rem] h-[10rem] bg-gray-300 rounded-[10px]"></div>
-      <div class="flex flex-col gap-2">
-        <div class="bg-gray-300 h-6 w-3/4 rounded"></div>
-        <div class="bg-gray-300 h-4 w-1/2 rounded"></div>
-      </div>
-    </div>
-  `;
-
-  function addSkeletonLoaders(containerSelector, count) {
-    const container = document.querySelector(containerSelector);
-    if (container) {
-      container.innerHTML = '';
-      for (let i = 0; i < count; i++) {
-        container.innerHTML += skeletonLoaderHTML;
-      }
+  let productsGroupedByCategory = {};
+  products.forEach(product => {
+    const { category } = product;
+    if (!productsGroupedByCategory[category]) {
+      productsGroupedByCategory[category] = [];
     }
-  }
-
-  categories.forEach(category => {
-    addSkeletonLoaders(`.${category}-container`, 6);
+    productsGroupedByCategory[category].push(product);
   });
 
-  setTimeout(() => {
-    let productsGroupedByCategory = [];
-    products.forEach(product => {
-      const { category } = product;
-      if (!productsGroupedByCategory[category]) {
-        productsGroupedByCategory[category] = [];
-      }
-      productsGroupedByCategory[category].push(product);
-    });
+  categories.forEach(category => {
+    const categoriesContainer = document.querySelector(`.${category}-container`);
+    if (!categoriesContainer) return;
 
-    categories.forEach(category => {
-      const categoriesContainer = document.querySelector(`.${category}-container`);
-      if (!productsGroupedByCategory[category]) {
-        console.log(`No products found for category: ${category}`);
-        return;
-      }
-      const categoryProducts = productsGroupedByCategory[category];
+    if (!productsGroupedByCategory[category]) {
+      console.log(`No products found for category: ${category}`);
       categoriesContainer.innerHTML = '';
-      categoryProducts.forEach(product => {
-        const productCard = productCardHTML(product);
-        categoriesContainer.innerHTML += productCard;
-      });
-    });
+      return;
+    }
 
-    const addToCartButtonElement = document.querySelectorAll(".js-add-to-cart-button");
-    addToCartEventListeners(addToCartButtonElement);
+    const categoryProducts = productsGroupedByCategory[category];
+    categoriesContainer.innerHTML = categoryProducts
+      .map(product => productCardHTML(product))
+      .join('');
+  });
 
-    const addToFavoriteButtonElement = document.querySelectorAll(".js-add-to-favorite-button");
-    addToFavoriteEventListeners(addToFavoriteButtonElement);
-  }, 500);
+  // Add event listeners after rendering
+  const addToCartButtonElement = document.querySelectorAll(".js-add-to-cart-button");
+  addToCartEventListeners(addToCartButtonElement);
+
+  const addToFavoriteButtonElement = document.querySelectorAll(".js-add-to-favorite-button");
+  addToFavoriteEventListeners(addToFavoriteButtonElement);
 }
+
 
 loadMenuPage();
