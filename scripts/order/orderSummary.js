@@ -1,28 +1,7 @@
 import { getProduct } from "../../data/products.js";
 import { cart } from "../../data/cart.js";
 import { formatCurrency } from "../utils/money.js";
-
-
-function renewProductQuantity(productId) {
-  const subtractBtn = document.querySelector('.subtract-quantity-js');
-  const addBtn = document.querySelector('.add-quantity-js');
-  const quantityDisplay = document.querySelector('.product-quantity-js');
-  let quantity = 1;
-
-  function updateQuantityDisplay() {
-    quantityDisplay.textContent = quantity;
-  }
-
-  addBtn.addEventListener('click', () => {
-    quantity++;
-    updateQuantityDisplay();
-  });
-
-  subtractBtn.addEventListener('click', () => {
-    if (quantity > 1) quantity--;
-    updateQuantityDisplay();
-  });
-}
+import { updateTotalPrice } from "./paymentSummary.js";
 
 function setPortionLabel (portion) {
   return portion === 'single' ? `
@@ -67,10 +46,10 @@ export function renderOrderSummary() {
     } else if (product.priceCents) {
       price = formatCurrency(product.priceCents);
     }
-    let html = `<div class="js-cart-item-container js-cart-item-container-${productId} lg:p-4 relative bg-white shadow-[0_0_10px_rgba(0,0,0,0.1)] rounded-[10px] overflow-hidden">
+    let html = `<div class="js-cart-item-container js-cart-item-container-${productId} relative bg-white shadow-[0_0_10px_rgba(0,0,0,0.1)] rounded-[10px] overflow-hidden">
                   <div class="flex flex-row gap-2 p-2 lg:gap-4">
                     <img class="flex-shrink-0 w-[7rem] h-[7rem] lg:w-[10rem] lg:h-[10rem] object-cover rounded-[10px]" src=${image} alt="">
-                    <div class="flex flex-col justify-between gap-4 w-full lg:justify-normal lg:gap-8">
+                    <div class="flex flex-col justify-between gap-4 w-full lg:py-2 lg:gap-8">
                       <div class="flex flex-col gap-2 lg:gap-4">
                         <h3 class="product-name-js text-l md:text-xl font-bold">${name}</h3>
                         <label class="bg-lightGray text-white rounded-full max-w-[40px] h-full px-[2px] py-[3px] flex items-center justify-center text-xl">
@@ -112,6 +91,7 @@ export function renderOrderSummary() {
       const quantity = Number(quantitySpan.innerHTML) + 1;
       quantitySpan.innerHTML = quantity;
       cart.updateQuantity(productId, portion, quantity);
+      updateTotalPrice();
     });
   });
 
@@ -126,6 +106,7 @@ export function renderOrderSummary() {
       }
       quantitySpan.innerHTML = quantity;
       cart.updateQuantity(productId, portion, quantity);
+      updateTotalPrice();
     });
   });
 
@@ -135,7 +116,7 @@ export function renderOrderSummary() {
       const { productId } = link.dataset;
       cart.deleteItem(productId);
       renderOrderSummary();
-      /* renderPaymentSummary(); */
+      updateTotalPrice();
     });
   });
 

@@ -40,9 +40,9 @@ export class Product {
   }
 
   // Updated getPrice method to handle both scenarios
-  getPrice() {
+  getPrice(portion) {
     if (this.single && this.family) {
-      return formatCurrency(this.single);
+      return portion === 'single' ? formatCurrency(this.single) : formatCurrency(this.family);
     } else if (this.priceCents) {
       return formatCurrency(this.priceCents);
     }
@@ -72,7 +72,7 @@ export function renderProductOverlay() {
     
     // Set overlay content
     overlayTitle.textContent = product.name;
-    overlayPrice.innerHTML = `<span translate="no">$</span>${product.getPrice()}`;
+    overlayPrice.innerHTML = `<span translate="no">$</span>${product.getPrice('single')}`;
     overlayImage.src = product.image;
     overlayHeartInput.checked = favorite.favoriteItems.some((item) => item.productId === productId);
     
@@ -229,7 +229,7 @@ export function productCardHTML(product) {
     <div class="flex flex-col gap-2">
       <p class="product-name-js text-xl font-bold h-[3.4rem] line-clamp-2 text-wrap">${name}</p>
       <div class="flex items-center gap-2">
-        <p class="price-js"><span translate="no">$</span>${product.getPrice()}</p>
+        <p class="price-js"><span translate="no">$</span>${product.getPrice('single')}</p>
         <div class="js-added-to-cart-${id} flex gap-1 opacity-0 transition-all items-center text-sm text-customBrown">
           <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" class="w-[16px] h-[16px] fill-current">
             <path d="m12,0C5.383,0,0,5.383,0,12s5.383,12,12,12,12-5.383,12-12S18.617,0,12,0Zm-.091,15.419c-.387.387-.896.58-1.407.58s-1.025-.195-1.416-.585l-2.782-2.696,1.393-1.437,2.793,2.707,5.809-5.701,1.404,1.425-5.793,5.707Z"/>
