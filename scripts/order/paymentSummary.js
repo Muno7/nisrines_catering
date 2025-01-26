@@ -1,6 +1,7 @@
 import { cart } from '../../data/cart.js';
 import { getProduct } from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
+import { sendOrderConfirmationEmails } from './emailSender.js';
 
 export function updateTotalPrice() {
   let subtotal = 0;
@@ -10,10 +11,25 @@ export function updateTotalPrice() {
   });
   const subtotalEl = document.getElementById('subtotal');
   subtotalEl.innerHTML = `<span translate="no">$</span>${subtotal.toFixed(2)}`;
-  const fee = parseInt(document.getElementById('delivery-fee').textContent.slice(1)) || 0;
+  const fee = parseFloat(document.getElementById('delivery-fee').textContent.slice(1)) || 0;
   const total = subtotal + fee;
   const totalEl = document.getElementById('total');
   totalEl.innerHTML = `<span translate="no">$</span>${total.toFixed(2)}`;
+}
+
+function isValidPhoneNumber(phone) {
+  // Ensures the phone number:
+  // 1. Starts with a '+' 
+  // 2. Followed by 1-3 digit country code
+  // 3. Then the rest of the number with only digits
+  // 4. Total length between 10-15 digits (excluding '+')
+  const phoneRegex = /^\+[1-9]\d{1,2}[0-9]{8,13}$/;
+  return phoneRegex.test(phone);
+}
+
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
 }
 
 export function renderPaymentSummary() {
@@ -26,6 +42,7 @@ export function renderPaymentSummary() {
   const deliveryAreaSelect = document.getElementById('delivery-area');
   const placeOrderBtn = document.getElementById('place-order-btn');
   const fullNameInput = document.getElementById('full-name');
+  const emailInput = document.getElementById('email-address');
   const phoneNumberInput = document.getElementById('phone-number');
   const deliveryAddressInput = document.getElementById('delivery-address');
 
@@ -67,20 +84,56 @@ export function renderPaymentSummary() {
     e.preventDefault();
     const isDelivery = !deliveryAreaContainer.classList.contains('hidden');
     
-    // Validate required fields
-    if (!fullNameInput.value || !phoneNumberInput.value) {
-      alert('Please fill in all required fields');
+    // Validate full name
+    if (!fullNameInput.value.trim()) {
+      alert('Please enter your full name');
       return;
     }
 
-    if (isDelivery && (!deliveryAreaSelect.value || !deliveryAddressInput.value)) {
-      alert('Please fill in all delivery information');
+    // Validate email
+    if (!emailInput.value.trim() || !isValidEmail(emailInput.value)) {
+      alert('Please enter a valid email address');
       return;
     }
 
-    const fee = isDelivery ? parseInt(deliveryAreaSelect.value) || 0 : 0;
-    const total = updateTotalPrice(fee);
+    // Validate phone number
+    if (!phoneNumberInput.value.trim() || !isValidPhoneNumber(phoneNumberInput.value)) {
+      alert('Please enter a valid phone number.\n\nFormat: +[Country Code][Phone Number]\n\nExample:\n+12345678901\n+447911123456\n\nNotes:\n- Must start with a +\n- Country code is 1-3 digits\n- No spaces or dashes allowed');
+      return;
+    }
+
+    // Validate delivery specifics if delivery is selected
+    if (isDelivery) {
+      if (!deliveryAreaSelect.value) {
+        alert('Please select a delivery area');
+        return;
+      }
+
+      if (!deliveryAddressInput.value.trim()) {
+        alert('Please enter a delivery address');
+        return;
+      }
+    }
+
+    // Prepare order details
+    const customerAddress = isDelivery ? `<strong>Delivery Address: </strong><a href="https://maps.google.com/?q=${deliveryAddressInput.value}" style="color: #3C4147; text-decoration: underline;">${deliveryAddressInput.value}</a>` : '';
+    const fee = isDelivery ? parseFloat(formatCurrency(deliveryAreaSelect.value)) || 0 : 0;
+    updateTotalPrice();
+    const subtotal = parseFloat(document.getElementById('subtotal').textContent.slice(1));
+    const total = parseFloat(document.getElementById('total').textContent.slice(1));
+
+    // Send order confirmation emails
+    sendOrderConfirmationEmails({
+      customerName: fullNameInput.value,
+      customerContact: phoneNumberInput.value,
+      customerAddress: customerAddress,
+      customerEmail: emailInput.value,
+      deliveryFee: fee,
+      subtotal: subtotal,
+      totalPrice: total
+    });
   }
+
 
   pickupBtn.addEventListener('click', () => toggleDeliveryOption(false));
   deliveryBtn.addEventListener('click', () => toggleDeliveryOption(true));
