@@ -2,6 +2,7 @@ import { cart } from '../../data/cart.js';
 import { getProduct } from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
 import { sendOrderConfirmationEmails } from './emailSender.js';
+import { initializePhoneInput } from '../utils/phoneInput.js';
 
 export function updateTotalPrice() {
   let subtotal = 0;
@@ -17,13 +18,21 @@ export function updateTotalPrice() {
   totalEl.innerHTML = `<span translate="no">$</span>${total.toFixed(2)}`;
 }
 
+function showError(inputElement, errorMessage) {
+  const errorElement = document.getElementById(`${inputElement.id}-error`);
+  errorElement.textContent = errorMessage;
+  errorElement.classList.remove('hidden');
+  inputElement.classList.add('border-red-500');
+}
+
+function hideError(inputElement) {
+  const errorElement = document.getElementById(`${inputElement.id}-error`);
+  errorElement.classList.add('hidden');
+  inputElement.classList.remove('border-red-500');
+}
+
 function isValidPhoneNumber(phone) {
-  // Ensures the phone number:
-  // 1. Starts with a '+' 
-  // 2. Followed by 1-3 digit country code
-  // 3. Then the rest of the number with only digits
-  // 4. Total length between 10-15 digits (excluding '+')
-  const phoneRegex = /^\+[1-9]\d{1,2}[0-9]{8,13}$/;
+  const phoneRegex = /^\+\d{1,3}\d{8,13}$/;
   return phoneRegex.test(phone);
 }
 
@@ -33,6 +42,7 @@ function isValidEmail(email) {
 }
 
 export function renderPaymentSummary() {
+  initializePhoneInput();
   const pickupBtn = document.getElementById('pickup-btn');
   const deliveryBtn = document.getElementById('delivery-btn');
   const deliveryAreaContainer = document.getElementById('delivery-area-container');
@@ -45,6 +55,13 @@ export function renderPaymentSummary() {
   const emailInput = document.getElementById('email-address');
   const phoneNumberInput = document.getElementById('phone-number');
   const deliveryAddressInput = document.getElementById('delivery-address');
+  if (cart.cartItems.length === 0) {
+    placeOrderBtn.disabled = true;
+    placeOrderBtn.classList.add('cursor-not-allowed', 'opacity-50');
+  } else {
+    placeOrderBtn.disabled = false;
+    placeOrderBtn.classList.remove('cursor-not-allowed', 'opacity-50');
+  }
 
   function toggleDeliveryOption(isDelivery) {
     // Update button states
@@ -82,56 +99,70 @@ export function renderPaymentSummary() {
 
   function handlePlaceOrder(e) {
     e.preventDefault();
+    let isValid = true;
     const isDelivery = !deliveryAreaContainer.classList.contains('hidden');
+    const countryCode = document.getElementById('country-code').value;
+    const phoneNumber = countryCode + phoneNumberInput.value.trim();
     
     // Validate full name
     if (!fullNameInput.value.trim()) {
-      alert('Please enter your full name');
-      return;
+      showError(fullNameInput, 'Please enter your full name');
+      isValid = false;
+    } else {
+        hideError(fullNameInput);
     }
 
     // Validate email
     if (!emailInput.value.trim() || !isValidEmail(emailInput.value)) {
-      alert('Please enter a valid email address');
-      return;
+      showError(emailInput, 'Please enter a valid email address');
+      isValid = false;
+    } else {
+        hideError(emailInput);
     }
 
     // Validate phone number
-    if (!phoneNumberInput.value.trim() || !isValidPhoneNumber(phoneNumberInput.value)) {
-      alert('Please enter a valid phone number.\n\nFormat: +[Country Code][Phone Number]\n\nExample:\n+12345678901\n+447911123456\n\nNotes:\n- Must start with a +\n- Country code is 1-3 digits\n- No spaces or dashes allowed');
-      return;
+    if (!phoneNumberInput.value.trim() || !isValidPhoneNumber(phoneNumber)) {
+      showError(phoneNumberInput, 'Please enter a valid phone number');
+      isValid = false;
+    } else {
+        hideError(phoneNumberInput);
     }
-
     // Validate delivery specifics if delivery is selected
     if (isDelivery) {
       if (!deliveryAreaSelect.value) {
-        alert('Please select a delivery area');
-        return;
+        showError(deliveryAreaSelect, 'Please select a delivery area');
+        isValid = false;
+      } else {
+          hideError(deliveryAreaSelect);
       }
 
       if (!deliveryAddressInput.value.trim()) {
-        alert('Please enter a delivery address');
-        return;
+          showError(deliveryAddressInput, 'Please enter a delivery address');
+          isValid = false;
+      } else {
+          hideError(deliveryAddressInput);
       }
     }
 
     // Prepare order details
-    const customerAddress = isDelivery ? `<strong>Delivery Address: </strong><a href="https://maps.google.com/?q=${deliveryAddressInput.value}" style="color: #3C4147; text-decoration: underline;">${deliveryAddressInput.value}</a>` : '';
-    const fee = isDelivery ? parseFloat(formatCurrency(deliveryAreaSelect.value)) || 0 : 0;
-    updateTotalPrice();
-    const subtotal = parseFloat(document.getElementById('subtotal').textContent.slice(1));
-    const total = parseFloat(document.getElementById('total').textContent.slice(1));
+    if (isValid) {
+      const customerAddress = isDelivery ? `<strong>Delivery Address: </strong><a href="https://maps.google.com/?q=${deliveryAddressInput.value}" style="color: #3C4147; text-decoration: underline;">${deliveryAddressInput.value}</a>` : '';
+      const fee = isDelivery ? parseFloat(formatCurrency(deliveryAreaSelect.value)) || 0 : 0;
+      updateTotalPrice();
+      const subtotal = parseFloat(document.getElementById('subtotal').textContent.slice(1));
+      const total = parseFloat(document.getElementById('total').textContent.slice(1));
 
-    // Send order confirmation emails
-    sendOrderConfirmationEmails({
-      customerName: fullNameInput.value,
-      customerContact: phoneNumberInput.value,
-      customerAddress: customerAddress,
-      customerEmail: emailInput.value,
-      deliveryFee: fee,
-      subtotal: subtotal,
-      totalPrice: total
-    });
+      // Send order confirmation emails
+      sendOrderConfirmationEmails({
+        customerName: fullNameInput.value,
+        customerContact: phoneNumber,
+        customerAddress: customerAddress,
+        customerEmail: emailInput.value,
+        deliveryFee: fee,
+        subtotal: subtotal,
+        totalPrice: total
+      });
+    }
   }
 
 

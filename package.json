@@ -15,6 +15,7 @@
     "vite": "^6.0.5"
   },
   "dependencies": {
-    "@emailjs/browser": "^4.4.1"
+    "@emailjs/browser": "^4.4.1",
+    "country-codes-list": "^1.6.11"
   }
 }

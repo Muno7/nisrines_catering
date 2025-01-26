@@ -2,6 +2,37 @@ import { cart } from '../../data/cart.js';
 import { getProduct } from '../../data/products.js';
 import emailjs from '@emailjs/browser';
 
+function showOverlay(title, message) {
+  document.getElementById('overlayTitle').textContent = title;
+  document.getElementById('overlayMessage').textContent = message;
+  document.getElementById('overlay').classList.add('flex');
+  document.getElementById('overlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function hideOverlay() {
+  document.getElementById('overlay').classList.remove('flex');
+  document.getElementById('overlay').classList.add('hidden');
+  document.body.style.overflow = '';
+  window.location.href = 'index.html';
+}
+
+function setButtonLoading(isLoading) {
+  const button = document.getElementById('place-order-btn');
+  if (isLoading) {
+      button.disabled = true;
+      button.innerHTML = `
+          <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Processing...
+      `;
+  } else {
+      button.disabled = false;
+      button.textContent = 'Place Order';
+  }
+}
 // Initialize EmailJS (make sure to replace with your actual user ID)
 emailjs.init("v8m5QOh60gKq3MDQL");
 
@@ -51,6 +82,7 @@ function generateCartItemsHtml(items) {
 }
 
 export function sendOrderConfirmationEmails(orderDetails) {
+  setButtonLoading(true);
   // Calculate subtotal from cart items
   const cartItemsHtml = generateCartItemsHtml(cart.cartItems);
 
@@ -75,15 +107,15 @@ export function sendOrderConfirmationEmails(orderDetails) {
     .then(() => {
       // Clear cart after successful email send
       cart.resetCart();
-      
-      // Optional: Show success message or redirect
-      alert('Order submitted successfully! Confirmation emails have been sent.');
-      
-      // Optional: Redirect to a thank you page
-      window.location.href = 'order-confirmation.html';
+      showOverlay('Order Placed Successfully!', 'Thank you for your order! You will receive a confirmation email shortly.');
     })
     .catch((error) => {
       console.error('Error sending emails:', error);
-      alert('There was an issue submitting your order. Please try again.');
+      showOverlay('Error', 'There was an issue submitting your order. Please try again.');
+    })
+    .finally(() => {
+      setButtonLoading(false);
     });
 }
+
+document.getElementById('overlayCloseBtn').addEventListener('click', hideOverlay);
