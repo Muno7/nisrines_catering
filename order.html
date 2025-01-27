@@ -211,6 +211,7 @@
             <input
               type="text"
               id="delivery-address"
+              placeholder="Enter delivery address"
               class="w-full p-2 bg-gray-100 rounded-md border focus:ring-2 focus:ring-blue-500 focus:bg-gray-200 transition-colors duration-200"
               required
             />
@@ -221,7 +222,7 @@
         <!-- Place Order Button -->
         <button
           id="place-order-btn"
-          class="w-full bg-lightGray lg:hover:bg-opacity-90 text-white py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors duration-200"
+          class="w-full button-primary transition-colors duration-200"
         >
           Place Order
         </button>
@@ -234,7 +235,7 @@
           <h2 id="overlayTitle" class="text-2xl font-bold mb-4">Order has been placed successfully</h2>
           <p id="overlayMessage" class="mb-4 text-xl">Thank you for your order! You will receive a confirmation email shortly.</p>
         </div>
-        <button id="overlayCloseBtn" class="bg-lightGray lg:hover:bg-opacity-90 active:translate-y-[2px] text-white font-bold py-2 px-4 rounded-full transition-all duration-200">
+        <button id="overlayCloseBtn" class="button-primary transition-all duration-200">
             Close
         </button>
     </div>
