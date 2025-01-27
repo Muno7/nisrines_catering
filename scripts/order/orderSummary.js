@@ -1,7 +1,7 @@
 import { getProduct } from "../../data/products.js";
 import { cart } from "../../data/cart.js";
 import { formatCurrency } from "../utils/money.js";
-import { updateTotalPrice } from "./paymentSummary.js";
+import { updatePlaceOrderButton, updateTotalPrice } from "./paymentSummary.js";
 
 function setPortionLabel (portion) {
   return portion === 'single' ? `
@@ -117,6 +117,7 @@ export function renderOrderSummary() {
       cart.deleteItem(productId);
       renderOrderSummary();
       updateTotalPrice();
+      updatePlaceOrderButton();
     });
   });
 

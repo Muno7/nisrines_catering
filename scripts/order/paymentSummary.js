@@ -4,6 +4,19 @@ import { formatCurrency } from '../utils/money.js';
 import { sendOrderConfirmationEmails } from './emailSender.js';
 import { initializePhoneInput } from '../utils/phoneInput.js';
 
+export function updatePlaceOrderButton() {
+  const placeOrderBtn = document.getElementById('place-order-btn');
+  if (cart.cartItems.length === 0) {
+    placeOrderBtn.disabled = true;
+    placeOrderBtn.classList.add('cursor-not-allowed', 'opacity-50');
+    placeOrderBtn.innerHTML = 'No items in basket';
+  } else {
+    placeOrderBtn.disabled = false;
+    placeOrderBtn.classList.remove('cursor-not-allowed', 'opacity-50');
+    placeOrderBtn.innerHTML = 'Place Order';
+  }
+}
+
 export function updateTotalPrice() {
   let subtotal = 0;
   cart.cartItems.forEach((cartItem) => {
@@ -42,6 +55,7 @@ function isValidEmail(email) {
 }
 
 export function renderPaymentSummary() {
+  updatePlaceOrderButton();
   initializePhoneInput();
   const pickupBtn = document.getElementById('pickup-btn');
   const deliveryBtn = document.getElementById('delivery-btn');
@@ -55,13 +69,6 @@ export function renderPaymentSummary() {
   const emailInput = document.getElementById('email-address');
   const phoneNumberInput = document.getElementById('phone-number');
   const deliveryAddressInput = document.getElementById('delivery-address');
-  if (cart.cartItems.length === 0) {
-    placeOrderBtn.disabled = true;
-    placeOrderBtn.classList.add('cursor-not-allowed', 'opacity-50');
-  } else {
-    placeOrderBtn.disabled = false;
-    placeOrderBtn.classList.remove('cursor-not-allowed', 'opacity-50');
-  }
 
   function toggleDeliveryOption(isDelivery) {
     // Update button states
