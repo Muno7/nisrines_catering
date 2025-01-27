@@ -43,6 +43,10 @@ header {
   display: none;
 }
 
+.hide-scrollbar
+::-webkit-scrollbar {
+  display: none;
+}
 
 @media (max-width:600px) {
   ::-webkit-scrollbar {
