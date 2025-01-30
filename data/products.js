@@ -1,6 +1,7 @@
 import { formatCurrency } from "../scripts/utils/money.js";
 import { cart, updateCartQuantity, renderAddedMessage } from "./cart.js";
 import { favorite } from "./favorites.js";
+import { setDayLabel } from "../scripts/utils/dayLabel.js"
 
 export function getProduct(productId) {
   let matchedproduct;
@@ -20,12 +21,14 @@ export class Product {
   category;
   single;
   family;
+  day;
 
   constructor(productDetails) {
     this.id = productDetails.id;
     this.image = productDetails.image;
     this.name = productDetails.name;
     this.category = productDetails.category;
+    this.day = productDetails.day;
 
     // Handle the case where either priceCents or price object is provided
     if (productDetails.priceCents) {
@@ -209,9 +212,11 @@ function attachQuantityHandlers() {
 export function productCardHTML(product) {
   const {id, name, image} = product;
   const checked = favorite.favoriteItems.some(item => item.productId === id) ? 'checked' : '';
+  const dayLabel = product.day ? setDayLabel(product.day) : '';
   const productCard = `
   <div class="product-container w-[12rem] relative flex flex-col gap-2 shadow-[0_0_10px_rgba(0,0,0,0.15)] p-4 rounded-[10px]" data-product-id="${id}">
     <img class="w-[10rem] h-[10rem] object-cover rounded-[10px]" src="${image}" alt="">
+      ${dayLabel}
       <label data-product-id="${id}" class="js-add-to-favorite-button shadow-sm product-heart-button absolute bg-white rounded-full p-[7px] top-6 right-6 cursor-pointer text-[8px] select-none transition duration-100">
         <input class="js-heart-input-${id} absolute opacity-0 cursor-pointer h-0 w-0" type="checkbox" ${checked}/>
         <div class="heart-checkmark h-[16px] w-[16px]">
