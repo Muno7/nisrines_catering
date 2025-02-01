@@ -2,6 +2,7 @@ import { getProduct } from "../../data/products.js";
 import { cart } from "../../data/cart.js";
 import { formatCurrency } from "../utils/money.js";
 import { updatePlaceOrderButton, updateTotalPrice } from "./paymentSummary.js";
+import { setDayLabel } from "../utils/dayLabel.js";
 
 function setPortionLabel (portion) {
   return portion === 'single' ? `
@@ -46,9 +47,13 @@ export function renderOrderSummary() {
     } else if (product.priceCents) {
       price = formatCurrency(product.priceCents);
     }
+    const dayLabel = product.day ? setDayLabel(product.day) : '';
     let html = `<div class="js-cart-item-container js-cart-item-container-${productId} relative bg-white shadow-[0_0_10px_rgba(0,0,0,0.1)] rounded-[10px] overflow-hidden">
                   <div class="flex flex-row gap-2 p-2 lg:gap-4">
-                    <img class="flex-shrink-0 w-[7rem] h-[7rem] lg:w-[10rem] lg:h-[10rem] object-cover rounded-[10px]" src=${image} alt="">
+                    <div class="relative flex-shrink-0">
+                      <img class="w-[7rem] h-[7rem] lg:w-[10rem] lg:h-[10rem] object-cover rounded-[10px]" src="images/salad-6.jpg" alt="">
+                      ${dayLabel}
+                    </div>
                     <div class="flex flex-col justify-between gap-4 w-full lg:py-2 lg:gap-8">
                       <div class="flex flex-col gap-2 lg:gap-4">
                         <h3 class="product-name-js text-l md:text-xl font-bold">${name}</h3>

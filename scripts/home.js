@@ -15,12 +15,14 @@ async function loadHomePage() {
 function renderPopularMealsGrid() {
   updateCartQuantity();
   const container = document.querySelector('.products-container');
+  let html = '';
   products.forEach(product => {
     if (product.category !== "plat-du-jour") {
       return;
     }
     const productCard = productCardHTML(product);
-    container.innerHTML += productCard;
+    html += productCard;
+    container.innerHTML = html;
   });
 
   const addToCartButtonElement = document.querySelectorAll(".js-add-to-cart-button");
