@@ -1,7 +1,7 @@
 import { formatCurrency } from "../scripts/utils/money.js";
 import { cart, updateCartQuantity, renderAddedMessage } from "./cart.js";
 import { favorite } from "./favorites.js";
-import { setDayLabel } from "../scripts/utils/dayLabel.js"
+import { setDayLabel, isProductAvailable } from "../scripts/utils/day.js"
 
 export function getProduct(productId) {
   let matchedproduct;
@@ -41,8 +41,7 @@ export class Product {
       this.family = productDetails.price.family;
     }
   }
-
-  // Updated getPrice method to handle both scenarios
+  
   getPrice(portion) {
     if (this.single && this.family) {
       return portion === 'single' ? formatCurrency(this.single) : formatCurrency(this.family);
@@ -171,11 +170,12 @@ function attachQuantityHandlers() {
 
     const addCartButton = document.querySelector('.overlay-add-to-cart');
     addCartButton.addEventListener('click', () => {
-      cart.addToCartOverlay(addCartButton.dataset.productId);
-      renderAddedMessage(document.querySelector('.overlay-added-to-cart'));
+      const prodcutId = addCartButton.dataset.productId
+      const product = getProduct(prodcutId);
+      const productDay = product.day ? product.day : '';
+      cart.addToCartOverlay(prodcutId, productDay);
       quantity = 1; // Reset quantity
       updateQuantityDisplay();
-      updateCartQuantity();
     });
 
     const closeOverlayButton = document.getElementById('closeOverlay');
@@ -212,6 +212,7 @@ function attachQuantityHandlers() {
 export function productCardHTML(product) {
   const {id, name, image} = product;
   const checked = favorite.favoriteItems.some(item => item.productId === id) ? 'checked' : '';
+  if (!isProductAvailable(product)) return '';
   const dayLabel = product.day ? setDayLabel(product.day) : '';
   const productCard = `
   <div class="product-container w-[12rem] relative flex flex-col gap-2 shadow-[0_0_10px_rgba(0,0,0,0.15)] p-4 rounded-[10px]" data-product-id="${id}">
@@ -243,7 +244,7 @@ export function productCardHTML(product) {
           </svg>
           <span translate="no">Added</span>
         </div>
-        <button data-product-id="${id}" class="js-add-to-cart-button button-secondary rounded-full w-fit">
+        <button data-product-id="${id}" data-day="${product.day || ''}" class="js-add-to-cart-button button-secondary rounded-full w-fit">
           <svg xmlns="http://www.w3.org/2000/svg" class="fill-current h-[24px] w-[24px]" viewBox="0 0 24 24">
             <path d="M23.297,9.034c-.57-.657-1.396-1.034-2.267-1.034h-.086C20.445,3.506,16.625,0,12,0S3.555,3.506,3.056,8h-.056c-.87,0-1.695,.377-2.266,1.034S-.093,10.562,.03,11.425l1.061,7.424c.42,2.937,2.974,5.151,5.94,5.151h9.969c2.966,0,5.52-2.215,5.94-5.151l1.061-7.424c.123-.862-.134-1.733-.704-2.391ZM12,2c3.52,0,6.441,2.613,6.928,6H5.072c.487-3.387,3.408-6,6.928-6Zm10.021,9.142l-1.061,7.424c-.28,1.958-1.982,3.435-3.96,3.435H7.031c-1.979,0-3.681-1.477-3.96-3.435l-1.061-7.424c-.042-.291,.042-.574,.234-.797,.193-.223,.461-.345,.755-.345H21.03c.294,0,.562,.122,.756,.345,.192,.223,.276,.506,.234,.797Zm-9.021,1.858v6c0,.553-.447,1-1,1s-1-.447-1-1v-6c0-.553,.447-1,1-1s1,.447,1,1Zm5,0v6c0,.553-.447,1-1,1s-1-.447-1-1v-6c0-.553,.447-1,1-1s1,.447,1,1Zm-10,0v6c0,.553-.447,1-1,1s-1-.447-1-1v-6c0-.553,.447-1,1-1s1,.447,1,1Z"/>
           </svg>

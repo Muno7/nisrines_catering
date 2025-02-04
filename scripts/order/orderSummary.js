@@ -2,7 +2,7 @@ import { getProduct } from "../../data/products.js";
 import { cart } from "../../data/cart.js";
 import { formatCurrency } from "../utils/money.js";
 import { updatePlaceOrderButton, updateTotalPrice } from "./paymentSummary.js";
-import { setDayLabel } from "../utils/dayLabel.js";
+import { setDayLabel } from "../utils/day.js";
 
 function setPortionLabel (portion) {
   return portion === 'single' ? `

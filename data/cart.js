@@ -1,5 +1,8 @@
+import { showFriendlyNotification } from '../scripts/utils/day.js';
+
 class Cart {
   cartItems;
+  day;
   #localStorageKey;
 
   constructor(localStorageKey) {
@@ -9,6 +12,7 @@ class Cart {
 
   resetCart() {
     this.cartItems = [];
+    this.day = null;
     this.saveToStorage();
   }
 
@@ -23,9 +27,12 @@ class Cart {
   }
 
   #loadFromStorage() {
-    this.cartItems = JSON.parse(
-      localStorage.getItem(this.#localStorageKey)
-    ) || [];
+    this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey)) || [];
+    if (this.cartItems.length > 0) {
+      this.day = this.cartItems[0].day; // Set the day based on the first item in the cart
+    } else {
+      this.day = null;
+    }
   }
 
   _testHookLoadFromStorage() {
@@ -46,48 +53,53 @@ class Cart {
 
   updateQuantity(productId, portion, newQuantity) {
     let matchProduct = this.getCartItem(productId, portion);
-    matchProduct.quantity = newQuantity;
-    this.saveToStorage();
-  }
-  
-  buyAgain(productId) {
-    let productIdMatch = this.getCartItem(productId);
-    if (productIdMatch) {
-      productIdMatch.quantity += 1;
-    } else {
-      this.cartItems.push({
-        productId,
-        quantity: 1
-      });
+    if (matchProduct) {
+      matchProduct.quantity = newQuantity;
+      this.saveToStorage();
     }
-    this.saveToStorage();
-
   }
 
-  addToCartOverlay(productId) {
-    const selectorElement = document.querySelector(
-      `.overlay-product-quantity`
-    );
+  addToCartOverlay(productId, productDay) {
+    const currentDay = this.day;
+    if (currentDay && productDay && currentDay !== productDay) {
+      showFriendlyNotification(currentDay, productDay);
+      return;
+    }
+    if (!this.day && productDay) {
+      this.day = productDay; // Set the day based on the first product added
+    }
+    const selectorElement = document.querySelector(`.overlay-product-quantity`);
     const quantity = Number(selectorElement.textContent);
     const family = document.querySelector('.family-portion-button');
     const portion = family.classList.contains('active') ? 'family' : 'single';
-    let productIdMatch = this.getCartItem(productId, portion)
+    let productIdMatch = this.getCartItem(productId, portion);
     if (productIdMatch) {
       productIdMatch.quantity += quantity;
     } else {
       this.cartItems.push({
         productId,
         quantity: quantity,
-        portion: portion
+        portion: portion,
+        day: this.day
       });
     }
+    updateCartQuantity();
     this.saveToStorage();
+    renderAddedMessage(document.querySelector('.overlay-added-to-cart'));
   }
 
-  addToCartCard(productId) {
-    let productIdMatch = this.cartItems.find(
-      (item) => item.productId === productId
-    );
+  addToCartCard(productId, productDay) {
+    const currentDay = this.day;
+    if (currentDay && productDay && currentDay !== productDay) {
+      showFriendlyNotification(currentDay, productDay);
+      return;
+    }
+
+    if (!this.day && productDay) {
+      this.day = productDay; // Set the day based on the first product added
+    }
+
+    let productIdMatch = this.getCartItem(productId, 'single');
     const quantity = 1;
     if (productIdMatch) {
       productIdMatch.quantity += quantity;
@@ -95,22 +107,28 @@ class Cart {
       this.cartItems.push({
         productId,
         quantity: quantity,
-        portion: 'single'
+        portion: 'single',
+        day: productDay
       });
     }
     this.saveToStorage();
+    renderAddedMessage(document.querySelector(`.js-added-to-cart-${productId}`))
   }
 
   deleteItem(productId) {
-    let productMatch;
+    let productMatchIndex = -1;
     this.cartItems.forEach((item, index) => {
       if (item.productId === productId) {
-        productMatch = index;
-        this.cartItems.splice(productMatch, 1);
-        this.saveToStorage();
-        return;
+        productMatchIndex = index;
       }
     });
+    if (productMatchIndex !== -1) {
+      this.cartItems.splice(productMatchIndex, 1);
+      if (this.cartItems.length === 0) {
+        this.day = null; // Reset the day if the cart is empty
+      }
+      this.saveToStorage();
+    }
   }
 }
 
@@ -120,36 +138,31 @@ export function updateCartQuantity() {
 }
 
 let timeoutState = new Map();
+
 export function renderAddedMessage(messageElement) {
-    if (timeoutState.has(messageElement)) {
-        clearTimeout(timeoutState.get(messageElement));
-    }
-    messageElement.classList.add("opacity-1");
-    messageElement.classList.remove("opacity-0");
-
-    const timeoutId = setTimeout(() => {
-        messageElement.classList.remove("opacity-1");
-        messageElement.classList.add("opacity-0");
-        timeoutState.delete(messageElement);
-    }, 1000);
-
-    timeoutState.set(messageElement, timeoutId);
+  if (timeoutState.has(messageElement)) {
+    clearTimeout(timeoutState.get(messageElement));
+  }
+  messageElement.classList.add("opacity-1");
+  messageElement.classList.remove("opacity-0");
+  const timeoutId = setTimeout(() => {
+    messageElement.classList.remove("opacity-1");
+    messageElement.classList.add("opacity-0");
+    timeoutState.delete(messageElement);
+  }, 1000);
+  timeoutState.set(messageElement, timeoutId);
 }
 
 export function addToCartEventListeners(buttonElement) {
   buttonElement.forEach((button) => {
     button.addEventListener("click", (event) => {
-        event.stopPropagation();
-        const { productId } = button.dataset;
-        cart.addToCartCard(productId);
-        updateCartQuantity();
-        const messageElement = document.querySelector(
-        `.js-added-to-cart-${productId}`
-        );
-        renderAddedMessage(messageElement);
+      event.stopPropagation();
+      const { productId } = button.dataset;
+      const productDay = button.getAttribute('data-day'); // Get the day from the button attribute
+      cart.addToCartCard(productId, productDay);
+      updateCartQuantity();
     });
   });
 }
-
 
 export let cart = new Cart("cart");

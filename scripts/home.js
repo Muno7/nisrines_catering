@@ -65,7 +65,7 @@ function initSlideshow() {
     }
   }
   
-  // Auto advance every 7 seconds
+  // Auto advance every 5 seconds
   setInterval(nextSlide, 5000);
 }
 
