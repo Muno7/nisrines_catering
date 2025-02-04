@@ -76,8 +76,8 @@
   </header>
   <main class="container mx-auto py-6 lg:px-12 pt-[100px]">
     <div class="flex flex-col md:flex-row gap-8">
-      <div class="md:w-2/3 md:px-12 flex flex-col items-center">
-        <h1 class="text-3xl font-bold mb-5">Order Basket</h1>
+      <div class="md:w-2/3 md:px-12 flex flex-col">
+        <h1 class="text-3xl font-bold mb-5 px-2">Order Basket</h1>
         <div class="wrapper overflow-y-auto w-full px-2 py-2 max-h-[100vh] hide-scrollbar">
           <div class="js-order-summary order-items-scroll space-y-4">
             <!-- Cart Items -->
@@ -229,17 +229,6 @@
       </div>
     </div>
   </main>
-  <div id="overlay" class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden items-center justify-center">
-    <div class="flex flex-col justify-between bg-white p-8 rounded-lg shadow-lg w-[360px] h-[300px]">
-        <div class="">
-          <h2 id="overlayTitle" class="text-2xl font-bold mb-4">Order has been placed successfully</h2>
-          <p id="overlayMessage" class="mb-4 text-xl">Thank you for your order! You will receive a confirmation email shortly.</p>
-        </div>
-        <button id="overlayCloseBtn" class="button-primary transition-all duration-200">
-            Close
-        </button>
-    </div>
-  </div>
   <footer class="relative bg-darkGray text-white">
     <!-- Wave Pattern -->
     <div class="absolute top-0 left-0 right-0">
@@ -309,6 +298,17 @@
       <p class="text-center mt-8">&copy; 2024 Nisrine's Kitchen. All rights reserved.</p>
     </div>
   </footer>
+  <div id="overlay" class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden items-center justify-center">
+    <div class="flex flex-col justify-between bg-white p-8 rounded-lg shadow-lg w-[360px] h-[300px]">
+      <div class="">
+        <h2 id="overlayTitle" class="text-2xl font-bold mb-4">Order has been placed successfully</h2>
+        <p id="overlayMessage" class="mb-4 text-xl">Thank you for your order! You will receive a confirmation email shortly.</p>
+      </div>
+      <button id="overlayCloseBtn" class="button-primary transition-all duration-200">
+          Close
+      </button>
+    </div>
+  </div>
   <script src="scripts/utils/ui-interactions.js"></script>
   <script src="scripts/order.js" type="module"></script>
 </body>
