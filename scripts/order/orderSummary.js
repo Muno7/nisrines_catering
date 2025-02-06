@@ -2,7 +2,7 @@ import { getProduct } from "../../data/products.js";
 import { cart } from "../../data/cart.js";
 import { formatCurrency } from "../utils/money.js";
 import { updatePlaceOrderButton, updateTotalPrice } from "./paymentSummary.js";
-import { setDayLabel } from "../utils/day.js";
+import { setDayLabel, isProductAvailable } from "../utils/day.js";
 
 function setPortionLabel (portion) {
   return portion === 'single' ? `
@@ -33,8 +33,11 @@ export function renderOrderSummary() {
   let cartHtml = "";
   cart.cartItems.forEach((item) => {
     const { productId, quantity, portion } = item;
-
     const product = getProduct(productId);
+    if (!isProductAvailable(product)) {
+      cart.deleteItem(productId);
+      return '';
+    }
     const { image, name } = product;
     let price;
     const portionLabel = setPortionLabel(portion);

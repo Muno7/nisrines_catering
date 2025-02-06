@@ -1,6 +1,7 @@
 import { cart } from '../../data/cart.js';
 import { getProduct } from '../../data/products.js';
 import emailjs from '@emailjs/browser';
+import { isProductAvailable } from '../utils/day.js';
 
 function showOverlay(title, message) {
   document.getElementById('overlayTitle').textContent = title;
@@ -13,8 +14,11 @@ function showOverlay(title, message) {
 function hideOverlay() {
   document.getElementById('overlay').classList.remove('flex');
   document.getElementById('overlay').classList.add('hidden');
+  const title = document.getElementById('overlayTitle').textContent
   document.body.style.overflow = '';
-  window.location.href = 'index.html';
+  if (title === 'Order Placed Successfully!') {
+    window.location.href = 'index.html';
+  }
 }
 
 function setButtonLoading(isLoading) {
@@ -33,8 +37,16 @@ function setButtonLoading(isLoading) {
       button.textContent = 'Place Order';
   }
 }
-// Initialize EmailJS (make sure to replace with your actual user ID)
-emailjs.init("v8m5QOh60gKq3MDQL");
+
+function validateCartItems(cartItems) {
+  for (const item of cartItems) {
+    const product = getProduct(item.productId);
+    if (!isProductAvailable(product)) {
+      return false;
+    }
+  }
+  return true;
+}
 
 function generateCartItemsHtml(items) {
   return items.map(item => {
@@ -81,12 +93,17 @@ function generateCartItemsHtml(items) {
   }).join('');
 }
 
+emailjs.init("v8m5QOh60gKq3MDQL");
 export function sendOrderConfirmationEmails(orderDetails) {
   setButtonLoading(true);
-  // Calculate subtotal from cart items
+  
+  if (!validateCartItems(cart.cartItems)) {
+    showOverlay('Order Failed', 'One or more products in your cart are no longer available. Please review your cart.');
+    setButtonLoading(false);
+    return;
+  }
+  
   const cartItemsHtml = generateCartItemsHtml(cart.cartItems);
-
-  // Prepare template parameters
   const templateParams = {
     customerName: orderDetails.customerName,
     customerAddress: orderDetails.customerAddress,
