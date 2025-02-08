@@ -650,7 +650,7 @@
     </div>
     <!-- Full-screen product Overlay -->
     <div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" id="overlay">
-      <div class="relative bg-white rounded-xl shadow-lg w-[360px] h-[640px] md:w-[720px] md:h-[480px] flex flex-col md:flex-row overflow-hidden">
+      <div class="relative bg-white rounded-xl shadow-lg w-[360px] h-full md:w-[720px] md:h-[480px] flex flex-col md:flex-row overflow-hidden">
         <!-- Back Button -->
         <button id="closeOverlay" class="absolute top-4 left-4 z-10 bg-white rounded-full p-2 shadow-md lg:hover:bg-gray-100 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#2a1810]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -658,7 +658,7 @@
           </svg>
         </button>
         
-        <div class="relative w-full md:w-1/2 h-[320px] md:h-full">
+        <div class="relative w-full md:w-1/2 h-[290px] md:max-h-full">
           <img id="overlay-product-image" src="" alt="" class="w-full h-full object-cover object-center">
           <!-- Heart button -->
           <label class="overlay-add-to-favorite shadow-md product-heart-button absolute bg-white rounded-full p-2 top-4 right-4 cursor-pointer text-[8px] select-none transition duration-100">
@@ -714,14 +714,15 @@
               </div>
               <div class="border-t border-gray-200 pt-4">
                 <h2 class="font-bold text-l mb-1">Ingredients</h2>
-                <p id="overlay-product-description" class="text-md">
+                <p id="overlay-product-description h-full" class="text-md">
+                  akshfa akjdlhfa flakjhdf aklfkh akf aklkhjfhahdfkakfh j al fk
                 </p>
               </div>
             </div>
           </div>
           <!-- Sticky Add to Cart Section -->
-          <div class="bg-white p-4 border-t border-gray-200 shadow-top">
-            <div class="space-y-4">
+          <div class="bg-white h-[100px] p-4 border-t border-gray-200 shadow-top">
+            <div class="space-y-1">
               <div class="overlay-added-to-cart flex gap-1 opacity-0 transition-all items-center text-sm text-customBrown">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[16px] h-[16px] fill-current">
                   <path d="m12,0C5.383,0,0,5.383,0,12s5.383,12,12,12,12-5.383,12-12S18.617,0,12,0Zm-.091,15.419c-.387.387-.896.58-1.407.58s-1.025-.195-1.416-.585l-2.782-2.696,1.393-1.437,2.793,2.707,5.809-5.701,1.404,1.425-5.793,5.707Z"/>

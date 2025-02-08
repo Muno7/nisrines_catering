@@ -76,7 +76,9 @@ export function renderProductOverlay() {
     overlayTitle.textContent = product.name;
     overlayPrice.innerHTML = `<span translate="no">$</span>${product.getPrice('single')}`;
     overlayImage.src = product.image;
-    overlayHeartInput.checked = favorite.favoriteItems.some((item) => item.productId === productId);
+    if(overlayHeartInput) {
+      overlayHeartInput.checked = favorite.favoriteItems.some((item) => item.productId === productId);
+    }
     
     // Update Add to Cart button
     const addCartButton = document.querySelector('.overlay-add-to-cart');
@@ -187,6 +189,9 @@ function attachQuantityHandlers() {
 
   function attachFavoriteHandler() {
     const addToFavoriteButton = document.querySelector('.overlay-add-to-favorite');
+    if (!addToFavoriteButton) {
+      return
+    }
 
     addToFavoriteButton.addEventListener('click', (event) => {
       event.stopPropagation();
