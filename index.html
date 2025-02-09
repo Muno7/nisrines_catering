@@ -183,51 +183,49 @@
       </a>
     </section>
     <!-- Full-screen product Overlay -->
-    <div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" id="overlay">
-      <div class="relative bg-white rounded-xl shadow-lg w-[360px] h-full md:w-[720px] md:h-[480px] flex flex-col md:flex-row overflow-hidden">
+    <div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 pt-8 pb-12 sm:p-6 sm:pt-10 sm:pb-14" id="overlay">
+      <div class="relative bg-white rounded-xl shadow-lg w-full max-w-[360px] h-[90vh] max-h-[700px] md:max-w-[720px] md:h-[85vh] flex flex-col md:flex-row overflow-hidden">
         <!-- Back Button -->
-        <button id="closeOverlay" class="absolute top-4 left-4 z-10 bg-white rounded-full p-2 shadow-md lg:hover:bg-gray-100 transition-colors">
+        <button id="closeOverlay" class="absolute top-2 left-2 z-10 bg-white rounded-full p-2 shadow-md lg:hover:bg-gray-100 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#2a1810]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
         </button>
-        <div class="relative w-full md:w-1/2 h-[290px] md:h-full">
-          <img id="overlay-product-image" src="" alt="" class="w-full h-full object-cover object-center">
+        
+        <!-- Image Section -->
+        <div class="relative w-full md:w-1/2 h-[40vh] md:h-full">
+          <img id="overlay-product-image" src="/placeholder.svg" alt="" class="w-full h-full object-cover object-center">
           <!-- Heart button -->
-          <label class="overlay-add-to-favorite shadow-md product-heart-button absolute bg-white rounded-full p-2 top-4 right-4 cursor-pointer text-[8px] select-none transition duration-100">
+          <label class="overlay-add-to-favorite shadow-md product-heart-button absolute bg-white rounded-full p-2 top-2 right-2 cursor-pointer text-[8px] select-none transition duration-100">
             <input id="heart-input" class="absolute opacity-0 cursor-pointer h-0 w-0" type="checkbox"/>
             <div class="heart-checkmark w-[24px] h-[24px]">
               <svg viewBox="0 0 256 256">
                 <rect fill="none" height="256" width="256"></rect>
-                <path
-                  d="M224.6,51.9a59.5,59.5,0,0,0-43-19.9,60.5,60.5,0,0,0-44,17.6L128,59.1l-7.5-7.4C97.2,28.3,59.2,26.3,35.9,47.4a59.9,59.9,0,0,0-2.3,87l83.1,83.1a15.9,15.9,0,0,0,22.6,0l81-81C243.7,113.2,245.6,75.2,224.6,51.9Z"
-                  stroke-width="20px"
-                  stroke="#2a1810"
-                  fill="none"
-                ></path>
+                <path d="M224.6,51.9a59.5,59.5,0,0,0-43-19.9,60.5,60.5,0,0,0-44,17.6L128,59.1l-7.5-7.4C97.2,28.3,59.2,26.3,35.9,47.4a59.9,59.9,0,0,0-2.3,87l83.1,83.1a15.9,15.9,0,0,0,22.6,0l81-81C243.7,113.2,245.6,75.2,224.6,51.9Z" stroke-width="20px" stroke="#2a1810" fill="none"></path>
               </svg>
             </div>
           </label>
         </div>
-        <div class="flex flex-col w-full md:w-1/2 overflow-hidden">
-          <div class="flex-grow overflow-y-auto p-6">
+        <!-- Content Section -->
+        <div class="flex flex-col w-full md:w-1/2 h-[50vh] md:h-full overflow-hidden">
+          <div class="flex-grow overflow-y-auto p-4 md:p-6">
             <div class="space-y-4">
               <div>
-                <h1 id="overlay-product-title" class="text-2xl font-bold leading-tight"></h1>
+                <h1 id="overlay-product-title" class="text-xl md:text-2xl font-bold leading-tight"></h1>
               </div>
               <!-- Price and Portions -->
               <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2">
-                  <span id="overlay-product-price" class="text-2xl font-bold"></span>
+                  <span id="overlay-product-price" class="text-xl md:text-2xl font-bold"></span>
                 </div>
                 <div class="portion-div hidden items-center gap-2">
-                  <button class="family-portion-button button-primary portion-button rounded-full h-full w-full flex items-center justify-center text-xl">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-current w-[20px] h-[20px]">
+                  <button class="family-portion-button button-primary portion-button rounded-full h-full w-full flex items-center justify-center text-lg md:text-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-current w-[18px] h-[18px] md:w-[20px] md:h-[20px]">
                       <path d="m.213,9.145c-.341-.435-.264-1.063.171-1.404L8.919,1.062c1.814-1.419,4.348-1.42,6.162,0l8.535,6.679c.435.34.512.969.171,1.404-.197.252-.491.384-.788.384-.215,0-.433-.069-.615-.212L13.849,2.638c-1.088-.852-2.609-.852-3.697,0L1.616,9.316c-.436.34-1.063.262-1.403-.171Zm3.524,8.89c-2.166.591-3.737,2.679-3.737,4.965,0,.553.447,1,1,1s1-.447,1-1c0-1.379.973-2.684,2.263-3.035.533-.146.848-.695.702-1.228-.146-.534-.699-.847-1.228-.702Zm16.525,0c-.526-.146-1.082.168-1.228.702-.146.532.169,1.082.702,1.228,1.29.352,2.263,1.656,2.263,3.035,0,.553.447,1,1,1s1-.447,1-1c0-2.286-1.571-4.374-3.737-4.965Zm-15.763-7.035c-1.381,0-2.5,1.119-2.5,2.5s1.119,2.5,2.5,2.5,2.5-1.119,2.5-2.5-1.119-2.5-2.5-2.5Zm17.5,2.5c0-1.381-1.119-2.5-2.5-2.5s-2.5,1.119-2.5,2.5,1.119,2.5,2.5,2.5,2.5-1.119,2.5-2.5Zm-10-5.5c-1.381,0-2.5,1.119-2.5,2.5s1.119,2.5,2.5,2.5,2.5-1.119,2.5-2.5-1.119-2.5-2.5-2.5Zm0,7c-2.757,0-5,2.243-5,5v3c0,.553.447,1,1,1s1-.447,1-1v-3c0-1.654,1.346-3,3-3s3,1.346,3,3v3c0,.553.447,1,1,1s1-.447,1-1v-3c0-2.757-2.243-5-5-5Z"/>
                     </svg>
                   </button>
-                  <button class="single-portion-button button-primary portion-button active rounded-full w-full h-full flex flex-col items-center justify-center text-xl">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-current w-[20px] h-[20px]">
+                  <button class="single-portion-button button-primary portion-button active rounded-full w-full h-full flex flex-col items-center justify-center text-lg md:text-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-current w-[18px] h-[18px] md:w-[20px] md:h-[20px]">
                       <path d="M12,12A6,6,0,1,0,6,6,6.006,6.006,0,0,0,12,12ZM12,2A4,4,0,1,1,8,6,4,4,0,0,1,12,2Z"/>
                       <path d="M12,14a9.01,9.01,0,0,0-9,9,1,1,0,0,0,2,0,7,7,0,0,1,14,0,1,1,0,0,0,2,0A9.01,9.01,0,0,0,12,14Z"/>
                     </svg>
@@ -235,25 +233,25 @@
                 </div>
               </div>
               <!-- Quantity Controls -->
-              <div class="flex items-center rounded-full border-2 w-fit">
-                <button class="overlay-subtract-quantity rounded-full lg:hover:bg-gray-200 transition-all active:bg-gray-300 w-10 h-10 flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current w-[12px] h-[12px]"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
+              <div class="flex items-center rounded-full w-fit bg-gray-300 gap-1">
+                <button class="overlay-subtract-quantity rounded-full lg:hover:bg-gray-200 transition-all active:bg-gray-300 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current w-[10px] h-[10px] md:w-[12px] md:h-[12px]"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
                 </button>
-                <span class="overlay-product-quantity text-xl font-medium w-10 text-center">1</span>
-                <button class="overlay-add-quantity rounded-full lg:hover:bg-gray-200 transition-all active:bg-gray-300 w-10 h-10 flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current w-[12px] h-[12px]"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
+                <span class="overlay-product-quantity text-lg md:text-xl font-medium w-8 md:w-10 text-center bg-white rounded-md">1</span>
+                <button class="overlay-add-quantity rounded-full lg:hover:bg-gray-200 transition-all active:bg-gray-300 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current w-[10px] h-[10px] md:w-[12px] md:h-[12px]"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
                 </button>
               </div>
               <div class="border-t border-gray-200 pt-4">
-                <h2 class="font-bold text-l mb-1">Ingredients</h2>
-                <p id="overlay-product-description" class="text-md">
+                <h2 class="font-bold text-lg mb-1">Ingredients</h2>
+                <p id="overlay-product-description" class="text-sm md:text-md">
                 </p>
               </div>
             </div>
           </div>
           <!-- Sticky Add to Cart Section -->
-          <div class="bg-white p-4 border-t border-gray-200 shadow-top">
-            <div class="space-y-4">
+          <div class="bg-white p-4 border-t border-gray-200 shadow-top mt-auto">
+            <div class="space-y-1">
               <div class="overlay-added-to-cart flex gap-1 opacity-0 transition-all items-center text-sm text-customBrown">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[16px] h-[16px] fill-current">
                   <path d="m12,0C5.383,0,0,5.383,0,12s5.383,12,12,12,12-5.383,12-12S18.617,0,12,0Zm-.091,15.419c-.387.387-.896.58-1.407.58s-1.025-.195-1.416-.585l-2.782-2.696,1.393-1.437,2.793,2.707,5.809-5.701,1.404,1.425-5.793,5.707Z"/>

@@ -75,7 +75,7 @@ export function renderProductOverlay() {
     // Set overlay content
     overlayTitle.textContent = product.name;
     overlayPrice.innerHTML = `<span translate="no">$</span>${product.getPrice('single')}`;
-    overlayImage.src = product.image;
+    overlayImage.src = 'images/salad-6.jpg';
     if(overlayHeartInput) {
       overlayHeartInput.checked = favorite.favoriteItems.some((item) => item.productId === productId);
     }
@@ -219,9 +219,15 @@ export function productCardHTML(product) {
   const checked = favorite.favoriteItems.some(item => item.productId === id) ? 'checked' : '';
   if (!isProductAvailable(product)) return '';
   const dayLabel = product.day ? setDayLabel(product.day) : '';
+
+  const cartItem = cart.getCartItem(id, 'single');
+  const displayedQuantity = cartItem ? cartItem.quantity : 1;
+  const addButtonClass = cartItem ? "hidden" : "";
+  const quantityControlClass = cartItem ? "" : "hidden";
+
   const productCard = `
-  <div class="product-container w-[12rem] relative flex flex-col gap-2 shadow-[0_0_10px_rgba(0,0,0,0.15)] p-4 rounded-[10px]" data-product-id="${id}">
-    <div class="relative w-full h-[10rem]">
+  <div class="product-container product-container-js-${id} w-[12rem] relative flex flex-col gap-2 shadow-[0_0_10px_rgba(0,0,0,0.15)] p-4 rounded-[10px]" data-product-id="${id}">
+    <div class="image-container relative w-full h-[10rem]" data-product-id="${id}">
       <img class="w-[10rem] h-[10rem] object-cover rounded-[10px]" src="images/salad-6.jpg" alt="">
       ${dayLabel}
     </div>
@@ -240,24 +246,95 @@ export function productCardHTML(product) {
         </div>
       </label>
     <div class="flex flex-col gap-2">
-      <p class="product-name-js text-xl font-bold h-[3.4rem] line-clamp-2 text-wrap">${name}</p>
+      <p class="product-name-js text-xl h-[3.4rem] line-clamp-2 text-wrap">${name}</p>
       <div class="flex items-center gap-2">
-        <p class="price-js"><span translate="no">$</span>${product.getPrice('single')}</p>
-        <div class="js-added-to-cart-${id} flex gap-1 opacity-0 transition-all items-center text-sm text-customBrown">
-          <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" class="w-[16px] h-[16px] fill-current">
-            <path d="m12,0C5.383,0,0,5.383,0,12s5.383,12,12,12,12-5.383,12-12S18.617,0,12,0Zm-.091,15.419c-.387.387-.896.58-1.407.58s-1.025-.195-1.416-.585l-2.782-2.696,1.393-1.437,2.793,2.707,5.809-5.701,1.404,1.425-5.793,5.707Z"/>
-          </svg>
-          <span translate="no">Added</span>
+        <p class="price-js font-bold "><span translate="no">$</span>${product.getPrice('single')}</p>
+        <div class="relative w-full">
+          <!-- Add to Basket Button -->
+          <button data-day="${product.day || ''}" data-product-id="${id}" class="js-add-meal-button js-add-meal-button-${id} flex w-full text-sm justify-center button-primary px-auto py-1 transition-opacity duration-300 ${addButtonClass}">
+              Add
+          </button>
+          <!-- Quantity Controls (Initially Hidden) -->
+          <div class="quantity-control-js-${id} flex justify-between items-center rounded-full border-2 bg-gray-200 ${quantityControlClass}">
+            <button data-product-id="${id}" class="subtract-quantity-js rounded-full lg:hover:bg-gray-300 transition-all active:bg-gray-500 w-6 h-6 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current w-[12px] h-[12px]"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
+            </button>
+            <span class="item-quantity-js-${id} bg-white rounded-md text-l font-medium w-10 text-center">${displayedQuantity}</span>
+            <button data-day="${product.day || ''}" data-product-id="${id}" class="add-quantity-js rounded-full lg:hover:bg-gray-200 transition-all active:bg-gray-300 w-6 h-6 flex items-center justify-center text-l">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current w-[12px] h-[12px]"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
+            </button>
+          </div>
         </div>
-        <button data-product-id="${id}" data-day="${product.day || ''}" class="js-add-to-cart-button button-secondary rounded-full w-fit">
-          <svg xmlns="http://www.w3.org/2000/svg" class="fill-current h-[24px] w-[24px]" viewBox="0 0 24 24">
-            <path d="M23.297,9.034c-.57-.657-1.396-1.034-2.267-1.034h-.086C20.445,3.506,16.625,0,12,0S3.555,3.506,3.056,8h-.056c-.87,0-1.695,.377-2.266,1.034S-.093,10.562,.03,11.425l1.061,7.424c.42,2.937,2.974,5.151,5.94,5.151h9.969c2.966,0,5.52-2.215,5.94-5.151l1.061-7.424c.123-.862-.134-1.733-.704-2.391ZM12,2c3.52,0,6.441,2.613,6.928,6H5.072c.487-3.387,3.408-6,6.928-6Zm10.021,9.142l-1.061,7.424c-.28,1.958-1.982,3.435-3.96,3.435H7.031c-1.979,0-3.681-1.477-3.96-3.435l-1.061-7.424c-.042-.291,.042-.574,.234-.797,.193-.223,.461-.345,.755-.345H21.03c.294,0,.562,.122,.756,.345,.192,.223,.276,.506,.234,.797Zm-9.021,1.858v6c0,.553-.447,1-1,1s-1-.447-1-1v-6c0-.553,.447-1,1-1s1,.447,1,1Zm5,0v6c0,.553-.447,1-1,1s-1-.447-1-1v-6c0-.553,.447-1,1-1s1,.447,1,1Zm-10,0v6c0,.553-.447,1-1,1s-1-.447-1-1v-6c0-.553,.447-1,1-1s1,.447,1,1Z"/>
-          </svg>
-        </button>
       </div>
     </div>
   </div>`;
   return productCard;
+}
+
+export function showAddedToBasketNotification(productCard) {
+  // Create the notification element
+  const notification = document.createElement('div');
+  notification.textContent = 'Added to basket';
+  notification.style.cssText = `
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    background-color: #4CAF50;
+    color: white;
+    width: 160px;
+    padding: 10px;
+    padding-inline: auto;
+    border-radius: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+  `;
+
+  // Ensure the product card can handle the overflow without scrollbar
+  const originalOverflow = productCard.style.overflow;
+  productCard.style.overflow = 'hidden';
+
+  // Add the notification to the product card
+  productCard.appendChild(notification);
+
+  // Trigger the animation to show the notification
+  requestAnimationFrame(() => {
+    notification.style.opacity = '1';
+    notification.style.transform = 'translateX(-50%) translateY(0)';
+  });
+
+  // Hide and remove the notification after a delay
+  setTimeout(() => {
+    notification.style.opacity = '0';
+    notification.style.transform = 'translateX(-50%) translateY(-20px)';
+
+    // Remove the element and restore original overflow after the transition
+    setTimeout(() => {
+      productCard.removeChild(notification);
+      productCard.style.overflow = originalOverflow;
+    }, 300);
+  }, 2000);
+}
+
+export function revertToAddButton(productId) {
+  let button = document.querySelector(`.js-add-meal-button-${productId}`);
+  let quantityControls = document.querySelector(`.quantity-control-js-${productId}`);
+  quantityControls.classList.add("hidden");
+  button.classList.remove("hidden");
+}
+
+export function revertQuantityControl(productId) {
+  let button = document.querySelector(`.js-add-meal-button-${productId}`);
+  let quantityControls = document.querySelector(`.quantity-control-js-${productId}`);
+  quantityControls.classList.remove("hidden");
+  button.classList.add("hidden");
 }
 
 export let products = [];

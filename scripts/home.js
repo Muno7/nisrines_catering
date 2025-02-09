@@ -1,6 +1,7 @@
 import { products, loadProducts, productCardHTML, renderProductOverlay } from "../data/products.js";
-import { updateCartQuantity, addToCartEventListeners } from "../data/cart.js";
+import { updateCartQuantity, addButtonEventListeners, subtractQuantityEventListeners, addQuantityEventListeners } from "../data/cart.js";
 import { addToFavoriteEventListeners } from "../data/favorites.js";
+import { appendOverlayDiv } from "./utils/overlay.js";
 
 async function loadHomePage() {
   try {
@@ -9,6 +10,7 @@ async function loadHomePage() {
     console.log('unexpected error')
   }
   renderPopularMealsGrid();
+  appendOverlayDiv();
   renderProductOverlay();
 }
 
@@ -25,8 +27,14 @@ function renderPopularMealsGrid() {
     container.innerHTML = html;
   });
 
-  const addToCartButtonElement = document.querySelectorAll(".js-add-to-cart-button");
-  addToCartEventListeners(addToCartButtonElement);
+  const addButtonElements = document.querySelectorAll(".js-add-meal-button");
+  addButtonEventListeners(addButtonElements);
+
+  const subtractQuantityElements = document.querySelectorAll(".subtract-quantity-js");
+  subtractQuantityEventListeners(subtractQuantityElements);
+
+  const addQuantityElements = document.querySelectorAll(".add-quantity-js"); 
+  addQuantityEventListeners(addQuantityElements);
 
   const addToFavoriteButtonElement = document.querySelectorAll(".js-add-to-favorite-button");
   addToFavoriteEventListeners(addToFavoriteButtonElement);

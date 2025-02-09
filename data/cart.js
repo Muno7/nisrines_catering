@@ -1,4 +1,5 @@
 import { showFriendlyNotification } from '../scripts/utils/day.js';
+import { revertToAddButton, revertQuantityControl, showAddedToBasketNotification } from './products.js';
 
 class Cart {
   cartItems;
@@ -17,26 +18,20 @@ class Cart {
   }
 
   getCartItem(productId, portion) {
-    let matchProduct;
-    this.cartItems.forEach((product) => {
-      if (product.productId === productId && product.portion === portion) {
-        matchProduct = product;
-      }
-    });
-    return matchProduct;
+    return this.cartItems.find(
+      (item) => item.productId === productId && item.portion === portion
+    );
   }
 
   #loadFromStorage() {
     this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey)) || [];
     if (this.cartItems.length > 0) {
-      this.day = this.cartItems[0].day; // Set the day based on the first item in the cart
+      // Set the cart's day based on the first product with a day
+      const firstProductWithDay = this.cartItems.find((item) => item.day);
+      this.day = firstProductWithDay ? firstProductWithDay.day : null;
     } else {
       this.day = null;
     }
-  }
-
-  _testHookLoadFromStorage() {
-    return this.#loadFromStorage();
   }
 
   saveToStorage() {
@@ -44,15 +39,11 @@ class Cart {
   }
 
   calculateCartQuantity() {
-    let totalQuantity = 0;
-    this.cartItems.forEach((item) => {
-      totalQuantity += item.quantity;
-    });
-    return totalQuantity;
+    return this.cartItems.reduce((total, item) => total + item.quantity, 0);
   }
 
   updateQuantity(productId, portion, newQuantity) {
-    let matchProduct = this.getCartItem(productId, portion);
+    const matchProduct = this.getCartItem(productId, portion);
     if (matchProduct) {
       matchProduct.quantity = newQuantity;
       this.saveToStorage();
@@ -60,73 +51,80 @@ class Cart {
   }
 
   addToCartOverlay(productId, productDay) {
+    return this.#addToCart(productId, productDay, '.overlay-product-quantity');
+  }
+
+  addToBasket(productId, productDay) {
+    return this.#addToCart(productId, productDay, null);
+  }
+
+  #addToCart(productId, productDay, quantitySelector) {
     const currentDay = this.day;
-    if (currentDay && productDay && currentDay !== productDay) {
+
+    // Allow products without a day to always be added
+    if (!productDay) {
+      console.log('Adding product without a day.');
+    } else if (currentDay && productDay && currentDay !== productDay) {
+      // Prevent adding products with a mismatched day
       showFriendlyNotification(currentDay, productDay);
-      return;
+      return false;
     }
     if (!this.day && productDay) {
-      this.day = productDay; // Set the day based on the first product added
+      this.day = productDay;
     }
-    const selectorElement = document.querySelector(`.overlay-product-quantity`);
-    const quantity = Number(selectorElement.textContent);
+    const quantity = quantitySelector
+      ? Number(document.querySelector(quantitySelector).textContent)
+      : 1;
     const family = document.querySelector('.family-portion-button');
     const portion = family.classList.contains('active') ? 'family' : 'single';
+    // Find or create the cart item
     let productIdMatch = this.getCartItem(productId, portion);
     if (productIdMatch) {
       productIdMatch.quantity += quantity;
     } else {
       this.cartItems.push({
         productId,
-        quantity: quantity,
-        portion: portion,
-        day: this.day
+        quantity,
+        portion,
+        day: productDay || null, // Use null for products without a day
       });
     }
+    // Update the UI and save to storage
     updateCartQuantity();
     this.saveToStorage();
     renderAddedMessage(document.querySelector('.overlay-added-to-cart'));
+    return true;
   }
 
-  addToCartCard(productId, productDay) {
-    const currentDay = this.day;
-    if (currentDay && productDay && currentDay !== productDay) {
-      showFriendlyNotification(currentDay, productDay);
-      return;
-    }
-
-    if (!this.day && productDay) {
-      this.day = productDay; // Set the day based on the first product added
-    }
-
-    let productIdMatch = this.getCartItem(productId, 'single');
-    const quantity = 1;
-    if (productIdMatch) {
-      productIdMatch.quantity += quantity;
-    } else {
-      this.cartItems.push({
-        productId,
-        quantity: quantity,
-        portion: 'single',
-        day: productDay
-      });
+  removeFromBasket(productId, portion) {
+    const cartItem = this.getCartItem(productId, portion);
+    if (cartItem) {
+      cartItem.quantity -= 1;
+      if (cartItem.quantity < 1) {
+        this.deleteItem(productId);
+        revertToAddButton(productId);
+      }
     }
     this.saveToStorage();
-    renderAddedMessage(document.querySelector(`.js-added-to-cart-${productId}`))
   }
 
   deleteItem(productId) {
-    let productMatchIndex = -1;
-    this.cartItems.forEach((item, index) => {
-      if (item.productId === productId) {
-        productMatchIndex = index;
-      }
-    });
+    const productMatchIndex = this.cartItems.findIndex(
+      (item) => item.productId === productId
+    );
     if (productMatchIndex !== -1) {
       this.cartItems.splice(productMatchIndex, 1);
-      if (this.cartItems.length === 0) {
-        this.day = null; // Reset the day if the cart is empty
+
+      // Check if the cart still contains items with the current day
+      if (this.day) {
+        const hasRemainingItemsWithDay = this.cartItems.some(
+          (item) => item.day === this.day
+        );
+        if (!hasRemainingItemsWithDay) {
+          this.day = null; // Reset the cart's day if no matching items remain
+        }
       }
+
       this.saveToStorage();
     }
   }
@@ -134,7 +132,12 @@ class Cart {
 
 export function updateCartQuantity() {
   let totalQuantity = cart.calculateCartQuantity();
-  document.querySelector(".js-cart-quantity").innerHTML = totalQuantity;
+  const basketQuantity = document.querySelector(".js-cart-quantity")
+  basketQuantity.innerHTML = totalQuantity;
+  basketQuantity.classList.add('quantity-changed');
+  setTimeout(() => {
+    basketQuantity.classList.remove('quantity-changed');
+  }, 500);
 }
 
 let timeoutState = new Map();
@@ -153,13 +156,53 @@ export function renderAddedMessage(messageElement) {
   timeoutState.set(messageElement, timeoutId);
 }
 
-export function addToCartEventListeners(buttonElement) {
-  buttonElement.forEach((button) => {
+function updateQuantityDisplay(productId) {
+  const quantityElement = document.querySelector(`.item-quantity-js-${productId}`);
+  const cartItem = cart.getCartItem(productId, 'single')
+  if (cartItem) {
+    quantityElement.textContent = cartItem.quantity;
+  } else {
+    quantityElement.textContent = 0;
+  }
+}
+
+export function addButtonEventListeners(addButtonElements) {
+  addButtonElements.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const { productId, day } = button.dataset;
+      console.log(day)
+      const productContainer = document.querySelector(`.product-container-js-${productId}`);
+      const isAdded = cart.addToBasket(productId, day);
+      if (isAdded) { 
+        revertQuantityControl(productId) 
+        showAddedToBasketNotification(productContainer);
+        updateQuantityDisplay(productId);
+        updateCartQuantity();
+      } 
+    });
+  });
+}
+
+export function subtractQuantityEventListeners(subtractQuantityElements) {
+  subtractQuantityElements.forEach(button => {
     button.addEventListener("click", (event) => {
       event.stopPropagation();
       const { productId } = button.dataset;
-      const productDay = button.getAttribute('data-day'); // Get the day from the button attribute
-      cart.addToCartCard(productId, productDay);
+      cart.removeFromBasket(productId, 'single');
+      updateQuantityDisplay(productId);
+      updateCartQuantity();
+    });
+  });
+}
+
+export function addQuantityEventListeners(addQuantityElements) {
+  addQuantityElements.forEach(button => {
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const { productId, day } = button.dataset;
+      cart.addToBasket(productId, day);
+      updateQuantityDisplay(productId);
       updateCartQuantity();
     });
   });

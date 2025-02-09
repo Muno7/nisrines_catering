@@ -64,6 +64,15 @@ header {
   }
 }
 
+@keyframes quantityPulse {
+  0%, 100% { padding: 2px 6px; }
+  50% { padding: 4px 8px; }
+}
+
+.js-cart-quantity.quantity-changed {
+  animation: quantityPulse 0.5s ease-in-out;
+}
+
 .button-primary {
   background-color: var(--lightGray);
   color: white;
