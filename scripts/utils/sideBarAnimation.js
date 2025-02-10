@@ -1,4 +1,3 @@
-
 function toggleHambugerMenu() {
     const hamburgerButton = document.getElementById('hamburger-button');
     hamburgerButton.addEventListener('click', function show(event) {
