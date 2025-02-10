@@ -1,7 +1,8 @@
-import { products, loadProducts, productCardHTML, renderProductOverlay } from "../data/products.js";
+import { products, loadProducts, productCardHTML} from "../data/products.js";
 import { updateCartQuantity, addButtonEventListeners, subtractQuantityEventListeners, addQuantityEventListeners } from "../data/cart.js";
 import { addToFavoriteEventListeners } from "../data/favorites.js";
 import { appendOverlayDiv } from "./utils/overlay.js";
+import { renderProductOverlay } from "./utils/overlay.js";
 
 async function loadMenuPage() {
   try {
@@ -16,7 +17,6 @@ async function loadMenuPage() {
 }
 
 function makeMenuLinksActive() {
-  updateCartQuantity();
   const menuLinks = document.querySelectorAll('.menu-links a');
   menuLinks.forEach(link => {
     link.addEventListener('click', (event) => {
@@ -115,6 +115,7 @@ function renderMenuGrid() {
 
   const addToFavoriteButtonElement = document.querySelectorAll(".js-add-to-favorite-button");
   addToFavoriteEventListeners(addToFavoriteButtonElement);
+  updateCartQuantity();
 }
 
 

@@ -1,7 +1,7 @@
-import { products, loadProducts, productCardHTML, renderProductOverlay } from "../data/products.js";
+import { products, loadProducts, productCardHTML } from "../data/products.js";
 import { updateCartQuantity, addButtonEventListeners, subtractQuantityEventListeners, addQuantityEventListeners } from "../data/cart.js";
 import { addToFavoriteEventListeners } from "../data/favorites.js";
-import { appendOverlayDiv } from "./utils/overlay.js";
+import { appendOverlayDiv, renderProductOverlay } from "./utils/overlay.js";
 
 async function loadHomePage() {
   try {
@@ -15,7 +15,6 @@ async function loadHomePage() {
 }
 
 function renderPopularMealsGrid() {
-  updateCartQuantity();
   const container = document.querySelector('.products-container');
   let html = '';
   products.forEach(product => {
@@ -38,6 +37,8 @@ function renderPopularMealsGrid() {
 
   const addToFavoriteButtonElement = document.querySelectorAll(".js-add-to-favorite-button");
   addToFavoriteEventListeners(addToFavoriteButtonElement);
+
+  updateCartQuantity();
 }
 
 function initSlideshow() {

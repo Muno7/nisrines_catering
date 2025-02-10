@@ -35,7 +35,7 @@ export function renderOrderSummary() {
     const { productId, quantity, portion } = item;
     const product = getProduct(productId);
     if (!isProductAvailable(product)) {
-      cart.deleteItem(productId);
+      cart.deleteItem(productId, portion);
       return '';
     }
     const { image, name } = product;
@@ -77,7 +77,7 @@ export function renderOrderSummary() {
                             </button>
                           </div>
                         </div>
-                        <button class="delete-quantity-link js-delete-link-${productId} js-delete-link text-red-500 hover:text-red-700 lg:absolute bottom-4 right-4" data-product-id="${productId}">
+                        <button class="delete-quantity-link js-delete-link text-red-500 hover:text-red-700 lg:absolute bottom-4 right-4" data-product-id="${productId}" data-portion="${portion}">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                           </svg>
@@ -121,8 +121,8 @@ export function renderOrderSummary() {
   const deleteLinksElements = document.querySelectorAll(".js-delete-link");
   deleteLinksElements.forEach((link) => {
     link.addEventListener("click", () => {
-      const { productId } = link.dataset;
-      cart.deleteItem(productId);
+      const { productId, portion } = link.dataset;
+      cart.deleteItem(productId, portion);
       renderOrderSummary();
       updateTotalPrice();
       updatePlaceOrderButton();
