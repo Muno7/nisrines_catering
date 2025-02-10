@@ -1,5 +1,5 @@
 import { showFriendlyNotification } from '../scripts/utils/day.js';
-import { revertToAddButton, revertQuantityControl, showAddedToBasketNotification } from './products.js';
+import { showAddedToBasketNotification, revertToAddButton, revertQuantityControl  } from '../scripts/utils/addButtonAnimations.js';
 
 class Cart {
   cartItems;
@@ -50,15 +50,7 @@ class Cart {
     }
   }
 
-  addToCartOverlay(productId, productDay) {
-    return this.#addToCart(productId, productDay, '.overlay-product-quantity');
-  }
-
-  addToBasket(productId, productDay) {
-    return this.#addToCart(productId, productDay, null);
-  }
-
-  #addToCart(productId, productDay, quantitySelector) {
+  addToBasket(productId, productDay, portion) {
     const currentDay = this.day;
 
     // Allow products without a day to always be added
@@ -72,19 +64,14 @@ class Cart {
     if (!this.day && productDay) {
       this.day = productDay;
     }
-    const quantity = quantitySelector
-      ? Number(document.querySelector(quantitySelector).textContent)
-      : 1;
-    const family = document.querySelector('.family-portion-button');
-    const portion = family.classList.contains('active') ? 'family' : 'single';
     // Find or create the cart item
     let productIdMatch = this.getCartItem(productId, portion);
     if (productIdMatch) {
-      productIdMatch.quantity += quantity;
+      productIdMatch.quantity += 1;
     } else {
       this.cartItems.push({
         productId,
-        quantity,
+        quantity: 1,
         portion,
         day: productDay || null, // Use null for products without a day
       });
@@ -92,7 +79,6 @@ class Cart {
     // Update the UI and save to storage
     updateCartQuantity();
     this.saveToStorage();
-    renderAddedMessage(document.querySelector('.overlay-added-to-cart'));
     return true;
   }
 
@@ -101,16 +87,16 @@ class Cart {
     if (cartItem) {
       cartItem.quantity -= 1;
       if (cartItem.quantity < 1) {
-        this.deleteItem(productId);
-        revertToAddButton(productId);
+        this.deleteItem(productId, portion);
+        revertToAddButton(productId, portion);
       }
     }
     this.saveToStorage();
   }
 
-  deleteItem(productId) {
+  deleteItem(productId, portion) {
     const productMatchIndex = this.cartItems.findIndex(
-      (item) => item.productId === productId
+      (item) => item.productId === productId && item.portion === portion
     );
     if (productMatchIndex !== -1) {
       this.cartItems.splice(productMatchIndex, 1);
@@ -140,29 +126,13 @@ export function updateCartQuantity() {
   }, 500);
 }
 
-let timeoutState = new Map();
-
-export function renderAddedMessage(messageElement) {
-  if (timeoutState.has(messageElement)) {
-    clearTimeout(timeoutState.get(messageElement));
-  }
-  messageElement.classList.add("opacity-1");
-  messageElement.classList.remove("opacity-0");
-  const timeoutId = setTimeout(() => {
-    messageElement.classList.remove("opacity-1");
-    messageElement.classList.add("opacity-0");
-    timeoutState.delete(messageElement);
-  }, 1000);
-  timeoutState.set(messageElement, timeoutId);
-}
-
-function updateQuantityDisplay(productId) {
+export function updateCardQuantityDisplay(productId) {
   const quantityElement = document.querySelector(`.item-quantity-js-${productId}`);
   const cartItem = cart.getCartItem(productId, 'single')
   if (cartItem) {
     quantityElement.textContent = cartItem.quantity;
   } else {
-    quantityElement.textContent = 0;
+    quantityElement.textContent = 1;
   }
 }
 
@@ -171,13 +141,12 @@ export function addButtonEventListeners(addButtonElements) {
     button.addEventListener("click", (event) => {
       event.stopPropagation();
       const { productId, day } = button.dataset;
-      console.log(day)
-      const productContainer = document.querySelector(`.product-container-js-${productId}`);
-      const isAdded = cart.addToBasket(productId, day);
+      const productContainer = document.querySelector(`.image-container-js-${productId}`);
+      const isAdded = cart.addToBasket(productId, day, 'single');
       if (isAdded) { 
-        revertQuantityControl(productId) 
+        revertQuantityControl(productId);
         showAddedToBasketNotification(productContainer);
-        updateQuantityDisplay(productId);
+        updateCardQuantityDisplay(productId);
         updateCartQuantity();
       } 
     });
@@ -190,7 +159,7 @@ export function subtractQuantityEventListeners(subtractQuantityElements) {
       event.stopPropagation();
       const { productId } = button.dataset;
       cart.removeFromBasket(productId, 'single');
-      updateQuantityDisplay(productId);
+      updateCardQuantityDisplay(productId);
       updateCartQuantity();
     });
   });
@@ -201,8 +170,8 @@ export function addQuantityEventListeners(addQuantityElements) {
     button.addEventListener("click", (event) => {
       event.stopPropagation();
       const { productId, day } = button.dataset;
-      cart.addToBasket(productId, day);
-      updateQuantityDisplay(productId);
+      cart.addToBasket(productId, day, 'single');
+      updateCardQuantityDisplay(productId);
       updateCartQuantity();
     });
   });
