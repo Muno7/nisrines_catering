@@ -1,5 +1,6 @@
 import { showFriendlyNotification } from '../scripts/utils/day.js';
-import { showAddedToBasketNotification, revertToAddButton, revertQuantityControl  } from '../scripts/utils/addButtonAnimations.js';
+import { showAddedToBasketNotification, revertToAddButton, revertQuantityControl, showRemovedFromBasketNotification  } from '../scripts/utils/addButtonAnimations.js';
+import { isOverlayOpen } from '../scripts/utils/overlay.js';
 
 class Cart {
   cartItems;
@@ -89,6 +90,11 @@ class Cart {
       if (cartItem.quantity < 1) {
         this.deleteItem(productId, portion);
         revertToAddButton(productId, portion);
+        if (isOverlayOpen()) {
+          showRemovedFromBasketNotification(document.querySelector(`.remove-from-basket-message-js`));
+        } else {
+          showRemovedFromBasketNotification(document.querySelector(`.image-container-js-${productId}`));
+        }
       }
     }
     this.saveToStorage();

@@ -4,6 +4,10 @@ import { favorite } from "../../data/favorites.js";
 import { formatCurrency } from "./money.js";
 import { showAddedToBasketNotification, revertQuantityControl } from "./addButtonAnimations.js";
 
+export function isOverlayOpen() {
+  return document.getElementById('overlay').classList.contains('show');
+}
+
 export function appendOverlayDiv() {
   document.getElementById('overlay').innerHTML = `
         <div class="relative bg-white rounded-xl shadow-lg w-full max-w-[360px] h-[90vh] max-h-[700px] md:max-w-[720px] md:h-[85vh] flex flex-col md:flex-row overflow-hidden">
@@ -14,10 +18,10 @@ export function appendOverlayDiv() {
           </svg>
         </button>
         <!-- Image Section -->
-        <div class="show-message-js relative w-full md:w-1/2 h-[40vh] md:h-full">
+        <div class="show-message-js remove-from-basket-message-js relative w-full md:w-1/2 h-[40vh] md:h-full">
           <img id="overlay-product-image-js" src="" alt="" class="w-full h-full object-cover object-center">
           <!-- Heart button -->
-          <label class="overlay-add-to-favorite-js shadow-md product-heart-button absolute bg-white rounded-full p-2 top-2 right-2 cursor-pointer text-[8px] select-none transition duration-100">
+          <label class="overlay-add-to-favorite-js z-[3] shadow-md product-heart-button absolute bg-white rounded-full p-2 top-2 right-2 cursor-pointer text-[8px] select-none transition duration-100">
             <input id="heart-input-js" class="absolute opacity-0 cursor-pointer h-0 w-0" type="checkbox"/>
             <div class="heart-checkmark w-[24px] h-[24px]">
               <svg viewBox="0 0 256 256">

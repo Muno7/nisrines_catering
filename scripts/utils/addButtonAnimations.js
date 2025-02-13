@@ -1,4 +1,12 @@
 export function showAddedToBasketNotification(productCard) {
+  showBasketNotification(productCard, true);
+}
+
+export function showRemovedFromBasketNotification(productCard) {
+  showBasketNotification(productCard, false);
+}
+
+function showBasketNotification(productCard, isAdding) {
   // Create the notification element
   const notification = document.createElement('div');
   
@@ -14,22 +22,25 @@ export function showAddedToBasketNotification(productCard) {
   
   // Create the text element
   const text = document.createElement('div');
-  text.textContent = 'Added to basket';
+  text.textContent = isAdding ? 'Added to basket' : 'Removed from basket';
 
   // Add icon and text to notification
   notification.appendChild(icon);
   notification.appendChild(text);
+  
+  const backgroundColor = isAdding ? '#E6F0EB' : '#FFEBEE';
+  const textColor = isAdding ? '#005C45' : '#D32F2F';
   
   notification.style.cssText = `
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) translateY(20px);
-    background-color: #E6F0EB;
-    color: #005C45;
+    background-color: ${backgroundColor};
+    color: ${textColor};
     width: 101%;
     height: 101%;
-    padding: 24px 16px;
+    padding: 20px;
     border-radius: 8px;
     font-family: system-ui, -apple-system, sans-serif;
     font-size: 16px;
@@ -37,7 +48,7 @@ export function showAddedToBasketNotification(productCard) {
     text-align: center;
     opacity: 0;
     transition: all 0.3s ease;
-    z-index: 10;
+    z-index: 2;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     pointer-events: none;
     display: flex;
@@ -47,10 +58,16 @@ export function showAddedToBasketNotification(productCard) {
     gap: 12px;
   `;
 
+  text.style.cssText = `
+  max-width: 90%;
+  white-space: normal;
+  word-wrap: break-word;
+`;
+
   icon.style.cssText = `
     width: 40px;
     height: 40px;
-    color: #005C45;
+    color: ${textColor};
     position: relative;
   `;
 
@@ -70,17 +87,6 @@ export function showAddedToBasketNotification(productCard) {
     .icon-circle svg {
       width: 24px;
       height: 24px;
-    }
-    .icon-circle .plus-icon {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      top: -2px;
-      right: -2px;
-      background-color: #005C45;
-      border-radius: 50%;
-      padding: 2px;
-      color: white;
     }
   `;
   document.head.appendChild(styleSheet);

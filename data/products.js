@@ -72,7 +72,7 @@ export function productCardHTML(product) {
       <img class="w-[10rem] h-[10rem] object-cover rounded-[10px]" src="images/salad-6.jpg" alt="">
       ${dayLabel}
     </div>
-      <label data-product-id="${id}" class="js-add-to-favorite-button shadow-sm product-heart-button absolute bg-white rounded-full p-[7px] top-6 right-6 cursor-pointer text-[8px] select-none transition duration-100">
+      <label data-product-id="${id}" class="js-add-to-favorite-button z-[3] shadow-sm product-heart-button absolute bg-white rounded-full p-[7px] top-6 right-6 cursor-pointer text-[8px] select-none transition duration-100">
         <input class="js-heart-input-${id} absolute opacity-0 cursor-pointer h-0 w-0" type="checkbox" ${checked}/>
         <div class="heart-checkmark h-[16px] w-[16px]">
           <svg viewBox="0 0 256 256">
