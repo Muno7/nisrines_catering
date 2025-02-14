@@ -21,6 +21,7 @@ export function appendOverlayDiv() {
         <div class="show-message-js remove-from-basket-message-js relative w-full md:w-1/2 h-[40vh] md:h-full">
           <img id="overlay-product-image-js" src="" alt="" class="w-full h-full object-cover object-center">
           <!-- Heart button -->
+          ${!window.location.href.includes('favorites.html') ? `
           <label class="overlay-add-to-favorite-js z-[3] shadow-md product-heart-button absolute bg-white rounded-full p-2 top-2 right-2 cursor-pointer text-[8px] select-none transition duration-100">
             <input id="heart-input-js" class="absolute opacity-0 cursor-pointer h-0 w-0" type="checkbox"/>
             <div class="heart-checkmark w-[24px] h-[24px]">
@@ -30,6 +31,7 @@ export function appendOverlayDiv() {
               </svg>
             </div>
           </label>
+          ` : ''}
         </div>
         <!-- Content Section -->
         <div class="flex flex-col w-full md:w-1/2 h-[50vh] md:h-full overflow-hidden">

@@ -31,6 +31,10 @@ function showBasketNotification(productCard, isAdding) {
   const backgroundColor = isAdding ? '#E6F0EB' : '#FFEBEE';
   const textColor = isAdding ? '#005C45' : '#D32F2F';
   
+  const isOverlay = productCard.closest('.show-message-js') !== null;
+  const isFavoritesPage = window.location.href.includes('favorites.html');
+  const shouldUseSmallSize = !isOverlay && isFavoritesPage && window.innerWidth < 768;
+  
   notification.style.cssText = `
     position: absolute;
     top: 50%;
@@ -43,7 +47,7 @@ function showBasketNotification(productCard, isAdding) {
     padding: 20px;
     border-radius: 8px;
     font-family: system-ui, -apple-system, sans-serif;
-    font-size: 16px;
+    font-size: ${shouldUseSmallSize ? '12px' : '16px'};
     font-weight: 500;
     text-align: center;
     opacity: 0;
@@ -55,7 +59,7 @@ function showBasketNotification(productCard, isAdding) {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: ${shouldUseSmallSize ? '8px' : '12px'};
   `;
 
   text.style.cssText = `
@@ -65,8 +69,8 @@ function showBasketNotification(productCard, isAdding) {
 `;
 
   icon.style.cssText = `
-    width: 40px;
-    height: 40px;
+    width: ${shouldUseSmallSize ? '32px' : '40px'};
+    height: ${shouldUseSmallSize ? '32px' : '40px'};
     color: ${textColor};
     position: relative;
   `;
@@ -77,16 +81,16 @@ function showBasketNotification(productCard, isAdding) {
     .icon-circle {
       background-color: white;
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: ${shouldUseSmallSize ? '32px' : '40px'};
+      height: ${shouldUseSmallSize ? '32px' : '40px'};
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
     }
     .icon-circle svg {
-      width: 24px;
-      height: 24px;
+      width: ${shouldUseSmallSize ? '20px' : '24px'};
+      height: ${shouldUseSmallSize ? '20px' : '24px'};
     }
   `;
   document.head.appendChild(styleSheet);

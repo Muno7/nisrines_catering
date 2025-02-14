@@ -1,5 +1,5 @@
 import { formatCurrency } from "../scripts/utils/money.js";
-import { addButtonEventListeners, cart, updateCartQuantity, updateCardQuantityDisplay } from "./cart.js";
+import { cart } from "./cart.js";
 import { favorite } from "./favorites.js";
 import { setDayLabel, isProductAvailable } from "../scripts/utils/day.js"
 
