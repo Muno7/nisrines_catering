@@ -3,6 +3,7 @@ import { getProduct } from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
 import { sendOrderConfirmationEmails } from './emailSender.js';
 import { initializePhoneInput } from '../utils/phoneInput.js';
+import { LocationPicker } from "../utils/mapHandler.js";
 
 export function updatePlaceOrderButton() {
   const placeOrderBtn = document.getElementById('place-order-btn');
@@ -55,6 +56,8 @@ function isValidEmail(email) {
 }
 
 export function renderPaymentSummary() {
+  const locationPicker = new LocationPicker('cb2cbfa865a2de46');
+  locationPicker.initialize();
   updatePlaceOrderButton();
   initializePhoneInput();
   const pickupBtn = document.getElementById('pickup-btn');
@@ -134,6 +137,7 @@ export function renderPaymentSummary() {
     } else {
         hideError(phoneNumberInput);
     }
+
     // Validate delivery specifics if delivery is selected
     if (isDelivery) {
       if (!deliveryAreaSelect.value) {
@@ -149,11 +153,19 @@ export function renderPaymentSummary() {
       } else {
           hideError(deliveryAddressInput);
       }
+
+      console.log(locationPicker.hasLocationSelected())
+      if (!locationPicker.hasLocationSelected()) {         
+        showError(document.getElementById('map'), 'Please select a location on the map');         
+        isValid = false;       
+      } else {         
+        hideError(document.getElementById('map'));       
+      }
     }
 
     // Prepare order details
     if (isValid) {
-      const customerAddress = isDelivery ? `<strong>Delivery Address: </strong><a href="https://maps.google.com/?q=${deliveryAddressInput.value}" style="color: #3C4147; text-decoration: underline;">${deliveryAddressInput.value}</a>` : '';
+      const customerAddress = isDelivery ? `<strong>Delivery Address: </strong><a href="https://maps.google.com/?q=${selectedLatLng.lat()},${selectedLatLng.lng()}" style="color: #3C4147; text-decoration: underline;">${deliveryAddressInput.value}</a>` : '';
       const fee = isDelivery ? parseFloat(formatCurrency(deliveryAreaSelect.value)) || 0 : 0;
       updateTotalPrice();
       const subtotal = parseFloat(document.getElementById('subtotal').textContent.slice(1));

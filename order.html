@@ -6,6 +6,9 @@
   <link rel="stylesheet" href="src/header.css">
   <link rel="stylesheet" href="src/general.css">
   <link rel="stylesheet" href="src/order.css">
+  <script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAooAev3zO8Uwg-M9-Y3u6scRodh8GJKeQ&libraries=places">
+  </script>
 </head>
 <body>
   <header class="header-js rounded-b-md bg-white fixed top-0 left-0 w-full z-10 transition-transform duration-200 ease-in-out">
@@ -239,25 +242,11 @@
                 type="text"
                 id="full-name"
                 placeholder="Enter full name"
-                class="w-full p-2 bg-gray-100 rounded-md border focus:ring-2 focus:ring-blue-500 focus:bg-gray-200 transition-colors duration-200"
+                class="w-full p-2 bg-gray-100 rounded-md border focus:ring-2 focus:ring-blue-500 focus:bg-gray-200 focus:outline-none transition-colors duration-200"
                 required
               />
               <div id="full-name-error" class="hidden text-red-500 text-xs mt-1"></div>
             </div>
-            <div>
-              <label for="email-address" class="block text-sm font-medium mb-2">
-                Eamil Address <span class="text-red-500">*</span>
-              </label>
-              <input
-                type="email"
-                id="email-address"
-                placeholder="name@example.com"
-                class="w-full p-2 bg-gray-100 rounded-md border focus:ring-2 focus:ring-blue-500 focus:bg-gray-200 transition-colors duration-200"
-                required
-              />
-              <div id="email-address-error" class="hidden text-red-500 text-xs mt-1"></div>
-            </div>
-
             <div class="w-full">
               <label for="phone-number" class="block text-sm font-medium mb-2">
                 Phone number <span class="text-red-500">*</span>
@@ -281,7 +270,7 @@
                 <input
                   type="tel"
                   id="phone-number"
-                  class="flex-1 min-w-0 p-2 bg-gray-100 rounded-md border focus:ring-2 focus:ring-blue-500 focus:bg-gray-200 transition-colors duration-200"
+                  class="flex-1 min-w-0 p-2 bg-gray-100 rounded-md border focus:ring-2 focus:ring-blue-500 focus:bg-gray-200 focus:outline-none transition-colors duration-200"
                   placeholder="No dashes or spaces"
                   required
                   pattern="[0-9]{8,13}"
@@ -290,9 +279,17 @@
               </div>
               <div id="phone-number-error" class="hidden text-red-500 text-xs mt-1"></div> 
             </div>
+          <div>
+            <label for="customer-notes" class="block text-sm font-medium mb-2">
+              Additional Notes
+            </label>
+            <textarea
+              id="customer-notes"
+              placeholder="Enter any special requests (e.g., less salt, lactose-free)"
+              class="w-full p-2 bg-gray-100 rounded-md border focus:ring-2 focus:ring-blue-500 focus:bg-gray-200 focus:outline-none transition-colors duration-200"
+              rows="2" style="resize: none;"></textarea>
           </div>
         </div>
-      
         <!-- Delivery Information -->
         <div id="delivery-info" class="flex-col gap-4 hidden">
           <h3 class="font-bold text-lg">Delivery Details</h3>
@@ -303,11 +300,19 @@
             <input
               type="text"
               id="delivery-address"
-              placeholder="Enter delivery address"
-              class="w-full p-2 bg-gray-100 rounded-md border focus:ring-2 focus:ring-blue-500 focus:bg-gray-200 transition-colors duration-200"
+              placeholder="Enter the specific address details"
+              class="w-full p-2 bg-gray-100 rounded-md border focus:ring-2 focus:ring-blue-500 focus:bg-gray-200 focus:outline-none transition-colors duration-200"
               required
             />
             <div id="delivery-address-error" class="hidden text-red-500 text-xs mt-1"></div>
+          </div>
+          <!-- Map Section -->
+          <div>
+            <label for="map" class="block text-sm font-medium mb-2">
+              Delivery Map Location <span class="text-red-500">*</span>
+            </label>
+            <div id="map" class="w-full h-[300px] rounded-lg mt-4 overflow-hidden border border-gray-200 shadow-sm"></div>
+            <div id="map-error" class="hidden text-red-500 text-xs mt-1"></div>
           </div>
         </div>
       
