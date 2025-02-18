@@ -60,29 +60,112 @@ export function showFriendlyNotification(currentDay, productDay) {
 export function setDeliveryDateInput() {
   const deliveryInput = document.getElementById('delivery-day');
   
-  // Set minimum date to today
+  // Get today's date at the start of the day (midnight)
   const today = new Date();
-  today.setHours(0, 0, 0, 0); // Reset time to start of day
+  today.setHours(0, 0, 0, 0);
   
-  // Format date to YYYY-MM-DD for input min attribute
-  const minDate = today.toISOString().split('T')[0];
-  deliveryInput.min = minDate;
+  // Set min attribute to today's date
+  const formattedToday = formatDate(today);
+  deliveryInput.setAttribute('min', formattedToday);
   
-  // Validate on change to prevent manual entry of past dates
-  deliveryInput.addEventListener('change', (e) => {
-    const selectedDate = new Date(e.target.value);
-    selectedDate.setHours(0, 0, 0, 0);
+  // Disable Sundays and past dates
+  deliveryInput.addEventListener('input', function() {
+    if (!this.value) return;
     
-    if (selectedDate < today) {
-      deliveryInput.value = ''; // Clear invalid date
-      const errorDiv = document.getElementById('delivery-day-error');
-      errorDiv.textContent = 'Please select a future date';
-      errorDiv.classList.remove('hidden');
-    } else {
-      document.getElementById('delivery-day-error').classList.add('hidden');
+    const selectedDate = new Date(this.value);
+    
+    // Check if selected date is a Sunday
+    if (selectedDate.getDay() === 0) {
+      showError('Delivery is not available on Sundays. Please select another day.');
+      this.value = '';
+      return;
     }
+    
+    // Clear error if date is valid
+    hideError();
   });
-}
+  
+  // Check if cart.day exists as a day name (e.g., "Wednesday")
+  if (typeof cart !== 'undefined' && cart.day) {
+    try {
+      // Convert day name to the next occurrence of that day
+      const nextDayOccurrence = getNextDayOccurrence(cart.day);
+      
+      if (nextDayOccurrence) {
+        // Set the input value and make it readonly
+        const formattedCartDate = formatDate(nextDayOccurrence);
+        deliveryInput.value = formattedCartDate;
+        deliveryInput.setAttribute('readonly', true);
+        deliveryInput.classList.add('bg-gray-300');
+        deliveryInput.classList.remove('bg-gray-100');
+      }
+    } catch (error) {
+      console.error('Error processing cart.day:', error);
+      // Don't set the value if there's an error parsing cart.day
+    }
+  }
+  
+  // Helper function to convert day name to the next occurrence of that day
+  function getNextDayOccurrence(dayName) {
+    const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    const normalizedDayName = dayName.toLowerCase();
+    
+    if (!dayNames.includes(normalizedDayName)) {
+      console.error('Invalid day name:', dayName);
+      return null;
+    }
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const todayDayIndex = today.getDay();
+    const targetDayIndex = dayNames.indexOf(normalizedDayName);
+    
+    // Calculate days to add
+    let daysToAdd = targetDayIndex - todayDayIndex;
+    if (daysToAdd <= 0) {
+      // If the day has already passed this week, get next week's occurrence
+      daysToAdd += 7;
+    }
+    
+    // If the target day is Sunday, find the next non-Sunday
+    if (targetDayIndex === 0) {
+      // Skip to Monday (add 1 more day)
+      daysToAdd = (daysToAdd % 7) + 1;
+    }
+    
+    const nextOccurrence = new Date(today);
+    nextOccurrence.setDate(today.getDate() + daysToAdd);
+    
+    return nextOccurrence;
+  }
+  
+  // Helper function to format date as YYYY-MM-DD
+  function formatDate(date) {
+    if (!(date instanceof Date) || isNaN(date.getTime())) {
+      console.error('Invalid date in formatDate:', date);
+      return '';
+    }
+    
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}`;
+  }
+  
+  // Helper functions for error handling
+  function showError(message) {
+    const errorElement = document.getElementById('delivery-day-error');
+    errorElement.textContent = message;
+    errorElement.classList.remove('hidden');
+  }
+  
+  function hideError() {
+    const errorElement = document.getElementById('delivery-day-error');
+    errorElement.classList.add('hidden');
+  }
+} 
 
 export function createOrderDate() {
   return new Date().toLocaleDateString('en-US', {
