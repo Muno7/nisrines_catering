@@ -74,7 +74,7 @@ header {
 }
 
 .button-primary {
-  background-color: var(--lightGray);
+  background-color: var(--darkGray);
   color: white;
   font-weight: bold;
   padding-left: 1.5rem;
@@ -158,3 +158,27 @@ footer {
   color: white;
 }
 
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Add these new styles */
+.feature-card {
+  opacity: 0;
+  transform: translateY(2rem);
+}
+
+.feature-card.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feature-card {
+    opacity: 1;
+    transform: translateY(0);
+    transition: none;
+  }
+}
