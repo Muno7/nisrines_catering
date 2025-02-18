@@ -9,6 +9,7 @@
   <script async
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAooAev3zO8Uwg-M9-Y3u6scRodh8GJKeQ&libraries=places">
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
   <header class="header-js rounded-b-md bg-white fixed top-0 left-0 w-full z-10 transition-transform duration-200 ease-in-out">
@@ -232,7 +233,7 @@
       
         <!-- Contact Information -->
         <div class="flex flex-col gap-4">
-          <h3 id="contact-info-title" class="font-bold text-lg">Contact Information</h3>
+          <h3 id="contact-info-title" class="font-bold text-lg">Customer Details</h3>
           <div class="flex flex-col gap-4">
             <div>
               <label for="full-name" class="block text-sm font-medium mb-2">
@@ -249,7 +250,7 @@
             </div>
             <div class="w-full">
               <label for="phone-number" class="block text-sm font-medium mb-2">
-                Phone number <span class="text-red-500">*</span>
+                Phone Number <span class="text-red-500">*</span>
               </label>
               <div class="flex min-w-0 gap-2 relative phone-input-group">
                 <!-- Country Code Dropdown -->
@@ -289,6 +290,18 @@
               class="w-full p-2 bg-gray-100 rounded-md border focus:ring-2 focus:ring-blue-500 focus:bg-gray-200 focus:outline-none transition-colors duration-200"
               rows="2" style="resize: none;"></textarea>
           </div>
+        <div>
+          <label for="delivery-day" class="block text-sm font-medium mb-2">
+            Delivery/Pick-up Date <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="date"
+            id="delivery-day"
+            class="w-full p-2 bg-gray-100 rounded-md border focus:ring-2 focus:ring-blue-500 focus:bg-gray-200 focus:outline-none transition-colors duration-200"
+            required
+          />
+          <div id="delivery-day-error" class="hidden text-red-500 text-xs mt-1"></div>
+        </div>
         </div>
         <!-- Delivery Information -->
         <div id="delivery-info" class="flex-col gap-4 hidden">

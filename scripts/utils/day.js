@@ -1,3 +1,5 @@
+import { cart } from "../../data/cart";
+
 function formatDay(day) {
   return day.charAt(0).toUpperCase() + day.slice(1);
 }
@@ -52,5 +54,54 @@ export function showFriendlyNotification(currentDay, productDay) {
   closeButton.addEventListener('click', () => {
     notificationOverlay.classList.remove('show');
     document.body.style.overflow = '';
+  });
+}
+
+export function setDeliveryDateInput() {
+  const deliveryInput = document.getElementById('delivery-day');
+  
+  // Set minimum date to today
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Reset time to start of day
+  
+  // Format date to YYYY-MM-DD for input min attribute
+  const minDate = today.toISOString().split('T')[0];
+  deliveryInput.min = minDate;
+  
+  // Validate on change to prevent manual entry of past dates
+  deliveryInput.addEventListener('change', (e) => {
+    const selectedDate = new Date(e.target.value);
+    selectedDate.setHours(0, 0, 0, 0);
+    
+    if (selectedDate < today) {
+      deliveryInput.value = ''; // Clear invalid date
+      const errorDiv = document.getElementById('delivery-day-error');
+      errorDiv.textContent = 'Please select a future date';
+      errorDiv.classList.remove('hidden');
+    } else {
+      document.getElementById('delivery-day-error').classList.add('hidden');
+    }
+  });
+}
+
+export function createOrderDate() {
+  return new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true
+  });
+}
+
+export function formatDeliveryDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
   });
 }

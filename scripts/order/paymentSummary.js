@@ -1,9 +1,92 @@
 import { cart } from '../../data/cart.js';
 import { getProduct } from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
-import { sendOrderConfirmationEmails } from './emailSender.js';
 import { initializePhoneInput } from '../utils/phoneInput.js';
 import { LocationPicker } from "../utils/mapHandler.js";
+import { setDeliveryDateInput, formatDeliveryDate, createOrderDate, isProductAvailable } from '../utils/day.js';
+import { generateOrderNumber, uploadPDFToFirebase } from '../utils/uploadPDF.js';
+
+function showOverlay(title, message) {
+  document.getElementById('overlayTitle').textContent = title;
+  document.getElementById('overlayMessage').textContent = message;
+  document.getElementById('overlay').classList.add('flex');
+  document.getElementById('overlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function hideOverlay() {
+  document.getElementById('overlay').classList.remove('flex');
+  document.getElementById('overlay').classList.add('hidden');
+  const title = document.getElementById('overlayTitle').textContent
+  document.body.style.overflow = '';
+  if (title === 'Order Placed Successfully!') {
+    window.location.href = 'index.html';
+  }
+}
+
+function setButtonLoading(isLoading) {
+  const button = document.getElementById('place-order-btn');
+  if (isLoading) {
+      button.disabled = true;
+      button.innerHTML = `
+          <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Processing...
+      `;
+  } else {
+      button.disabled = false;
+      button.textContent = 'Place Order';
+  }
+}
+
+function validateCartItems(cartItems) {
+  for (const item of cartItems) {
+    const product = getProduct(item.productId);
+    if (!isProductAvailable(product)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function isValidDeliveryDate(date) {
+  const selectedDate = new Date(date);
+  selectedDate.setHours(0, 0, 0, 0);
+  
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  return selectedDate >= today;
+}
+
+async function placeOrder(orderData) {
+  document.getElementById('overlayCloseBtn').addEventListener('click', hideOverlay);
+  try {
+      if (!validateCartItems(orderData.items)) {
+          showOverlay('Error', 'Some items in your cart are no longer available');
+          return;
+      }
+      // Generate and upload PDF
+      const { downloadURL } = await uploadPDFToFirebase(orderData);
+      // Send to WhatsApp
+      const whatsappMessage = `Hello Nisrine! 👋\nI just placed an order via your website.\nHere's my order details: ${downloadURL}`;
+      const whatsappLink = `https://wa.me/46761734098?text=${encodeURIComponent(whatsappMessage)}`;
+      window.open(whatsappLink, '_blank');
+
+  } catch (error) {
+      console.error('Error placing order:', error);
+      showOverlay('Error', 'There was an error placing your order. Please try again.');
+  } finally {
+      setButtonLoading(false);
+      cart.resetCart();
+      showOverlay(
+        'Order Placed Successfully!', 
+        'Thank you for your order! We will process it shortly and get back to you through WhatsApp.'
+      );
+  }
+}
 
 export function updatePlaceOrderButton() {
   const placeOrderBtn = document.getElementById('place-order-btn');
@@ -50,16 +133,12 @@ function isValidPhoneNumber(phone) {
   return phoneRegex.test(phone);
 }
 
-function isValidEmail(email) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
 export function renderPaymentSummary() {
   const locationPicker = new LocationPicker('cb2cbfa865a2de46');
   locationPicker.initialize();
   updatePlaceOrderButton();
   initializePhoneInput();
+  setDeliveryDateInput();
   const pickupBtn = document.getElementById('pickup-btn');
   const deliveryBtn = document.getElementById('delivery-btn');
   const deliveryAreaContainer = document.getElementById('delivery-area-container');
@@ -69,7 +148,7 @@ export function renderPaymentSummary() {
   const deliveryAreaSelect = document.getElementById('delivery-area');
   const placeOrderBtn = document.getElementById('place-order-btn');
   const fullNameInput = document.getElementById('full-name');
-  const emailInput = document.getElementById('email-address');
+  const notesInput = document.getElementById('customer-notes')
   const phoneNumberInput = document.getElementById('phone-number');
   const deliveryAddressInput = document.getElementById('delivery-address');
 
@@ -107,7 +186,8 @@ export function renderPaymentSummary() {
     updateTotalPrice();
   });
 
-  function handlePlaceOrder(e) {
+  async function handlePlaceOrder(e) {
+    setButtonLoading(true)
     e.preventDefault();
     let isValid = true;
     const isDelivery = !deliveryAreaContainer.classList.contains('hidden');
@@ -118,22 +198,16 @@ export function renderPaymentSummary() {
     if (!fullNameInput.value.trim()) {
       showError(fullNameInput, 'Please enter your full name');
       isValid = false;
+      setButtonLoading(false);
     } else {
         hideError(fullNameInput);
-    }
-
-    // Validate email
-    if (!emailInput.value.trim() || !isValidEmail(emailInput.value)) {
-      showError(emailInput, 'Please enter a valid email address');
-      isValid = false;
-    } else {
-        hideError(emailInput);
     }
 
     // Validate phone number
     if (!phoneNumberInput.value.trim() || !isValidPhoneNumber(phoneNumber)) {
       showError(phoneNumberInput, 'Please enter a valid phone number');
       isValid = false;
+      setButtonLoading(false);
     } else {
         hideError(phoneNumberInput);
     }
@@ -143,6 +217,7 @@ export function renderPaymentSummary() {
       if (!deliveryAreaSelect.value) {
         showError(deliveryAreaSelect, 'Please select a delivery area');
         isValid = false;
+        setButtonLoading(false);
       } else {
           hideError(deliveryAreaSelect);
       }
@@ -150,40 +225,59 @@ export function renderPaymentSummary() {
       if (!deliveryAddressInput.value.trim()) {
           showError(deliveryAddressInput, 'Please enter a delivery address');
           isValid = false;
+          setButtonLoading(false);
       } else {
           hideError(deliveryAddressInput);
       }
 
-      console.log(locationPicker.hasLocationSelected())
       if (!locationPicker.hasLocationSelected()) {         
         showError(document.getElementById('map'), 'Please select a location on the map');         
-        isValid = false;       
+        isValid = false;
+        setButtonLoading(false);
       } else {         
         hideError(document.getElementById('map'));       
       }
     }
 
+    // Validate delivery date
+    const deliveryDayInput = document.getElementById('delivery-day');
+    if (!deliveryDayInput.value) {
+      showError(deliveryDayInput, 'Please select a delivery date');
+      isValid = false;
+      setButtonLoading(false);
+    } else if (!isValidDeliveryDate(deliveryDayInput.value)) {
+      showError(deliveryDayInput, 'Delivery date cannot be in the past');
+      isValid = false;
+      setButtonLoading(false);
+    } else {
+      hideError(deliveryDayInput);
+    }
+
     // Prepare order details
     if (isValid) {
-      const customerAddress = isDelivery ? `<strong>Delivery Address: </strong><a href="https://maps.google.com/?q=${selectedLatLng.lat()},${selectedLatLng.lng()}" style="color: #3C4147; text-decoration: underline;">${deliveryAddressInput.value}</a>` : '';
+      const customerAddress = isDelivery ? deliveryAddressInput.value : '';
       const fee = isDelivery ? parseFloat(formatCurrency(deliveryAreaSelect.value)) || 0 : 0;
       updateTotalPrice();
       const subtotal = parseFloat(document.getElementById('subtotal').textContent.slice(1));
       const total = parseFloat(document.getElementById('total').textContent.slice(1));
 
       // Send order confirmation emails
-      sendOrderConfirmationEmails({
+      await placeOrder({
+        orderNumber: await generateOrderNumber(),
+        orderDate: createOrderDate(),
+        deliveryDate: formatDeliveryDate(deliveryDayInput.value),
         customerName: fullNameInput.value,
         customerContact: phoneNumber,
         customerAddress: customerAddress,
-        customerEmail: emailInput.value,
+        googleMapsLink: locationPicker.getGoogleMapsLink(),
+        customerNotes: notesInput.value,
+        items: cart.cartItems,
         deliveryFee: fee,
         subtotal: subtotal,
         totalPrice: total
       });
     }
   }
-
 
   pickupBtn.addEventListener('click', () => toggleDeliveryOption(false));
   deliveryBtn.addEventListener('click', () => toggleDeliveryOption(true));
