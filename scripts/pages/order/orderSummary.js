@@ -1,8 +1,8 @@
 import { getProduct } from "../../../models/products.js";
 import { cart } from "../../../models/cart.js";
 import { formatCurrency } from "../../utils/money.js";
-import { updatePlaceOrderButton, updateTotalPrice } from "./paymentSummary.js";
-import { setDayLabel, isProductAvailable } from "../../utils/day.js";
+import { renderPaymentSummary, updatePlaceOrderButton, updateTotalPrice } from "./paymentSummary.js";
+import { setDayLabel, isProductAvailable, setDeliveryDateInput } from "../../utils/day.js";
 
 function setPortionLabel (portion) {
   return portion === 'single' ? `
@@ -125,6 +125,7 @@ export function renderOrderSummary() {
       cart.deleteItem(productId, portion);
       renderOrderSummary();
       updateTotalPrice();
+      setDeliveryDateInput();
       updatePlaceOrderButton();
     });
   });

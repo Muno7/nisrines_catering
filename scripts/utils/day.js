@@ -60,6 +60,12 @@ export function showFriendlyNotification(currentDay, productDay) {
 export function setDeliveryDateInput() {
   const deliveryInput = document.getElementById('delivery-day');
   
+  // Reset the delivery input value
+  deliveryInput.value = '';
+  deliveryInput.removeAttribute('readonly');
+  deliveryInput.classList.remove('bg-gray-300');
+  deliveryInput.classList.add('bg-gray-100');
+  
   // Get today's date at the start of the day (midnight)
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -120,7 +126,10 @@ export function setDeliveryDateInput() {
     
     const todayDayIndex = today.getDay();
     const targetDayIndex = dayNames.indexOf(normalizedDayName);
-    
+    // If it's the same day as today, use today's date
+    if (todayDayIndex === targetDayIndex) {
+      return today;
+    }
     // Calculate days to add
     let daysToAdd = targetDayIndex - todayDayIndex;
     if (daysToAdd <= 0) {
