@@ -133,6 +133,10 @@ function isValidPhoneNumber(phone) {
   return phoneRegex.test(phone);
 }
 
+function scrollToElement(element) {
+  element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
 export function renderPaymentSummary() {
   const locationPicker = new LocationPicker('cb2cbfa865a2de46');
   locationPicker.initialize();
@@ -197,6 +201,7 @@ export function renderPaymentSummary() {
     // Validate full name
     if (!fullNameInput.value.trim()) {
       showError(fullNameInput, 'Please enter your full name');
+      scrollToElement(fullNameInput);
       isValid = false;
       setButtonLoading(false);
     } else {
@@ -206,6 +211,7 @@ export function renderPaymentSummary() {
     // Validate phone number
     if (!phoneNumberInput.value.trim() || !isValidPhoneNumber(phoneNumber)) {
       showError(phoneNumberInput, 'Please enter a valid phone number');
+      scrollToElement(phoneNumberInput);
       isValid = false;
       setButtonLoading(false);
     } else {
@@ -216,6 +222,7 @@ export function renderPaymentSummary() {
     if (isDelivery) {
       if (!deliveryAreaSelect.value) {
         showError(deliveryAreaSelect, 'Please select a delivery area');
+        scrollToElement(deliveryAreaSelect);
         isValid = false;
         setButtonLoading(false);
       } else {
@@ -224,6 +231,7 @@ export function renderPaymentSummary() {
 
       if (!deliveryAddressInput.value.trim()) {
           showError(deliveryAddressInput, 'Please enter a delivery address');
+          scrollToElement(deliveryAddressInput);
           isValid = false;
           setButtonLoading(false);
       } else {
@@ -232,6 +240,7 @@ export function renderPaymentSummary() {
 
       if (!locationPicker.hasLocationSelected()) {         
         showError(document.getElementById('map'), 'Please select a location on the map');         
+        scrollToElement(document.getElementById('map'));       
         isValid = false;
         setButtonLoading(false);
       } else {         
@@ -243,10 +252,12 @@ export function renderPaymentSummary() {
     const deliveryDayInput = document.getElementById('delivery-day');
     if (!deliveryDayInput.value) {
       showError(deliveryDayInput, 'Please select a delivery date');
+      scrollToElement(deliveryDayInput);
       isValid = false;
       setButtonLoading(false);
     } else if (!isValidDeliveryDate(deliveryDayInput.value)) {
       showError(deliveryDayInput, 'Delivery date cannot be in the past');
+      scrollToElement(deliveryDayInput);
       isValid = false;
       setButtonLoading(false);
     } else {
