@@ -156,7 +156,7 @@ export async function generatePDF(orderData) {
   // Table headers
   pdf.setFontSize(10);
   const headers = ["Item", "Portion", "Quantity", "Price"];
-  const itemColumnWidth = (pageWidth - margin * 2) * 0.4; // 40% for item column
+  const itemColumnWidth = (pageWidth - margin * 2) * 0.5; // 50% for item column
   const otherColumnWidth = (pageWidth - margin * 2 - itemColumnWidth) / 3; // Evenly divide the rest
   
   // Draw header line
@@ -184,20 +184,27 @@ export async function generatePDF(orderData) {
       } else if (product.priceCents) {
         price = formatCurrency(product.priceCents);
       }
-      pdf.text(product.name, margin, y, { maxWidth: itemColumnWidth - 5 });
+      pdf.text(product.name, margin, y, { maxWidth: itemColumnWidth });
       pdf.text(item.portion, pageWidth - margin - 2 * otherColumnWidth, y);
       pdf.text(item.quantity.toString(), pageWidth - margin - otherColumnWidth, y);
       const priceText = `$${price}`;
       pdf.text(priceText, pageWidth - margin - pdf.getTextWidth(priceText), y);
       
       // Draw line after each item
-      y += 5;
+      y += 10;
       pdf.line(margin, y, pageWidth - margin, y);
       y += 15;
   });
   y += 10;
 
+
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(12);
+  pdf.text("Payment Summary", margin, y);
+  y += 15;
   // Totals - Right aligned
+  pdf.setFontSize(10);
+  pdf.setFont("helvetica", "normal");
   const subtotalText = `$${orderData.subtotal.toFixed(2)}`;
   const deliveryFeeText = `$${orderData.deliveryFee.toFixed(2)}`;
   const totalText = `$${orderData.totalPrice.toFixed(2)}`;
