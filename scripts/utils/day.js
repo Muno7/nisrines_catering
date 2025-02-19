@@ -1,4 +1,4 @@
-import { cart } from "../../data/cart";
+import { cart } from "../../models/cart.js";
 
 function formatDay(day) {
   return day.charAt(0).toUpperCase() + day.slice(1);

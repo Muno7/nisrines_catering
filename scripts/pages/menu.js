@@ -1,10 +1,11 @@
-import { products, loadProducts, productCardHTML} from "../data/products.js";
-import { updateCartQuantity, addButtonEventListeners, subtractQuantityEventListeners, addQuantityEventListeners } from "../data/cart.js";
-import { addToFavoriteEventListeners } from "../data/favorites.js";
-import { appendOverlayDiv } from "./utils/overlay.js";
-import { renderProductOverlay } from "./utils/overlay.js";
+import { products, loadProducts, productCardHTML} from "../../models/products.js";
+import { updateCartQuantity, addButtonEventListeners, subtractQuantityEventListeners, addQuantityEventListeners } from "../../models/cart.js";
+import { addToFavoriteEventListeners } from "../../models/favorites.js";
+import { appendOverlayDiv, renderProductOverlay } from "../utils/overlay.js";
+import { setSiderbarNavigation } from "../utils/animations/sideBarAnimation.js";
 
 async function loadMenuPage() {
+  setSiderbarNavigation();
   try {
     await loadProducts();
   } catch (error) {

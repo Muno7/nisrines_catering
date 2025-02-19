@@ -1,5 +1,5 @@
-import { formatCurrency } from "./money";
-import { getProduct } from "../../data/products";
+import { formatCurrency } from "../utils/money.js";
+import { getProduct } from "../../models/products.js";
 
 export async function generatePDF(orderData) {
   const { jsPDF } = window.jspdf;

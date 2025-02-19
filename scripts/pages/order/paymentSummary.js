@@ -1,10 +1,10 @@
-import { cart } from '../../data/cart.js';
-import { getProduct } from '../../data/products.js';
-import { formatCurrency } from '../utils/money.js';
-import { initializePhoneInput } from '../utils/phoneInput.js';
-import { LocationPicker } from "../utils/mapHandler.js";
-import { setDeliveryDateInput, formatDeliveryDate, createOrderDate, isProductAvailable } from '../utils/day.js';
-import { generateOrderNumber, uploadPDFToFirebase } from '../utils/uploadPDF.js';
+import { cart } from '../../../models/cart.js';
+import { getProduct } from '../../../models/products.js';
+import { formatCurrency } from '../../utils/money.js';
+import { initializePhoneInput } from '../../services/phoneInput.js';
+import { LocationPicker } from "../../services/mapHandler.js";
+import { setDeliveryDateInput, formatDeliveryDate, createOrderDate, isProductAvailable } from '../../utils/day.js';
+import { generateOrderNumber, uploadPDFToFirebase } from '../../services/uploadPdf.js';
 
 function showOverlay(title, message) {
   document.getElementById('overlayTitle').textContent = title;

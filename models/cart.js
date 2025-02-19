@@ -1,5 +1,5 @@
 import { showFriendlyNotification } from '../scripts/utils/day.js';
-import { showAddedToBasketNotification, revertToAddButton, revertQuantityControl, showRemovedFromBasketNotification  } from '../scripts/utils/addButtonAnimations.js';
+import { showAddedToBasketNotification, revertToAddButton, revertQuantityControl, showRemovedFromBasketNotification } from '../scripts/utils/animations/addButtonAnimations.js';
 import { isOverlayOpen } from '../scripts/utils/overlay.js';
 
 class Cart {

@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously } from 'firebase/auth';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { getFirestore, collection, doc } from 'firebase/firestore';
-import { generatePDF } from './pdfGenerator';
+import { generatePDF } from './pdfGenerator.js';
 
 export async function generateOrderNumber() {
   const app = await initializeFirebase();

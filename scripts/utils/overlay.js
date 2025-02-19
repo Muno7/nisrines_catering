@@ -1,8 +1,8 @@
-import { cart, updateCartQuantity } from "../../data/cart.js";
-import { getProduct } from "../../data/products.js";
-import { favorite } from "../../data/favorites.js";
+import { cart, updateCartQuantity } from "../../models/cart.js";
+import { getProduct } from "../../models/products.js";
+import { favorite } from "../../models/favorites.js";
 import { formatCurrency } from "./money.js";
-import { showAddedToBasketNotification, revertQuantityControl } from "./addButtonAnimations.js";
+import { showAddedToBasketNotification, revertQuantityControl } from "./animations/addButtonAnimations.js";
 
 export function isOverlayOpen() {
   return document.getElementById('overlay').classList.contains('show');
@@ -112,7 +112,7 @@ export function renderProductOverlay() {
     // Set overlay content
     overlayTitle.textContent = product.name;
     overlayPrice.innerHTML = `<span translate="no">$</span>${product.getPrice('single')}`;
-    overlayImage.src = 'images/salad-6.jpg';
+    overlayImage.src = '../../assets/images/salad-6.jpg';
     if(overlayHeartInput) {
       overlayHeartInput.checked = favorite.favoriteItems.some((item) => item.productId === productId);
     }
