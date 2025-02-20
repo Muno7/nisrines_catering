@@ -1,6 +1,8 @@
-import { favorite, favoritesEmptyHTML } from '../../models/favorites.js';
+import { favorite } from '../../models/favorites.js';
+import { favoritesEmptyHTML } from '../handlers/favoriteHandler.js';
 import { loadProducts, getProduct } from '../../models/products.js';
-import { addButtonEventListeners, cart, addQuantityEventListeners, subtractQuantityEventListeners, updateCartQuantity } from '../../models/cart.js';
+import { addButtonEventListeners, addQuantityEventListeners, subtractQuantityEventListeners, updateCartQuantity } from '../handlers/cartHandler.js';
+import { cart } from '../../models/cart.js';
 import { setDayLabel, isProductAvailable } from '../utils/day.js';
 import { appendOverlayDiv, renderProductOverlay } from "../utils/overlay.js";
 import { setSiderbarNavigation } from '../utils/animations/sideBarAnimation.js';
@@ -18,6 +20,7 @@ async function loadFavoritePage() {
 }
 
 function renderFavoriteItems() {
+  favorite.removeUndefinedProducts()
   let favoriteHtml = "";  
   favorite.favoriteItems.forEach((item) => {
     const { productId } = item;

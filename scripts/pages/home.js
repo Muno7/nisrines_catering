@@ -1,6 +1,7 @@
-import { products, loadProducts, productCardHTML } from "../../models/products.js";
-import { updateCartQuantity, addButtonEventListeners, subtractQuantityEventListeners, addQuantityEventListeners } from "../../models/cart.js";
-import { addToFavoriteEventListeners } from "../../models/favorites.js";
+import { products, loadProducts } from "../../models/products.js";
+import { productCardHTML } from "../handlers/productHandler.js";
+import { updateCartQuantity, addButtonEventListeners, subtractQuantityEventListeners, addQuantityEventListeners } from '../handlers/cartHandler.js';
+import { addToFavoriteEventListeners } from "../handlers/favoriteHandler.js";
 import { appendOverlayDiv, renderProductOverlay } from "../utils/overlay.js";
 import { setSiderbarNavigation } from "../utils/animations/sideBarAnimation.js"
 import { initSlideshow } from "../utils/animations/slideShow.js";

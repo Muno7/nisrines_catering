@@ -1,7 +1,7 @@
-import { renderOrderSummary } from "./order/orderSummary.js";
-import { renderPaymentSummary } from "./order/paymentSummary.js";
+import { renderOrderSummary } from "../handlers/order/orderSummary.js";
+import { renderPaymentSummary } from "../handlers/order/paymentSummary.js";
 import { loadProducts } from "../../models/products.js";
-import { updateFavoriteQuantity } from "../../models/favorites.js";
+import { updateFavoriteQuantity } from "../handlers/favoriteHandler.js";
 import { setSiderbarNavigation } from "../utils/animations/sideBarAnimation.js";
 
 async function loadOrderPage() {

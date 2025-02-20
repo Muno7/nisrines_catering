@@ -1,4 +1,5 @@
-import { cart, updateCartQuantity } from "../../models/cart.js";
+import { cart } from "../../models/cart.js";
+import { updateCartQuantity } from '../handlers/cartHandler.js';
 import { getProduct } from "../../models/products.js";
 import { favorite } from "../../models/favorites.js";
 import { formatCurrency } from "./money.js";
