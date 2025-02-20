@@ -4,7 +4,7 @@ import uuid
 import os
 
 # The API URL for Google Sheets
-SHEET_API_URL = "https://sheets.googleapis.com/v4/spreadsheets/1yAdvMR9Jc_j33R-muYeG6myXa_xmVV6ojaUZ0Kyl-ug/values/Sheet1!A1:D30?key=AIzaSyDHv_7NjVpHz7lIzg8Udl-nvYq5yNHpDfU"
+SHEET_API_URL = "https://sheets.googleapis.com/v4/spreadsheets/1yAdvMR9Jc_j33R-muYeG6myXa_xmVV6ojaUZ0Kyl-ug/values/Sheet1!A1:D30?key=AIzaSyD52LWaOJD3grSJuupuetz0PhDieW-Tw0g"
 # The path where your current JSON file is located
 current_dir = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_FILE_PATH = os.path.join(current_dir, "products.json")
@@ -48,7 +48,7 @@ def process_data(data):
                 "single": float(single_portion)*100,
                 "family": float(family_portion)*100,
             },
-            "image": f"images/{name.strip().lower().replace(' ', '-')}",
+            "image": f"{name.strip().lower().replace(' ', '-')}.jpg",
         }
         products.append(product)
 
@@ -92,3 +92,4 @@ def update_products():
 
 # Run the update process
 update_products()
+

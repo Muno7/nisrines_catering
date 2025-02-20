@@ -79,59 +79,83 @@
   {
     "id": "26bae67c-22bf-4e37-ac6b-137706afab3d",
     "name": "Fattoush",
-    "price": { "single": 350, "family": 1000 },
+    "price": {
+      "single": 350,
+      "family": 1000
+    },
     "image": "images/salad-1.jpg",
     "category": "salad"
   },
   {
     "id": "9e16a290-f2fd-40dc-ab7f-02c9da8bce6b",
     "name": "Tabbouli",
-    "price": { "single": 350, "family": 1000 },
+    "price": {
+      "single": 350,
+      "family": 1000
+    },
     "image": "images/salad-2.jpg",
     "category": "salad"
   },
   {
     "id": "6e9a2bf8-eb8b-479e-84e9-28190b4f3315",
     "name": "Crab Salad",
-    "price": { "single": 600, "family": 1500 },
+    "price": {
+      "single": 600,
+      "family": 1500
+    },
     "image": "images/salad-3.jpg",
     "category": "salad"
   },
   {
     "id": "70baca8f-e295-4285-9b75-3ff6b66b1409",
     "name": "Chicken Caesar Salad",
-    "price": { "single": 650, "family": 1600 },
+    "price": {
+      "single": 650,
+      "family": 1600
+    },
     "image": "images/salad-4.jpg",
     "category": "salad"
   },
   {
     "id": "3adb7bf3-6a5e-41f0-b237-b17f77ad73a7",
     "name": "Caesar Salad",
-    "price": { "single": 500, "family": 1300 },
+    "price": {
+      "single": 500,
+      "family": 1300
+    },
     "image": "images/salad-5.jpg",
     "category": "salad"
   },
   {
     "id": "bcf531f3-7b56-4d45-9bbb-5b086e02f97c",
     "name": "Strawberry Chicken Salad",
-    "price": { "single": 750, "family": 1900 },
+    "price": {
+      "single": 750,
+      "family": 1900
+    },
     "image": "images/salad-6.jpg",
     "category": "salad"
   },
   {
     "id": "71471f9a-b469-4cb7-a814-36c0ae29ab4d",
     "name": "Tuna Pasta Salad",
-    "price": { "single": 650, "family": 1700 },
+    "price": {
+      "single": 650,
+      "family": 1700
+    },
     "image": "images/salad-7.jpg",
     "category": "salad"
   },
   {
     "id": "b2016f4e-2518-4c60-a9dc-e23eea741546",
     "name": "Beetroot Rocca Salad",
-    "price": { "single": 650, "family": 1700 },
+    "price": {
+      "single": 650,
+      "family": 1700
+    },
     "image": "images/salad-8.jpg",
     "category": "salad"
-  },  
+  },
   {
     "id": "92f18224-6bae-45a2-9d48-cd71bdbf25da",
     "name": "Marinated Chicken Served with Wedges and Veggies",
@@ -805,190 +829,190 @@
     "category": "desserts"
   },
   {
-    "id": "59b20f31-c779-475f-b0b1-de3562a6836d",
+    "id": "73609bbe-690e-4641-b2bc-fdb2f38b68ad",
     "day": "monday",
+    "name": "Pumpkin soup",
+    "category": "soup",
+    "price": {
+      "single": 350.0,
+      "family": 1050.0
+    },
+    "image": "pumpkin-soup.jpg"
+  },
+  {
+    "id": "a26f3c85-c077-4da6-9562-207a336344c6",
+    "day": "tuesday",
+    "name": "Chicken vermicelli soup",
+    "category": "soup",
+    "price": {
+      "single": 250.0,
+      "family": 750.0
+    },
+    "image": "chicken-vermicelli-soup.jpg"
+  },
+  {
+    "id": "6bb4a343-06ea-4aa2-995a-f46cba18ff74",
+    "day": "wednesday",
     "name": "Yellow lentil soup",
     "category": "soup",
     "price": {
       "single": 250.0,
       "family": 750.0
     },
-    "image": "images/yellow-lentil-soup"
+    "image": "yellow-lentil-soup.jpg"
   },
   {
-    "id": "e7604355-ce0c-47c7-a7a4-022a9dd78dcf",
-    "day": "tuesday",
-    "name": "Vegetable soup",
-    "category": "soup",
-    "price": {
-      "single": 350.0,
-      "family": 1000.0
-    },
-    "image": "images/vegetable-soup"
-  },
-  {
-    "id": "de3d0fa5-6910-487f-adaf-89bb765c6060",
-    "day": "wednesday",
-    "name": "Pumpkin soup",
-    "category": "soup",
-    "price": {
-      "single": 350.0,
-      "family": 1000.0
-    },
-    "image": "images/pumpkin-soup"
-  },
-  {
-    "id": "3c8ae40c-41b6-4b8d-8a45-04007ee66d0b",
+    "id": "82ddadf1-5ac0-4b23-9c4a-806e9e852310",
     "day": "thursday",
-    "name": "Chicken vermicelli soup",
-    "category": "soup",
-    "price": {
-      "single": 250.0,
-      "family": 750.0
-    },
-    "image": "images/chicken-vermicelli-soup"
-  },
-  {
-    "id": "da686aa6-52ab-4591-bc4b-cbe5271e30d0",
-    "day": "friday",
-    "name": "Onion soup",
+    "name": "Broccoli soup",
     "category": "soup",
     "price": {
       "single": 400.0,
       "family": 1200.0
     },
-    "image": "images/onion-soup"
+    "image": "broccoli-soup.jpg"
   },
   {
-    "id": "c577708a-ed23-40ee-a8e9-9dcbae327759",
-    "day": "saturday",
-    "name": "Chicken vermicelli soup",
+    "id": "21cadaf5-97f8-4974-9c51-9b68d7d76719",
+    "day": "friday",
+    "name": "Yellow lentil soup",
     "category": "soup",
     "price": {
       "single": 250.0,
       "family": 750.0
     },
-    "image": "images/chicken-vermicelli-soup"
+    "image": "yellow-lentil-soup.jpg"
   },
   {
-    "id": "3f7b0c3a-34ee-475c-b80a-816fd18614ce",
+    "id": "fa8fa1a6-30af-4573-b40a-cae991e50bf6",
+    "day": "saturday",
+    "name": "Yellow lentil soup",
+    "category": "soup",
+    "price": {
+      "single": 250.0,
+      "family": 750.0
+    },
+    "image": "yellow-lentil-soup.jpg"
+  },
+  {
+    "id": "75a39fbc-8770-4fa9-b2f4-0c22fedd8e71",
     "day": "monday",
-    "name": "Shish barak served with rice",
+    "name": "Chicken freekeh",
     "category": "plat-du-jour",
     "price": {
-      "single": 900.0,
-      "family": 2700.0
+      "single": 1000.0,
+      "family": 3000.0
     },
-    "image": "images/shish-barak-served-with-rice"
+    "image": "chicken-freekeh.jpg"
   },
   {
-    "id": "279ca91f-f28f-4c37-a34c-2a3f5e2e92ff",
+    "id": "6c7c023d-43c6-4161-9617-58f26a4f6908",
     "day": "monday",
-    "name": "Peas stew served with rice",
-    "category": "plat-du-jour",
-    "price": {
-      "single": 900.0,
-      "family": 2700.0
-    },
-    "image": "images/peas-stew-served-with-rice"
-  },
-  {
-    "id": "fff0408c-bc5b-4dfc-ae9c-6da34779553d",
-    "day": "tuesday",
-    "name": "Creamy chicken pesto served with rice",
-    "category": "plat-du-jour",
-    "price": {
-      "single": 1100.0,
-      "family": 3300.0
-    },
-    "image": "images/creamy-chicken-pesto-served-with-rice"
-  },
-  {
-    "id": "3c9ade0f-4b6c-4a8a-bb24-68f05c937649",
-    "day": "tuesday",
     "name": "Kafta in tahini sauce served with rice",
     "category": "plat-du-jour",
     "price": {
       "single": 1100.0,
       "family": 3300.0
     },
-    "image": "images/kafta-in-tahini-sauce-served-with-rice"
+    "image": "kafta-in-tahini-sauce-served-with-rice.jpg"
   },
   {
-    "id": "bd6a0f12-ca5f-444c-bfd3-4edd21111048",
-    "day": "wednesday",
-    "name": "Spinach stew served with rice",
+    "id": "6d947ecc-5873-4db5-b884-179db5c177e9",
+    "day": "tuesday",
+    "name": "Chicken curry served with rice",
     "category": "plat-du-jour",
     "price": {
       "single": 1000.0,
       "family": 3000.0
     },
-    "image": "images/spinach-stew-served-with-rice"
+    "image": "chicken-curry-served-with-rice.jpg"
   },
   {
-    "id": "a2c8951c-22c7-4e9a-8611-793ba50474ce",
-    "day": "wednesday",
-    "name": "Chicken sweet & sour served with rice",
-    "category": "plat-du-jour",
-    "price": {
-      "single": 1000.0,
-      "family": 3000.0
-    },
-    "image": "images/chicken-sweet-&-sour-served-with-rice"
-  },
-  {
-    "id": "869131e0-a2c2-4647-b41e-3bd9cd9412ea",
-    "day": "thursday",
-    "name": "Mushroom with meat / Hummos / baked potato",
+    "id": "71e62304-61f7-4ef6-9c73-7345386bd470",
+    "day": "tuesday",
+    "name": "Beef stroganoff served with rice",
     "category": "plat-du-jour",
     "price": {
       "single": 1200.0,
       "family": 3600.0
     },
-    "image": "images/mushroom-with-meat-/-hummos-/-baked-potato"
+    "image": "beef-stroganoff-served-with-rice.jpg"
   },
   {
-    "id": "a9887cb3-2b02-490e-b989-84e3b38511a1",
+    "id": "ae9f7e6e-f79b-4609-9ec5-9840f50160bb",
+    "day": "wednesday",
+    "name": "Ablama (in yogurt sauce) served with rice",
+    "category": "plat-du-jour",
+    "price": {
+      "single": 1000.0,
+      "family": 3000.0
+    },
+    "image": "ablama-(in-yogurt-sauce)-served-with-rice.jpg"
+  },
+  {
+    "id": "3eac1044-7e20-4722-9958-de5679f7fca8",
+    "day": "wednesday",
+    "name": "Stuffed vine leaves in olive oil",
+    "category": "plat-du-jour",
+    "price": {
+      "single": 900.0,
+      "family": 2700.0
+    },
+    "image": "stuffed-vine-leaves-in-olive-oil.jpg"
+  },
+  {
+    "id": "e2298c10-c6c0-4f29-85f2-688ffaa26bb4",
     "day": "thursday",
+    "name": "Stuffed Cabbage",
+    "category": "plat-du-jour",
+    "price": {
+      "single": 900.0,
+      "family": 2700.0
+    },
+    "image": "stuffed-cabbage.jpg"
+  },
+  {
+    "id": "fa7a3b1c-c7ae-41a8-a1bb-72c52f7d1bed",
+    "day": "thursday",
+    "name": "Loubieh blahme served with rice",
+    "category": "plat-du-jour",
+    "price": {
+      "single": 900.0,
+      "family": 2700.0
+    },
+    "image": "loubieh-blahme-served-with-rice.jpg"
+  },
+  {
+    "id": "e4784262-8c7c-491a-b05f-7ba0f447b784",
+    "day": "friday",
+    "name": "Creamy chicken lemon served with rice",
+    "category": "plat-du-jour",
+    "price": {
+      "single": 1200.0,
+      "family": 3600.0
+    },
+    "image": "creamy-chicken-lemon-served-with-rice.jpg"
+  },
+  {
+    "id": "bb04fab3-7747-434b-ab38-cf0794349cff",
+    "day": "friday",
     "name": "Eggplant Makloubeh",
     "category": "plat-du-jour",
     "price": {
       "single": 1000.0,
       "family": 3000.0
     },
-    "image": "images/eggplant-makloubeh"
+    "image": "eggplant-makloubeh.jpg"
   },
   {
-    "id": "6068c8d6-fad6-4534-aa77-6751d043dfd8",
-    "day": "friday",
-    "name": "Fish Sayedieh",
-    "category": "plat-du-jour",
-    "price": {
-      "single": 1000.0,
-      "family": 3000.0
-    },
-    "image": "images/fish-sayedieh"
-  },
-  {
-    "id": "d5be1a78-7f2d-4732-8a5f-73c9036e727c",
-    "day": "friday",
-    "name": "Stuffed selek in olive oil",
+    "id": "17732979-3276-4cc9-870b-125c58f54723",
+    "day": "saturday",
+    "name": "Beef Potato souffle",
     "category": "plat-du-jour",
     "price": {
       "single": 800.0,
-      "family": 2700.0
+      "family": 2400.0
     },
-    "image": "images/stuffed-selek-in-olive-oil"
-  },
-  {
-    "id": "14fe3aa6-e753-4611-a262-65b399d8c2ef",
-    "day": "saturday",
-    "name": "Chicken escalope served with coleslaw",
-    "category": "plat-du-jour",
-    "price": {
-      "single": 900.0,
-      "family": 2700.0
-    },
-    "image": "images/chicken-escalope-served-with-coleslaw"
+    "image": "beef-potato-souffle.jpg"
   }
 ]
