@@ -1,4 +1,4 @@
-import { getProduct } from "./products";
+import { getProduct } from "./products.js";
 
 class Favorite {
   favoriteItems;

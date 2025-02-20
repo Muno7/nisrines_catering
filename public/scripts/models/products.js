@@ -52,7 +52,7 @@ export let products = [];
 
 export async function loadProducts() {
   try {
-    const response = await fetch('../public/data/products.json');
+    const response = await fetch('../../data/products.json');
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
