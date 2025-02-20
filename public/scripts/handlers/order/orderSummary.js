@@ -1,5 +1,5 @@
-import { getProduct } from "../../../models/products.js";
-import { cart } from "../../../models/cart.js";
+import { getProduct } from "../../models/products.js";
+import { cart } from "../../models/cart.js";
 import { formatCurrency } from "../../utils/money.js";
 import { updatePlaceOrderButton, updateTotalPrice } from "./paymentSummary.js";
 import { setDayLabel, isProductAvailable, setDeliveryDateInput } from "../../utils/day.js";
@@ -55,7 +55,7 @@ export function renderOrderSummary() {
     let html = `<div class="js-cart-item-container js-cart-item-container-${productId} relative bg-white shadow-[0_0_10px_rgba(0,0,0,0.1)] rounded-[10px] overflow-hidden">
                   <div class="flex flex-row gap-2 p-2 lg:gap-4">
                     <div class="relative flex-shrink-0">
-                      <img class="w-[7rem] h-[7rem] lg:w-[10rem] lg:h-[10rem] object-cover rounded-[10px]" src="../../assets/images/${image}" alt="">
+                      <img class="w-[7rem] h-[7rem] lg:w-[10rem] lg:h-[10rem] object-cover rounded-[10px]" src="../../../assets/images/${image}" alt="">
                       ${dayLabel}
                     </div>
                     <div class="flex flex-col justify-between gap-4 w-full lg:py-2 lg:gap-8">

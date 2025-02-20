@@ -1,7 +1,7 @@
-import { showFriendlyNotification } from '../scripts/utils/day.js';
-import { revertToAddButton, showRemovedFromBasketNotification } from '../scripts/utils/animations/addButtonAnimations.js';
-import { isOverlayOpen } from '../scripts/utils/overlay.js';
-import { updateCartQuantity } from '../scripts/handlers/cartHandler.js';
+import { showFriendlyNotification } from '../utils/day.js';
+import { revertToAddButton, showRemovedFromBasketNotification } from '../utils/animations/addButtonAnimations.js';
+import { isOverlayOpen } from '../utils/overlay.js';
+import { updateCartQuantity } from '../handlers/cartHandler.js';
 import { getProduct } from './products.js';
 
 

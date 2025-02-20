@@ -1,5 +1,5 @@
-import { cart } from '../../../models/cart.js';
-import { getProduct } from '../../../models/products.js';
+import { cart } from '../../models/cart.js';
+import { getProduct } from '../../models/products.js';
 import { formatCurrency } from '../../utils/money.js';
 import { initializePhoneInput } from '../../services/phoneInput.js';
 import { LocationPicker } from "../../services/mapHandler.js";

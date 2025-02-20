@@ -1,4 +1,4 @@
-import { cart } from '../../models/cart.js';
+import { cart } from '../models/cart.js';
 import { showAddedToBasketNotification, revertQuantityControl} from '../utils/animations/addButtonAnimations.js';
 
 export function updateCartQuantity() {

@@ -1,4 +1,4 @@
-import { products, loadProducts } from "../../models/products.js";
+import { products, loadProducts } from "../models/products.js";
 import { productCardHTML } from "../handlers/productHandler.js";
 import { updateCartQuantity, addButtonEventListeners, subtractQuantityEventListeners, addQuantityEventListeners } from '../handlers/cartHandler.js';
 import { addToFavoriteEventListeners } from "../handlers/favoriteHandler.js";
