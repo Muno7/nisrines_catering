@@ -113,7 +113,7 @@ export function renderProductOverlay() {
     // Set overlay content
     overlayTitle.textContent = product.name;
     overlayPrice.innerHTML = `<span translate="no">$</span>${product.getPrice('single')}`;
-    overlayImage.src = '../../assets/images/salad-6.jpg';
+    overlayImage.src = '../../public/assets/images/salad-6.jpg';
     if(overlayHeartInput) {
       overlayHeartInput.checked = favorite.favoriteItems.some((item) => item.productId === productId);
     }
