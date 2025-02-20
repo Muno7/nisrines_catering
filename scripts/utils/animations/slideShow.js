@@ -4,7 +4,7 @@ export function initSlideshow() {
   const images = [
     '../../../assets/images/nisrine.jpg',
     window.innerWidth > 1024 ? '../../../assets/images/kitchen_large.jpg' : '../../../assets/images/kitchen_mobile.jpg',
-    '../../../assets/images/salad-6.jpg',
+    '../../../assets/images/strawberry-chicken-salad.jpg',
     '../../../assets/images/nisrine.jpg'
   ];
   
