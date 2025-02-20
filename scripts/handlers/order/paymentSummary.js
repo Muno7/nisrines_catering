@@ -72,7 +72,7 @@ async function placeOrder(orderData) {
       const { downloadURL } = await uploadPDFToFirebase(orderData);
       // Send to WhatsApp
       const whatsappMessage = `Hello Nisrine! 👋\nI just placed an order via your website.\nHere's my order details: ${downloadURL}`;
-      const whatsappLink = `https://wa.me/46761734098?text=${encodeURIComponent(whatsappMessage)}`;
+      const whatsappLink = `https://wa.me/96171226934?text=${encodeURIComponent(whatsappMessage)}`;
       window.open(whatsappLink, '_blank');
 
   } catch (error) {
