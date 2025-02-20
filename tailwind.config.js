@@ -2,6 +2,7 @@
 export default {
   content: [
     "./*.html",
+    "./public/*.html",
     "./src/**/*.{js,ts,jsx,tsx}",
     './scripts/**/*.js'
   ],
