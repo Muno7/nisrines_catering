@@ -11,20 +11,20 @@ export async function generateOrderNumber() {
 }
 
 async function initializeFirebase() {
-  const response = await fetch('/api/firebase'); // Call the serverless function
-  if (!response.ok) {
-      throw new Error('Failed to initialize Firebase');
+  try {
+      const response = await fetch('../../../api/firebase.js');
+      if (!response.ok) {
+          throw new Error('Failed to initialize Firebase');
+      }
+      const { app } = await response.json();
+      const auth = getAuth(app);
+      await signInAnonymously(auth);
+  } catch (error) {
+      console.error('Error initializing Firebase:', error);
+      throw error; // Rethrow or handle as needed
   }
-  const { app } = await response.json(); // Get the app instance from the response
-  const auth = getAuth(app);
-  await signInAnonymously(auth)
-  .then(() => {
-      console.log('Signed in anonymously');
-  })
-  .catch((error) => {
-      console.error('Error signing in:', error);
-  });
 
+  console.log('Firebase initialized', app);
   return app;
 }
 
