@@ -13,7 +13,7 @@ Welcome to Nisrine's Kitchen – a web application developed for a local food bu
 - Browse an up-to-date menu of delicious home-cooked meals.
 - Place orders seamlessly with an efficient, automated order process.
 - Receive professional PDF receipts.
-- Enjoy a user-friendly experience that caters to non-technical customers and fiting client needs by redirecting them to WhatsApp for order confirmations.
+- Enjoy a user-friendly experience that caters to non-technical customers and fitting client needs by redirecting them to WhatsApp for order confirmations.
 - Responsive design ensures smooth interaction on both mobile and desktop devices.
 
 ## Technologies Used
