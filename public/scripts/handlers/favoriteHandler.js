@@ -1,4 +1,4 @@
-import { favorite } from "../models/favorites";
+import { favorite } from "../models/favorites.js";
 
 export function updateFavoriteQuantity() {
   let totalQuantity = favorite.calculateFavoriteQuantity();

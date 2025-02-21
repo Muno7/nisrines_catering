@@ -51,7 +51,7 @@ function renderFavoriteItems() {
                           <p class="price-js text-lg font-semibold"><span translate="no">$</span>${product.getPrice('single')}</p>
                           <div class="relative w-full">
                             <!-- Add to Basket Button -->
-                            <button data-day="${product.day || ''}" data-product-id="${productId}" class="js-add-meal-button js-add-meal-button-${productId} flex w-full text-sm justify-center button-primary px-auto py-1 rounded-xl transition-opacity duration-300 ${addButtonClass}">
+                            <button data-day="${product.day || ''}" data-product-id="${productId}" class="js-add-meal-button js-add-meal-button-${productId} flex items-center h-7 w-24 text-sm justify-center button-primary px-auto py-1 rounded-xl transition-opacity duration-300 ${addButtonClass}">
                                 Add
                             </button>
                             <!-- Quantity Controls (Initially Hidden) -->

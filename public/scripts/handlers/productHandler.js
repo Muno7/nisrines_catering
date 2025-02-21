@@ -43,11 +43,11 @@ export function productCardHTML(product) {
         <p class="price-js font-bold "><span translate="no">$</span>${product.getPrice('single')}</p>
         <div class="relative w-full">
           <!-- Add to Basket Button -->
-          <button data-day="${product.day || ''}" data-product-id="${id}" class="js-add-meal-button js-add-meal-button-${id} flex w-full text-sm justify-center button-primary px-auto py-1 rounded-xl transition-opacity duration-300 ${addButtonClass}">
+          <button data-day="${product.day || ''}" data-product-id="${id}" class="js-add-meal-button js-add-meal-button-${id} flex h-7 w-full text-sm justify-center items-center button-primary px-auto py-1 rounded-xl transition-opacity duration-300 ${addButtonClass}">
               Add
           </button>
           <!-- Quantity Controls (Initially Hidden) -->
-          <div class="quantity-control-js-${id} flex justify-between items-center rounded-xl border-2 bg-gray-200 ${quantityControlClass}">
+          <div class="quantity-control-js-${id} flex justify-between items-center rounded-xl border-2 bg-gray-200 h-full ${quantityControlClass}">
             <button data-product-id="${id}" class="subtract-quantity-js rounded-full transition-all active:bg-gray-300 w-6 h-6 flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current w-[12px] h-[12px]"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
             </button>
