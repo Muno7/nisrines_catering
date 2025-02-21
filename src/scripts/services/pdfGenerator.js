@@ -21,7 +21,7 @@ export async function generatePDF(orderData) {
   // Load and optimize the image
   const img = new Image();
   img.crossOrigin = "Anonymous";
-  img.src = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-2-iPxbGoSDn53QcaMyZyANZ5WF6mMPNx.png";
+  img.src = "https://nisrineskitchen.vercel.app/assets/icons/logo-2.png";
   await new Promise((resolve, reject) => {
       img.onload = resolve;
       img.onerror = reject;
