@@ -1,4 +1,3 @@
-import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously } from 'firebase/auth';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { getFirestore, collection, doc } from 'firebase/firestore';
@@ -12,17 +11,11 @@ export async function generateOrderNumber() {
 }
 
 async function initializeFirebase() {
-  const firebaseConfig = {
-    apiKey: "AIzaSyDp_kWlfB6S3wyJivzqYZ8_oAqwOH_QFoM",
-    authDomain: "nisrines-kitchen-orders.firebaseapp.com",
-    projectId: "nisrines-kitchen-orders",
-    storageBucket: "nisrines-kitchen-orders.firebasestorage.app",
-    messagingSenderId: "1084877957696",
-    appId: "1:1084877957696:web:52243432c2c841849ccda5"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
+  const response = await fetch('/api/firebase'); // Call the serverless function
+  if (!response.ok) {
+      throw new Error('Failed to initialize Firebase');
+  }
+  const { app } = await response.json(); // Get the app instance from the response
   const auth = getAuth(app);
   await signInAnonymously(auth)
   .then(() => {
