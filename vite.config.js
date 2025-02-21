@@ -13,5 +13,14 @@ export default defineConfig({
         // Add more pages as needed...
       }
     }
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5173', // Replace with your backend server's port
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    }
   }
 })
