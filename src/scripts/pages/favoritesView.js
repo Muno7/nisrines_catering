@@ -39,7 +39,7 @@ function renderFavoriteItems() {
     let html = `<div data-product-id="${productId}" class="js-cart-item-container js-cart-item-container-${productId} product-container relative bg-white shadow-[0_0_10px_rgba(0,0,0,0.1)] rounded-[10px] overflow-hidden">
                   <div class="flex flex-row gap-2 p-2 lg:gap-4">
                     <div class="image-container-js-${productId} relative flex-shrink-0">
-                      <img class="w-[7rem] h-[7rem] lg:w-[10rem] lg:h-[10rem] object-cover rounded-[10px]" src="../../assets/images/${image}" alt="">
+                      <img class="w-[7rem] h-[7rem] lg:w-[10rem] lg:h-[10rem] object-cover rounded-[10px]" src="../../../publiv/assets/images/${image}" alt="">
                       ${dayLabel}
                     </div>
                     <div class="flex flex-col justify-between gap-4 w-full lg:py-2 lg:gap-8">
