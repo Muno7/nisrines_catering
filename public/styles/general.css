@@ -23,8 +23,14 @@ header {
   color: var(--darkGray);
 }
 
-::-webkit-scrollbar {
-  display: none;
+  /* Hide scrollbar for Firefox */
+.overflow-x-auto {
+  scrollbar-width: none; /* Hide scrollbar */
+}
+
+/* Hide scrollbar for other browsers */
+.overflow-x-auto::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari, and Edge */
 }
 
 @layer base {
