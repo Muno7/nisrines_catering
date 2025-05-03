@@ -11,14 +11,16 @@ export async function generateOrderNumber() {
   return orderNumber;
 }
 
+
+
 async function initializeFirebase() {
   const firebaseConfig = {
-    apiKey: "AIzaSyDp_kWlfB6S3wyJivzqYZ8_oAqwOH_QFoM",
-    authDomain: "nisrines-kitchen-orders.firebaseapp.com",
-    projectId: "nisrines-kitchen-orders",
-    storageBucket: "nisrines-kitchen-orders.firebasestorage.app",
-    messagingSenderId: "1084877957696",
-    appId: "1:1084877957696:web:52243432c2c841849ccda5"
+    apiKey: process.env.API_KEY,
+    authDomain: process.env.AUTH_DOMAIN,
+    projectId: process.env.PROJECT_ID,
+    storageBucket: process.env.STORAGE_BUCKET,
+    messagingSenderId: process.env.MESSAGING_SENDER_ID,
+    appId: process.env.APP_ID
   };
 
   // Initialize Firebase
