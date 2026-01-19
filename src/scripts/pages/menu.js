@@ -5,6 +5,9 @@ import { addToFavoriteEventListeners } from "../handlers/favoriteHandler.js";
 import { appendOverlayDiv, renderProductOverlay } from "../utils/overlay.js";
 import { setSiderbarNavigation } from "../utils/animations/sideBarAnimation.js";
 import { setCategoryScrollBehavior } from "../utils/animations/scrollBehavior.js";
+import { renderLayout } from "../components/layout.js";
+
+renderLayout("menu");
 
 async function loadMenuPage() {
   setSiderbarNavigation();

@@ -52,7 +52,7 @@ export function renderOrderSummary() {
       price = formatCurrency(product.priceCents);
     }
     const dayLabel = product.day ? setDayLabel(product.day) : '';
-    let html = `<div class="js-cart-item-container js-cart-item-container-${productId} relative bg-white shadow-[0_0_10px_rgba(0,0,0,0.1)] rounded-[10px] overflow-hidden">
+    let html = `<div class="js-cart-item-container js-cart-item-container-${productId} relative bg-surface border border-muted/30 p-4 rounded-[10px] transition-all duration-500 sm:hover:-translate-y-1 sm:hover:shadow-lg overflow-hidden">
                   <div class="flex flex-row gap-2 p-2 lg:gap-4">
                     <div class="relative flex-shrink-0">
                       <img class="w-[7rem] h-[7rem] lg:w-[10rem] lg:h-[10rem] object-cover rounded-[10px]" src="../../../../public/assets/images/${image}" alt="">
@@ -61,24 +61,24 @@ export function renderOrderSummary() {
                     <div class="flex flex-col justify-between gap-4 w-full lg:py-2 lg:gap-8">
                       <div class="flex flex-col gap-2 lg:gap-4">
                         <h3 class="product-name-js text-l md:text-xl font-bold">${name}</h3>
-                        <label class="bg-lightGray text-white rounded-full max-w-[40px] h-full px-[2px] py-[3px] flex items-center justify-center text-xl">
+                        <label class="bg-primary text-white rounded-full max-w-[40px] h-full px-[2px] py-[3px] flex items-center justify-center text-xl">
                           ${portionLabel}
                         </label>
                       </div>
                       <div class="flex justify-between items-center gap-4 w-full">
                         <div class="flex gap-2">
                           <p class="price-js text-lg font-semibold"><span translate="no">$</span>${price}</p>
-                          <div class="flex items-center rounded-full border-2">
-                            <button data-portion="${portion}" data-product-id="${productId}" class="subtract-quantity-js rounded-full lg:hover:bg-gray-200 transition-all active:bg-gray-300 w-6 h-6 flex items-center justify-center">
+                          <div class="flex items-center rounded-full p-[2px] bg-primary">
+                            <button data-portion="${portion}" data-product-id="${productId}" class="subtract-quantity-js rounded-full bg-surface lg:hover:bg-surface/70 transition-all active:bg-white w-7 h-full flex items-center justify-center">
                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current w-[12px] h-[12px]"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
                             </button>
                             <span class="item-quantity-js-${portion}-${productId} text-l font-medium w-8 text-center">${quantity}</span>
-                            <button data-portion="${portion}" data-product-id="${productId}" class="add-quantity-js rounded-full lg:hover:bg-gray-200 transition-all active:bg-gray-300 w-6 h-6 flex items-center justify-center text-l">
+                            <button data-portion="${portion}" data-product-id="${productId}" class="add-quantity-js rounded-full bg-surface lg:hover:bg-surface/70 transition-all active:bg-white w-7 h-full flex items-center justify-center text-l">
                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current w-[12px] h-[12px]"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
                             </button>
                           </div>
                         </div>
-                        <button class="delete-quantity-link js-delete-link text-red-500 hover:text-red-700 lg:absolute bottom-4 right-4" data-product-id="${productId}" data-portion="${portion}">
+                        <button class="delete-quantity-link js-delete-link text-primary hover:text-primary-hover lg:absolute bottom-4 right-4" data-product-id="${productId}" data-portion="${portion}">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                           </svg>

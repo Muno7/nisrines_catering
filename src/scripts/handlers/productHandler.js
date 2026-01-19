@@ -18,9 +18,9 @@ export function productCardHTML(product) {
   const quantityControlClass = cartItem ? "" : "hidden";
 
   const productCard = `
-  <div class="product-container product-container-js-${id} w-[12rem] relative flex flex-col gap-2 shadow-[0_0_10px_rgba(0,0,0,0.15)] p-4 rounded-[10px]" data-product-id="${id}">
+  <div class="product-container product-container-js-${id} w-[12rem] relative flex flex-col gap-2 bg-surface border border-muted/30 p-4 rounded-[10px] transition-all duration-500 sm:hover:-translate-y-1 sm:hover:shadow-lg" data-product-id="${id}">
     <div class="image-container-js-${id} relative w-full h-[10rem]" data-product-id="${id}">
-      <img class="w-[10rem] h-[10rem] object-cover rounded-[10px]" src="../../../public/assets/images/${image}" alt="">
+      <img class="w-[10rem] h-[10rem] object-cover rounded-[10px]" src="../../../public/assets/images/strawberry-chicken-salad.jpg" alt="">
       ${dayLabel}
     </div>
       <label data-product-id="${id}" class="js-add-to-favorite-button z-[3] shadow-sm product-heart-button absolute bg-white rounded-full p-[7px] top-6 right-6 cursor-pointer text-[8px] select-none transition duration-100">
@@ -38,21 +38,21 @@ export function productCardHTML(product) {
         </div>
       </label>
     <div class="flex flex-col gap-2">
-      <p class="product-name-js text-xl h-[3.4rem] line-clamp-2 text-wrap">${name}</p>
+      <p class="product-name-js text-xl h-[3.4rem] line-clamp-2 text-wrap text-accent">${name}</p>
       <div class="flex items-center gap-2">
         <p class="price-js font-bold "><span translate="no">$</span>${product.getPrice('single')}</p>
         <div class="relative w-full">
           <!-- Add to Basket Button -->
-          <button data-day="${product.day || ''}" data-product-id="${id}" class="js-add-meal-button js-add-meal-button-${id} flex h-7 w-full text-sm justify-center items-center button-primary px-auto py-1 rounded-xl transition-opacity duration-300 ${addButtonClass}">
+          <button data-day="${product.day || ''}" data-product-id="${id}" class="js-add-meal-button js-add-meal-button-${id} flex h-7 w-full text-sm justify-center items-center button-primary px-auto py-1 rounded-full transition duration-300 ${addButtonClass}">
               Add
           </button>
           <!-- Quantity Controls (Initially Hidden) -->
-          <div class="quantity-control-js-${id} flex justify-between items-center rounded-xl border-2 bg-gray-200 h-full ${quantityControlClass}">
-            <button data-product-id="${id}" class="subtract-quantity-js rounded-full transition-all active:bg-gray-300 w-6 h-6 flex items-center justify-center">
+          <div class="quantity-control-js-${id} h-full bg-primary p-[2px] flex justify-between items-center rounded-full ${quantityControlClass}">
+            <button data-product-id="${id}" class="subtract-quantity-js h-full w-[30%] rounded-full bg-surface lg:hover:bg-surface/70 transition-all active:bg-white flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current w-[12px] h-[12px]"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
             </button>
-            <span class="item-quantity-js-${id} bg-white rounded-md text-l font-medium w-10 text-center">${displayedQuantity}</span>
-            <button data-day="${product.day || ''}" data-product-id="${id}" class="add-quantity-js rounded-full transition-all active:bg-gray-300 w-6 h-6 flex items-center justify-center text-l">
+            <span class="item-quantity-js-${id} rounded-md font-medium text-center">${displayedQuantity}</span>
+            <button data-day="${product.day || ''}" data-product-id="${id}" class="add-quantity-js h-full w-[30%] rounded-full bg-surface lg:hover:bg-surface/70 transition-all active:bg-white flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current w-[12px] h-[12px]"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
             </button>
           </div>

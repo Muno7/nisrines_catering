@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
 
 * {
     margin: 0;
@@ -10,154 +10,194 @@
 }
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 :root {
-  --lightGray: #818589;
-  --darkGray: #3C4147;
+    /* New Fall Palette Variables */
+    --background: #FDF8F5;
+    --surface: #FFF3EC;
+    --primary: #E8822A;
+    --primary-hover: #CF7020;
+    --secondary: #BC4B20;
+    --secondary-hover: #A13D18;
+    --cta: #521C0D;
+    --cta-hover: #3E160A;
+    --text: #3E160A;
+    --muted: #8A4B3A;
+    
+    /* Legacy variables mapped to new palette to maintain your classes */
+    --lightGray: var(--muted);
+    --darkGray: var(--cta);
 }
 
 main,
 header {
-  color: var(--darkGray);
+    color: var(--text);
 }
 
-  /* Hide scrollbar for Firefox */
+/* Hide scrollbar for Firefox */
 .overflow-x-auto {
-  scrollbar-width: none; /* Hide scrollbar */
+    scrollbar-width: none;
 }
 
 /* Hide scrollbar for other browsers */
 .overflow-x-auto::-webkit-scrollbar {
-  display: none; /* Hide scrollbar for Chrome, Safari, and Edge */
+    display: none;
 }
 
 @layer base {
-  body {
-    font-family: 'Lora', serif;
-  }
+    body {
+        font-family: 'Lora', serif;
+        background-color: var(--background);
+        color: var(--text);
+    }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
-  }
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Playfair Display', serif;
+    }
 }
 
 @keyframes quantityPulse {
-  0%, 100% { padding: 2px 6px; }
-  50% { padding: 4px 8px; }
+    0%, 100% { padding: 2px 6px; }
+    50% { padding: 4px 8px; }
 }
 
 .js-cart-quantity.quantity-changed {
-  animation: quantityPulse 0.5s ease-in-out;
+    animation: quantityPulse 0.5s ease-in-out;
 }
 
+/* Primary Button - Now Pumpkin with White Text */
 .button-primary {
-  background-color: var(--darkGray);
-  color: white;
-  font-weight: bold;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  border-radius: 14px;
-  transition: all 0.1s ease;
+    background-color: var(--primary);
+    color: white;
+    font-weight: bold;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 14px;
+    transition: all 0.1s ease;
 }
 
-.button-primary:active {
-  box-shadow: none;
-  transform: translateY(2px);
+/* CTA Button - Now Dark Mahogany for high impact */
+.button-cta {
+    background-color: var(--cta);
+    color: white;
+    font-weight: bold;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 14px;
+    transition: all 0.1s ease;
+    box-shadow: 0 12px 20px rgba(82, 28, 13, 0.16);
 }
 
-.button-primary:focus {
-  outline: none;
+.button-primary:active, .button-cta:active {
+    box-shadow: none;
+    transform: translateY(2px);
 }
 
-@media (min-width: 1024px) { /* Assuming lg breakpoint is at 1024px */
-  .button-primary:hover {
-    opacity: 0.9;
-  }
-
-  .portion-button:hover {
-    opacity: 0.9;
-    transform: translateY(0px);
-  }
+.button-primary:focus, .button-cta:focus {
+    outline: none;
 }
-  
+
+@media (min-width: 1024px) {
+    .button-primary:hover {
+        background-color: var(--primary-hover);
+    }
+    
+    .button-cta:hover {
+        background-color: var(--cta-hover);
+        box-shadow: 0 14px 24px rgba(82, 28, 13, 0.22);
+    }
+
+    .portion-button:hover {
+        opacity: 0.9;
+        transform: translateY(0px);
+    }
+}
+
 .button-secondary {
-  padding: 0.5rem;
-  border-radius: 100%;
-  border: 2px solid var(--lightGray);
-  background-color: transparent;
-  transition: all 0.1s ease;
+    padding: 0.5rem;
+    border-radius: 100%;
+    border: 2px solid var(--secondary);
+    color: var(--secondary);
+    background-color: transparent;
+    transition: all 0.1s ease;
 }
 
 .button-secondary:active {
-  background-color: var(--lightGray);
-  transform: translateY(2px);
+    background-color: var(--secondary);
+    color: white;
+    transform: translateY(2px);
 }
 
 .button-secondary:focus {
-  outline: none;
+    outline: none;
 }
 
 @media (min-width: 1024px) {
-  .button-secondary:hover {
-    background-color: var(--lightGray);
-  }
+    .button-secondary:hover {
+        background-color: var(--secondary);
+        color: white;
+    }
 }
 
 .button-social-media {
-  background-color: var(--lightGray);
-  padding: 0.5rem;
-  border-radius: 100%;
-  transition: background-color 0.2s;
+    background-color: var(--secondary);
+    color: white;
+    padding: 0.5rem;
+    border-radius: 100%;
+    transition: background-color 0.2s;
 }
 
 .button-social-media:active {
-  background-color: rgb(88, 87, 87);
+    background-color: var(--secondary-hover);
 }
 
 @media (min-width: 1024px) {
-  .button-social-media:hover {
-    background-color: rgb(88, 87, 87);
-  }
+    .button-social-media:hover {
+        background-color: var(--secondary-hover);
+    }
 }
 
 .portion-button:active {
-  box-shadow: none;
-  transform: translateY(0px);
+    box-shadow: none;
+    transform: translateY(0px);
 }
 
 .portion-button.active {
-  box-shadow: 0 0 0 2px white, 0 0 0 4px var(--lightGray);
+    box-shadow: 0 0 0 2px white, 0 0 0 4px var(--muted);
 }
 
 footer {
-  color: white;
+    color: white;
+    background-color: var(--cta); /* Dark footer fits fall themes well */
 }
 
 @keyframes gradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
-/* Add these new styles */
 .feature-card {
-  opacity: 0;
-  transform: translateY(2rem);
+    opacity: 0;
+    transform: translateY(2rem);
+    transition: all 0.5s ease;
 }
 
 .feature-card.animate {
-  opacity: 1;
-  transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .feature-card {
-    opacity: 1;
-    transform: translateY(0);
-    transition: none;
-  }
+    .feature-card {
+        opacity: 1;
+        transform: translateY(0);
+        transition: none;
+    }
 }

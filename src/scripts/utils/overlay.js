@@ -35,7 +35,7 @@ export function appendOverlayDiv() {
           ` : ''}
         </div>
         <!-- Content Section -->
-        <div class="flex flex-col w-full md:w-1/2 h-[50vh] md:h-full overflow-hidden">
+        <div class="flex flex-col bg-surface w-full md:w-1/2 h-[50vh] md:h-full overflow-hidden">
           <div class="flex-grow overflow-y-auto p-4 md:p-6">
             <div class="space-y-4">
               <div>
@@ -67,19 +67,19 @@ export function appendOverlayDiv() {
             </div>
           </div>
           <!-- Sticky Add to Cart Section -->
-          <div class="bg-white p-2 border-t border-gray-200 shadow-top mt-auto">
+          <div class="p-2 border-t border-gray-200 shadow-top mt-auto">
             <div class="relative w-full h-[46px]">
               <!-- Add to Basket Button -->
               <button class="overlay-add-button-js flex w-full h-full text-sm items-center justify-center button-primary px-auto py-auto transition-opacity duration-300">
                   Add to Basket
               </button>
               <!-- Quantity Controls (Initially Hidden) -->
-              <div class="hidden overlay-quantity-control-js h-full p-1 flex justify-between items-center rounded-full bg-gray-200">
-                <button class="overlay-subtract-quantity-js h-full w-[25%] rounded-full lg:hover:bg-gray-300 transition-all active:bg-gray-300 flex items-center justify-center">
+              <div class="hidden overlay-quantity-control-js h-full bg-primary p-1 flex justify-between items-center rounded-full">
+                <button class="overlay-subtract-quantity-js h-full w-[25%] rounded-full bg-surface lg:hover:bg-surface/70 transition-all active:bg-white flex items-center justify-center">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current w-[16px] h-[16px]"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
                 </button>
                 <span class="overlay-item-quantity-js w-full rounded-md text-xl font-medium text-center">1</span>
-                <button class="overlay-add-quantity-js h-full w-[25%] rounded-full lg:hover:bg-gray-300 transition-all active:bg-gray-300 flex items-center justify-center">
+                <button class="overlay-add-quantity-js h-full w-[25%] rounded-full bg-surface lg:hover:bg-surface/70 transition-all active:bg-white flex items-center justify-center">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current w-[16px] h-[16px]"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
                 </button>
               </div>

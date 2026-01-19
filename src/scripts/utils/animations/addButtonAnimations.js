@@ -28,8 +28,8 @@ function showBasketNotification(productCard, isAdding) {
   notification.appendChild(icon);
   notification.appendChild(text);
   
-  const backgroundColor = isAdding ? '#E6F0EB' : '#FFEBEE';
-  const textColor = isAdding ? '#005C45' : '#D32F2F';
+  const backgroundColor = isAdding ? '#E8822A' : '#521C0D';
+  const textColor = isAdding ? '#3E160A' : '#E8822A';
   
   const isOverlay = productCard.closest('.show-message-js') !== null;
   const isFavoritesPage = window.location.href.includes('favorites.html');
@@ -53,7 +53,6 @@ function showBasketNotification(productCard, isAdding) {
     opacity: 0;
     transition: all 0.3s ease;
     z-index: 2;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     pointer-events: none;
     display: flex;
     flex-direction: column;

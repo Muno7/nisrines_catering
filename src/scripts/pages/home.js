@@ -1,11 +1,14 @@
 import { products, loadProducts } from "../models/products.js";
 import { productCardHTML } from "../handlers/productHandler.js";
-import { updateCartQuantity, addButtonEventListeners, subtractQuantityEventListeners, addQuantityEventListeners } from '../handlers/cartHandler.js';
+import { updateCartQuantity, addButtonEventListeners, subtractQuantityEventListeners, addQuantityEventListeners } from "../handlers/cartHandler.js";
 import { addToFavoriteEventListeners } from "../handlers/favoriteHandler.js";
 import { appendOverlayDiv, renderProductOverlay } from "../utils/overlay.js";
-import { setSiderbarNavigation } from "../utils/animations/sideBarAnimation.js"
+import { setSiderbarNavigation } from "../utils/animations/sideBarAnimation.js";
 import { initSlideshow } from "../utils/animations/slideShow.js";
 import { animateFeatureCards } from "../utils/animations/featureCardAnimation.js";
+import { renderLayout } from "../components/layout.js";
+
+renderLayout("home");
 
 async function loadHomePage() {
   initSlideshow();

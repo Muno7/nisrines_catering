@@ -14,11 +14,25 @@ export default {
         header: ['Playfair Display', 'serif'],
         body: ['Lora', 'serif'],
       },
-      colors: {
-        customRed: "#ec1c2a",
-        lightGray: '#818589',
-        darkGray: '#3C4147'
-      }
+    colors: {
+        background: "#FDF8F5", // Cleaner off-white cream
+        surface: "#FFF3EC",    // Soft peach/nude
+        primary: {
+          DEFAULT: "#E8822A",  // Rich Pumpkin
+          hover: "#CF7020",
+        },
+        secondary: {
+          DEFAULT: "#da5825",  // Burnt Terracotta
+          hover: "#A13D18",
+        },
+        cta: {
+          DEFAULT: "#521C0D",  // Deep Mahogany Brown
+          hover: "#3E160A",
+        },
+        text: "#8A4B3A",     // Muted Copper
+        accent: "#3E160A",       // Darkest Brown for legibility
+        muted: "#8A4B3A",
+      },
     },
   },
   plugins: [],

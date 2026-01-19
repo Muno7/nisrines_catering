@@ -12,7 +12,7 @@
 }
   
 .product-heart-button input:checked ~ .heart-checkmark path {
-    fill: #ff5353;
+    fill: var(--primary);
     stroke-width: 0;
 }
   
@@ -68,5 +68,9 @@
 #notification-overlay.show {
   opacity: 1;
   visibility: visible;
+}
+
+.portion-button.active {
+    border: 2px solid var(--secondary);
 }
 
