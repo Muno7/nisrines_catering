@@ -1,12 +1,14 @@
 export function initSlideshow() {
   const slideContainer = document.querySelector('.js-slideshow-container');
-  // Dynamically add images to the slideshow container
-  const images = [
-    '../../../assets/images/nisrine.jpg',
-    window.innerWidth > 1024 ? '../../../assets/images/kitchen_large.jpg' : '../../../assets/images/kitchen_mobile.jpg',
-    '../../../assets/images/strawberry-chicken-salad.jpg',
-    '../../../assets/images/nisrine.jpg'
-  ];
+  const slideModules = import.meta.glob('../../../../public/assets/images/slideshow/*.{png,jpg,JPG,jpeg,webp,avif}', {
+    eager: true,
+    import: 'default'
+  });
+  const images = Object.keys(slideModules)
+    .sort()
+    .map((key) => slideModules[key]);
+
+  if (!slideContainer || images.length === 0) return;
   
   images.forEach(src => {
     const img = document.createElement('img');
@@ -15,6 +17,13 @@ export function initSlideshow() {
     img.classList.add('w-full', 'h-full', 'object-cover', 'shrink-0');
     slideContainer.appendChild(img);
   });
+
+  // Clone first slide to the end for seamless forward-only loop
+  if (images.length > 1) {
+    const firstClone = slideContainer.firstElementChild.cloneNode(true);
+    firstClone.setAttribute('aria-hidden', 'true');
+    slideContainer.appendChild(firstClone);
+  }
 
   const slides = slideContainer.querySelectorAll('img');
   let currentIndex = 0;
@@ -30,20 +39,16 @@ export function initSlideshow() {
     currentIndex++;
     slideContainer.style.transform = `translateX(-${currentIndex * (100 / slides.length)}%)`;
     
-    // When we reach the clone of the first slide
+    // When we reach the clone of the first slide, jump back to start without reversing direction
     if (currentIndex === slides.length - 1) {
-      // Wait for the transition to complete
       setTimeout(() => {
-        // Remove the transition temporarily
         slideContainer.style.transition = 'none';
-        // Jump back to the first slide
         currentIndex = 0;
         slideContainer.style.transform = `translateX(0)`;
-        // Restore the transition after a brief moment
         setTimeout(() => {
           slideContainer.style.transition = 'transform 1.5s ease';
-        }, 50);
-      }, 2000); // Match the transition duration
+        }, 20);
+      }, 1500); // Match the transition duration
     }
   }
   
