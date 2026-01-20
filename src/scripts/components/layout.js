@@ -153,7 +153,7 @@ function headerTemplate(activePage = '', { useFavoriteIcon = false } = {}) {
                 </nav>
               </div>
               <a href="./home.html" class="flex items-center rounded-full">
-                <img src="./public/assets/icons/logo.png" alt="Nisrine's Catering Logo" class="w-[120px] sm:w-[150px]">
+                <img src="./public/assets/icons/logo.png" alt="Nisrine's Catering Logo" class="w-[100px] sm:w-[150px]">
               </a>
               ${ctaIcon}
             </div>
