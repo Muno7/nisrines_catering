@@ -1,6 +1,6 @@
 export function initSlideshow() {
   const slideContainer = document.querySelector('.js-slideshow-container');
-  const slideModules = import.meta.glob('../../../../public/assets/images/slideshow/*.{png,jpg,JPG,jpeg,webp,avif}', {
+  const slideModules = import.meta.glob('../../../../public/zassets/images/slideshow/*.{png,jpg,JPG,jpeg,webp,avif}', {
     eager: true,
     import: 'default'
   });
