@@ -24,3 +24,15 @@ dist-ssr
 *.sw?
 
 .env
+
+# Python backend
+backend/.venv/
+backend/venv/
+backend/app/venv/
+backend/.env
+backend/app/.env
+**/__pycache__/
+*.py[cod]
+*.sqlite3
+
+migrations

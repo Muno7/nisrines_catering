@@ -1,0 +1,46 @@
+{% extends "admin/base.html" %}
+{% block title %}New Product{% endblock %}
+{% block content %}
+  <h2>New Product</h2>
+  <form method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+
+    <div class="field">
+      {{ form.name.label }}{{ form.name() }}
+      {% for error in form.name.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+    </div>
+
+    <div class="field">
+      {{ form.priceSingleCents.label }}{{ form.priceSingleCents() }}
+      {% for error in form.priceSingleCents.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+    </div>
+
+    <div class="field">
+      {{ form.priceFamilyCents.label }}{{ form.priceFamilyCents() }}
+      <small class="hint">Leave blank if there is no family price.</small>
+      {% for error in form.priceFamilyCents.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+    </div>
+
+    <div class="field">
+      {{ form.category.label }}{{ form.category() }}
+      {% for error in form.category.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+    </div>
+
+    <div class="field">
+      {{ form.ingridients.label }}{{ form.ingridients(rows=4) }}
+      {% for error in form.ingridients.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+    </div>
+
+    <div class="field">
+      <label>{{ form.active() }} {{ form.active.label.text }}</label>
+      {% for error in form.active.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+    </div>
+
+    <div class="field">
+      {{ form.image.label }}{{ form.image() }}
+      {% for error in form.image.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+    </div>
+
+    <button class="btn" type="submit">Create</button>
+  </form>
+{% endblock %}
