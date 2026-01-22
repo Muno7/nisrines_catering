@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_login import LoginManager
 from .config import Config
 from .extensions import db, migrate, login_manager, csrf
@@ -27,6 +27,19 @@ def create_app(config_object: type | None = None) -> Flask:
 
     app.register_blueprint(admin_bp, url_prefix="/admin")
     app.register_blueprint(api_bp, url_prefix="/api")
+
+    @app.after_request
+    def add_cors_headers(response):
+        """Allow local frontend to call the API."""
+        if request.path.startswith("/api/"):
+            origin = request.headers.get("Origin")
+            allowed = {"http://localhost:5173", "http://127.0.0.1:5173"}
+            if origin in allowed:
+                response.headers["Access-Control-Allow-Origin"] = origin
+                response.headers["Vary"] = "Origin"
+                response.headers["Access-Control-Allow-Methods"] = "GET, OPTIONS"
+                response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+        return response
 
     return app
 

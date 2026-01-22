@@ -1,5 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, BooleanField, TextAreaField, FileField, PasswordField
+from wtforms import (
+    StringField,
+    IntegerField,
+    BooleanField,
+    TextAreaField,
+    FileField,
+    PasswordField,
+    SelectField,
+)
 from wtforms.validators import DataRequired, NumberRange, Length, Optional
 from werkzeug.utils import secure_filename
 
@@ -25,21 +33,36 @@ class ProductForm(FlaskForm):
         validators=[Optional(), NumberRange(min=0)]
     )
 
-    category = StringField(
+    category_id = SelectField(
         "Category",
-        validators=[DataRequired(), Length(max=100)]
+        validators=[Optional()],
+        coerce=int,
+        choices=[],
+    )
+
+    new_category = StringField(
+        "Or create new category",
+        validators=[Optional(), Length(max=100)]
     )
 
     ingridients = TextAreaField(
-        "Ingridients",
+        "Ingredients",
         validators=[DataRequired()]
     )
 
-    active = BooleanField("Active", default=True)
+    status = SelectField(
+        "Status",
+        choices=[
+            ("active", "Active"),
+            ("inactive", "Inactive"),
+        ],
+        default="active",
+        validators=[DataRequired()],
+    )
 
     image = FileField(
         "Image",
-        validators=[DataRequired()]
+        validators=[Optional()]
     )
 
     def sanitize_filename(self) -> str | None:

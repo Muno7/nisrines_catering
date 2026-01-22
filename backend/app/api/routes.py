@@ -1,48 +1,46 @@
 from flask import Blueprint, jsonify
+from sqlalchemy import or_
 
-from ..models import Product
+from ..models import Product, Category
 
 api_bp = Blueprint("api", __name__)
 
 
 @api_bp.route("/products", methods=["GET"])
 def get_products():
-    products = (
-        Product.query.filter_by(is_active=True)
-        .order_by(Product.created_at.desc())
-        .all()
+    query = Product.query.outerjoin(Category, Product.category_id == Category.id).filter(
+        or_(Product.status == "active", Product.status.is_(None)),
+        Product.is_active.is_(True),
+        or_(Category.active.is_(True), Product.category_id.is_(None)),
     )
+
+    products = query.order_by(Product.updated_at.desc()).all()
 
     payload = []
 
     for p in products:
+        single_price = getattr(p, "priceSingleCents", None) or getattr(p, "priceCents", None)
+        family_price = getattr(p, "priceFamilyCents", None)
+        status = p.status or ("active" if p.is_active else "inactive")
+        category_name = p.category_rel.name if getattr(p, "category_rel", None) else p.category
+
         product_json = {
             "id": p.id,
             "name": p.name,
             "image": p.image,
-            "category": p.category,
+            "category": category_name,
             "ingridients": p.ingridients,
-            "is_active": p.is_active,
+            "status": status,
         }
 
-        # PRICE LOGIC (IMPORTANT PART)
-        # Case 1: legacy single price
-        if hasattr(p, "priceCents") and p.priceCents is not None:
-            product_json["priceCents"] = p.priceCents
-
-        # Case 2: new single + family price
-        elif (
-            hasattr(p, "price_single_cents")
-            and hasattr(p, "price_family_cents")
-            and p.price_single_cents is not None
-            and p.price_family_cents is not None
-        ):
+        if family_price is not None and family_price > 0 and single_price is not None:
             product_json["price"] = {
-                "single": p.price_single_cents,
-                "family": p.price_family_cents,
+                "single": single_price,
+                "family": family_price,
             }
+        elif single_price is not None:
+            product_json["priceCents"] = single_price
 
         payload.append(product_json)
 
     return jsonify(payload)
-

@@ -1,0 +1,95 @@
+{% extends "admin/base.html" %}
+{% block title %}Categories{% endblock %}
+{% block content %}
+  <header style="margin-bottom: 14px; display:flex; justify-content: space-between; align-items:flex-start; gap: 12px; flex-wrap: wrap;">
+    <div>
+      <p class="eyebrow" style="margin-bottom:6px;">Menu taxonomy</p>
+      <h2 style="margin:0 0 6px 0; font-family: 'Playfair Display', serif;">Categories</h2>
+      <p class="muted" style="margin:0;">Keep names consistent and order the menu for mobile.</p>
+    </div>
+    <a class="btn" href="{{ url_for('admin.products') }}">Back to products</a>
+  </header>
+
+  <div class="card" style="margin-bottom:12px;">
+    <form method="post" class="actions" style="gap:10px; flex-wrap:wrap;">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="action" value="create">
+      <div class="field" style="margin:0;">
+        <label for="new_cat">Add category</label>
+        <input id="new_cat" name="name" placeholder="Ex: Ramadan specials" required>
+      </div>
+      <button class="btn" type="submit">Create</button>
+    </form>
+  </div>
+
+  <div class="card" style="overflow:auto;">
+    <form id="reorderForm" method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="action" value="reorder">
+    </form>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Order</th>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Products</th>
+          <th style="text-align:right;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cat in categories %}
+          <tr>
+            <td><input type="number" name="order_{{ cat.id }}" value="{{ cat.sort_order }}" style="width:70px;" form="reorderForm"></td>
+            <td class="row-title">{{ cat.name }}</td>
+            <td>
+              <span class="badge {{ 'badge-success' if cat.active else 'badge-warning' }}">{{ 'Active' if cat.active else 'Inactive' }}</span>
+            </td>
+            <td class="muted">{{ counts.get(cat.id, 0) }}</td>
+            <td style="text-align:right;">
+              <div class="actions" style="justify-content:flex-end;">
+                <form method="post" style="display:inline-flex; gap:6px;">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <input type="hidden" name="action" value="rename">
+                  <input type="hidden" name="category_id" value="{{ cat.id }}">
+                  <input type="text" name="name" value="{{ cat.name }}" style="width:140px;">
+                  <button class="btn btn-secondary" type="submit">Rename</button>
+                </form>
+                <form method="post" style="display:inline-block;">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <input type="hidden" name="action" value="toggle_active">
+                  <input type="hidden" name="category_id" value="{{ cat.id }}">
+                  <button class="btn btn-secondary" type="submit">{{ 'Deactivate' if cat.active else 'Activate' }}</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="actions" style="margin-top:10px;">
+      <button class="btn" type="submit" form="reorderForm">Save order</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <form class="actions" method="post" style="gap:8px; flex-wrap:wrap;">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="action" value="merge">
+      <strong>Merge categories</strong>
+      <select name="source_id" required>
+        <option value="">Source</option>
+        {% for cat in categories %}
+          <option value="{{ cat.id }}">{{ cat.name }}</option>
+        {% endfor %}
+      </select>
+      <select name="target_id" required>
+        <option value="">Target</option>
+        {% for cat in categories %}
+          <option value="{{ cat.id }}">{{ cat.name }}</option>
+        {% endfor %}
+      </select>
+      <button class="btn btn-secondary" type="submit">Merge &amp; deactivate source</button>
+    </form>
+  </div>
+{% endblock %}
