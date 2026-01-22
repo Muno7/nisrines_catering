@@ -1,0 +1,26 @@
+.alert {
+  padding: 12px 14px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.alert-danger {
+  background: #fff1ee;
+  color: var(--color-danger);
+  border-color: #ffd9d2;
+}
+
+.alert-info {
+  background: #ecf4ff;
+  color: #0f3d91;
+  border-color: #d7e7ff;
+}
+
+.alert-success {
+  background: #e8f4ec;
+  color: var(--color-success);
+  border-color: #d0ead8;
+}

@@ -37,8 +37,6 @@ def _category_choices(include_placeholder: bool = True) -> list[tuple[int, str]]
 
 
 def _resolve_category(form: ProductForm) -> Category | None:
-    if form.new_category.data and form.new_category.data.strip():
-        return Category.ensure(form.new_category.data.strip())
     if form.category_id.data:
         return Category.query.get(form.category_id.data)
     return None
@@ -347,6 +345,16 @@ def duplicate_product(product_id: str):
     return redirect(url_for("admin.edit_product", product_id=copy.id))
 
 
+@admin_bp.route("/products/<product_id>/delete", methods=["POST"])
+@login_required
+def delete_product(product_id: str):
+    product = Product.query.get_or_404(product_id)
+    db.session.delete(product)
+    db.session.commit()
+    flash("Product deleted.", "success")
+    return redirect(url_for("admin.products"))
+
+
 @admin_bp.route("/products/bulk", methods=["POST"])
 @login_required
 def bulk_products():
@@ -357,6 +365,8 @@ def bulk_products():
 
     status_choice = request.form.get("bulk_status")
     category_id = request.form.get("bulk_category_id", type=int)
+    bulk_price_single = request.form.get("bulk_price_single", type=int)
+    bulk_price_family = request.form.get("bulk_price_family", type=int)
 
     updated = 0
     for product in Product.query.filter(Product.id.in_(product_ids)).all():
@@ -367,6 +377,10 @@ def bulk_products():
             if category:
                 product.category_id = category.id
                 product.category = category.name.lower()
+        if bulk_price_single is not None:
+            product.priceSingleCents = bulk_price_single
+        if bulk_price_family is not None:
+            product.priceFamilyCents = bulk_price_family
         updated += 1
 
     db.session.commit()

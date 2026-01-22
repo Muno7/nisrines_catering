@@ -1,47 +1,12 @@
 {% extends "admin/base.html" %}
 {% block title %}Products{% endblock %}
 {% block head %}
-  <style>
-    .filter-bar {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 10px;
-      align-items: end;
-      margin-bottom: 12px;
-    }
-    .filter-bar .actions { align-items: center; gap: 6px; flex-wrap: wrap; }
-    .status-pill { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:10px; background:#fff; border:1px solid var(--border); font-weight:600; }
-    .status-pill.active { color: var(--success); border-color:#d0ead8; }
-    .status-pill.inactive { color: var(--warning); border-color:#ffe2bd; }
-    .status-pill.sold_out { color: var(--danger); border-color:#ffd9d2; }
-    .product-card {
-      display: grid;
-      grid-template-columns: 40px 1fr;
-      gap: 10px;
-      align-items: center;
-    }
-    .badge-flag { background:#f8f1ec; color: var(--muted); padding:4px 8px; border-radius:999px; font-weight:600; font-size:0.85rem; }
-    .status-control { display:flex; align-items:center; gap:6px; }
-    .status-select { padding:6px 8px; border-radius:8px; border:1px solid var(--border); }
-    .responsive-table { width:100%; border-collapse: collapse; }
-    .responsive-table th, .responsive-table td { padding: 10px 8px; border-bottom:1px solid var(--border); vertical-align: middle; }
-    .bulk-bar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:8px; }
-    @media (max-width: 720px) {
-      .responsive-table thead { display:none; }
-      .responsive-table, .responsive-table tbody, .responsive-table tr, .responsive-table td { display:block; width:100%; }
-      .responsive-table tr { margin-bottom:12px; border:1px solid var(--border); border-radius:12px; padding:10px; background:#fff; box-shadow:0 6px 14px rgba(62,22,10,0.05); }
-      .responsive-table td { border:none; padding:6px 0; }
-      .mobile-row { display:flex; justify-content:space-between; gap:8px; align-items:center; }
-      .product-card { grid-template-columns: 64px 1fr; }
-    }
-  </style>
+  <script defer src="{{ url_for('static', filename='js/products.js') }}"></script>
 {% endblock %}
 {% block content %}
-  <header style="margin-bottom: 14px; display:flex; justify-content: space-between; align-items:flex-start; gap: 12px; flex-wrap: wrap;">
+  <header class="page-header">
     <div>
-      <p class="eyebrow" style="margin-bottom:6px;">Menu manager</p>
-      <h2 style="margin:0 0 6px 0; font-family: 'Playfair Display', serif;">Product catalog</h2>
-      <p class="muted" style="margin:0;">Filters, quick status changes, and bulk edits.</p>
+      <h2>Product catalog</h2>
     </div>
     <div class="actions">
       <a class="btn" href="{{ url_for('admin.new_product') }}">New product</a>
@@ -68,11 +33,11 @@
   </div>
 
   <form class="card filter-bar" method="get">
-    <div class="field" style="margin:0;">
+    <div class="field tight">
       <label for="q">Search</label>
       <input id="q" type="text" name="q" value="{{ filters.q }}" placeholder="Search by name">
     </div>
-    <div class="field" style="margin:0;">
+    <div class="field tight">
       <label for="category_id">Category</label>
       <select id="category_id" name="category_id">
         <option value="">All categories</option>
@@ -81,7 +46,7 @@
         {% endfor %}
       </select>
     </div>
-    <div class="field" style="margin:0;">
+    <div class="field tight">
       <label for="status">Status</label>
       <select id="status" name="status">
         <option value="all" {% if filters.status == 'all' %}selected{% endif %}>All</option>
@@ -89,15 +54,9 @@
         <option value="inactive" {% if filters.status == 'inactive' %}selected{% endif %}>Inactive</option>
       </select>
     </div>
-    <div class="field" style="margin:0;">
-      <label>Filters</label>
-      <div class="actions" style="gap:6px;">
-        <label style="display:flex; align-items:center; gap:6px;"><input type="checkbox" name="missing_image" value="1" {% if filters.missing_image %}checked{% endif %}> Missing image</label>
-      </div>
-    </div>
-    <div class="actions" style="margin:0;">
+    <div class="actions">
       <button class="btn" type="submit">Apply</button>
-      {% if filters.q or filters.category_id or filters.status != 'all' or filters.missing_image %}
+      {% if filters.q or filters.category_id or filters.status != 'all' %}
         <a class="btn btn-ghost" href="{{ url_for('admin.products') }}">Clear</a>
       {% endif %}
       <span class="pill pill-ghost">Showing {{ stats.visible }} of {{ stats.total }}</span>
@@ -105,22 +64,10 @@
   </form>
 
   {% if category_counts %}
-    <div style="margin-bottom: 12px; display:flex; flex-wrap: wrap; gap:8px; align-items:center;">
-      <span class="muted">Category breakdown (filtered):</span>
+    <div class="actions align-center mb-3">
       {% for cat, count in category_counts.items() %}
         <span class="badge badge-neutral">{{ cat.title() }} · {{ count }}</span>
       {% endfor %}
-    </div>
-  {% endif %}
-
-  {% if latest %}
-    <div class="card row-highlight" style="margin-bottom: 12px; display:flex; align-items:center; gap:12px;">
-      <img class="thumb" src="{{ latest.image }}" alt="{{ latest.name }}">
-      <div>
-        <p class="eyebrow" style="margin-bottom:4px;">Latest addition</p>
-        <p class="row-title" style="margin:0;">{{ latest.name }}</p>
-        <p class="muted" style="margin:4px 0 0 0;">{{ latest.category.title() if latest.category else "Uncategorized" }} • {{ latest.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
-      </div>
     </div>
   {% endif %}
 
@@ -145,7 +92,7 @@
               <td>
                 <div class="product-card">
                   <img class="thumb" src="{{ p.image }}" alt="{{ p.name }}">
-                  <div>
+                  <div class="text-block">
                     <div class="row-title">{{ p.name }}</div>
                     <div class="muted">{{ p.category.title() if p.category else "Uncategorized" }}</div>
                   </div>
@@ -161,7 +108,6 @@
                 {% endif %}
               </td>
               {% set current_status = p.status or ('active' if p.is_active else 'inactive') %}
-          {% set current_status = p.status or ('active' if p.is_active else 'inactive') %}
           <td>
             <div class="status-control">
               <select class="status-select" data-product-id="{{ p.id }}">
@@ -170,12 +116,9 @@
               </select>
             </div>
           </td>
-          <td class="muted">{{ p.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
-          <td style="text-align:right;">
-            <div class="actions" style="justify-content:flex-end;">
-              <button class="btn btn-secondary" formaction="{{ url_for('admin.duplicate_product', product_id=p.id) }}" formmethod="post">Duplicate</button>
-              <a class="btn btn-secondary" href="{{ url_for('admin.edit_product', product_id=p.id) }}">Edit</a>
-                </div>
+              <td class="muted">{{ p.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+              <td style="text-align:right;">
+                  <a class="btn" href="{{ url_for('admin.edit_product', product_id=p.id) }}">Edit</a>
               </td>
             </tr>
           {% endfor %}
@@ -189,7 +132,6 @@
             <option value="">Status</option>
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
-            <option value="sold_out">Sold out</option>
           </select>
           <select name="bulk_category_id">
             <option value="">Category</option>
@@ -197,6 +139,8 @@
               <option value="{{ cat.id }}">{{ cat.name }}</option>
             {% endfor %}
           </select>
+          <input type="number" name="bulk_price_single" min="0" step="1" placeholder="Single price (cents)">
+          <input type="number" name="bulk_price_family" min="0" step="1" placeholder="Family price (cents)">
           <button class="btn" type="submit">Apply bulk</button>
         </div>
       </div>
@@ -207,59 +151,4 @@
       <p class="muted" style="margin:0;">Start by adding your first dish to the menu.</p>
     </div>
   {% endif %}
-
-  <script>
-    (() => {
-      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || "";
-      const activeEl = document.getElementById("stat-active");
-      const inactiveEl = document.getElementById("stat-inactive");
-
-      const parseCount = (el) => parseInt(el?.textContent || "0", 10);
-      const adjustStats = (from, to) => {
-        if (from === to) return;
-        const counters = { active: activeEl, inactive: inactiveEl };
-        if (counters[from]) counters[from].textContent = String(parseCount(counters[from]) - 1);
-        if (counters[to]) counters[to].textContent = String(parseCount(counters[to]) + 1);
-      };
-
-      document.querySelectorAll(".status-select").forEach((select) => {
-        select.addEventListener("change", async (event) => {
-          const input = event.currentTarget;
-          const productId = input.dataset.productId;
-          const previous = input.dataset.previous || input.value;
-          input.dataset.previous = previous;
-          input.disabled = true;
-          try {
-            const response = await fetch(`/admin/products/${productId}/set-status`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrfToken,
-                Accept: "application/json",
-              },
-              body: JSON.stringify({ status: input.value }),
-            });
-            if (!response.ok) throw new Error("Bad response");
-            const data = await response.json();
-            adjustStats(previous, data.status);
-            input.dataset.previous = data.status;
-          } catch (err) {
-            input.value = previous;
-            alert("Could not update status. Please try again.");
-          } finally {
-            input.disabled = false;
-          }
-        });
-      });
-
-      const bulkAll = document.getElementById("bulk-all");
-      if (bulkAll) {
-        bulkAll.addEventListener("change", (e) => {
-          document.querySelectorAll(".bulk-check").forEach((cb) => {
-            cb.checked = e.target.checked;
-          });
-        });
-      }
-    })();
-  </script>
 {% endblock %}

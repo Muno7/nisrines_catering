@@ -40,14 +40,9 @@ class ProductForm(FlaskForm):
         choices=[],
     )
 
-    new_category = StringField(
-        "Or create new category",
-        validators=[Optional(), Length(max=100)]
-    )
-
     ingridients = TextAreaField(
         "Ingredients",
-        validators=[DataRequired()]
+        validators=[Optional()]
     )
 
     status = SelectField(

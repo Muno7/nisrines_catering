@@ -1,20 +1,30 @@
 {% extends "admin/base.html" %}
 {% block title %}Admin Login{% endblock %}
 {% block content %}
-  <div class="card" style="max-width: 520px; margin: 0 auto;">
-    <h2 style="margin: 0 0 8px 0; font-family: 'Playfair Display', serif;">Welcome back</h2>
-    <p class="muted" style="margin-bottom: 18px;">Secure access to your operations dashboard.</p>
-    <form method="post">
-      {{ form.hidden_tag() }}
-      <div class="field">
-        {{ form.username.label }}{{ form.username(size=32, placeholder="Admin username") }}
-        {% for error in form.username.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+  <div class="auth-layout">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-pill">NC</div>
+        <div>
+          <p class="eyebrow">Nisrine's Catering</p>
+          <h2>Welcome back</h2>
+          <p class="auth-meta">Sign in to manage the menu and orders.</p>
+        </div>
       </div>
-      <div class="field">
-        {{ form.password.label }}{{ form.password(size=32, placeholder="Password") }}
-        {% for error in form.password.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-      </div>
-      <button class="btn" type="submit">Sign in</button>
-    </form>
+      <form method="post" class="auth-form">
+        {{ form.hidden_tag() }}
+        <div class="field">
+          {{ form.username.label }}{{ form.username(size=32, placeholder="Admin username") }}
+          {% for error in form.username.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+        </div>
+        <div class="field">
+          {{ form.password.label }}{{ form.password(size=32, placeholder="Password") }}
+          {% for error in form.password.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+        </div>
+        <div class="actions">
+          <button class="btn btn-block" type="submit">Sign in</button>
+        </div>
+      </form>
+    </div>
   </div>
 {% endblock %}

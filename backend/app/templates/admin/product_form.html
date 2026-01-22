@@ -1,50 +1,15 @@
 {% extends "admin/base.html" %}
 {% block title %}{{ "Edit Product" if is_edit else "New Product" }}{% endblock %}
 {% block head %}
-  <style>
-    .form-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
-      gap: 14px;
-    }
-    .form-card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
-      box-shadow: 0 10px 30px rgba(62, 22, 10, 0.06);
-    }
-    .chip-row { display:flex; flex-wrap: wrap; gap: 8px; }
-    .chip {
-      border: 1px solid var(--border);
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: #fffaf6;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.15s ease;
-    }
-    .chip:hover { border-color: var(--primary); transform: translateY(-1px); }
-    .field.invalid input,
-    .field.invalid textarea {
-      border-color: var(--danger);
-      box-shadow: 0 0 0 1px rgba(180, 35, 24, 0.1);
-    }
-    .side-card { height: 100%; display:flex; flex-direction:column; gap:12px; }
-    .divider { height:1px; background: var(--border); margin: 4px 0; }
-    @media (max-width: 900px) {
-      .form-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+  <script defer src="{{ url_for('static', filename='js/product_form.js') }}"></script>
 {% endblock %}
 {% block content %}
-  <header style="margin-bottom: 16px; display:flex; justify-content: space-between; align-items:flex-start; gap: 12px; flex-wrap: wrap;">
+  <header class="page-header">
     <div>
-      <p class="eyebrow" style="margin-bottom:6px;">Product builder</p>
-      <h2 style="margin:0 0 6px 0; font-family: 'Playfair Display', serif;">
+      <p class="eyebrow">Product builder</p>
+      <h2>
         {{ "Edit product" if is_edit else "Create a new product" }}
       </h2>
-      <p class="muted" style="margin:0;">Guide your menu with clean categories and inline validation.</p>
     </div>
     {% if product %}
       <span class="badge {{ 'badge-success' if product.is_active else 'badge-warning' }}">
@@ -54,194 +19,78 @@
     {% endif %}
   </header>
 
-  <form id="productForm" method="post" enctype="multipart/form-data" class="form-grid">
-    {{ form.hidden_tag() }}
+  <div class="form-wrapper">
+    <form id="productForm" method="post" enctype="multipart/form-data" class="form-grid single-column">
+      {{ form.hidden_tag() }}
 
-    <section class="form-card">
-      <div class="field" data-field="name">
-        {{ form.name.label }}{{ form.name(placeholder="Ex: Chicken shawarma platter", autocomplete="off", required=True, maxlength=255) }}
-        <div class="inline-error" data-inline-error-for="name"></div>
-        {% for error in form.name.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-      </div>
+      <section class="form-card">
+        <div class="field" data-field="name">
+          {{ form.name.label }}{{ form.name(placeholder="Ex: Chicken shawarma platter", autocomplete="off", required=True, maxlength=255) }}
+          <div class="inline-error" data-inline-error-for="name"></div>
+          {% for error in form.name.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+        </div>
 
-      <div class="field" data-field="category">
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+        <div class="field" data-field="category">
           {{ form.category_id.label }}
-          <span class="muted">Pick an existing category or add a new one</span>
+          {{ form.category_id() }}
+          <div class="inline-error" data-inline-error-for="category_id"></div>
+          {% for error in form.category_id.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
         </div>
-        {{ form.category_id(data_category_input="true") }}
-        <div style="margin-top:6px; display:flex; flex-direction:column; gap:6px;">
-          {{ form.new_category.label }}{{ form.new_category(placeholder="Add a new category", autocomplete="off") }}
-        </div>
-        <div class="chip-row">
-          {% for cat in categories %}
-            <button type="button" class="chip" data-category-chip="{{ cat.id }}" data-category-name="{{ cat.name }}">{{ cat.name }}</button>
-          {% endfor %}
-          {% if categories %}
-            <button type="button" class="chip" data-category-chip="">New category</button>
-          {% endif %}
-        </div>
-        <small class="hint">Start typing to reuse a category or create a fresh one.</small>
-        <div class="inline-error" data-inline-error-for="category_id"></div>
-        {% for error in form.category_id.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-        {% for error in form.new_category.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-      </div>
 
-      <div style="display:grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
-        <div class="field" data-field="priceSingleCents">
-          {{ form.priceSingleCents.label }}{{ form.priceSingleCents(placeholder="In cents, e.g. 1299", min=0, step=1, inputmode="numeric", required=True) }}
-          <small class="hint">Required. Customers see dollars automatically.</small>
-          <div class="inline-error" data-inline-error-for="priceSingleCents"></div>
-          {% for error in form.priceSingleCents.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-        </div>
-        <div class="field" data-field="priceFamilyCents">
-          {{ form.priceFamilyCents.label }}{{ form.priceFamilyCents(placeholder="Optional, in cents", min=0, step=1, inputmode="numeric") }}
-          <small class="hint">Leave blank if there is no family price.</small>
-          <div class="inline-error" data-inline-error-for="priceFamilyCents"></div>
-          {% for error in form.priceFamilyCents.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-        </div>
-      </div>
-
-      <div class="field" data-field="ingridients">
-        {{ form.ingridients.label }}{{ form.ingridients(rows=4, placeholder="List main ingredients or allergens", required=True) }}
-        <div class="inline-error" data-inline-error-for="ingridients"></div>
-        {% for error in form.ingridients.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-      </div>
-
-      <div class="field" data-field="status">
-        {{ form.status.label }}{{ form.status() }}
-        <small class="hint">Toggle between live and hidden.</small>
-        <div class="inline-error" data-inline-error-for="status"></div>
-        {% for error in form.status.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-      </div>
-    </section>
-
-    <section class="form-card side-card">
-      <div class="field" data-field="image">
-        {{ form.image.label }}{{ form.image() }}
-        <small class="hint">{{ "Upload a new image to replace the current one." if is_edit else "Required for new products." }}</small>
-        {% if product and product.image %}
-          <div style="margin-top: 8px; display:flex; align-items:center; gap:12px;">
-            <img class="thumb" src="{{ product.image }}" alt="{{ product.name }}">
-            <span class="muted">Current image</span>
+        <div class="two-col">
+          <div class="field" data-field="priceSingleCents">
+            {{ form.priceSingleCents.label }}{{ form.priceSingleCents(placeholder="In cents, e.g. 1299", min=0, step=1, inputmode="numeric", required=True) }}
+            <div class="inline-error" data-inline-error-for="priceSingleCents"></div>
+            {% for error in form.priceSingleCents.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
           </div>
+          <div class="field" data-field="priceFamilyCents">
+            {{ form.priceFamilyCents.label }}{{ form.priceFamilyCents(placeholder="Optional, in cents", min=0, step=1, inputmode="numeric") }}
+            <div class="inline-error" data-inline-error-for="priceFamilyCents"></div>
+            {% for error in form.priceFamilyCents.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+          </div>
+        </div>
+
+        <div class="field" data-field="ingridients">
+          {{ form.ingridients.label }}{{ form.ingridients(rows=4, placeholder="List main ingredients or allergens (optional)") }}
+          <div class="inline-error" data-inline-error-for="ingridients"></div>
+          {% for error in form.ingridients.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+        </div>
+
+        <div class="field" data-field="status">
+          {{ form.status.label }}{{ form.status() }}
+          <div class="inline-error" data-inline-error-for="status"></div>
+          {% for error in form.status.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+        </div>
+
+        <div class="field" data-field="image">
+          {{ form.image.label }}{{ form.image(class="file-input") }}
+          {% if product and product.image %}
+          <div class="inline-media">
+              <img class="thumb" src="{{ product.image }}" alt="{{ product.name }}">
+              <span class="muted">Current image</span>
+          </div>
+          {% endif %}
+          {% for error in form.image.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+        </div>
+      </section>
+
+      <div class="actions full-row">
+        <a class="btn btn-ghost" href="{{ url_for('admin.products') }}">Cancel</a>
+        {% if is_edit and product %}
+          <button class="btn btn-danger btn-compact" type="button" data-confirm-form="delete-product-{{ product.id }}" data-confirm-message="Delete {{ product.name }}?">Delete</button>
         {% endif %}
-        {% for error in form.image.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+        {% if not is_edit %}
+          <button class="btn btn-secondary" type="submit" name="save_add_another" value="1">Save &amp; add another</button>
+        {% else %}
+          <button class="btn btn-secondary" type="submit" name="save_duplicate" value="1">Save &amp; duplicate</button>
+        {% endif %}
+        <button class="btn" type="submit">{{ "Save changes" if is_edit else "Create product" }}</button>
       </div>
-    </section>
-
-    <div class="actions" style="grid-column: 1 / -1; margin-top: 8px;">
-      <a class="btn btn-ghost" href="{{ url_for('admin.products') }}">Cancel</a>
-      {% if not is_edit %}
-        <button class="btn btn-secondary" type="submit" name="save_add_another" value="1">Save &amp; add another</button>
-      {% else %}
-        <button class="btn btn-secondary" type="submit" name="save_duplicate" value="1">Save &amp; duplicate</button>
-      {% endif %}
-      <button class="btn" type="submit">{{ "Save changes" if is_edit else "Create product" }}</button>
-    </div>
-  </form>
-
-  <script>
-    (() => {
-      const form = document.getElementById("productForm");
-      if (!form) return;
-
-      const rules = {
-        name: { min: 2, message: "Name should be at least 2 characters." },
-        category_id: { min: 1, message: "Choose a category or add one." },
-        priceSingleCents: { min: 1, message: "Single price is required." },
-        priceFamilyCents: { min: 0, optional: true, message: "Family price cannot be negative." },
-        ingridients: { min: 4, message: "Add a short list of ingredients." },
-        status: { min: 2, message: "Pick a status." },
-      };
-
-      const showError = (field, message) => {
-        const fieldWrapper = field.closest(".field");
-        if (fieldWrapper) {
-          fieldWrapper.classList.toggle("invalid", Boolean(message));
-        }
-        const target = form.querySelector(`[data-inline-error-for="${field.name}"]`);
-        if (target) target.textContent = message || "";
-      };
-
-      const validateField = (field) => {
-        const rule = rules[field.name];
-        if (!rule) return true;
-
-        const raw = (field.value || "").trim();
-
-        if (field.name === "category_id") {
-          const hasExisting = raw && raw !== "0";
-          const newCat = form.querySelector("input[name='new_category']")?.value.trim();
-          if (!hasExisting && !newCat) {
-            showError(field, rule.message);
-            return false;
-          }
-          showError(field, "");
-          return true;
-        }
-        if (!raw && rule.optional) {
-          showError(field, "");
-          return true;
-        }
-
-        if (!raw) {
-          showError(field, rule.message);
-          return false;
-        }
-
-        if (rule.min && raw.length < rule.min && field.type !== "number") {
-          showError(field, rule.message);
-          return false;
-        }
-
-        if (field.type === "number" || field.inputMode === "numeric") {
-          const numeric = Number(raw);
-          if (Number.isNaN(numeric) || numeric < rule.min) {
-            showError(field, rule.message);
-            return false;
-          }
-        }
-
-        showError(field, "");
-        return true;
-      };
-
-      form.querySelectorAll("input, textarea").forEach((input) => {
-        input.addEventListener("input", () => validateField(input));
-        input.addEventListener("blur", () => validateField(input));
-      });
-
-      form.addEventListener("submit", (event) => {
-        const invalid = Array.from(form.querySelectorAll("input, textarea")).some(
-          (input) => !validateField(input)
-        );
-        if (invalid) {
-          event.preventDefault();
-          form.querySelector(".field.invalid input, .field.invalid textarea")?.focus();
-        }
-      });
-
-      form.querySelectorAll("[data-category-chip]").forEach((chip) => {
-        chip.addEventListener("click", () => {
-          const select = form.querySelector("[data-category-input]");
-          const newInput = form.querySelector("input[name='new_category']");
-          if (!select) return;
-          const id = chip.dataset.categoryChip || "0";
-          select.value = id;
-          if (newInput) {
-            newInput.value = "";
-            if (id === "0") {
-              newInput.focus();
-            } else {
-              select.focus();
-            }
-          } else {
-            select.focus();
-          }
-          validateField(select);
-        });
-      });
-    })();
-  </script>
+    </form>
+    {% if is_edit and product %}
+      <form id="delete-product-{{ product.id }}" method="post" action="{{ url_for('admin.delete_product', product_id=product.id) }}" style="display:none;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      </form>
+    {% endif %}
+  </div>
 {% endblock %}

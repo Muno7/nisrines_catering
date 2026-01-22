@@ -1,0 +1,26 @@
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+p {
+  color: var(--color-text);
+}
+
+.muted {
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.row-title {
+  font-weight: 600;
+}
