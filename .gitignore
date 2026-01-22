@@ -36,3 +36,4 @@ backend/app/.env
 *.sqlite3
 
 migrations
+AGENTS.md
