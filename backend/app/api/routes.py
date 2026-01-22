@@ -22,13 +22,13 @@ def get_products():
         single_price = getattr(p, "priceSingleCents", None) or getattr(p, "priceCents", None)
         family_price = getattr(p, "priceFamilyCents", None)
         status = p.status or ("active" if p.is_active else "inactive")
-        category_name = p.category_rel.name if getattr(p, "category_rel", None) else p.category
+        category_slug = p.category_rel.slug if getattr(p, "category_rel", None) else p.category
 
         product_json = {
             "id": p.id,
             "name": p.name,
             "image": p.image,
-            "category": category_name,
+            "category": category_slug,
             "ingridients": p.ingridients,
             "status": status,
         }
@@ -43,4 +43,14 @@ def get_products():
 
         payload.append(product_json)
 
+    return jsonify(payload)
+
+
+@api_bp.route("/categories", methods=["GET"])
+def get_categories():
+    categories = Category.query.filter_by(active=True).order_by(Category.sort_order, Category.name).all()
+    payload = [
+        {"id": c.id, "name": c.name, "slug": c.slug, "sort_order": c.sort_order}
+        for c in categories
+    ]
     return jsonify(payload)
