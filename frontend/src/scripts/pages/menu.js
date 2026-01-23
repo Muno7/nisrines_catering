@@ -7,23 +7,102 @@ import { setSiderbarNavigation } from "../utils/animations/sideBarAnimation.js";
 import { setCategoryScrollBehavior } from "../utils/animations/scrollBehavior.js";
 import { renderLayout } from "../components/layout.js";
 
+const fallbackMenuCategories = [
+  { id: 1, name: "Star of the Week", slug: "star-of-the-week", sort_order: 1 },
+  { id: 3, name: "Plat du Jour", slug: "plat-du-jour", sort_order: 4 },
+  { id: 4, name: "Appetizers", slug: "appetizers", sort_order: 5 },
+  { id: 5, name: "Salad", slug: "salad", sort_order: 6 },
+  { id: 6, name: "Soup", slug: "soup", sort_order: 7 },
+  { id: 7, name: "Healthy zone", slug: "healthy-zone", sort_order: 8 },
+  { id: 8, name: "Frozen", slug: "frozen", sort_order: 9 },
+  { id: 9, name: "Special items", slug: "special-items", sort_order: 10 },
+  { id: 10, name: "Pastries", slug: "pastries", sort_order: 11 },
+  { id: 11, name: "Soirée", slug: "soiree", sort_order: 12 },
+  { id: 12, name: "Desserts", slug: "desserts", sort_order: 13 },
+  { id: 13, name: "Catering", slug: "catering", sort_order: 14, hidden: true },
+];
+
+let menuCategories = [...fallbackMenuCategories];
+
+const getSortedMenuCategories = () =>
+  menuCategories.slice().sort((a, b) => a.sort_order - b.sort_order);
+
 renderLayout("menu");
 
 async function loadMenuPage() {
   setSiderbarNavigation();
   try {
+    await fetchMenuCategories();
     await loadProducts();
   } catch (error) {
     console.log('unexpected error')
   }
-  makeMenuLinksActive();
   renderMenuGrid();
+  makeMenuLinksActive();
   setCategoryScrollBehavior();
   appendOverlayDiv();
   renderProductOverlay();
 }
 
+async function fetchMenuCategories() {
+  try {
+    const response = await fetch("http://127.0.0.1:5000/api/categories");
+    if (!response.ok) {
+      throw new Error(`Failed to fetch categories: ${response.status}`);
+    }
+    const data = await response.json();
+    if (Array.isArray(data) && data.length) {
+      menuCategories = data;
+      return;
+    }
+    console.warn("Categories response empty, using fallback data");
+    menuCategories = [...fallbackMenuCategories];
+  } catch (error) {
+    console.warn("Error fetching categories, using fallback data", error);
+    menuCategories = [...fallbackMenuCategories];
+  }
+}
+
+function buildSection(category) {
+  const { slug, name, hidden } = category;
+  const title = name;
+  const isPlatDuJour = slug === "plat-du-jour";
+
+  return `<section id="${slug}" class="${hidden ? "hidden " : ""}lg:px-8 lg:py-4">
+            <div class="relative">
+              <div class="flex flex-col font-bold px-4">
+                <h1 class="text-4xl ${isPlatDuJour ? "" : "mb-2"}">${title}</h1>
+                ${isPlatDuJour ? '<p>Note: (salad/yogurt included)</p>' : ""}
+              </div>
+              <div id="${slug}-scrollContainer" class="wrapper overflow-x-auto whitespace-nowrap relative overflow-visible">
+                <div class="${slug}-container inline-flex space-x-2 p-4">
+                </div>
+              </div>
+              <button id="scrollLeft" data-category="${slug}" aria-label="Scroll left" class="absolute left-[-15px] top-1/2 -translate-y-1/2 bg-white hover:bg-gray-100 shadow-lg rounded-full p-3 hidden lg:flex items-center justify-center transition-transform duration-200 hover:scale-110">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button id="scrollRight" data-category="${slug}" aria-label="Scroll right" class="absolute right-[-15px] top-1/2 -translate-y-1/2 bg-white hover:bg-gray-100 shadow-lg rounded-full p-3 hidden lg:flex items-center justify-center transition-transform duration-200 hover:scale-110">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </section>`;
+}
+
 function makeMenuLinksActive() {
+  const menuList = document.querySelector(".menu-categories");
+  if (menuList) {
+    menuList.innerHTML = getSortedMenuCategories()
+      .map(
+        ({ slug, name, hidden }) =>
+          `<li class="menu-links${hidden ? " hidden" : ""}"><a href="#${slug}">${name}</a></li>`
+      )
+      .join("");
+  }
+
   const menuLinks = document.querySelectorAll('.menu-links a');
   menuLinks.forEach(link => {
     link.addEventListener('click', (event) => {
@@ -71,19 +150,15 @@ function makeMenuLinksActive() {
 }
 
 function renderMenuGrid() {
-  const categories = [
-    "plat-du-jour",
-    "appetizers",
-    "star-of-the-week",
-    "salad",
-    "soup",
-    "healthy-zone",
-    "frozen",
-    "special-items",
-    "pastries",
-    "soiree",
-    "desserts",
-  ];
+  const sectionsContainer = document.querySelector(".menu-sections");
+  if (!sectionsContainer) return;
+
+  const sortedCategories = getSortedMenuCategories();
+  sectionsContainer.innerHTML = sortedCategories.map(buildSection).join("");
+
+  const categories = sortedCategories
+    .filter(({ hidden }) => !hidden)
+    .map(({ slug }) => slug);
 
   let productsGroupedByCategory = {};
   products.forEach(product => {

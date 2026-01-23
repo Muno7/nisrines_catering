@@ -115,19 +115,8 @@ function headerTemplate(activePage = '', { useFavoriteIcon = false } = {}) {
        </a>`;
   const menuCategoryNav = activePage === 'menu'
     ? `<nav class="text-darkGray shadow-sm whitespace-nowrap px-4">
-         <ul class="flex overflow-x-auto lg:justify-center gap-6 lg:gap-8">
-           <li class="menu-links"><a href="#star-of-the-week">Star of the Week</a></li>
-           <li class="menu-links"><a href="#plat-du-jour">Plat du jour</a></li>
-           <li class="menu-links"><a href="#appetizers">Appetizers</a></li>
-           <li class="menu-links"><a href="#salad">Salad</a></li>
-           <li class="menu-links"><a href="#soup">Soup</a></li>
-           <li class="menu-links"><a href="#healthy-zone">Healthy zone</a></li>
-           <li class="menu-links"><a href="#frozen">Frozen</a></li>
-           <li class="menu-links"><a href="#special-items">Special items</a></li>
-           <li class="menu-links"><a href="#pastries">Pastries</a></li>
-           <li class="menu-links"><a href="#soiree">Soirée</a></li>
-           <li class="menu-links"><a href="#desserts">Dessert</a></li>
-           <li class="hidden menu-links"><a href="#catering">Catering</a></li>
+         <ul class="menu-categories flex overflow-x-auto lg:justify-center gap-6 lg:gap-8">
+
          </ul>
        </nav>`
     : '';
