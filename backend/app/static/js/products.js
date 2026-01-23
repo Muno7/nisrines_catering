@@ -11,13 +11,17 @@ document.addEventListener("DOMContentLoaded", () => {
     if (counters[to]) counters[to].textContent = String(parseCount(counters[to]) + 1);
   };
 
-  document.querySelectorAll(".status-select").forEach((select) => {
-    select.addEventListener("change", async (event) => {
+  document.querySelectorAll(".status-toggle").forEach((toggle) => {
+    toggle.addEventListener("change", async (event) => {
       const input = event.currentTarget;
       const productId = input.dataset.productId;
-      const previous = input.dataset.previous || input.value;
-      input.dataset.previous = previous;
+      let previous = input.dataset.previous;
+      if (!previous) {
+        // If missing, assume previous state was the opposite of the new toggle state
+        previous = input.checked ? "inactive" : "active";
+      }
       input.disabled = true;
+      const nextStatus = input.checked ? "active" : "inactive";
       try {
         const response = await fetch(`/admin/products/${productId}/set-status`, {
           method: "POST",
@@ -26,14 +30,15 @@ document.addEventListener("DOMContentLoaded", () => {
             "X-CSRFToken": csrfToken,
             Accept: "application/json",
           },
-          body: JSON.stringify({ status: input.value }),
+          body: JSON.stringify({ status: nextStatus }),
         });
         if (!response.ok) throw new Error("Bad response");
         const data = await response.json();
         adjustStats(previous, data.status);
         input.dataset.previous = data.status;
+        input.checked = data.status === "active";
       } catch (err) {
-        input.value = previous;
+        input.checked = previous === "active";
         alert("Could not update status. Please try again.");
       } finally {
         input.disabled = false;
@@ -49,4 +54,19 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
+
+  document.querySelectorAll(".category-toggle").forEach((toggle) => {
+    toggle.addEventListener("change", () => {
+      const form = document.createElement("form");
+      form.method = "post";
+      form.action = "";
+      form.innerHTML = `
+        <input type="hidden" name="csrf_token" value="${csrfToken}">
+        <input type="hidden" name="action" value="toggle_active">
+        <input type="hidden" name="category_id" value="${toggle.dataset.categoryId}">
+      `;
+      document.body.appendChild(form);
+      form.submit();
+    });
+  });
 });

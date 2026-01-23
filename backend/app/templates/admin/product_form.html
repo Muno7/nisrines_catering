@@ -50,10 +50,16 @@
           </div>
         </div>
 
-        <div class="field" data-field="ingridients">
-          {{ form.ingridients.label }}{{ form.ingridients(rows=4, placeholder="List main ingredients or allergens (optional)") }}
-          <div class="inline-error" data-inline-error-for="ingridients"></div>
-          {% for error in form.ingridients.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+        <div class="field" data-field="ingredients">
+          {{ form.ingredients.label }}{{ form.ingredients(rows=4, placeholder="List main ingredients or allergens (optional)") }}
+          <div class="inline-error" data-inline-error-for="ingredients"></div>
+          {% for error in form.ingredients.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+        </div>
+
+        <div class="field" data-field="day">
+          {{ form.day.label }}{{ form.day() }}
+          <div class="inline-error" data-inline-error-for="day"></div>
+          {% for error in form.day.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
         </div>
 
         <div class="field" data-field="status">
@@ -76,9 +82,6 @@
 
       <div class="actions full-row">
         <a class="btn btn-ghost" href="{{ url_for('admin.products') }}">Cancel</a>
-        {% if is_edit and product %}
-          <button class="btn btn-danger btn-compact" type="button" data-confirm-form="delete-product-{{ product.id }}" data-confirm-message="Delete {{ product.name }}?">Delete</button>
-        {% endif %}
         {% if not is_edit %}
           <button class="btn btn-secondary" type="submit" name="save_add_another" value="1">Save &amp; add another</button>
         {% else %}
@@ -87,10 +90,5 @@
         <button class="btn" type="submit">{{ "Save changes" if is_edit else "Create product" }}</button>
       </div>
     </form>
-    {% if is_edit and product %}
-      <form id="delete-product-{{ product.id }}" method="post" action="{{ url_for('admin.delete_product', product_id=product.id) }}" style="display:none;">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      </form>
-    {% endif %}
   </div>
 {% endblock %}

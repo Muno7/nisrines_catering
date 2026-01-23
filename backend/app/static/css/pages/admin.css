@@ -184,30 +184,11 @@ input:checked + .slider:before {
 }
 
 .actions.right {
-  display: grid;
-  grid-auto-rows: auto;
-  gap: 8px;
-  justify-items: end;
-  width: min(240px, 100%);
-  margin-left: auto;
-  padding: 8px 10px;
-  background: linear-gradient(135deg, #fffaf6, #ffffff);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  box-shadow: var(--shadow-sm);
-}
-
-.actions.right form,
-.actions.right .btn {
-  width: 100%;
-}
-
-.actions.right .btn {
-  justify-content: center;
-}
-
-.actions.right .btn-compact {
-  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .checkbox-inline {

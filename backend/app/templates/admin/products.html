@@ -11,6 +11,7 @@
     <div class="actions">
       <a class="btn" href="{{ url_for('admin.new_product') }}">New product</a>
       <a class="btn btn-secondary" href="{{ url_for('admin.categories') }}">Categories</a>
+      <a class="btn btn-ghost" href="{{ url_for('admin.slideshow') }}">Slideshow</a>
     </div>
   </header>
 
@@ -32,8 +33,8 @@
     </div>
   </div>
 
-  <form class="card filter-bar" method="get">
-    <div class="field tight">
+  <form class="card filter-bar" method="get" style="display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end;">
+    <div class="field tight" style="flex:1 1 180px; min-width:160px;">
       <label for="q">Search</label>
       <input id="q" type="text" name="q" value="{{ filters.q }}" placeholder="Search by name">
     </div>
@@ -54,12 +55,23 @@
         <option value="inactive" {% if filters.status == 'inactive' %}selected{% endif %}>Inactive</option>
       </select>
     </div>
-    <div class="actions">
+    <div class="field tight">
+      <label for="day">Day</label>
+      <select id="day" name="day">
+        <option value="" {% if not filters.day %}selected{% endif %}>All</option>
+        <option value="monday" {% if filters.day == 'monday' %}selected{% endif %}>Monday</option>
+        <option value="tuesday" {% if filters.day == 'tuesday' %}selected{% endif %}>Tuesday</option>
+        <option value="wednesday" {% if filters.day == 'wednesday' %}selected{% endif %}>Wednesday</option>
+        <option value="thursday" {% if filters.day == 'thursday' %}selected{% endif %}>Thursday</option>
+        <option value="friday" {% if filters.day == 'friday' %}selected{% endif %}>Friday</option>
+      </select>
+    </div>
+    <div class="actions" style="gap:8px; flex-wrap:wrap; margin-left:auto; display:flex; align-items:center;">
       <button class="btn" type="submit">Apply</button>
-      {% if filters.q or filters.category_id or filters.status != 'all' %}
+      {% if filters.q or filters.category_id or filters.status != 'all' or filters.day %}
         <a class="btn btn-ghost" href="{{ url_for('admin.products') }}">Clear</a>
       {% endif %}
-      <span class="pill pill-ghost">Showing {{ stats.visible }} of {{ stats.total }}</span>
+      <span class="pill pill-ghost">Showing {{ stats.range_start }}–{{ stats.range_end }} of {{ stats.total }}</span>
     </div>
   </form>
 
@@ -78,10 +90,11 @@
         <thead>
           <tr>
             <th style="width:36px;"><input type="checkbox" id="bulk-all"></th>
+            <th style="width:80px;">Image</th>
             <th>Product</th>
             <th>Pricing</th>
-          <th>Status</th>
-          <th>Created</th>
+            <th style="width:120px;">Status</th>
+            <th style="width:120px;">Created</th>
             <th style="text-align:right;">Actions</th>
           </tr>
         </thead>
@@ -89,13 +102,16 @@
           {% for p in products %}
             <tr data-product-row="{{ p.id }}">
               <td><input type="checkbox" class="bulk-check" name="product_ids" value="{{ p.id }}"></td>
+              <td style="width:80px;">
+                <img class="thumb" src="{{ p.image }}" alt="{{ p.name }}" style="width:70px; height:70px; object-fit:cover; border-radius:6px;">
+              </td>
               <td>
-                <div class="product-card">
-                  <img class="thumb" src="{{ p.image }}" alt="{{ p.name }}">
-                  <div class="text-block">
-                    <div class="row-title">{{ p.name }}</div>
-                    <div class="muted">{{ p.category.title() if p.category else "Uncategorized" }}</div>
-                  </div>
+                <div class="text-block">
+                  <div class="row-title">{{ p.name }}</div>
+                  <div class="muted">{{ p.category.title() if p.category else "Uncategorized" }}</div>
+                  {% if p.day %}
+                    <div class="badge badge-neutral">{{ p.day.title() }}</div>
+                  {% endif %}
                 </div>
               </td>
               <td>
@@ -108,22 +124,48 @@
                 {% endif %}
               </td>
               {% set current_status = p.status or ('active' if p.is_active else 'inactive') %}
-          <td>
-            <div class="status-control">
-              <select class="status-select" data-product-id="{{ p.id }}">
-                <option value="active" {% if current_status == 'active' %}selected{% endif %}>Active</option>
-                <option value="inactive" {% if current_status == 'inactive' %}selected{% endif %}>Inactive</option>
-              </select>
-            </div>
-          </td>
-              <td class="muted">{{ p.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+              <td>
+                <label class="switch">
+                  <input type="checkbox" class="status-toggle" data-product-id="{{ p.id }}" data-previous="{{ current_status }}" {% if current_status == 'active' %}checked{% endif %}>
+                  <span class="slider"></span>
+                </label>
+              </td>
+              <td class="muted">{{ p.created_at.strftime('%b %d %Y') }}</td>
               <td style="text-align:right;">
-                  <a class="btn" href="{{ url_for('admin.edit_product', product_id=p.id) }}">Edit</a>
+                  <a class="btn btn-icon" href="{{ url_for('admin.edit_product', product_id=p.id) }}" title="Edit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 20h9" />
+                      <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+                    </svg>
+                  </a>
+                  <button class="btn btn-icon btn-danger" type="button" title="Delete"
+                          data-confirm-form="delete-product-{{ p.id }}"
+                          data-confirm-message="Delete {{ p.name }}?">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+                      <path d="M10 11v6"></path>
+                      <path d="M14 11v6"></path>
+                      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
+                    </svg>
+                  </button>
               </td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
+
+      {% if pagination.pages > 1 %}
+        <div class="actions align-center mt-3" style="justify-content:center; gap:8px; flex-wrap:wrap;">
+          {% if pagination.has_prev %}
+            <a class="btn btn-ghost" href="{{ url_for('admin.products', page=pagination.prev_num, q=filters.q, category_id=filters.category_id, status=filters.status, day=filters.day, missing_image=1 if filters.missing_image else None) }}">&laquo; Prev</a>
+          {% endif %}
+          <span class="pill pill-ghost">Page {{ pagination.page }} of {{ pagination.pages }}</span>
+          {% if pagination.has_next %}
+            <a class="btn btn-ghost" href="{{ url_for('admin.products', page=pagination.next_num, q=filters.q, category_id=filters.category_id, status=filters.status, day=filters.day, missing_image=1 if filters.missing_image else None) }}">Next &raquo;</a>
+          {% endif %}
+        </div>
+      {% endif %}
 
       <div class="card" style="margin-top:10px;">
         <div class="bulk-bar">
@@ -139,12 +181,26 @@
               <option value="{{ cat.id }}">{{ cat.name }}</option>
             {% endfor %}
           </select>
+          <select name="bulk_day">
+            <option value="">Day</option>
+            <option value="monday">Monday</option>
+            <option value="tuesday">Tuesday</option>
+            <option value="wednesday">Wednesday</option>
+            <option value="thursday">Thursday</option>
+            <option value="friday">Friday</option>
+            <option value="clear">Clear day</option>
+          </select>
           <input type="number" name="bulk_price_single" min="0" step="1" placeholder="Single price (cents)">
           <input type="number" name="bulk_price_family" min="0" step="1" placeholder="Family price (cents)">
           <button class="btn" type="submit">Apply bulk</button>
         </div>
       </div>
     </form>
+    {% for p in products %}
+      <form id="delete-product-{{ p.id }}" method="post" action="{{ url_for('admin.delete_product', product_id=p.id) }}" style="display:none;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      </form>
+    {% endfor %}
   {% else %}
     <div class="card">
       <p class="row-title" style="margin:0 0 6px 0;">No products yet</p>

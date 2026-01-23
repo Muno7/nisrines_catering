@@ -50,7 +50,20 @@ flask run
 Visit `/admin/login`.
 
 ## API
-- `GET /api/products` -> `[{"id": "...", "name": "...", "priceCents": 0, "image": "url", "category": "slug", "ingridients": "text"}]`
+- `GET /api/products` -> `[{"id": "...", "name": "...", "priceCents": 0, "image": "url", "category": "slug", "ingredients": "text", "day": "monday"}]`
+
+## Schema update required
+Run this SQL (or equivalent migration) to align the database with the new fields:
+```
+ALTER TABLE products RENAME COLUMN ingridients TO ingredients;
+ALTER TABLE products ADD COLUMN day VARCHAR(20);
+CREATE TABLE slideshow_images (
+  id VARCHAR(36) PRIMARY KEY,
+  image TEXT NOT NULL,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
+);
+```
 
 ## S3 notes
 - Bucket must allow `PutObject` and public read for uploaded keys (or configure presigned URLs).
