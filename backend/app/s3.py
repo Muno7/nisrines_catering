@@ -31,6 +31,21 @@ def upload_file(file_storage) -> Tuple[bool, str]:
     filename = file_storage.filename or ""
     content_type = file_storage.mimetype or mimetypes.guess_type(filename)[0] or ""
 
+    max_file_size = current_app.config.get("MAX_FILE_SIZE", 5 * 1024 * 1024)
+    # Try to determine file size without consuming the stream
+    size = getattr(file_storage, "content_length", None)
+    if size is None:
+        try:
+            pos = file_storage.stream.tell()
+            file_storage.stream.seek(0, os.SEEK_END)
+            size = file_storage.stream.tell()
+            file_storage.stream.seek(pos)
+        except Exception:
+            size = None
+
+    if size is not None and size > max_file_size:
+        return False, f"File is too large. Max size is {max_file_size // (1024*1024)}MB."
+
     if not allowed_file(filename, content_type):
         return False, "Invalid file type. Please upload JPG or PNG."
 

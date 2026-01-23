@@ -1,20 +1,27 @@
-export function initSlideshow() {
-  const slideContainer = document.querySelector('.js-slideshow-container');
-  const slideModules = import.meta.glob('../../../../public/zassets/images/slideshow/*.{png,jpg,JPG,jpeg,webp,avif}', {
-    eager: true,
-    import: 'default'
-  });
-  const images = Object.keys(slideModules)
-    .sort()
-    .map((key) => slideModules[key]);
+async function fetchSlideshowImages() {
+  try {
+    const res = await fetch("http://127.0.0.1:5000/api/slideshow");
+    if (!res.ok) throw new Error("Failed to load slideshow images");
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) return [];
+    return data.map((item) => item.image).filter(Boolean);
+  } catch (e) {
+    console.warn("Falling back to local slideshow assets:", e);
+  }
+}
 
-  if (!slideContainer || images.length === 0) return;
-  
-  images.forEach(src => {
-    const img = document.createElement('img');
+export async function initSlideshow() {
+  const slideContainer = document.querySelector(".js-slideshow-container");
+  if (!slideContainer) return;
+
+  const images = await fetchSlideshowImages();
+  if (images.length === 0) return;
+
+  images.forEach((src) => {
+    const img = document.createElement("img");
     img.src = src;
-    img.alt = 'Slideshow image';
-    img.classList.add('w-full', 'h-full', 'object-cover', 'shrink-0');
+    img.alt = "Slideshow image";
+    img.classList.add("w-full", "h-full", "object-cover", "shrink-0");
     slideContainer.appendChild(img);
   });
 
