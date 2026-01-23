@@ -11,11 +11,11 @@ from flask import (
     session,
 )
 from flask_login import login_user, logout_user, login_required, current_user
-from sqlalchemy import or_
+from sqlalchemy import or_, func
 
 from ..extensions import db
-from ..models import User, Product, Category, slugify
-from .forms import LoginForm, ProductForm
+from ..models import User, Product, Category, SlideshowImage, slugify
+from .forms import LoginForm, ProductForm, SlideshowForm
 from ..s3 import upload_file
 
 admin_bp = Blueprint("admin", __name__, template_folder="../templates/admin")
@@ -77,6 +77,9 @@ def products():
     category_id = request.args.get("category_id", type=int)
     status_filter = request.args.get("status", "all").strip().lower()
     missing_image = request.args.get("missing_image") == "1"
+    day_filter = (request.args.get("day") or "").strip().lower()
+    page = request.args.get("page", default=1, type=int)
+    per_page = 20
 
     base_query = Product.query
 
@@ -88,17 +91,25 @@ def products():
         base_query = base_query.filter(Product.status == status_filter)
     if missing_image:
         base_query = base_query.filter(or_(Product.image == "", Product.image.is_(None)))
+    if day_filter:
+        base_query = base_query.filter(func.lower(Product.day) == day_filter)
 
-    items = base_query.order_by(Product.updated_at.desc()).all()
+    pagination = (
+        base_query.order_by(Product.updated_at.desc())
+        .paginate(page=page, per_page=per_page, error_out=False)
+    )
+    items = pagination.items
     all_items = Product.query.order_by(Product.updated_at.desc()).all()
 
     categories = Category.query.order_by(Category.sort_order, Category.name).all()
     category_counts = Counter([p.category for p in items if p.category])
     stats = {
-        "total": len(all_items),
+        "total": pagination.total,
         "active": sum(1 for p in all_items if _status_value(p) == "active"),
         "inactive": sum(1 for p in all_items if _status_value(p) == "inactive"),
         "visible": len(items),
+        "range_start": ((pagination.page - 1) * per_page + 1) if pagination.total else 0,
+        "range_end": min(pagination.page * per_page, pagination.total),
     }
     latest = items[0] if items else None
     return render_template(
@@ -108,10 +119,12 @@ def products():
         category_counts=category_counts,
         latest=latest,
         categories=categories,
+        pagination=pagination,
         filters={
             "q": q,
             "category_id": category_id,
             "status": status_filter,
+            "day": day_filter,
             "missing_image": missing_image,
         },
     )
@@ -176,7 +189,8 @@ def new_product():
             image=result,
             category=category_name.lower() or "uncategorized",
             category_id=category_obj.id if category_obj else None,
-            ingridients=form.ingridients.data.strip(),
+            ingredients=(form.ingredients.data or "").strip(),
+            day=form.day.data or None,
             status=form.status.data,
         )
         _apply_status(product, form.status.data or "active")
@@ -250,7 +264,8 @@ def edit_product(product_id: str):
         product.priceFamilyCents = family_price
         product.category = category_name.lower() if category_name else ""
         product.category_id = category_obj.id if category_obj else product.category_id
-        product.ingridients = form.ingridients.data.strip()
+        product.ingredients = (form.ingredients.data or "").strip()
+        product.day = form.day.data or None
         _apply_status(product, form.status.data or "active")
 
         db.session.commit()
@@ -263,7 +278,8 @@ def edit_product(product_id: str):
                 image=product.image,
                 category=product.category,
                 category_id=product.category_id,
-                ingridients=product.ingridients,
+                ingredients=product.ingredients,
+                day=product.day,
                 status="inactive",
             )
             _apply_status(duplicate, duplicate.status)
@@ -335,7 +351,8 @@ def duplicate_product(product_id: str):
         image=product.image,
         category=product.category,
         category_id=product.category_id,
-        ingridients=product.ingridients,
+        ingredients=product.ingredients,
+        day=product.day,
         status="inactive",
     )
     _apply_status(copy, copy.status)
@@ -367,6 +384,7 @@ def bulk_products():
     category_id = request.form.get("bulk_category_id", type=int)
     bulk_price_single = request.form.get("bulk_price_single", type=int)
     bulk_price_family = request.form.get("bulk_price_family", type=int)
+    bulk_day = (request.form.get("bulk_day") or "").strip().lower()
 
     updated = 0
     for product in Product.query.filter(Product.id.in_(product_ids)).all():
@@ -381,11 +399,81 @@ def bulk_products():
             product.priceSingleCents = bulk_price_single
         if bulk_price_family is not None:
             product.priceFamilyCents = bulk_price_family
+        if bulk_day:
+            if bulk_day == "clear":
+                product.day = None
+            else:
+                product.day = bulk_day
         updated += 1
 
     db.session.commit()
     flash(f"Bulk updated {updated} products.", "success")
     return redirect(url_for("admin.products"))
+
+
+@admin_bp.route("/slideshow", methods=["GET", "POST"])
+@login_required
+def slideshow():
+    form = SlideshowForm()
+    images = SlideshowImage.query.order_by(SlideshowImage.sort_order, SlideshowImage.created_at).all()
+
+    if form.validate_on_submit():
+        files = request.files.getlist("images")
+        if not files or not any(f.filename for f in files):
+            flash("Please select at least one image to upload.", "warning")
+            return render_template("admin/slideshow.html", form=form, images=images)
+
+        next_order = (
+            db.session.query(func.coalesce(func.max(SlideshowImage.sort_order), 0)).scalar() or 0
+        )
+
+        uploaded = 0
+        for file in files:
+            if not file or not file.filename:
+                continue
+            ok, result = upload_file(file)
+            if not ok:
+                flash(f"Upload failed for {file.filename}: {result}", "danger")
+                continue
+            next_order += 1
+            slide = SlideshowImage(image=result, sort_order=next_order)
+            db.session.add(slide)
+            uploaded += 1
+
+        if uploaded:
+            db.session.commit()
+            flash(f"Added {uploaded} slideshow image(s).", "success")
+        else:
+            flash("No images were uploaded.", "warning")
+        return redirect(url_for("admin.slideshow"))
+
+    return render_template("admin/slideshow.html", form=form, images=images)
+
+
+@admin_bp.route("/slideshow/<slide_id>/delete", methods=["POST"])
+@login_required
+def delete_slide(slide_id: str):
+    slide = SlideshowImage.query.get_or_404(slide_id)
+    db.session.delete(slide)
+    db.session.commit()
+    flash("Slide removed.", "success")
+    return redirect(url_for("admin.slideshow"))
+
+
+@admin_bp.route("/slideshow/reorder", methods=["POST"])
+@login_required
+def reorder_slideshow():
+    slides = SlideshowImage.query.order_by(SlideshowImage.sort_order, SlideshowImage.created_at).all()
+    for slide in slides:
+        key = f"order_{slide.id}"
+        if key in request.form:
+            try:
+                slide.sort_order = int(request.form[key])
+            except ValueError:
+                continue
+    db.session.commit()
+    flash("Slide order updated.", "success")
+    return redirect(url_for("admin.slideshow"))
 
 
 @admin_bp.route("/categories", methods=["GET", "POST"])

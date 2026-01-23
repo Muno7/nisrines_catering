@@ -40,7 +40,8 @@ class Product(db.Model):
     image = db.Column(db.Text, nullable=False)
     category = db.Column(db.String(100), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=True)
-    ingridients = db.Column(db.Text, nullable=False)
+    ingredients = db.Column(db.Text, nullable=False)
+    day = db.Column(db.String(20), nullable=True)
     is_active = db.Column(db.Boolean, default=True, nullable=False)
     status = db.Column(db.String(20), default="active", nullable=False)
     is_ramadan = db.Column(db.Boolean, default=False, nullable=False)
@@ -52,6 +53,15 @@ class Product(db.Model):
         onupdate=datetime.utcnow,
         nullable=False,
     )
+
+
+class SlideshowImage(db.Model):
+    __tablename__ = "slideshow_images"
+
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    image = db.Column(db.Text, nullable=False)
+    sort_order = db.Column(db.Integer, default=0, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
 
 class Category(db.Model):

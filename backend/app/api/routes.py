@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 from sqlalchemy import or_
 
-from ..models import Product, Category
+from ..models import Product, Category, SlideshowImage
 
 api_bp = Blueprint("api", __name__)
 
@@ -29,7 +29,8 @@ def get_products():
             "name": p.name,
             "image": p.image,
             "category": category_slug,
-            "ingridients": p.ingridients,
+            "ingredients": p.ingredients,
+            "day": p.day,
             "status": status,
         }
 
@@ -53,4 +54,11 @@ def get_categories():
         {"id": c.id, "name": c.name, "slug": c.slug, "sort_order": c.sort_order}
         for c in categories
     ]
+    return jsonify(payload)
+
+
+@api_bp.route("/slideshow", methods=["GET"])
+def get_slideshow():
+    slides = SlideshowImage.query.order_by(SlideshowImage.sort_order, SlideshowImage.created_at).all()
+    payload = [{"id": s.id, "image": s.image, "sort_order": s.sort_order} for s in slides]
     return jsonify(payload)

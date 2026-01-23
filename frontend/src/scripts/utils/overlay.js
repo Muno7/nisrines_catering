@@ -93,6 +93,7 @@ export function renderProductOverlay() {
   const overlay = document.getElementById('overlay');
   const overlayTitle = document.getElementById('overlay-product-title-js');
   const overlayPrice = document.getElementById('overlay-product-price-js');
+  const overlayIngredients = document.getElementById('overlay-product-description-js');
   const overlayHeartInput = document.getElementById('heart-input-js');
   const overlayImage = document.getElementById('overlay-product-image-js');
 
@@ -109,11 +110,13 @@ export function renderProductOverlay() {
   function openProductOverlay(container) {
     const { productId } = container.dataset;
     const product = getProduct(productId);
+    console.log(product);
     
     // Set overlay content
     overlayTitle.textContent = product.name;
     overlayPrice.innerHTML = `<span translate="no">$</span>${product.getPrice('single')}`;
-    overlayImage.src = `../../public/assets/images/${product.image}`;
+    overlayIngredients.textContent = product.ingredients;
+    overlayImage.src = `${product.image}`;
     if(overlayHeartInput) {
       overlayHeartInput.checked = favorite.favoriteItems.some((item) => item.productId === productId);
     }

@@ -14,6 +14,7 @@ export class Product {
   id;
   image;
   name;
+  ingredients;
   priceCents;
   category;
   single;
@@ -24,6 +25,7 @@ export class Product {
     this.id = productDetails.id;
     this.image = productDetails.image;
     this.name = productDetails.name;
+    this.ingredients = productDetails.ingredients;
     this.category = productDetails.category;
     this.day = productDetails.day;
 

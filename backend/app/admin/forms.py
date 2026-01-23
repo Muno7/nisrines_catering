@@ -7,9 +7,19 @@ from wtforms import (
     FileField,
     PasswordField,
     SelectField,
+    MultipleFileField,
 )
 from wtforms.validators import DataRequired, NumberRange, Length, Optional
 from werkzeug.utils import secure_filename
+
+DAY_CHOICES = [
+    ("", "Select day"),
+    ("monday", "Monday"),
+    ("tuesday", "Tuesday"),
+    ("wednesday", "Wednesday"),
+    ("thursday", "Thursday"),
+    ("friday", "Friday"),
+]
 
 
 class LoginForm(FlaskForm):
@@ -40,9 +50,16 @@ class ProductForm(FlaskForm):
         choices=[],
     )
 
-    ingridients = TextAreaField(
+    ingredients = TextAreaField(
         "Ingredients",
         validators=[Optional()]
+    )
+
+    day = SelectField(
+        "Day",
+        choices=DAY_CHOICES,
+        validators=[Optional()],
+        default="",
     )
 
     status = SelectField(
@@ -64,3 +81,11 @@ class ProductForm(FlaskForm):
         if not self.image.data:
             return None
         return secure_filename(self.image.data.filename or "")
+
+
+class SlideshowForm(FlaskForm):
+    images = MultipleFileField(
+        "Upload slideshow images",
+        validators=[Optional()],
+        render_kw={"multiple": True, "accept": "image/*"},
+    )

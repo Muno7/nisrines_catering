@@ -7,7 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
     category_id: { min: 1, message: "Choose a category." },
     priceSingleCents: { min: 1, message: "Single price is required." },
     priceFamilyCents: { min: 0, optional: true, message: "Family price cannot be negative." },
-    ingridients: { min: 0, optional: true },
+    ingredients: { min: 0, optional: true },
+    day: { min: 0, optional: true },
     status: { min: 2, message: "Pick a status." },
   };
 
