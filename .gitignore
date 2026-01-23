@@ -35,5 +35,4 @@ backend/app/.env
 *.py[cod]
 *.sqlite3
 
-migrations
 AGENTS.md
