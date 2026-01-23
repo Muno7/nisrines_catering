@@ -20,7 +20,7 @@ export function productCardHTML(product) {
   const productCard = `
   <div class="product-container product-container-js-${id} w-[12rem] relative flex flex-col gap-2 bg-surface border border-muted/30 p-4 rounded-[10px] transition-all duration-500 sm:hover:-translate-y-1 sm:hover:shadow-lg" data-product-id="${id}">
     <div class="image-container-js-${id} relative w-full h-[10rem]" data-product-id="${id}">
-      <img class="w-[10rem] h-[10rem] object-cover rounded-[10px]" src="${image}" alt="">
+      <img loading="lazy" class="w-[10rem] h-[10rem] object-cover rounded-[10px]" src="${image}" alt="">
       ${dayLabel}
     </div>
       <label data-product-id="${id}" class="js-add-to-favorite-button z-[3] shadow-sm product-heart-button absolute bg-white rounded-full p-[7px] top-6 right-6 cursor-pointer text-[8px] select-none transition duration-100">
