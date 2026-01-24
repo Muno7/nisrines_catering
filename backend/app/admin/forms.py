@@ -74,7 +74,8 @@ class ProductForm(FlaskForm):
 
     image = FileField(
         "Image",
-        validators=[Optional()]
+        validators=[Optional()],
+        render_kw={"accept": "image/*"},
     )
 
     def sanitize_filename(self) -> str | None:

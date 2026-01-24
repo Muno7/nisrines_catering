@@ -10,13 +10,32 @@ from flask import current_app
 from PIL import Image
 
 
-ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}
-ALLOWED_MIME = {"image/jpeg", "image/png"}
+ALLOWED_EXTENSIONS = {
+    "jpg",
+    "jpeg",
+    "png",
+    "webp",
+    "gif",
+    "tiff",
+    "tif",
+    "bmp",
+}
+ALLOWED_MIME = {
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/gif",
+    "image/tiff",
+    "image/bmp",
+}
 
 
 def allowed_file(filename: str, content_type: str) -> bool:
     ext = filename.rsplit(".", 1)[-1].lower()
-    return ext in ALLOWED_EXTENSIONS and content_type in ALLOWED_MIME
+    # Accept broader set of common image types; Pillow will convert them to JPEG
+    return ext in ALLOWED_EXTENSIONS and (
+        content_type in ALLOWED_MIME or content_type.startswith("image/")
+    )
 
 
 def compress_image(file_storage) -> Tuple[bool, str, str, io.BytesIO | None]:
@@ -62,7 +81,7 @@ def upload_file(file_storage) -> Tuple[bool, str]:
     content_type = file_storage.mimetype or mimetypes.guess_type(filename)[0] or ""
 
     if not allowed_file(filename, content_type):
-        return False, "Invalid file type. Please upload JPG or PNG."
+        return False, "Invalid file type. Please upload a valid image."
 
     # Compress image to reduce upload size
     ok_compress, ext, content_type, buffer = compress_image(file_storage)

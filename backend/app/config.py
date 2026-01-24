@@ -9,7 +9,7 @@ class Config:
     REMEMBER_COOKIE_DURATION = timedelta(days=7)
     # Request cap (allows multiple images in one POST), per-file limit enforced in s3.upload_file
     MAX_CONTENT_LENGTH = 50 * 1024 * 1024  # 50MB per request
-    MAX_FILE_SIZE = 5 * 1024 * 1024        # 5MB per individual file
+    MAX_FILE_SIZE = 15 * 1024 * 1024       # 15MB per individual file (compressed before upload)
 
     AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
