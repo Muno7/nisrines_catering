@@ -44,10 +44,17 @@ flask create-admin --username admin --password secret
 ```
 
 ## Run server
+Local dev (Flask):
 ```
 flask run
 ```
 Visit `/admin/login`.
+
+Production-style (Gunicorn on Linux/macOS):
+```
+gunicorn --bind 0.0.0.0:8000 wsgi:app
+```
+Use a reverse proxy (e.g., Nginx) in front of Gunicorn for TLS/headers.
 
 ## API
 - `GET /api/products` -> `[{"id": "...", "name": "...", "priceCents": 0, "image": "url", "category": "slug", "ingredients": "text", "day": "monday"}]`

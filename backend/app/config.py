@@ -3,8 +3,8 @@ from datetime import timedelta
 
 
 class Config:
-    SECRET_KEY = os.getenv("SECRET_KEY", "change-me")
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///app.db")
+    SECRET_KEY = os.getenv("SECRET_KEY")
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     REMEMBER_COOKIE_DURATION = timedelta(days=7)
     # Request cap (allows multiple images in one POST), per-file limit enforced in s3.upload_file
@@ -16,3 +16,11 @@ class Config:
     AWS_REGION = os.getenv("AWS_REGION")
     S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
     S3_PUBLIC_BASE_URL = os.getenv("S3_PUBLIC_BASE_URL")
+    CORS_ALLOW_ORIGINS = [
+        origin.strip()
+        for origin in os.getenv(
+            "CORS_ALLOW_ORIGINS",
+            "http://localhost:5173,http://127.0.0.1:5173",
+        ).split(",")
+        if origin.strip()
+    ]

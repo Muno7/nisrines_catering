@@ -30,10 +30,10 @@ def create_app(config_object: type | None = None) -> Flask:
 
     @app.after_request
     def add_cors_headers(response):
-        """Allow local frontend to call the API."""
+        """Allow frontends to call the API based on configured origins."""
         if request.path.startswith("/api/"):
-            origin = request.headers.get("Origin")
-            allowed = {"http://localhost:5173", "http://127.0.0.1:5173"}
+            origin = request.headers.get("Origin", "")
+            allowed = set(app.config.get("CORS_ALLOW_ORIGINS", []))
             if origin in allowed:
                 response.headers["Access-Control-Allow-Origin"] = origin
                 response.headers["Vary"] = "Origin"
