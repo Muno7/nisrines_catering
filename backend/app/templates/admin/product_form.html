@@ -69,7 +69,8 @@
         </div>
 
         <div class="field" data-field="image">
-          {{ form.image.label }}{{ form.image(class="file-input") }}
+          {{ form.image.label }}<small class="muted" style="margin-left:6px;">Optional</small>
+          {{ form.image(class="file-input") }}
           {% if product and product.image %}
           <div class="inline-media">
               <img class="thumb" src="{{ product.image }}" alt="{{ product.name }}">

@@ -47,6 +47,13 @@ def _apply_status(product: Product, status: str) -> None:
     product.is_active = status == "active"
 
 
+def _normalize_product_name(raw: str | None) -> str:
+    text = (raw or "").strip()
+    if not text:
+        return ""
+    return text[:1].upper() + text[1:].lower()
+
+
 @admin_bp.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
@@ -143,26 +150,19 @@ def new_product():
 
     if form.validate_on_submit():
         file = form.image.data
-        if not file:
-            flash("Please upload a product image.", "danger")
-            return render_template(
-                "admin/product_form.html",
-                form=form,
-                is_edit=False,
-                product=None,
-                categories=categories,
-            )
-
-        ok, result = upload_file(file)
-        if not ok:
-            flash(result, "danger")
-            return render_template(
-                "admin/product_form.html",
-                form=form,
-                is_edit=False,
-                product=None,
-                categories=categories,
-            )
+        uploaded_image: str | None = None
+        if file and getattr(file, "filename", ""):
+            ok, result = upload_file(file)
+            if not ok:
+                flash(result, "danger")
+                return render_template(
+                    "admin/product_form.html",
+                    form=form,
+                    is_edit=False,
+                    product=None,
+                    categories=categories,
+                )
+            uploaded_image = result
 
         category_obj = _resolve_category(form)
         if not category_obj and not (form.new_category.data and form.new_category.data.strip()):
@@ -183,10 +183,10 @@ def new_product():
         family_price = form.priceFamilyCents.data or 0
 
         product = Product(
-            name=form.name.data.strip(),
+            name=_normalize_product_name(form.name.data),
             priceSingleCents=form.priceSingleCents.data,
             priceFamilyCents=family_price,
-            image=result,
+            image=uploaded_image,
             category=category_name.lower() or "uncategorized",
             category_id=category_obj.id if category_obj else None,
             ingredients=(form.ingredients.data or "").strip(),
@@ -233,7 +233,7 @@ def edit_product(product_id: str):
         family_price = form.priceFamilyCents.data or 0
         file = form.image.data
 
-        if file:
+        if file and getattr(file, "filename", ""):
             ok, result = upload_file(file)
             if not ok:
                 flash(result, "danger")
@@ -259,7 +259,7 @@ def edit_product(product_id: str):
 
         category_name = category_obj.name if category_obj else (form.new_category.data or product.category)
 
-        product.name = form.name.data.strip()
+        product.name = _normalize_product_name(form.name.data)
         product.priceSingleCents = form.priceSingleCents.data
         product.priceFamilyCents = family_price
         product.category = category_name.lower() if category_name else ""

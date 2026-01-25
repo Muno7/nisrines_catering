@@ -37,7 +37,7 @@ class Product(db.Model):
     name = db.Column(db.String(255), nullable=False)
     priceSingleCents = db.Column(db.Integer, nullable=False)
     priceFamilyCents = db.Column(db.Integer, nullable=False)
-    image = db.Column(db.Text, nullable=False)
+    image = db.Column(db.Text, nullable=True)
     category = db.Column(db.String(100), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=True)
     ingredients = db.Column(db.Text, nullable=False)
