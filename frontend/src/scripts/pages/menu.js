@@ -6,6 +6,7 @@ import { appendOverlayDiv, renderProductOverlay } from "../utils/overlay.js";
 import { setSiderbarNavigation } from "../utils/animations/sideBarAnimation.js";
 import { setCategoryScrollBehavior } from "../utils/animations/scrollBehavior.js";
 import { renderLayout } from "../components/layout.js";
+import { API_BASE_URL } from "../../config.js";
 
 const fallbackMenuCategories = [
   { id: 1, name: "Star of the Week", slug: "star-of-the-week", sort_order: 1 },
@@ -46,7 +47,7 @@ async function loadMenuPage() {
 
 async function fetchMenuCategories() {
   try {
-    const response = await fetch("http://127.0.0.1:5000/api/categories");
+    const response = await fetch(`${API_BASE_URL}/api/categories`);
     if (!response.ok) {
       throw new Error(`Failed to fetch categories: ${response.status}`);
     }

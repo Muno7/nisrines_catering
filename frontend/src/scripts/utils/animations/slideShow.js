@@ -1,6 +1,8 @@
+import { API_BASE_URL } from "../../../config";
+
 async function fetchSlideshowImages() {
   try {
-    const res = await fetch("http://127.0.0.1:5000/api/slideshow");
+    const res = await fetch(`${API_BASE_URL}/api/slideshow`);
     if (!res.ok) throw new Error("Failed to load slideshow images");
     const data = await res.json();
     if (!Array.isArray(data) || data.length === 0) return [];

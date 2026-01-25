@@ -28,7 +28,6 @@ export default defineConfig({
   plugins: [rootToHome()],
   server: {
     host: true,
-    allowedHosts: ['48bfd0feea15.ngrok-free.app'],
   },
   build: {
     rollupOptions: {

@@ -1,4 +1,5 @@
 import { formatCurrency } from "../utils/money.js";
+import { API_BASE_URL } from "../../config.js";
 
 export function getProduct(productId) {
   let matchedproduct;
@@ -54,7 +55,7 @@ export let products = [];
 
 export async function loadProducts() {
   try {
-    const response = await fetch('http://127.0.0.1:5000/api/products');
+    const response = await fetch(`${API_BASE_URL}/api/products`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }

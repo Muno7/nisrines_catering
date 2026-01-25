@@ -41,13 +41,13 @@ const headerSocialLinks = [
            </svg>`
   },
   {
-    href: 'https://www.instagram.com/nisrine_kitchen',
+    href: 'https://www.instagram.com/nisrine_catering/',
     icon: `<svg class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
            </svg>`
   },
   {
-    href: 'https://www.tiktok.com/@nisrine_kitchen',
+    href: 'https://www.tiktok.com/@nisrine_catering',
     icon: `<svg class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
            </svg>`
@@ -68,13 +68,13 @@ const footerSocialLinks = [
            </svg>`
   },
   {
-    href: 'https://www.instagram.com/nisrine_kitchen',
+    href: 'https://www.instagram.com/nisrine_catering/',
     icon: `<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
            </svg>`
   },
   {
-    href: 'https://www.tiktok.com/@nisrine_kitchen',
+    href: 'https://www.tiktok.com/@nisrine_catering',
     icon: `<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
            </svg>`
@@ -137,12 +137,12 @@ function headerTemplate(activePage = '', { useFavoriteIcon = false } = {}) {
                   </ul>
                   <ul class="flex flex-wrap gap-4 mt-auto">
                     ${socials}
-                    <span class="order-2 w-full">&copy; 2024 Nisrine's Catering. All rights reserved</span>
+                    <span class="order-2 w-full">&copy; ${new Date().getFullYear()} Nisrine's Catering. All rights reserved</span>
                   </ul>
                 </nav>
               </div>
               <a href="./home.html" class="flex items-center rounded-full">
-                <img src="./public/assets/icons/logo.png" alt="Nisrine's Catering Logo" class="w-[100px] sm:w-[150px]">
+                <img src="../../../public/assets/icons/logo.png" alt="Nisrine's Catering Logo" class="w-[100px] sm:w-[150px]">
               </a>
               ${ctaIcon}
             </div>
@@ -189,11 +189,11 @@ function footerTemplate() {
                   </div>
                   <div class="space-y-2">
                     <p class="font-semibold text-secondary">E-mail:</p>
-                    <a href="mailto:nisrines.catering@gmail.com" class="hover:text-secondary transition-colors duration-300 flex items-center gap-2">
+                    <a href="mailto:nisrinescatering@gmail.com" class="hover:text-secondary transition-colors duration-300 flex items-center gap-2">
                       <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                       </svg>
-                      <span>nisrines.catering@gmail.com</span>
+                      <span>nisrinescatering@gmail.com</span>
                     </a>
                   </div>
                 </div>
@@ -229,7 +229,7 @@ function footerTemplate() {
                 <div class="space-y-6 col-span-1 md:col-span-2 transform transition-all duration-300 ">
                   <h3 class="text-xl font-semibold border-b border-secondary pb-2 inline-block">Visit us:</h3>
                   <div class="rounded-lg overflow-hidden shadow-lg">
-                    <iframe class="w-full h-[300px] transition-transform duration-300 hover:scale-105" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3312.515428573311!2d35.49462097435334!3d33.87637702699836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151f17001715bb91%3A0x58240a47f5c8fa35!2sNisrines.kitchen!5e0!3m2!1sen!2sus!4v1739899607252!5m2!1sen!2sus" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe class="w-full h-[300px] transition-transform duration-300 hover:scale-105" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6624.913014555408!2d35.497924!3d33.877895!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151f17001715bb91%3A0x58240a47f5c8fa35!2sNisrine%E2%80%99s%20Catering!5e0!3m2!1sen!2sus!4v1769359913753!5m2!1sen!2sus" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                   </div>
                 </div>
               </div>
