@@ -480,69 +480,92 @@ def reorder_slideshow():
 @login_required
 def categories():
     categories = Category.query.order_by(Category.sort_order, Category.name).all()
+
     if request.method == "POST":
         action = request.form.get("action")
         if action == "create":
-            name = request.form.get("name", "").strip()
+            name = (request.form.get("name") or "").strip()
             if not name:
                 flash("Category name is required.", "danger")
             else:
-                Category.ensure(name)
-                db.session.commit()
-                flash("Category created.", "success")
+                existing = Category.query.filter(
+                    or_(Category.name.ilike(name), Category.slug == slugify(name))
+                ).first()
+                if existing:
+                    flash("Category already exists.", "warning")
+                else:
+                    Category.ensure(name)
+                    db.session.commit()
+                    flash("Category created.", "success")
             return redirect(url_for("admin.categories"))
 
-        if action == "rename":
-            cat_id = request.form.get("category_id", type=int)
-            name = request.form.get("name", "").strip()
-            category = Category.query.get(cat_id)
-            if category and name:
-                category.name = name
-                category.slug = slugify(name)
-                db.session.commit()
-                flash("Category renamed.", "success")
-            else:
-                flash("Missing category or name.", "danger")
-            return redirect(url_for("admin.categories"))
-
-        if action == "toggle_active":
+        if action == "update":
             cat_id = request.form.get("category_id", type=int)
             category = Category.query.get(cat_id)
-            if category:
-                category.active = not category.active
-                db.session.commit()
-                flash("Category updated.", "success")
-            return redirect(url_for("admin.categories"))
+            if not category:
+                flash("Category not found.", "danger")
+                return redirect(url_for("admin.categories"))
 
-        if action == "merge":
-            source_id = request.form.get("source_id", type=int)
-            target_id = request.form.get("target_id", type=int)
-            source = Category.query.get(source_id)
-            target = Category.query.get(target_id)
-            if source and target and source.id != target.id:
-                Product.query.filter_by(category_id=source.id).update(
-                    {"category_id": target.id, "category": target.name.lower()}
+            new_name = (request.form.get("name") or "").strip()
+            new_order = request.form.get("sort_order", type=int)
+
+            if new_name:
+                slug = slugify(new_name)
+                conflict = (
+                    Category.query.filter(
+                        or_(Category.slug == slug, Category.name.ilike(new_name))
+                    )
+                    .filter(Category.id != category.id)
+                    .first()
                 )
-                source.active = False
-                db.session.commit()
-                flash("Categories merged.", "success")
-            else:
-                flash("Invalid merge selection.", "danger")
-            return redirect(url_for("admin.categories"))
+                if conflict:
+                    flash("Another category already uses that name.", "danger")
+                    return redirect(url_for("admin.categories"))
+                category.name = new_name
+                category.slug = slug
 
-        if action == "reorder":
-            for cat in categories:
-                key = f"order_{cat.id}"
-                if key in request.form:
-                    try:
-                        cat.sort_order = int(request.form[key])
-                    except ValueError:
-                        continue
+            if new_order is not None:
+                category.sort_order = new_order
+
             db.session.commit()
-            flash("Order updated.", "success")
+            flash("Category updated.", "success")
             return redirect(url_for("admin.categories"))
 
     counts = {
         cat.id: Product.query.filter_by(category_id=cat.id).count() for cat in categories
     }
     return render_template("admin/categories.html", categories=categories, counts=counts)
+
+
+@admin_bp.route("/categories/<int:category_id>/set-status", methods=["POST"])
+@login_required
+def set_category_status(category_id: int):
+    category = Category.query.get_or_404(category_id)
+    payload = request.get_json(silent=True) or {}
+    status = (payload.get("status") or request.form.get("status") or "").strip().lower()
+
+    if status not in VALID_STATUSES:
+        return jsonify({"ok": False, "message": "Invalid status"}), 400
+
+    category.active = status == "active"
+    db.session.commit()
+
+    return jsonify(
+        {"ok": True, "status": "active" if category.active else "inactive", "active": category.active}
+    )
+
+
+@admin_bp.route("/categories/<int:category_id>/delete", methods=["POST"])
+@login_required
+def delete_category(category_id: int):
+    category = Category.query.get_or_404(category_id)
+    product_count = Product.query.filter_by(category_id=category.id).count()
+
+    if product_count:
+        flash("Cannot delete a category that still has products. Move or delete them first.", "warning")
+        return redirect(url_for("admin.categories"))
+
+    db.session.delete(category)
+    db.session.commit()
+    flash("Category deleted.", "success")
+    return redirect(url_for("admin.categories"))

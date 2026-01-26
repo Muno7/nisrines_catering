@@ -1,95 +1,101 @@
 {% extends "admin/base.html" %}
 {% block title %}Categories{% endblock %}
+{% block head %}
+  <script defer src="{{ url_for('static', filename='js/categories.js') }}"></script>
+{% endblock %}
 {% block content %}
   <header class="page-header">
     <div>
       <h2>Categories</h2>
     </div>
-    <a class="btn" href="{{ url_for('admin.products') }}">Back to products</a>
+    <div class="actions">
+      <a class="btn btn-secondary" href="{{ url_for('admin.products') }}">Products</a>
+      <a class="btn btn-ghost" href="{{ url_for('admin.slideshow') }}">Slideshow</a>
+    </div>
   </header>
 
   <div class="card mb-3">
-    <form method="post" class="actions align-center">
+    <form method="post" class="actions align-center" style="gap:10px; flex-wrap:wrap;">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <input type="hidden" name="action" value="create">
-      <div class="field tight">
+      <div class="field tight" style="margin:0;">
         <label for="new_cat">Add category</label>
-        <div>
-            <input id="new_cat" name="name" placeholder="Ex: Ramadan specials" required>
-            <button class="btn" type="submit">Create</button>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <input id="new_cat" name="name" placeholder="Ex: Appetizers" required>
+          <button class="btn" type="submit">Create</button>
         </div>
       </div>
     </form>
   </div>
 
-  <div class="card" style="overflow:auto;">
-    <form id="reorderForm" method="post">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <input type="hidden" name="action" value="reorder">
-    </form>
-    <table class="table">
+  {% if categories %}
+    <table class="responsive-table table">
       <thead>
         <tr>
-          <th style="width:100px;">Order</th>
+          <th style="width:110px;">Order</th>
           <th>Category</th>
-          <th style="width:140px;">Status</th>
           <th style="width:120px;">Products</th>
+          <th style="width:120px;">Status</th>
+          <th style="width:140px;">Created</th>
           <th style="text-align:right;">Actions</th>
         </tr>
       </thead>
       <tbody>
         {% for cat in categories %}
-          <tr>
-            <td><input type="number" name="order_{{ cat.id }}" value="{{ cat.sort_order }}" class="input-narrow" form="reorderForm"></td>
+          {% set current_status = "active" if cat.active else "inactive" %}
+          <tr data-category-row="{{ cat.id }}">
             <td>
-              <div class="text-block">
-                <div class="row-title">{{ cat.name }}</div>
-                <div class="muted">Slug: {{ cat.slug }}</div>
-              </div>
+              <input type="number" name="sort_order" value="{{ cat.sort_order }}" class="input-narrow" style="width:80px;" form="cat-form-{{ cat.id }}">
             </td>
             <td>
+              <input type="text" name="name" value="{{ cat.name }}" class="input-medium" style="min-width:220px;" form="cat-form-{{ cat.id }}">
+            </td>
+            <td class="muted">{{ counts.get(cat.id, 0) }}</td>
+            <td>
               <label class="switch">
-                <input type="checkbox" class="category-toggle" data-category-id="{{ cat.id }}" data-previous="{{ 'active' if cat.active else 'inactive' }}" {% if cat.active %}checked{% endif %}>
+                <input type="checkbox" class="status-toggle" data-category-id="{{ cat.id }}" data-previous="{{ current_status }}" {% if current_status == "active" %}checked{% endif %}>
                 <span class="slider"></span>
               </label>
             </td>
-            <td class="muted">{{ counts.get(cat.id, 0) }}</td>
+            <td class="muted">{{ cat.created_at.strftime('%b %d %Y') }}</td>
             <td style="text-align:right; white-space:nowrap;">
-              <div class="actions right" style="gap:12px; align-items:center; justify-content:flex-end; flex-wrap:wrap;">
-                <form method="post" class="actions align-center" style="gap:6px;">
-                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                  <input type="hidden" name="action" value="rename">
-                  <input type="hidden" name="category_id" value="{{ cat.id }}">
-                  <input type="text" name="name" value="{{ cat.name }}" class="input-medium">
-                  <button class="btn btn-icon" type="submit" title="Rename">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M12 20h9" />
-                      <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
-                    </svg>
-                  </button>
-                </form>
-                <form method="post" style="display:inline;">
-                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                  <input type="hidden" name="action" value="toggle_active">
-                  <input type="hidden" name="category_id" value="{{ cat.id }}">
-                  <button class="btn btn-icon btn-danger" type="submit" title="{{ 'Deactivate' if cat.active else 'Activate' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polyline points="3 6 5 6 21 6"></polyline>
-                      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
-                      <path d="M10 11v6"></path>
-                      <path d="M14 11v6"></path>
-                      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
-                    </svg>
-                  </button>
-                </form>
-              </div>
+              <form id="cat-form-{{ cat.id }}" method="post" action="{{ url_for('admin.categories') }}" style="display:inline-flex; gap:8px; align-items:center;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="action" value="update">
+                <input type="hidden" name="category_id" value="{{ cat.id }}">
+                <button class="btn btn-icon" type="submit" title="Save changes">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9" />
+                    <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+                  </svg>
+                </button>
+                <button class="btn btn-icon btn-danger" type="button" title="Delete"
+                        data-confirm-form="delete-category-{{ cat.id }}"
+                        data-confirm-message="Delete {{ cat.name }}? This cannot be undone.">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+                    <path d="M10 11v6"></path>
+                    <path d="M14 11v6"></path>
+                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
+                  </svg>
+                </button>
+              </form>
             </td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
-    <div class="actions mt-3">
-      <button class="btn" type="submit" form="reorderForm">Save order</button>
+
+    {% for cat in categories %}
+      <form id="delete-category-{{ cat.id }}" method="post" action="{{ url_for('admin.delete_category', category_id=cat.id) }}" style="display:none;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      </form>
+    {% endfor %}
+  {% else %}
+    <div class="card">
+      <p class="row-title" style="margin:0 0 6px 0;">No categories yet</p>
+      <p class="muted" style="margin:0;">Create your first category to organize products.</p>
     </div>
-  </div>
+  {% endif %}
 {% endblock %}
