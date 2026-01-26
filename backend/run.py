@@ -1,3 +1,4 @@
+import os
 from dotenv import load_dotenv
 
 # Load environment variables from .env for local/dev runs (gunicorn/flask)
@@ -8,4 +9,5 @@ from app import create_app
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    debug_flag = os.getenv("DEBUG", "False").lower() in {"1", "true", "yes", "on"}
+    app.run(debug=debug_flag)
