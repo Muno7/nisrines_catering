@@ -96,7 +96,6 @@
             <th style="width:120px;">Day</th>
             <th>Pricing</th>
             <th style="width:120px;">Status</th>
-            <th style="width:120px;">Created</th>
             <th style="text-align:right;">Actions</th>
           </tr>
         </thead>
@@ -142,7 +141,6 @@
                   <span class="slider"></span>
                 </label>
               </td>
-              <td class="muted">{{ p.created_at.strftime('%b %d %Y') }}</td>
               <td style="text-align:right;">
                   <a class="btn btn-icon" href="{{ url_for('admin.edit_product', product_id=p.id) }}" title="Edit">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
