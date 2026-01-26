@@ -8,22 +8,7 @@ import { setCategoryScrollBehavior } from "../utils/animations/scrollBehavior.js
 import { renderLayout } from "../components/layout.js";
 import { API_BASE_URL } from "../../config.js";
 
-const fallbackMenuCategories = [
-  { id: 1, name: "Star of the Week", slug: "star-of-the-week", sort_order: 1 },
-  { id: 3, name: "Plat du Jour", slug: "plat-du-jour", sort_order: 4 },
-  { id: 4, name: "Appetizers", slug: "appetizers", sort_order: 5 },
-  { id: 5, name: "Salad", slug: "salad", sort_order: 6 },
-  { id: 6, name: "Soup", slug: "soup", sort_order: 7 },
-  { id: 7, name: "Healthy zone", slug: "healthy-zone", sort_order: 8 },
-  { id: 8, name: "Frozen", slug: "frozen", sort_order: 9 },
-  { id: 9, name: "Special items", slug: "special-items", sort_order: 10 },
-  { id: 10, name: "Pastries", slug: "pastries", sort_order: 11 },
-  { id: 11, name: "Soirée", slug: "soiree", sort_order: 12 },
-  { id: 12, name: "Desserts", slug: "desserts", sort_order: 13 },
-  { id: 13, name: "Catering", slug: "catering", sort_order: 14, hidden: true },
-];
-
-let menuCategories = [...fallbackMenuCategories];
+let menuCategories = [];
 
 const getSortedMenuCategories = () =>
   menuCategories.slice().sort((a, b) => a.sort_order - b.sort_order);
@@ -56,11 +41,11 @@ async function fetchMenuCategories() {
       menuCategories = data;
       return;
     }
-    console.warn("Categories response empty, using fallback data");
-    menuCategories = [...fallbackMenuCategories];
+    console.warn("Categories response empty");
+    menuCategories = [];
   } catch (error) {
-    console.warn("Error fetching categories, using fallback data", error);
-    menuCategories = [...fallbackMenuCategories];
+    console.warn("Error fetching categories", error);
+    menuCategories = [];
   }
 }
 
@@ -154,7 +139,19 @@ function renderMenuGrid() {
   const sectionsContainer = document.querySelector(".menu-sections");
   if (!sectionsContainer) return;
 
+  if (!products.length) {
+    sectionsContainer.innerHTML = '<div class="w-full py-12 text-center text-gray-500 text-lg">No products available right now. Please check back soon.</div>';
+    const menuList = document.querySelector(".menu-categories");
+    if (menuList) menuList.innerHTML = "";
+    return;
+  }
+
   const sortedCategories = getSortedMenuCategories();
+  if (!sortedCategories.length) {
+    sectionsContainer.innerHTML = '<div class="w-full py-12 text-center text-gray-500 text-lg">No menu categories available right now.</div>';
+    return;
+  }
+
   sectionsContainer.innerHTML = sortedCategories.map(buildSection).join("");
 
   const categories = sortedCategories
@@ -174,13 +171,13 @@ function renderMenuGrid() {
     const categoriesContainer = document.querySelector(`.${category}-container`);
     if (!categoriesContainer) return;
 
-    if (!productsGroupedByCategory[category]) {
+    const categoryProducts = productsGroupedByCategory[category];
+    if (!categoryProducts || !categoryProducts.length) {
       console.log(`No products found for category: ${category}`);
-      categoriesContainer.innerHTML = '';
+      categoriesContainer.innerHTML = '<div class="w-full py-6 text-center text-gray-500">No products found in this category.</div>';
       return;
     }
 
-    const categoryProducts = productsGroupedByCategory[category];
     categoriesContainer.innerHTML = categoryProducts
       .map(product => productCardHTML(product))
       .join('');
