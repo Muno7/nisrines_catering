@@ -223,7 +223,7 @@ def edit_product(product_id: str):
     product = Product.query.get_or_404(product_id)
     form = ProductForm(obj=product)
     form.category_id.choices = _category_choices()
-    if product.category_id:
+    if request.method == "GET" and product.category_id:
         form.category_id.data = product.category_id
     if not product.status:
         form.status.data = "active" if product.is_active else "inactive"

@@ -9,7 +9,7 @@
       <h2>Product catalog</h2>
     </div>
     <div class="actions">
-      <a class="btn" href="{{ url_for('admin.new_product') }}">New product</a>
+      <a class="btn" href="{{ url_for('admin.new_product') }}">Add new item</a>
       <a class="btn btn-secondary" href="{{ url_for('admin.categories') }}">Categories</a>
       <a class="btn btn-ghost" href="{{ url_for('admin.slideshow') }}">Slideshow</a>
     </div>
@@ -92,6 +92,8 @@
             <th style="width:36px;"><input type="checkbox" id="bulk-all"></th>
             <th style="width:80px;">Image</th>
             <th>Product</th>
+            <th style="width:140px;">Category</th>
+            <th style="width:120px;">Day</th>
             <th>Pricing</th>
             <th style="width:120px;">Status</th>
             <th style="width:120px;">Created</th>
@@ -108,11 +110,17 @@
               <td>
                 <div class="text-block">
                   <div class="row-title">{{ p.name }}</div>
-                  <div class="muted">{{ p.category.title() if p.category else "Uncategorized" }}</div>
-                  {% if p.day %}
-                    <div class="badge badge-neutral">{{ p.day.title() }}</div>
-                  {% endif %}
                 </div>
+              </td>
+              <td>
+                <div class="muted">{{ p.category.title() if p.category else "Uncategorized" }}</div>
+              </td>
+              <td>
+                {% if p.day %}
+                  <div class="badge badge-neutral">{{ p.day.title() }}</div>
+                {% else %}
+                  <span class="muted">—</span>
+                {% endif %}
               </td>
               <td>
                 {% if p.priceFamilyCents and p.priceFamilyCents > 0 %}
