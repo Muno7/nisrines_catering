@@ -51,7 +51,7 @@
 body {
   margin: 0;
   font-family: var(--font-base);
-  background: radial-gradient(120% 120% at 10% 10%, rgba(232, 130, 42, 0.08), rgba(82, 28, 13, 0)) var(--color-bg);
+  background: var(--color-bg);
   color: var(--color-text);
   min-height: 100vh;
   line-height: var(--line-height);

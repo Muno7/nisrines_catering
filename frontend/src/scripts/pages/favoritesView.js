@@ -7,6 +7,7 @@ import { setDayLabel, isProductAvailable } from "../utils/day.js";
 import { appendOverlayDiv, renderProductOverlay } from "../utils/overlay.js";
 import { setSiderbarNavigation } from "../utils/animations/sideBarAnimation.js";
 import { renderLayout } from "../components/layout.js";
+import { resolveProductImageSrc } from "../utils/imagePlaceholder.js";
 
 renderLayout("favorites");
 
@@ -29,6 +30,7 @@ function renderFavoriteItems() {
     const { productId } = item;
     const product = getProduct(productId);
     const { image, name } = product;
+    const imageSrc = resolveProductImageSrc(image, name, { pathPrefix: './public/assets/images/' });
     if (!isProductAvailable(product)) {
       favorite.deleteItem(productId, 'single');
       favorite.deleteItem(productId, 'family');
@@ -42,7 +44,7 @@ function renderFavoriteItems() {
     let html = `<div data-product-id="${productId}" class="js-cart-item-container js-cart-item-container-${productId} product-container relative bg-surface border border-muted/30 rounded-[10px] overflow-hidden transition-all duration-500 sm:hover:-translate-y-1 sm:hover:shadow-lg">
                   <div class="flex flex-row gap-2 p-2 lg:gap-4">
                     <div class="image-container-js-${productId} relative flex-shrink-0">
-                      <img class="w-[7rem] h-[7rem] lg:w-[10rem] lg:h-[10rem] object-cover rounded-[10px]" src="../../../public/assets/images/${image}" alt="">
+                      <img class="w-[7rem] h-[7rem] lg:w-[10rem] lg:h-[10rem] object-cover rounded-[10px]" src="${imageSrc}" alt="${name}">
                       ${dayLabel}
                     </div>
                     <div class="flex flex-col justify-between gap-4 w-full lg:py-2 lg:gap-8">

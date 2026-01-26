@@ -76,6 +76,11 @@
               <img class="thumb" src="{{ product.image }}" alt="{{ product.name }}">
               <span class="muted">Current image</span>
           </div>
+          {% elif product %}
+          <div class="inline-media">
+              <div class="thumb thumb-placeholder" data-initial="{{ product.name[:1]|upper }}"></div>
+              <span class="muted">No image uploaded</span>
+          </div>
           {% endif %}
           {% for error in form.image.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
         </div>

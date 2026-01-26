@@ -4,6 +4,7 @@ import { getProduct } from "../models/products.js";
 import { favorite } from "../models/favorites.js";
 import { formatCurrency } from "./money.js";
 import { showAddedToBasketNotification, revertQuantityControl } from "./animations/addButtonAnimations.js";
+import { resolveProductImageSrc } from "./imagePlaceholder.js";
 
 export function isOverlayOpen() {
   return document.getElementById('overlay').classList.contains('show');
@@ -116,7 +117,8 @@ export function renderProductOverlay() {
     overlayTitle.textContent = product.name;
     overlayPrice.innerHTML = `<span translate="no">$</span>${product.getPrice('single')}`;
     overlayIngredients.textContent = product.ingredients;
-    overlayImage.src = `${product.image}`;
+    overlayImage.src = resolveProductImageSrc(product.image, product.name, { pathPrefix: './public/assets/images/' });
+    overlayImage.alt = product.name;
     if(overlayHeartInput) {
       overlayHeartInput.checked = favorite.favoriteItems.some((item) => item.productId === productId);
     }
