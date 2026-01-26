@@ -531,6 +531,39 @@ def categories():
             flash("Category updated.", "success")
             return redirect(url_for("admin.categories"))
 
+        if action == "reorder":
+            updated = 0
+            for cat in categories:
+                name_key = f"name_{cat.id}"
+                order_key = f"order_{cat.id}"
+                new_name = (request.form.get(name_key) or "").strip()
+                new_order = request.form.get(order_key, type=int)
+
+                # Update name/slug if provided and changed
+                if new_name and new_name != cat.name:
+                    slug = slugify(new_name)
+                    conflict = (
+                        Category.query.filter(
+                            or_(Category.slug == slug, Category.name.ilike(new_name))
+                        )
+                        .filter(Category.id != cat.id)
+                        .first()
+                    )
+                    if conflict:
+                        flash(f"Name '{new_name}' already used by another category.", "danger")
+                        return redirect(url_for("admin.categories"))
+                    cat.name = new_name
+                    cat.slug = slug
+
+                if new_order is not None and new_order != cat.sort_order:
+                    cat.sort_order = new_order
+
+                updated += 1
+
+            db.session.commit()
+            flash("Category order updated.", "success")
+            return redirect(url_for("admin.categories"))
+
     counts = {
         cat.id: Product.query.filter_by(category_id=cat.id).count() for cat in categories
     }

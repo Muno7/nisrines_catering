@@ -46,4 +46,25 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  const rows = document.querySelectorAll("tr[data-category-row]");
+  rows.forEach((row) => {
+    const nameInput = row.querySelector(".name-input");
+    const orderInput = row.querySelector(".order-input");
+    const saveBtn = row.querySelector(".row-save-btn");
+
+    const markDirty = () => {
+      if (!saveBtn) return;
+      const nameChanged = nameInput && nameInput.value !== nameInput.dataset.original;
+      const orderChanged = orderInput && orderInput.value !== orderInput.dataset.original;
+      if (nameChanged || orderChanged) {
+        saveBtn.classList.add("show");
+      } else {
+        saveBtn.classList.remove("show");
+      }
+    };
+
+    nameInput?.addEventListener("input", markDirty);
+    orderInput?.addEventListener("input", markDirty);
+  });
 });
