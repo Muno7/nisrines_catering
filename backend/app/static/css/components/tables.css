@@ -19,6 +19,27 @@
   text-transform: uppercase;
 }
 
+
+.products-table {
+  table-layout: fixed;
+}
+
+.products-table .product-cell {
+  max-width: 360px;
+}
+
+.products-table .product-cell .text-block {
+  min-width: 0;
+}
+
+.products-table .product-cell .row-title,
+.products-table .product-cell .muted {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .responsive-table {
   width: 100%;
 }
@@ -45,5 +66,52 @@
   .table td {
     border: none;
     padding: 6px 0;
+  }
+}
+
+
+.table-scroll {
+  margin-top: var(--space-2);
+  max-height: 60vh;
+  overflow: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  scrollbar-width: none; /* Firefox */
+}
+
+.table-scroll::-webkit-scrollbar {
+  display: none; /* Safari & Chrome */
+}
+
+.table-scroll .table {
+  margin: 0;
+}
+
+.table.sticky-header thead th {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 2;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.03);
+}
+
+.table-scroll tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 720px) {
+  .table-scroll {
+    max-height: none;
+    overflow: visible;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .table.sticky-header thead th {
+    position: static;
+    box-shadow: none;
   }
 }

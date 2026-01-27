@@ -23,6 +23,13 @@
   color: var(--color-text);
 }
 
+.badge-neutral {
+  background: #f3f0eb;
+  color: var(--color-text);
+  border-color: #e3dcd1;
+}
+
+
 .badge-success {
   background: #e8f4ec;
   color: var(--color-success);

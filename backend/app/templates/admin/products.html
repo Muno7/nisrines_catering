@@ -86,17 +86,18 @@
   {% if products %}
     <form method="post" action="{{ url_for('admin.bulk_products') }}">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <table class="responsive-table table">
+      <div class="table-scroll">
+        <table class="responsive-table table sticky-header products-table">
         <thead>
           <tr>
             <th style="width:36px;"><input type="checkbox" id="bulk-all"></th>
             <th style="width:80px;">Image</th>
             <th>Product</th>
             <th style="width:140px;">Category</th>
-            <th style="width:120px;">Day</th>
+            <th style="width:140px;">Day</th>
             <th>Pricing</th>
             <th style="width:120px;">Status</th>
-            <th style="text-align:right;">Actions</th>
+            <th style="width:120px; text-align:right;">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -110,7 +111,7 @@
                   <div class="thumb thumb-placeholder" data-initial="{{ p.name[:1]|upper }}" style="width:70px; height:70px; border-radius:6px;"></div>
                 {% endif %}
               </td>
-              <td>
+              <td class="product-cell">
                 <div class="text-block">
                   <div class="row-title">{{ p.name }}</div>
                   {% if p.name_ar %}
@@ -166,7 +167,8 @@
             </tr>
           {% endfor %}
         </tbody>
-      </table>
+        </table>
+      </div>
 
       {% if pagination.pages > 1 %}
         <div class="actions align-center mt-3" style="justify-content:center; gap:8px; flex-wrap:wrap;">
