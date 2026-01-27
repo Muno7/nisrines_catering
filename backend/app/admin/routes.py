@@ -54,6 +54,11 @@ def _normalize_product_name(raw: str | None) -> str:
     return text[:1].upper() + text[1:].lower()
 
 
+def _normalize_arabic_name(raw: str | None) -> str | None:
+    text = (raw or "").strip()
+    return text or None
+
+
 @admin_bp.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
@@ -91,7 +96,12 @@ def products():
     base_query = Product.query
 
     if q:
-        base_query = base_query.filter(Product.name.ilike(f"%{q}%"))
+        base_query = base_query.filter(
+            or_(
+                Product.name.ilike(f"%{q}%"),
+                Product.name_ar.ilike(f"%{q}%"),
+            )
+        )
     if category_id:
         base_query = base_query.filter(Product.category_id == category_id)
     if status_filter in VALID_STATUSES:
@@ -184,6 +194,7 @@ def new_product():
 
         product = Product(
             name=_normalize_product_name(form.name.data),
+            name_ar=_normalize_arabic_name(form.name_ar.data),
             priceSingleCents=form.priceSingleCents.data,
             priceFamilyCents=family_price,
             image=uploaded_image,
@@ -260,6 +271,7 @@ def edit_product(product_id: str):
         category_name = category_obj.name if category_obj else (form.new_category.data or product.category)
 
         product.name = _normalize_product_name(form.name.data)
+        product.name_ar = _normalize_arabic_name(form.name_ar.data)
         product.priceSingleCents = form.priceSingleCents.data
         product.priceFamilyCents = family_price
         product.category = category_name.lower() if category_name else ""
@@ -273,6 +285,7 @@ def edit_product(product_id: str):
         if "save_duplicate" in request.form:
             duplicate = Product(
                 name=f"{product.name} (copy)",
+                name_ar=product.name_ar,
                 priceSingleCents=product.priceSingleCents,
                 priceFamilyCents=product.priceFamilyCents,
                 image=product.image,

@@ -1,5 +1,6 @@
 import { formatCurrency } from "../utils/money.js";
 import { API_BASE_URL } from "../../config.js";
+import { getCurrentLanguage } from "../utils/language.js";
 
 export function getProduct(productId) {
   let matchedproduct;
@@ -15,6 +16,7 @@ export class Product {
   id;
   image;
   name;
+  nameAr;
   ingredients;
   priceCents;
   category;
@@ -26,6 +28,7 @@ export class Product {
     this.id = productDetails.id;
     this.image = productDetails.image;
     this.name = productDetails.name;
+    this.nameAr = productDetails.name_ar || productDetails.nameAr || "";
     this.ingredients = productDetails.ingredients;
     this.category = productDetails.category;
     this.day = productDetails.day;
@@ -49,6 +52,13 @@ export class Product {
       return formatCurrency(this.priceCents);
     }
   };
+
+  getDisplayName(lang = getCurrentLanguage()) {
+    if (lang === 'ar' && this.nameAr) {
+      return this.nameAr;
+    }
+    return this.name;
+  }
 }
 
 export let products = [];
@@ -66,4 +76,29 @@ export async function loadProducts() {
   } catch (error) {
     console.error('Failed to load products:', error);
   }
+}
+
+export function refreshRenderedProductNames() {
+  const lang = getCurrentLanguage();
+  document.querySelectorAll('.product-container, .js-cart-item-container').forEach((container) => {
+    const productId = container.dataset.productId;
+    if (!productId) return;
+    const product = getProduct(productId);
+    if (!product) return;
+    const displayName = product.getDisplayName(lang);
+    const nameNode = container.querySelector('.product-name-js');
+    if (nameNode) {
+      nameNode.textContent = displayName;
+      nameNode.setAttribute('translate', 'no');
+      nameNode.classList.add('notranslate');
+    }
+    const imageNode = container.querySelector('img');
+    if (imageNode) {
+      imageNode.alt = displayName;
+    }
+  });
+}
+
+if (typeof window !== "undefined") {
+  window.addEventListener("site-language-change", refreshRenderedProductNames);
 }

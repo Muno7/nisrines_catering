@@ -1,3 +1,5 @@
+import { initLanguage, setLanguage, getCurrentLanguage } from "../utils/language.js";
+
 const navLinks = [
   {
     id: 'home',
@@ -97,9 +99,30 @@ function navLinkHTML(activePage, link) {
           </li>`;
 }
 
-function headerTemplate(activePage = '', { useFavoriteIcon = false } = {}) {
+function languageToggleTemplate(activeLang) {
+  const isArabic = activeLang === "ar";
+  const flagSrc = isArabic ? "./assets/icons/ar.png" : "./assets/icons/en.png";
+  const knobShift = isArabic ? 'translateX(28px)' : 'translateX(2px)';
+
+  return `<div class="lang-switch flex items-center gap-2 sm:gap-3 select-none">
+            <span class="lang-label-left text-[11px] sm:text-xs font-semibold ${isArabic ? 'text-muted' : 'text-primary'}">EN</span>
+            <button type="button"
+                    class="js-language-toggle relative inline-flex items-center h-8 w-14 rounded-full border border-muted/30 bg-surface/85 backdrop-blur-sm shadow-sm transition-colors duration-200"
+                    aria-label="Toggle language"
+                    data-lang="${activeLang}">
+              <span class="lang-track absolute inset-0 rounded-full bg-muted/20"></span>
+              <span class="lang-knob absolute h-[25px] w-[25px] rounded-full shadow-md transition-transform duration-200 ease-out"
+                    style="transform:${knobShift}; background: url('${flagSrc}') center/cover no-repeat;">
+              </span>
+            </button>
+            <span class="lang-label-right text-[11px] sm:text-xs font-semibold ${isArabic ? 'text-primary' : 'text-muted'}">AR</span>
+          </div>`;
+}
+
+function headerTemplate(activePage = '', { useFavoriteIcon = false, lang = "en" } = {}) {
   const navItems = navLinks.map((link) => navLinkHTML(activePage, link)).join('');
   const socials = headerSocialLinks.map((social) => `<a href="${social.href}" target="_blank" class="button-social-media">${social.icon}</a>`).join('');
+  const languageToggle = languageToggleTemplate(lang);
   const ctaIcon = useFavoriteIcon
     ? `<a href="./favorites.html" class="relative p-4 rounded-full lg:hover:bg-muted/10 active:text-muted transition duration-200">
          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="fill-current w-[24px] h-[24px]">
@@ -135,19 +158,25 @@ function headerTemplate(activePage = '', { useFavoriteIcon = false } = {}) {
                   <ul class="flex flex-col w-full space-y-2">
                     ${navItems}
                   </ul>
-                  <ul class="flex flex-wrap gap-4 mt-auto">
-                    ${socials}
-                    <span class="order-2 w-full">&copy; ${new Date().getFullYear()} Nisrine's Catering. All rights reserved</span>
-                  </ul>
+                  <div class="flex flex-col gap-4 mt-auto pr-4">
+                    <div class="flex justify-start">
+                      ${languageToggle}
+                    </div>
+                    <div class="flex flex-wrap gap-4">
+                      ${socials}
+                      <span class="order-2 w-full">&copy; ${new Date().getFullYear()} Nisrine's Catering. All rights reserved</span>
+                    </div>
+                  </div>
                 </nav>
               </div>
               <a href="./home.html" class="flex items-center rounded-full">
                 <img src="./assets/icons/logo.png" alt="Nisrine's Catering Logo" class="w-[100px] sm:w-[150px]">
               </a>
-              ${ctaIcon}
+              <div class="flex items-center gap-2 sm:gap-3">
+                ${ctaIcon}
+              </div>
             </div>
             ${menuCategoryNav}
-
           </header>`;
 }
 
@@ -247,13 +276,52 @@ function footerTemplate() {
 }
 
 export function renderLayout(activePage, options = {}) {
+  const lang = initLanguage();
   const headerPlaceholder = document.querySelector('[data-component="header"]');
   if (headerPlaceholder) {
-    headerPlaceholder.outerHTML = headerTemplate(activePage, options);
+    headerPlaceholder.outerHTML = headerTemplate(activePage, { ...options, lang });
   }
 
   const footerPlaceholder = document.querySelector('[data-component="footer"]');
   if (footerPlaceholder) {
     footerPlaceholder.outerHTML = footerTemplate();
   }
+
+  bindLanguageToggle();
+}
+
+function updateToggleStyles(selected) {
+  const btn = document.querySelector('.js-language-toggle');
+  if (!btn) return;
+  const bg = selected === 'ar' ? "./assets/icons/ar.png" : "./assets/icons/en.png";
+  btn.dataset.lang = selected;
+
+  const labelLeft = document.querySelector('.lang-label-left');
+  const labelRight = document.querySelector('.lang-label-right');
+  const knob = btn.querySelector('.lang-knob');
+
+  if (labelLeft && labelRight) {
+    labelLeft.classList.toggle('text-primary', selected === 'en');
+    labelLeft.classList.toggle('text-muted', selected !== 'en');
+    labelRight.classList.toggle('text-primary', selected === 'ar');
+    labelRight.classList.toggle('text-muted', selected !== 'ar');
+  }
+  if (knob) {
+    knob.style.transform = selected === 'ar' ? 'translateX(28px)' : 'translateX(2px)';
+    knob.style.background = `url('${bg}') center/cover no-repeat`;
+    knob.style.border = 'none';
+  }
+}
+
+function bindLanguageToggle() {
+  const toggle = document.querySelector('.js-language-toggle');
+  if (!toggle) return;
+
+  updateToggleStyles(getCurrentLanguage());
+
+  toggle.addEventListener('click', (event) => {
+    const next = getCurrentLanguage() === 'en' ? 'ar' : 'en';
+    setLanguage(next);
+    updateToggleStyles(next);
+  });
 }

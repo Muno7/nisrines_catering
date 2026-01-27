@@ -32,6 +32,10 @@ class ProductForm(FlaskForm):
         "Name",
         validators=[DataRequired(), Length(max=255)]
     )
+    name_ar = StringField(
+        "Arabic name",
+        validators=[Optional(), Length(max=255)]
+    )
 
     priceSingleCents = IntegerField(
         "Single price (cents)",

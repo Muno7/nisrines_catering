@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const rules = {
     name: { min: 2, message: "Name should be at least 2 characters." },
+    name_ar: { min: 2, optional: true, message: "Arabic name should be at least 2 characters." },
     category_id: { min: 1, message: "Choose a category." },
     priceSingleCents: { min: 1, message: "Single price is required." },
     priceFamilyCents: { min: 0, optional: true, message: "Family price cannot be negative." },

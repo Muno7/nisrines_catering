@@ -27,6 +27,7 @@ def get_products():
         product_json = {
             "id": p.id,
             "name": p.name,
+            "name_ar": p.name_ar,
             "image": p.image,
             "category": category_slug,
             "ingredients": p.ingredients,

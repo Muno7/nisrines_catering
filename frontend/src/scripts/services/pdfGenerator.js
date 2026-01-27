@@ -174,6 +174,7 @@ export async function generatePDF(orderData) {
   console.log(orderData.items)
   orderData.items.forEach(item => {
       const product = getProduct(item.productId);
+      const displayName = product.getDisplayName();
       let price;
       if (product.single && product.family) {
         if (item.portion === 'single') {
@@ -184,7 +185,7 @@ export async function generatePDF(orderData) {
       } else if (product.priceCents) {
         price = formatCurrency(product.priceCents);
       }
-      pdf.text(product.name, margin, y, { maxWidth: itemColumnWidth });
+      pdf.text(displayName, margin, y, { maxWidth: itemColumnWidth });
       pdf.text(item.portion, pageWidth - margin - 2 * otherColumnWidth, y);
       pdf.text(item.quantity.toString(), pageWidth - margin - otherColumnWidth, y);
       const priceText = `$${price}`;

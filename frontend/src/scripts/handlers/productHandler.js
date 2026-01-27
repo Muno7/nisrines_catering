@@ -4,8 +4,9 @@ import { isProductAvailable, setDayLabel } from '../utils/day.js';
 import { resolveProductImageSrc } from '../utils/imagePlaceholder.js';
 
 export function productCardHTML(product) {
-  const {id, name, image} = product;
-  const imageSrc = resolveProductImageSrc(image, name, { pathPrefix: './public/assets/images/' });
+  const {id, image} = product;
+  const displayName = product.getDisplayName();
+  const imageSrc = resolveProductImageSrc(image, displayName, { pathPrefix: './public/assets/images/' });
   const checked = favorite.favoriteItems.some(item => item.productId === id) ? 'checked' : '';
   if (!isProductAvailable(product)) {
    cart.deleteItem(id, 'single')
@@ -22,7 +23,7 @@ export function productCardHTML(product) {
   const productCard = `
   <div class="product-container product-container-js-${id} w-[12rem] relative flex flex-col gap-2 bg-surface border border-muted/30 p-4 rounded-[10px] transition-all duration-500 sm:hover:-translate-y-1 sm:hover:shadow-lg" data-product-id="${id}">
     <div class="image-container-js-${id} relative w-full h-[10rem]" data-product-id="${id}">
-      <img loading="lazy" class="w-[10rem] h-[10rem] object-cover rounded-[10px]" src="${imageSrc}" alt="${name}">
+      <img loading="lazy" class="w-[10rem] h-[10rem] object-cover rounded-[10px]" src="${imageSrc}" alt="${displayName}">
       ${dayLabel}
     </div>
       <label data-product-id="${id}" class="js-add-to-favorite-button z-[3] shadow-sm product-heart-button absolute bg-white rounded-full p-[7px] top-6 right-6 cursor-pointer text-[8px] select-none transition duration-100">
@@ -40,7 +41,7 @@ export function productCardHTML(product) {
         </div>
       </label>
     <div class="flex flex-col gap-2">
-      <p class="product-name-js text-xl h-[3.4rem] line-clamp-2 text-wrap text-accent">${name}</p>
+      <p class="product-name-js text-xl h-[3.4rem] line-clamp-2 text-wrap text-accent notranslate" translate="no">${displayName}</p>
       <div class="flex items-center gap-2">
         <p class="price-js font-bold "><span translate="no">$</span>${product.getPrice('single')}</p>
         <div class="relative w-full">

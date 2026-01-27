@@ -114,11 +114,14 @@ export function renderProductOverlay() {
     console.log(product);
     
     // Set overlay content
-    overlayTitle.textContent = product.name;
+    const displayName = product.getDisplayName();
+    overlayTitle.textContent = displayName;
+    overlayTitle.setAttribute('translate', 'no');
+    overlayTitle.classList.add('notranslate');
     overlayPrice.innerHTML = `<span translate="no">$</span>${product.getPrice('single')}`;
     overlayIngredients.textContent = product.ingredients;
-    overlayImage.src = resolveProductImageSrc(product.image, product.name, { pathPrefix: './public/assets/images/' });
-    overlayImage.alt = product.name;
+    overlayImage.src = resolveProductImageSrc(product.image, displayName, { pathPrefix: './public/assets/images/' });
+    overlayImage.alt = displayName;
     if(overlayHeartInput) {
       overlayHeartInput.checked = favorite.favoriteItems.some((item) => item.productId === productId);
     }

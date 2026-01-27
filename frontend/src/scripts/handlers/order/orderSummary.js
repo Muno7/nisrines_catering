@@ -40,8 +40,9 @@ export function renderOrderSummary() {
       cart.deleteItem(productId, portion);
       return '';
     }
-    const { image, name } = product;
-    const imageSrc = resolveProductImageSrc(image, name, { pathPrefix: './public/assets/images/' });
+    const { image } = product;
+    const displayName = product.getDisplayName();
+    const imageSrc = resolveProductImageSrc(image, displayName, { pathPrefix: './public/assets/images/' });
     let price;
     const portionLabel = setPortionLabel(portion);
     if (product.single && product.family) {
@@ -54,15 +55,15 @@ export function renderOrderSummary() {
       price = formatCurrency(product.priceCents);
     }
     const dayLabel = product.day ? setDayLabel(product.day) : '';
-    let html = `<div class="js-cart-item-container js-cart-item-container-${productId} relative bg-surface border border-muted/30 p-4 rounded-[10px] transition-all duration-500 sm:hover:-translate-y-1 sm:hover:shadow-lg overflow-hidden">
+    let html = `<div class="js-cart-item-container js-cart-item-container-${productId} relative bg-surface border border-muted/30 p-4 rounded-[10px] transition-all duration-500 sm:hover:-translate-y-1 sm:hover:shadow-lg overflow-hidden" data-product-id="${productId}">
                   <div class="flex flex-row gap-2 p-2 lg:gap-4">
                     <div class="relative flex-shrink-0">
-                      <img class="w-[7rem] h-[7rem] lg:w-[10rem] lg:h-[10rem] object-cover rounded-[10px]" src="${imageSrc}" alt="${name}">
+                      <img class="w-[7rem] h-[7rem] lg:w-[10rem] lg:h-[10rem] object-cover rounded-[10px]" src="${imageSrc}" alt="${displayName}">
                       ${dayLabel}
                     </div>
                     <div class="flex flex-col justify-between gap-4 w-full lg:py-2 lg:gap-8">
                       <div class="flex flex-col gap-2 lg:gap-4">
-                        <h3 class="product-name-js text-l md:text-xl font-bold">${name}</h3>
+                        <h3 class="product-name-js text-l md:text-xl font-bold notranslate" translate="no">${displayName}</h3>
                         <label class="bg-primary text-white rounded-full max-w-[40px] h-full px-[2px] py-[3px] flex items-center justify-center text-xl">
                           ${portionLabel}
                         </label>

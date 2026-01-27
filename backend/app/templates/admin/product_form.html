@@ -29,6 +29,12 @@
           <div class="inline-error" data-inline-error-for="name"></div>
           {% for error in form.name.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
         </div>
+        <div class="field" data-field="name_ar">
+          {{ form.name_ar.label }}<small class="muted" style="margin-left:6px;">Optional</small>
+          {{ form.name_ar(placeholder="مثال: شاورما دجاج", autocomplete="off", dir="rtl", maxlength=255) }}
+          <div class="inline-error" data-inline-error-for="name_ar"></div>
+          {% for error in form.name_ar.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+        </div>
 
         <div class="field" data-field="category">
           {{ form.category_id.label }}

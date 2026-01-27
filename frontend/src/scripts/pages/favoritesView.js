@@ -29,8 +29,9 @@ function renderFavoriteItems() {
   favorite.favoriteItems.forEach((item) => {
     const { productId } = item;
     const product = getProduct(productId);
-    const { image, name } = product;
-    const imageSrc = resolveProductImageSrc(image, name, { pathPrefix: './public/assets/images/' });
+    const { image } = product;
+    const displayName = product.getDisplayName();
+    const imageSrc = resolveProductImageSrc(image, displayName, { pathPrefix: './public/assets/images/' });
     if (!isProductAvailable(product)) {
       favorite.deleteItem(productId, 'single');
       favorite.deleteItem(productId, 'family');
@@ -44,12 +45,12 @@ function renderFavoriteItems() {
     let html = `<div data-product-id="${productId}" class="js-cart-item-container js-cart-item-container-${productId} product-container relative bg-surface border border-muted/30 rounded-[10px] overflow-hidden transition-all duration-500 sm:hover:-translate-y-1 sm:hover:shadow-lg">
                   <div class="flex flex-row gap-2 p-2 lg:gap-4">
                     <div class="image-container-js-${productId} relative flex-shrink-0">
-                      <img class="w-[7rem] h-[7rem] lg:w-[10rem] lg:h-[10rem] object-cover rounded-[10px]" src="${imageSrc}" alt="${name}">
+                      <img class="w-[7rem] h-[7rem] lg:w-[10rem] lg:h-[10rem] object-cover rounded-[10px]" src="${imageSrc}" alt="${displayName}">
                       ${dayLabel}
                     </div>
                     <div class="flex flex-col justify-between gap-4 w-full lg:py-2 lg:gap-8">
                       <div class="flex flex-col">
-                        <h3 class="product-name-js text-l md:text-xl font-bold line-clamp-2">${name}</h3>
+                        <h3 class="product-name-js text-l md:text-xl font-bold line-clamp-2 notranslate" translate="no">${displayName}</h3>
                       </div>
                       <div class="flex justify-between items-center gap-4 w-full">
                         <div class="flex items-center gap-2">

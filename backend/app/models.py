@@ -35,6 +35,7 @@ class Product(db.Model):
 
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(255), nullable=False)
+    name_ar = db.Column(db.String(255), nullable=True)
     priceSingleCents = db.Column(db.Integer, nullable=False)
     priceFamilyCents = db.Column(db.Integer, nullable=False)
     image = db.Column(db.Text, nullable=True)

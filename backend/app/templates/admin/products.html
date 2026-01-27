@@ -113,6 +113,9 @@
               <td>
                 <div class="text-block">
                   <div class="row-title">{{ p.name }}</div>
+                  {% if p.name_ar %}
+                    <div class="muted" dir="rtl" translate="no">{{ p.name_ar }}</div>
+                  {% endif %}
                 </div>
               </td>
               <td>
