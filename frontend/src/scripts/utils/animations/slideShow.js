@@ -16,6 +16,9 @@ export async function initSlideshow() {
   const slideContainer = document.querySelector(".js-slideshow-container");
   if (!slideContainer) return;
 
+  const transitionMs = 1750;
+  const intervalMs = 4000;
+
   const images = await fetchSlideshowImages();
   if (images.length === 0) return;
 
@@ -38,7 +41,7 @@ export async function initSlideshow() {
   let currentIndex = 0;
   
   // Set initial styles
-  slideContainer.style.transition = 'transform 2s ease';
+  slideContainer.style.transition = `transform ${transitionMs}ms ease`;
   slideContainer.style.width = `${slides.length * 100}%`;
   slides.forEach(slide => {
     slide.style.width = `${100 / slides.length}%`;
@@ -55,12 +58,12 @@ export async function initSlideshow() {
         currentIndex = 0;
         slideContainer.style.transform = `translateX(0)`;
         setTimeout(() => {
-          slideContainer.style.transition = 'transform 1.5s ease';
+          slideContainer.style.transition = `transform ${transitionMs}ms ease`;
         }, 20);
-      }, 1500); // Match the transition duration
+      }, transitionMs); // Match the transition duration
     }
   }
   
   // Auto advance every 5 seconds
-  setInterval(nextSlide, 4000);
+  setInterval(nextSlide, intervalMs);
 }
