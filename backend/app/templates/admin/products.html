@@ -5,13 +5,18 @@
 {% endblock %}
 {% block content %}
   <header class="page-header">
-    <div>
+    <div class="page-header__title">
       <h2>Product catalog</h2>
     </div>
-    <div class="actions">
+    <div class="page-header__nav">
+      <div class="nav-group">
+        <a class="nav-pill {% if request.endpoint == 'admin.products' %}is-active{% endif %}" href="{{ url_for('admin.products') }}">Products</a>
+        <a class="nav-pill {% if request.endpoint == 'admin.categories' %}is-active{% endif %}" href="{{ url_for('admin.categories') }}">Categories</a>
+        <a class="nav-pill {% if request.endpoint == 'admin.slideshow' %}is-active{% endif %}" href="{{ url_for('admin.slideshow') }}">Slideshow</a>
+      </div>
+    </div>
+    <div class="page-header__actions">
       <a class="btn" href="{{ url_for('admin.new_product') }}">Add new item</a>
-      <a class="btn btn-secondary" href="{{ url_for('admin.categories') }}">Categories</a>
-      <a class="btn btn-ghost" href="{{ url_for('admin.slideshow') }}">Slideshow</a>
     </div>
   </header>
 

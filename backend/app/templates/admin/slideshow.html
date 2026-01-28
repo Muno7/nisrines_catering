@@ -7,12 +7,17 @@
 {% endblock %}
 {% block content %}
   <header class="page-header">
-    <div>
+    <div class="page-header__title">
       <h2>Manage slideshow images</h2>
     </div>
-    <div class="actions">
-      <a class="btn btn-ghost" href="{{ url_for('admin.products') }}">Back to products</a>
+    <div class="page-header__nav">
+      <div class="nav-group">
+        <a class="nav-pill {% if request.endpoint == 'admin.products' %}is-active{% endif %}" href="{{ url_for('admin.products') }}">Products</a>
+        <a class="nav-pill {% if request.endpoint == 'admin.categories' %}is-active{% endif %}" href="{{ url_for('admin.categories') }}">Categories</a>
+        <a class="nav-pill {% if request.endpoint == 'admin.slideshow' %}is-active{% endif %}" href="{{ url_for('admin.slideshow') }}">Slideshow</a>
+      </div>
     </div>
+    <div class="page-header__actions"></div>
   </header>
 
   <div class="card">
@@ -20,7 +25,6 @@
       {{ form.hidden_tag() }}
       <div class="field">
         {{ form.images.label }}{{ form.images() }}
-        <small class="muted">Images compress in the browser and upload one by one to keep requests light.</small>
       </div>
       <div class="actions">
         <button class="btn" type="submit">Upload</button>
@@ -75,9 +79,9 @@
             {% endfor %}
           </tbody>
         </table>
-        <div class="actions">
-          <button class="btn" type="submit">Save order</button>
-        </div>
+      </div>
+      <div class="actions" style="justify-content: flex-end; margin-top: 10px;">
+        <button class="btn" type="submit">Save order</button>
       </div>
     </form>
   {% else %}
