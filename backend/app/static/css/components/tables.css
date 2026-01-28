@@ -19,6 +19,17 @@
   text-transform: uppercase;
 }
 
+/* For categories */
+.row-save-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 110px;
+  visibility: hidden;
+}
+.row-save-btn.show {
+  visibility: visible;
+}
 
 .products-table {
   table-layout: fixed;

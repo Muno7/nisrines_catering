@@ -2,19 +2,6 @@
 {% block title %}Categories{% endblock %}
 {% block head %}
   <script defer src="{{ url_for('static', filename='js/categories.js') }}"></script>
-  <style>
-    /* reserve space for per-row save button so layout doesn't shift */
-    .row-save-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 110px;
-      visibility: hidden;
-    }
-    .row-save-btn.show {
-      visibility: visible;
-    }
-  </style>
 {% endblock %}
 {% block content %}
   <header class="page-header">
