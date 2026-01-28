@@ -1,6 +1,7 @@
 {% extends "admin/base.html" %}
 {% block title %}{{ "Edit Product" if is_edit else "New Product" }}{% endblock %}
 {% block head %}
+  <script defer src="{{ url_for('static', filename='js/image_compress.js') }}"></script>
   <script defer src="{{ url_for('static', filename='js/product_form.js') }}"></script>
 {% endblock %}
 {% block content %}

@@ -1,13 +1,11 @@
-import io
+import hashlib
 import mimetypes
 import os
-import uuid
 from typing import Tuple
 
 import boto3
 from botocore.exceptions import BotoCoreError, ClientError
 from flask import current_app
-from PIL import Image
 
 
 ALLOWED_EXTENSIONS = {
@@ -38,34 +36,6 @@ def allowed_file(filename: str, content_type: str) -> bool:
     )
 
 
-def compress_image(file_storage) -> Tuple[bool, str, str, io.BytesIO | None]:
-    """
-    Compress and resize the image to a reasonable size before upload.
-    Returns (success, extension, content_type, buffer_or_none)
-    """
-    try:
-        file_storage.stream.seek(0)
-        img = Image.open(file_storage.stream)
-    except Exception:
-        return False, "", "", None
-
-    # Convert to RGB to ensure JPEG compatibility and reduce size
-    if img.mode not in ("RGB", "L"):
-        img = img.convert("RGB")
-
-    # Resize with max dimension
-    max_dim = 1600
-    img.thumbnail((max_dim, max_dim), Image.Resampling.LANCZOS)
-
-    buffer = io.BytesIO()
-    target_ext = "jpg"
-    target_format = "JPEG"
-    img.save(buffer, format=target_format, quality=82, optimize=True)
-    buffer.seek(0)
-    content_type = "image/jpeg"
-    return True, target_ext, content_type, buffer
-
-
 def build_s3_client():
     return boto3.client(
         "s3",
@@ -73,6 +43,24 @@ def build_s3_client():
         aws_secret_access_key=current_app.config["AWS_SECRET_ACCESS_KEY"],
         region_name=current_app.config["AWS_REGION"],
     )
+
+
+def _object_url(bucket: str, key: str) -> str:
+    base_url = current_app.config.get("S3_PUBLIC_BASE_URL")
+    if base_url:
+        return f"{base_url.rstrip('/')}/{key}"
+    region = current_app.config.get("AWS_REGION")
+    return f"https://{bucket}.s3.{region}.amazonaws.com/{key}"
+
+
+def _hash_stream(stream) -> str:
+    """Return hex sha256 of stream without consuming it."""
+    stream.seek(0)
+    sha = hashlib.sha256()
+    for chunk in iter(lambda: stream.read(8192), b""):
+        sha.update(chunk)
+    stream.seek(0)
+    return sha.hexdigest()
 
 
 def upload_file(file_storage) -> Tuple[bool, str]:
@@ -83,28 +71,39 @@ def upload_file(file_storage) -> Tuple[bool, str]:
     if not allowed_file(filename, content_type):
         return False, "Invalid file type. Please upload a valid image."
 
-    # Compress image to reduce upload size
-    ok_compress, ext, content_type, buffer = compress_image(file_storage)
-    if not ok_compress or buffer is None:
-        return False, "Could not process image. Please try a different file."
+    try:
+        file_storage.stream.seek(0, os.SEEK_END)
+        buffer_size = file_storage.stream.tell()
+        file_storage.stream.seek(0)
+    except Exception:
+        buffer_size = file_storage.content_length or 0
 
     max_file_size = current_app.config.get("MAX_FILE_SIZE", 5 * 1024 * 1024)
-    buffer_size = buffer.getbuffer().nbytes
     if buffer_size > max_file_size:
         return False, f"Processed file is too large. Max size is {max_file_size // (1024*1024)}MB."
 
-    key = f"products/{uuid.uuid4()}.{ext}"
+    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else "jpg"
 
     bucket = current_app.config.get("S3_BUCKET_NAME")
-    base_url = current_app.config.get("S3_PUBLIC_BASE_URL")
     if not bucket:
         return False, "S3 bucket not configured."
 
     client = build_s3_client()
+    # Use deterministic key based on file hash to avoid duplicates
+    digest = _hash_stream(file_storage.stream)
+    key = f"products/{digest}.{ext}"
+
+    try:
+        client.head_object(Bucket=bucket, Key=key)
+        return True, _object_url(bucket, key)
+    except ClientError as exc:
+        error_code = getattr(exc, "response", {}).get("Error", {}).get("Code")
+        if error_code not in ("404", "NoSuchKey", "NotFound"):
+            return False, f"S3 check failed: {exc}"
 
     try:
         client.upload_fileobj(
-            buffer,
+            file_storage.stream,
             bucket,
             key,
             ExtraArgs={
@@ -114,9 +113,4 @@ def upload_file(file_storage) -> Tuple[bool, str]:
     except (BotoCoreError, ClientError) as exc:
         return False, f"S3 upload failed: {exc}"
 
-    if base_url:
-        url = f"{base_url.rstrip('/')}/{key}"
-    else:
-        region = current_app.config.get("AWS_REGION") or "us-east-1"
-        url = f"https://{bucket}.s3.{region}.amazonaws.com/{key}"
-    return True, url
+    return True, _object_url(bucket, key)

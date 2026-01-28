@@ -429,11 +429,14 @@ def bulk_products():
 def slideshow():
     form = SlideshowForm()
     images = SlideshowImage.query.order_by(SlideshowImage.sort_order, SlideshowImage.created_at).all()
+    wants_json = request.accept_mimetypes["application/json"] >= request.accept_mimetypes["text/html"]
 
     if form.validate_on_submit():
         files = request.files.getlist("images")
         if not files or not any(f.filename for f in files):
             flash("Please select at least one image to upload.", "warning")
+            if wants_json:
+                return jsonify({"ok": False, "uploaded": 0, "errors": ["No files provided."]}), 400
             return render_template("admin/slideshow.html", form=form, images=images)
 
         next_order = (
@@ -441,12 +444,13 @@ def slideshow():
         )
 
         uploaded = 0
+        errors: list[str] = []
         for file in files:
             if not file or not file.filename:
                 continue
             ok, result = upload_file(file)
             if not ok:
-                flash(f"Upload failed for {file.filename}: {result}", "danger")
+                errors.append(f"{file.filename}: {result}")
                 continue
             next_order += 1
             slide = SlideshowImage(image=result, sort_order=next_order)
@@ -456,7 +460,19 @@ def slideshow():
         if uploaded:
             db.session.commit()
             flash(f"Added {uploaded} slideshow image(s).", "success")
-        else:
+
+        if wants_json:
+            status_code = 200 if uploaded else 400
+            return (
+                jsonify({"ok": uploaded > 0, "uploaded": uploaded, "errors": errors}),
+                status_code,
+            )
+
+        if uploaded:
+            flash(f"Added {uploaded} slideshow image(s).", "success")
+        if errors:
+            flash(f"Failed to upload {len(errors)} image(s): " + "; ".join(errors), "danger")
+        if not uploaded and not errors:
             flash("No images were uploaded.", "warning")
         return redirect(url_for("admin.slideshow"))
 

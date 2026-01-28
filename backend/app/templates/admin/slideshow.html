@@ -1,6 +1,10 @@
 
 {% extends "admin/base.html" %}
 {% block title %}Slideshow{% endblock %}
+{% block head %}
+  <script defer src="{{ url_for('static', filename='js/image_compress.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='js/slideshow.js') }}"></script>
+{% endblock %}
 {% block content %}
   <header class="page-header">
     <div>
@@ -12,11 +16,11 @@
   </header>
 
   <div class="card">
-    <form method="post" enctype="multipart/form-data" class="form-grid single-column">
+    <form id="slideshowForm" method="post" action="{{ url_for('admin.slideshow') }}" enctype="multipart/form-data" class="form-grid single-column">
       {{ form.hidden_tag() }}
       <div class="field">
         {{ form.images.label }}{{ form.images() }}
-        <small class="muted">You can select multiple files at once.</small>
+        <small class="muted">Images compress in the browser and upload one by one to keep requests light.</small>
       </div>
       <div class="actions">
         <button class="btn" type="submit">Upload</button>
