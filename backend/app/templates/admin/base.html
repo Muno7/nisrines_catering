@@ -28,9 +28,12 @@
       </header>
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-          <div class="alerts">
+          <div class="toast-stack" id="toast-stack">
             {% for category, message in messages %}
-              <div class="alert alert-{{ category }}">{{ message }}</div>
+              <div class="toast alert-{{ category }}" role="status">
+                <span class="toast-text">{{ message }}</span>
+                <button class="toast-close" type="button" aria-label="Dismiss">&times;</button>
+              </div>
             {% endfor %}
           </div>
         {% endif %}
@@ -54,5 +57,23 @@
     </div>
   </div>
   <script src="{{ url_for('static', filename='js/confirm.js') }}"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const stack = document.getElementById("toast-stack");
+      if (!stack) return;
+
+      const removeToast = (toast) => {
+        if (!toast) return;
+        toast.classList.add("toast-hide");
+        setTimeout(() => toast.remove(), 220);
+      };
+
+      stack.querySelectorAll(".toast").forEach((toast) => {
+        const closeBtn = toast.querySelector(".toast-close");
+        closeBtn?.addEventListener("click", () => removeToast(toast));
+        setTimeout(() => removeToast(toast), 4500);
+      });
+    });
+  </script>
 </body>
 </html>
