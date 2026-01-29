@@ -76,7 +76,7 @@
       {% if filters.q or filters.category_id or filters.status != 'all' or filters.day %}
         <a class="btn btn-ghost" href="{{ url_for('admin.products') }}">Clear</a>
       {% endif %}
-      <span class="pill pill-ghost">Showing {{ stats.range_start }}–{{ stats.range_end }} of {{ stats.total }}</span>
+      <span class="pill pill-ghost">Showing {{ stats.total }} product{{ 's' if stats.total != 1 }}</span>
     </div>
   </form>
 
@@ -174,18 +174,6 @@
         </tbody>
         </table>
       </div>
-
-      {% if pagination.pages > 1 %}
-        <div class="actions align-center mt-3" style="justify-content:center; gap:8px; flex-wrap:wrap;">
-          {% if pagination.has_prev %}
-            <a class="btn btn-ghost" href="{{ url_for('admin.products', page=pagination.prev_num, q=filters.q, category_id=filters.category_id, status=filters.status, day=filters.day, missing_image=1 if filters.missing_image else None) }}">&laquo; Prev</a>
-          {% endif %}
-          <span class="pill pill-ghost">Page {{ pagination.page }} of {{ pagination.pages }}</span>
-          {% if pagination.has_next %}
-            <a class="btn btn-ghost" href="{{ url_for('admin.products', page=pagination.next_num, q=filters.q, category_id=filters.category_id, status=filters.status, day=filters.day, missing_image=1 if filters.missing_image else None) }}">Next &raquo;</a>
-          {% endif %}
-        </div>
-      {% endif %}
 
       <div class="card" style="margin-top:10px;">
         <div class="bulk-bar">

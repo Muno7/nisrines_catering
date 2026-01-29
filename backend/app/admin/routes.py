@@ -90,8 +90,6 @@ def products():
     status_filter = request.args.get("status", "all").strip().lower()
     missing_image = request.args.get("missing_image") == "1"
     day_filter = (request.args.get("day") or "").strip().lower()
-    page = request.args.get("page", default=1, type=int)
-    per_page = 20
 
     base_query = Product.query
 
@@ -111,22 +109,17 @@ def products():
     if day_filter:
         base_query = base_query.filter(func.lower(Product.day) == day_filter)
 
-    pagination = (
-        base_query.order_by(Product.updated_at.desc())
-        .paginate(page=page, per_page=per_page, error_out=False)
-    )
-    items = pagination.items
-    all_items = Product.query.order_by(Product.updated_at.desc()).all()
+    items = base_query.order_by(Product.updated_at.desc()).all()
 
     categories = Category.query.order_by(Category.sort_order, Category.name).all()
     category_counts = Counter([p.category for p in items if p.category])
     stats = {
-        "total": pagination.total,
-        "active": sum(1 for p in all_items if _status_value(p) == "active"),
-        "inactive": sum(1 for p in all_items if _status_value(p) == "inactive"),
+        "total": len(items),
+        "active": sum(1 for p in items if _status_value(p) == "active"),
+        "inactive": sum(1 for p in items if _status_value(p) == "inactive"),
         "visible": len(items),
-        "range_start": ((pagination.page - 1) * per_page + 1) if pagination.total else 0,
-        "range_end": min(pagination.page * per_page, pagination.total),
+        "range_start": 1 if items else 0,
+        "range_end": len(items),
     }
     latest = items[0] if items else None
     return render_template(
@@ -136,7 +129,6 @@ def products():
         category_counts=category_counts,
         latest=latest,
         categories=categories,
-        pagination=pagination,
         filters={
             "q": q,
             "category_id": category_id,
