@@ -201,3 +201,8 @@ footer {
         transition: none;
     }
 }
+
+/* Keep Arabic product titles RTL so truncation ellipsis appears on the left */
+:root[data-lang="ar"] .product-name-js {
+    direction: rtl;
+}
