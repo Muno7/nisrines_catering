@@ -58,11 +58,6 @@ section {
   align-items: stretch;
 }
 
-.products-grid .product-container {
-  width: min(11rem, 100%);
-  max-width: 11rem;
-}
-
 /* Keep grid gaps uniform across breakpoints */
 .products-grid {
   gap: 1rem !important;

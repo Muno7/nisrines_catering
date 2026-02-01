@@ -2,8 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.product-container {
+  width: min(11rem, 100%);
+  max-width: 11rem;
+}
+
 /*Heart button animation*/ 
-  
 .heart-checkmark {
     top: 0;
     left: 0;
