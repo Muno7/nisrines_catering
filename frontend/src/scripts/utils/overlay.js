@@ -146,35 +146,42 @@ export function renderProductOverlay() {
   }
 
   function renderPortionButtons(product) {
-    const checkProductCategory = (productCategory, targetCategories) => {
-      return targetCategories.includes(productCategory);
-    };
-    const targetedCategories = ["plat-du-jour", "soup", "salad"];
     const portionDiv = document.querySelector(".portion-container-js");
-  
-    if (checkProductCategory(product.category, targetedCategories)) {
-      portionDiv.classList.remove('hidden')
-      portionDiv.classList.add('flex')
+    if (!portionDiv) return;
+
+    const hasFamilyPortion = typeof product.family === 'number';
+
+    if (hasFamilyPortion) {
+      portionDiv.classList.remove('hidden');
+      portionDiv.classList.add('flex');
     } else {
-      portionDiv.classList.remove('flex')
-      portionDiv.classList.add('hidden')
+      portionDiv.classList.add('hidden');
+      portionDiv.classList.remove('flex');
     }
-  
+
     const familyPortionButton = document.querySelector('.family-portion-button-js');
     const singlePortionButton = document.querySelector('.single-portion-button-js');
-  
-    familyPortionButton.addEventListener('click', () => {
+    if (!familyPortionButton || !singlePortionButton) return;
+
+    // Reset active state whenever we open a product
+    singlePortionButton.classList.add('active');
+    familyPortionButton.classList.remove('active');
+
+    if (!hasFamilyPortion) return;
+
+    familyPortionButton.onclick = () => {
       document.getElementById('overlay-product-price-js').innerHTML = `<span translate="no">$</span>${formatCurrency(product.family)}`;
       familyPortionButton.classList.add('active');
       singlePortionButton.classList.remove('active');
       renderAddButton(product.id, 'family');
-    });
-    singlePortionButton.addEventListener('click', () => { 
+    };
+
+    singlePortionButton.onclick = () => {
       document.getElementById('overlay-product-price-js').innerHTML = `<span translate="no">$</span>${formatCurrency(product.single)}`;
       singlePortionButton.classList.add('active');
       familyPortionButton.classList.remove('active');
       renderAddButton(product.id, 'single');
-    });
+    };
   }
   
   function attachOverlayCloseHandlers() {
