@@ -6,6 +6,8 @@ import { formatCurrency } from "./money.js";
 import { showAddedToBasketNotification, revertQuantityControl } from "./animations/addButtonAnimations.js";
 import { resolveProductImageSrc } from "./imagePlaceholder.js";
 
+let overlayOpenHandlerAttached = false;
+
 export function isOverlayOpen() {
   return document.getElementById('overlay').classList.contains('show');
 }
@@ -99,12 +101,18 @@ export function renderProductOverlay() {
   const overlayImage = document.getElementById('overlay-product-image-js');
 
   function attachOverlayOpenHandlers() {
-    const productContainers = document.querySelectorAll('.product-container');
+    if (overlayOpenHandlerAttached) return;
+    overlayOpenHandlerAttached = true;
 
-    productContainers.forEach((container) => {
-      container.addEventListener('click', () => {
-        openProductOverlay(container);
-      });
+    // Use event delegation so newly rendered product cards still open the overlay
+    document.addEventListener('click', (event) => {
+      const container = event.target.closest('.product-container');
+      if (!container) return;
+
+      // Skip clicks that originate from the favorite toggle inside the card
+      if (event.target.closest('.js-add-to-favorite-button')) return;
+
+      openProductOverlay(container);
     });
   }
   
