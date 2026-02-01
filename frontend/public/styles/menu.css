@@ -78,7 +78,13 @@ section {
 /* Category scroll indicators */
 .menu-categories {
   scroll-behavior: smooth;
-  scrollbar-width: thin;
+  /* Keep horizontal scroll but hide the scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.menu-categories::-webkit-scrollbar {
+  display: none;
 }
 
 .menu-scroll-button {
