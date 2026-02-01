@@ -22,6 +22,7 @@ const getFilterCategories = () => [
 ];
 
 const DAY_OPTIONS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+const DAY_ORDER = Object.fromEntries(DAY_OPTIONS.map((day, index) => [day, index]));
 
 const filterState = {
   categories: new Set(),
@@ -717,14 +718,33 @@ function matchesDayFilter(product) {
 }
 
 function getFilteredProducts() {
-  return products
+  const sorted = products
     .filter(isProductAvailable)
     .filter(matchesCategory)
     .filter(matchesPortion)
     .filter(matchesPrice)
     .filter(matchesFavorites)
     .filter(matchesDayFilter)
-    .filter(matchesSearch);
+    .filter(matchesSearch)
+    .sort((a, b) => {
+      const aDay = (a.day || "").toLowerCase();
+      const bDay = (b.day || "").toLowerCase();
+      const aHasDay = aDay in DAY_ORDER;
+      const bHasDay = bDay in DAY_ORDER;
+
+      if (aHasDay && bHasDay && DAY_ORDER[aDay] !== DAY_ORDER[bDay]) {
+        return DAY_ORDER[aDay] - DAY_ORDER[bDay];
+      }
+      if (aHasDay !== bHasDay) {
+        return aHasDay ? -1 : 1; // items with a day come first
+      }
+
+      const nameA = (a.name || "").toLowerCase();
+      const nameB = (b.name || "").toLowerCase();
+      return nameA.localeCompare(nameB);
+    });
+
+  return sorted;
 }
 
 

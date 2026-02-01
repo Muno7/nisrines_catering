@@ -10,6 +10,9 @@ import { renderLayout } from "../components/layout.js";
 
 renderLayout("home");
 
+const DAY_OPTIONS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+const DAY_ORDER = Object.fromEntries(DAY_OPTIONS.map((day, index) => [day, index]));
+
 async function loadHomePage() {
   initSlideshow();
   animateFeatureCards();
@@ -26,15 +29,29 @@ async function loadHomePage() {
 
 function renderPopularMealsGrid() {
   const container = document.querySelector('.products-container');
-  let html = '';
-  products.forEach(product => {
-    if (product.category !== "plat-du-jour") {
-      return;
-    }
-    const productCard = productCardHTML(product);
-    html += productCard;
-    container.innerHTML = html;
-  });
+  if (!container) return;
+
+  const sortedPlatDuJour = products
+    .filter((product) => product.category === "plat-du-jour")
+    .sort((a, b) => {
+      const aDay = (a.day || "").toLowerCase();
+      const bDay = (b.day || "").toLowerCase();
+      const aHasDay = aDay in DAY_ORDER;
+      const bHasDay = bDay in DAY_ORDER;
+
+      if (aHasDay && bHasDay && DAY_ORDER[aDay] !== DAY_ORDER[bDay]) {
+        return DAY_ORDER[aDay] - DAY_ORDER[bDay];
+      }
+      if (aHasDay !== bHasDay) {
+        return aHasDay ? -1 : 1; // items with a day come first
+      }
+
+      const nameA = (a.name || "").toLowerCase();
+      const nameB = (b.name || "").toLowerCase();
+      return nameA.localeCompare(nameB);
+    });
+
+  container.innerHTML = sortedPlatDuJour.map((product) => productCardHTML(product)).join('');
 
   const addButtonElements = document.querySelectorAll(".js-add-meal-button");
   addButtonEventListeners(addButtonElements);
