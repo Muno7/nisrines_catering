@@ -8,6 +8,14 @@
   max-width: 11rem;
 }
 
+/* Lock card width for the home page slider without affecting the menu grid */
+.products-container .product-container {
+  width: 11rem;
+  min-width: 11rem;
+  max-width: 11rem;
+  flex: 0 0 11rem;
+}
+
 /*Heart button animation*/ 
 .heart-checkmark {
     top: 0;
