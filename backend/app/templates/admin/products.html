@@ -69,6 +69,8 @@
         <option value="wednesday" {% if filters.day == 'wednesday' %}selected{% endif %}>Wednesday</option>
         <option value="thursday" {% if filters.day == 'thursday' %}selected{% endif %}>Thursday</option>
         <option value="friday" {% if filters.day == 'friday' %}selected{% endif %}>Friday</option>
+        <option value="saturday" {% if filters.day == 'saturday' %}selected{% endif %}>Saturday</option>
+        <option value="sunday" {% if filters.day == 'sunday' %}selected{% endif %}>Sunday</option>
       </select>
     </div>
     <div class="actions" style="gap:8px; flex-wrap:wrap; margin-left:auto; display:flex; align-items:center;">
@@ -196,6 +198,8 @@
             <option value="wednesday">Wednesday</option>
             <option value="thursday">Thursday</option>
             <option value="friday">Friday</option>
+            <option value="saturday">Saturday</option>
+            <option value="sunday">Sunday</option>
             <option value="clear">Clear day</option>
           </select>
           <input type="number" name="bulk_price_single" min="0" step="1" placeholder="Single price (cents)">

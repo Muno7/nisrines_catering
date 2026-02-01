@@ -19,6 +19,8 @@ DAY_CHOICES = [
     ("wednesday", "Wednesday"),
     ("thursday", "Thursday"),
     ("friday", "Friday"),
+    ("saturday", "Saturday"),
+    ("sunday", "Sunday"),
 ]
 
 

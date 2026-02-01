@@ -3,11 +3,13 @@ import { cart } from '../models/cart.js';
 import { isProductAvailable, setDayLabel } from '../utils/day.js';
 import { resolveProductImageSrc } from '../utils/imagePlaceholder.js';
 
-export function productCardHTML(product) {
+export function productCardHTML(product, preferredPortion = 'single') {
   const {id, image} = product;
   const displayName = product.getDisplayName();
   const imageSrc = resolveProductImageSrc(image, displayName, { pathPrefix: './public/assets/images/' });
   const checked = favorite.favoriteItems.some(item => item.productId === id) ? 'checked' : '';
+  const pricePortion = preferredPortion === 'family' && typeof product.family === 'number' ? 'family' : 'single';
+  const displayedPrice = product.getPrice(pricePortion) ?? product.getPrice('single');
   if (!isProductAvailable(product)) {
     cart.deleteItem(id, 'single');
     cart.deleteItem(id, 'family');
@@ -37,7 +39,7 @@ export function productCardHTML(product) {
       </label>
     <div class="flex flex-col p-2 gap-1 items-center text-center">
       <p class="product-name-js text-lg font-semibold leading-tight line-clamp-1 truncate text-accent notranslate w-full text-center" translate="no">${displayName}</p>
-      <p class="price-js font-bold text-center"><span translate="no">$</span>${product.getPrice('single')}</p>
+      <p class="price-js font-bold text-center"><span translate="no">$</span>${displayedPrice}</p>
     </div>
   </div>`;
   return productCard;

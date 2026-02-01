@@ -21,7 +21,7 @@ const getFilterCategories = () => [
   ...getSortedMenuCategories(),
 ];
 
-const DAY_OPTIONS = ["monday", "tuesday", "wednesday", "thursday", "friday"];
+const DAY_OPTIONS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 
 const filterState = {
   categories: new Set(),
@@ -219,6 +219,14 @@ function matchesSearch(product) {
   return fields.some((field) => typeof field === "string" && field.toLocaleLowerCase().includes(query));
 }
 
+function getDisplayPortionPreference() {
+  if (filterState.portions.size === 1) {
+    if (filterState.portions.has("family")) return "family";
+    if (filterState.portions.has("single")) return "single";
+  }
+  return "single";
+}
+
 function updateProductCount(count) {
   const countElement = document.querySelector(".js-products-count");
   if (!countElement) return;
@@ -244,8 +252,12 @@ function renderProductsGrid() {
     return;
   }
 
+  const displayPortion = getDisplayPortionPreference();
   gridContainer.innerHTML = visibleProducts
-    .map(product => productCardHTML(product))
+    .map(product => {
+      const portion = displayPortion === 'family' && typeof product.family === 'number' ? 'family' : 'single';
+      return productCardHTML(product, portion);
+    })
     .join('');
 
   const addToFavoriteButtonElement = document.querySelectorAll(".js-add-to-favorite-button");
@@ -598,7 +610,7 @@ function updateAppliedFiltersChips() {
   });
 
   filterState.portions.forEach((portion) => {
-    const label = portion === "family" ? "Family portion" : "One-person portion";
+    const label = portion === "family" ? "Family of 4" : "For one";
     chips.push({ type: "portion", value: portion, label });
   });
 

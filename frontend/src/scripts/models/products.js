@@ -46,9 +46,22 @@ export class Product {
   }
   
   getPrice(portion) {
-    if (this.single && this.family) {
-      return portion === 'single' ? formatCurrency(this.single) : formatCurrency(this.family);
-    } else if (this.priceCents) {
+    const hasSingle = typeof this.single === 'number';
+    const hasFamily = typeof this.family === 'number';
+
+    if (hasSingle && hasFamily) {
+      return portion === 'family' ? formatCurrency(this.family) : formatCurrency(this.single);
+    }
+
+    if (hasSingle) {
+      return formatCurrency(this.single);
+    }
+
+    if (hasFamily) {
+      return formatCurrency(this.family);
+    }
+
+    if (this.priceCents) {
       return formatCurrency(this.priceCents);
     }
   };
