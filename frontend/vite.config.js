@@ -36,6 +36,7 @@ export default defineConfig({
         menu: resolve(__dirname, 'menu.html'),
         favorites: resolve(__dirname, 'favorites.html'),
         order: resolve(__dirname, 'order.html'),
+        subscriptions: resolve(__dirname, 'subscriptions.html'),
         // Add more pages as needed...
       }
     }
