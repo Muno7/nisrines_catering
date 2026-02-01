@@ -1,17 +1,24 @@
 import { products, loadProducts } from "../models/products.js";
 import { productCardHTML } from "../handlers/productHandler.js";
-import { updateCartQuantity, addButtonEventListeners, subtractQuantityEventListeners, addQuantityEventListeners } from '../handlers/cartHandler.js';
+import { updateCartQuantity } from '../handlers/cartHandler.js';
 import { addToFavoriteEventListeners } from "../handlers/favoriteHandler.js";
 import { appendOverlayDiv, renderProductOverlay } from "../utils/overlay.js";
-import { setSiderbarNavigation } from "../utils/animations/sideBarAnimation.js";
-import { setCategoryScrollBehavior } from "../utils/animations/scrollBehavior.js";
+import { bindSlidingPanel, setSiderbarNavigation } from "../utils/animations/sideBarAnimation.js";
 import { renderLayout } from "../components/layout.js";
 import { API_BASE_URL } from "../../config.js";
 
 let menuCategories = [];
+const DEFAULT_CATEGORY = "all";
+let activeCategory = DEFAULT_CATEGORY;
+let searchTerm = "";
 
 const getSortedMenuCategories = () =>
   menuCategories.slice().sort((a, b) => a.sort_order - b.sort_order);
+
+const getFilterCategories = () => [
+  { slug: DEFAULT_CATEGORY, name: "All", hidden: false },
+  ...getSortedMenuCategories(),
+];
 
 renderLayout("menu");
 
@@ -25,7 +32,6 @@ async function loadMenuPage() {
   }
   renderMenuGrid();
   makeMenuLinksActive();
-  setCategoryScrollBehavior();
   appendOverlayDiv();
   renderProductOverlay();
 }
@@ -49,90 +55,84 @@ async function fetchMenuCategories() {
   }
 }
 
-function buildSection(category) {
-  const { slug, name, hidden } = category;
-  const title = name;
-  const isPlatDuJour = slug === "plat-du-jour";
-
-  return `<section id="${slug}" class="${hidden ? "hidden " : ""}lg:px-8 lg:py-4">
-            <div class="relative">
-              <div class="flex flex-col font-bold px-4">
-                <h1 class="text-4xl ${isPlatDuJour ? "" : "mb-2"}">${title}</h1>
-                ${isPlatDuJour ? '<p>Note: (salad/yogurt included)</p>' : ""}
-              </div>
-              <div id="${slug}-scrollContainer" class="wrapper overflow-x-auto whitespace-nowrap relative overflow-visible">
-                <div class="${slug}-container inline-flex space-x-2 p-4">
-                </div>
-              </div>
-              <button id="scrollLeft" data-category="${slug}" aria-label="Scroll left" class="absolute left-[-15px] top-1/2 -translate-y-1/2 bg-white hover:bg-gray-100 shadow-lg rounded-full p-3 hidden lg:flex items-center justify-center transition-transform duration-200 hover:scale-110">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <button id="scrollRight" data-category="${slug}" aria-label="Scroll right" class="absolute right-[-15px] top-1/2 -translate-y-1/2 bg-white hover:bg-gray-100 shadow-lg rounded-full p-3 hidden lg:flex items-center justify-center transition-transform duration-200 hover:scale-110">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-          </section>`;
-}
-
 function makeMenuLinksActive() {
   const menuList = document.querySelector(".menu-categories");
   if (menuList) {
-    menuList.innerHTML = getSortedMenuCategories()
+    menuList.innerHTML = getFilterCategories()
       .map(
         ({ slug, name, hidden }) =>
-          `<li class="menu-links${hidden ? " hidden" : ""}"><a href="#${slug}">${name}</a></li>`
+          `<li class="menu-links${hidden ? " hidden" : ""}"><a href="#" role="button" data-category="${slug}">${name}</a></li>`
       )
       .join("");
   }
 
   const menuLinks = document.querySelectorAll('.menu-links a');
+
+  const setActiveLink = (category) => {
+    menuLinks.forEach((link) => {
+      const isActive = link.dataset.category === category;
+      link.classList.toggle('active', isActive);
+    });
+  };
+
   menuLinks.forEach(link => {
     link.addEventListener('click', (event) => {
-      menuLinks.forEach(item => item.classList.remove('active'));
-      event.currentTarget.classList.add('active');
+      event.preventDefault();
+      const { category } = event.currentTarget.dataset;
+      activeCategory = category;
+      setActiveLink(category);
+      renderProductsGrid(category);
+
+      event.currentTarget.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
     });
   });
-  const sections = document.querySelectorAll("section");
-  const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const id = entry.target.getAttribute("id");
-          const link = document.querySelector(`.menu-links a[href="#${id}"]`);
-    
-          if (entry.isIntersecting) {
-            link.classList.add("active");
-          } else {
-            link.classList.remove("active");
-          }
-        });
-        entries.forEach((entry) => {
-          const id = entry.target.getAttribute("id");
-          const link = document.querySelector(`.menu-links a[href="#${id}"]`);
-        
-          if (entry.isIntersecting) {
-            link.classList.add("active");
-        
-            // Scroll the nav to bring the link into view
-            link.scrollIntoView({
-              behavior: "smooth",
-              block: "nearest",
-              inline: "center",
-            });
-          } else {
-            link.classList.remove("active");
-          }
-        });
-        
-      },
-      {
-        rootMargin: "-20% 0px -70% 0px",
-      }
+
+  setupCategoryScrollIndicators();
+  setActiveLink(activeCategory);
+}
+
+function setupCategoryScrollIndicators() {
+  const categoriesList = document.querySelector('.menu-categories');
+  const leftButton = document.querySelector('.menu-scroll-left');
+  const rightButton = document.querySelector('.menu-scroll-right');
+
+  if (!categoriesList || !leftButton || !rightButton) return;
+  if (categoriesList.dataset.scrollIndicatorsReady === 'true') return;
+  categoriesList.dataset.scrollIndicatorsReady = 'true';
+
+  const updateButtons = () => {
+    const { scrollLeft, scrollWidth, clientWidth } = categoriesList;
+    const edgeAllowance = 6;
+    const canScroll = scrollWidth - clientWidth > 8;
+
+    leftButton.classList.toggle('visible', canScroll && scrollLeft > edgeAllowance);
+    rightButton.classList.toggle(
+      'visible',
+      canScroll && scrollLeft < scrollWidth - clientWidth - edgeAllowance
     );
-  sections.forEach((section) => observer.observe(section));
+  };
+
+  const scrollDistance = () => Math.max(categoriesList.clientWidth * 0.5, 140);
+
+  leftButton.addEventListener('click', () => {
+    categoriesList.scrollBy({ left: -scrollDistance(), behavior: 'smooth' });
+  });
+
+  rightButton.addEventListener('click', () => {
+    categoriesList.scrollBy({ left: scrollDistance(), behavior: 'smooth' });
+  });
+
+  categoriesList.addEventListener('scroll', () => {
+    window.requestAnimationFrame(updateButtons);
+  });
+
+  window.addEventListener('resize', updateButtons);
+
+  updateButtons();
 }
 
 function renderMenuGrid() {
@@ -146,55 +146,104 @@ function renderMenuGrid() {
     return;
   }
 
-  const sortedCategories = getSortedMenuCategories();
-  if (!sortedCategories.length) {
-    sectionsContainer.innerHTML = '<div class="w-full py-12 text-center text-gray-500 text-lg">No menu categories available right now.</div>';
+  sectionsContainer.innerHTML = `
+    <div class="filter-navigation fixed bg-surface top-0 w-[75%] sm:w-[50%] lg:w-[33%] h-[100vh] shadow-lg transition-all duration-500 z-30 left-[-75%] md:left-[-50%] lg:left-[-33%]">
+      <nav class="filter-bar-js flex flex-col top-0 w-full pl-4 sm:pl-8 lg:pl-10 pb-4 pt-[82px] h-full">
+        <!-- Filter content will go here -->
+      </nav>
+    </div>
+    <section class="lg:px-8 lg:py-4">
+      <div class="px-4 sm:px-6 lg:px-10 xl:px-14 2xl:px-20">
+        <div class="flex flex-col gap-4">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <label class="w-full sm:w-auto sm:flex-1">
+              <span class="sr-only">Search menu</span>
+              <div class="relative">
+                <input
+                  type="search"
+                  class="js-menu-search w-full sm:w-[360px] lg:w-[420px] rounded-lg border border-gray-200 bg-white pl-10 pr-4 py-2 text-sm shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary/60"
+                  placeholder="Search dishes or ingredients"
+                  value="${searchTerm}"
+                />
+                <svg class="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-4.35-4.35m0 0A7.5 7.5 0 1 0 7.5 16.5a7.5 7.5 0 0 0 9.15 0Z" />
+                </svg>
+              </div>
+            </label>
+            <div class="flex items-center gap-3">
+              <button class="js-filter-toggle h-10 w-10 flex items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm hover:bg-gray-50 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M6 12h12M10 18h4"/>
+                </svg>
+              </button>
+              <div class="js-products-count text-sm text-gray-600 text-right">${products.length} items</div>
+            </div>
+          </div>
+          <div class="products-grid grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 justify-items-center"></div>
+        </div>
+      </div>
+    </section>`;
+
+  setupSearchInput();
+  setupFilterPanel();
+  renderProductsGrid(activeCategory);
+}
+
+function setupSearchInput() {
+  const searchInput = document.querySelector(".js-menu-search");
+  if (!searchInput) return;
+  searchInput.value = searchTerm;
+  searchInput.addEventListener("input", (event) => {
+    searchTerm = event.target.value;
+    renderProductsGrid(activeCategory);
+  });
+}
+
+function matchesSearch(product) {
+  const trimmed = searchTerm.trim();
+  if (!trimmed) return true;
+  const query = trimmed.toLocaleLowerCase();
+  const fields = [product.name, product.nameAr, product.ingredients];
+  return fields.some((field) => typeof field === "string" && field.toLocaleLowerCase().includes(query));
+}
+
+function updateProductCount(count) {
+  const countElement = document.querySelector(".js-products-count");
+  if (!countElement) return;
+  countElement.textContent = `${count} item${count === 1 ? "" : "s"}`;
+}
+
+function setupFilterPanel() {
+  bindSlidingPanel({
+    buttonSelector: ".js-filter-toggle",
+    panelSelector: ".filter-navigation"
+  });
+}
+
+function renderProductsGrid(categoryFilter = DEFAULT_CATEGORY) {
+  const gridContainer = document.querySelector('.products-grid');
+  if (!gridContainer) return;
+
+  const visibleProducts = (categoryFilter === DEFAULT_CATEGORY
+    ? products
+    : products.filter(product => product.category === categoryFilter)
+  ).filter(matchesSearch);
+
+  if (!visibleProducts.length) {
+    gridContainer.innerHTML = '<div class="col-span-full w-full py-12 text-center text-gray-500 text-lg">No products found in this category.</div>';
+    updateProductCount(0);
     return;
   }
 
-  sectionsContainer.innerHTML = sortedCategories.map(buildSection).join("");
-
-  const categories = sortedCategories
-    .filter(({ hidden }) => !hidden)
-    .map(({ slug }) => slug);
-
-  let productsGroupedByCategory = {};
-  products.forEach(product => {
-    const { category } = product;
-    if (!productsGroupedByCategory[category]) {
-      productsGroupedByCategory[category] = [];
-    }
-    productsGroupedByCategory[category].push(product);
-  });
-
-  categories.forEach(category => {
-    const categoriesContainer = document.querySelector(`.${category}-container`);
-    if (!categoriesContainer) return;
-
-    const categoryProducts = productsGroupedByCategory[category];
-    if (!categoryProducts || !categoryProducts.length) {
-      console.log(`No products found for category: ${category}`);
-      categoriesContainer.innerHTML = '<div class="w-full py-6 text-center text-gray-500">No products found in this category.</div>';
-      return;
-    }
-
-    categoriesContainer.innerHTML = categoryProducts
-      .map(product => productCardHTML(product))
-      .join('');
-  });
-
-  // Add event listeners after rendering
-  const addButtonElements = document.querySelectorAll(".js-add-meal-button");
-  addButtonEventListeners(addButtonElements);
-
-  const subtractQuantityElements = document.querySelectorAll(".subtract-quantity-js");
-  subtractQuantityEventListeners(subtractQuantityElements);
-
-  const addQuantityElements = document.querySelectorAll(".add-quantity-js"); 
-  addQuantityEventListeners(addQuantityElements);
+  gridContainer.innerHTML = visibleProducts
+    .map(product => productCardHTML(product))
+    .join('');
 
   const addToFavoriteButtonElement = document.querySelectorAll(".js-add-to-favorite-button");
   addToFavoriteEventListeners(addToFavoriteButtonElement);
+
+  updateProductCount(visibleProducts.length);
+
   updateCartQuantity();
 }
 

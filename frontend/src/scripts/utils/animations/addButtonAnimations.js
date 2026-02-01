@@ -119,15 +119,23 @@ function showBasketNotification(productCard, isAdding) {
 
 export function revertToAddButton(productId, portion) {
   if (portion === 'family') return;
-  let button = document.querySelector(`.js-add-meal-button-${productId}`);
-  let quantityControls = document.querySelector(`.quantity-control-js-${productId}`);
-  quantityControls.classList.add("hidden");
-  button.classList.remove("hidden");
+  const quantityControls = document.querySelector(`.quantity-control-js-${productId}`);
+  const button = document.querySelector(`.js-add-meal-button-${productId}`);
+  if (quantityControls) {
+    quantityControls.classList.add("hidden");
+  }
+  if (button) {
+    button.classList.remove("hidden");
+  }
 }
 
 export function revertQuantityControl(productId) {
-  let button = document.querySelector(`.js-add-meal-button-${productId}`);
-  let quantityControls = document.querySelector(`.quantity-control-js-${productId}`);
-  quantityControls.classList.remove("hidden");
-  button.classList.add("hidden");
+  const quantityControls = document.querySelector(`.quantity-control-js-${productId}`);
+  const button = document.querySelector(`.js-add-meal-button-${productId}`);
+  if (quantityControls) {
+    quantityControls.classList.remove("hidden");
+  }
+  if (button) {
+    button.classList.add("hidden");
+  }
 }

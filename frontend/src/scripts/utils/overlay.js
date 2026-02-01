@@ -196,9 +196,9 @@ export function renderProductOverlay() {
 
   function overlayUpdateQuantityDisplay(cartItem, portion) {
     const overlayQuantityElement = document.querySelector(`.overlay-item-quantity-js`);
-    const cardQuantityElement = document.querySelector(`.item-quantity-js-${cartItem.productId}`);
+    const cardQuantityElement = cartItem ? document.querySelector(`.item-quantity-js-${cartItem.productId}`) : null;
     overlayQuantityElement.textContent = cartItem ? cartItem.quantity : 0;
-    if (portion === 'single') {
+    if (portion === 'single' && cardQuantityElement) {
       cardQuantityElement.textContent = cartItem ? cartItem.quantity : 0;
     }
   }

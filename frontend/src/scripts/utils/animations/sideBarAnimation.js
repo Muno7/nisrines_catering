@@ -1,54 +1,62 @@
+export function bindSlidingPanel({
+    buttonSelector,
+    panelSelector,
+    toggleTargetSelector,
+    openPositionClass = 'left-0',
+    closedPositionClasses = ['left-[-75%]', 'md:left-[-50%]', 'lg:left-[-33%]'],
+    openToggleClass = 'open'
+  }) {
+    const button = document.querySelector(buttonSelector);
+    const panel = document.querySelector(panelSelector);
+    const toggleTarget = toggleTargetSelector ? document.querySelector(toggleTargetSelector) : null;
+    if (!button || !panel) return;
+
+    const openPanel = () => {
+      panel.classList.add(openPositionClass);
+      closedPositionClasses.forEach((cls) => panel.classList.remove(cls));
+      if (toggleTarget) toggleTarget.classList.add(openToggleClass);
+      document.body.classList.add('no-scroll');
+    };
+
+    const closePanel = () => {
+      panel.classList.remove(openPositionClass);
+      closedPositionClasses.forEach((cls) => panel.classList.add(cls));
+      if (toggleTarget) toggleTarget.classList.remove(openToggleClass);
+      document.body.classList.remove('no-scroll');
+    };
+
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const isOpen = panel.classList.contains(openPositionClass);
+      if (isOpen) {
+        closePanel();
+      } else {
+        openPanel();
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!panel.contains(event.target) && !button.contains(event.target)) {
+        closePanel();
+      }
+    });
+}
+
 export function setSiderbarNavigation() {
-    function toggleHambugerMenu() {
-        const hamburgerButton = document.getElementById('hamburger-button');
-        hamburgerButton.addEventListener('click', function show(event) {
-        event.stopPropagation(); // Prevent click from bubbling to the document listener
-
-        const navigation = document.querySelector('.navigation');
-        const hamburger = document.querySelector('.hamburger');
-
-        // Toggle classes for the sidebar and hamburger button
-        hamburger.classList.toggle('open');
-        navigation.classList.toggle('left-0');
-        navigation.classList.toggle('left-[-75%]');
-        navigation.classList.toggle('md:left-[-50%]');
-        navigation.classList.toggle('lg:left-[-33%]');
-
-        // Toggle no-scroll class on the body
-        if (navigation.classList.contains('left-0')) {
-            document.body.classList.add('no-scroll');
-        } else {
-            document.body.classList.remove('no-scroll');
-        }
-        });
-
-        // Close the sidebar if clicking outside of it
-        document.addEventListener('click', function (event) {
-            const navigation = document.querySelector('.navigation');
-            const hamburger = document.querySelector('.hamburger');
-
-            if (!navigation.contains(event.target) && !hamburger.contains(event.target)) {
-                navigation.classList.remove('left-0');
-                navigation.classList.add('left-[-75%]');
-                navigation.classList.add('md:left-[-50%]');
-                navigation.classList.add('lg:left-[-33%]');
-                hamburger.classList.remove('open');
-                document.body.classList.remove('no-scroll');
-            }
-        });
-    }
-    // Function to adjust the side-navbar height based on the viewport
     function adjustViewportHeight() {
         const windowHeight = window.innerHeight;
         document.body.style.height = `${windowHeight}px`;
 
-        const mainContent = document.querySelector('.side-bar-js');
-        if (mainContent) {
-            mainContent.style.height = `${windowHeight}px`;
-        }
+        document.querySelectorAll('.side-bar-js, .filter-bar-js').forEach((panel) => {
+            panel.style.height = `${windowHeight}px`;
+        });
     }
-    // Call the function on load and resize to handle different screen sizes
     window.addEventListener('load', adjustViewportHeight);
     window.addEventListener('resize', adjustViewportHeight);
-    toggleHambugerMenu();
+
+    bindSlidingPanel({
+        buttonSelector: '#hamburger-button',
+        panelSelector: '.navigation',
+        toggleTargetSelector: '.hamburger'
+    });
 }

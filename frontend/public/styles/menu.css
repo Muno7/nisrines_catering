@@ -52,3 +52,81 @@ section {
 .menu-links a.active::after {
   transform: scaleX(1);
 }
+
+/* Menu grid tweaks */
+.products-grid {
+  align-items: stretch;
+}
+
+.products-grid .product-container {
+  width: min(11rem, 100%);
+  max-width: 11rem;
+}
+
+/* Keep grid gaps uniform across breakpoints */
+.products-grid {
+  gap: 1rem !important;
+}
+
+/* Keep search input chrome clean and icon-integrated */
+.js-menu-search::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.js-menu-search::-ms-clear,
+.js-menu-search::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Category scroll indicators */
+.menu-categories {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+}
+
+.menu-scroll-button {
+  width: 32px;
+  height: 32px;
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: transparent;
+  box-shadow: none;
+  color: var(--darkGray);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.menu-scroll-button.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.menu-scroll-button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.menu-scroll-button:hover {
+  transform: scale(1.05);
+}
+
+.menu-scroll-button:active {
+  transform: scale(0.97);
+}
+
+.menu-categories {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.menu-categories-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
