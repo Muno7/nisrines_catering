@@ -91,7 +91,6 @@ header {
     padding-bottom: 0.5rem;
     border-radius: 14px;
     transition: all 0.1s ease;
-    box-shadow: 0 12px 20px rgba(82, 28, 13, 0.16);
 }
 
 .button-primary:active, .button-cta:active {
