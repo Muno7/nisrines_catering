@@ -50,6 +50,18 @@ async function loadMenuPage() {
   renderProductOverlay();
 }
 
+function scrollToMenuTop() {
+  const mainSection = document.querySelector(".menu-sections");
+  if (!mainSection) return;
+  const header = document.querySelector("header");
+  const headerHeight = header ? header.offsetHeight : 0;
+  const targetTop = mainSection.getBoundingClientRect().top + window.scrollY - headerHeight;
+  window.scrollTo({
+    top: Math.max(0, targetTop),
+    behavior: "smooth",
+  });
+}
+
 async function fetchMenuCategories() {
   try {
     const response = await fetch(`${API_BASE_URL}/api/categories`);
@@ -94,6 +106,7 @@ function makeMenuLinksActive() {
       renderProductsGrid();
       updateAppliedFiltersChips();
 
+      scrollToMenuTop();
       event.currentTarget.scrollIntoView({
         behavior: "smooth",
         block: "nearest",
