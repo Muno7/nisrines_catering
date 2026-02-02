@@ -2,7 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+@font-face {
+    font-family: 'Larosa Sans';
+    src: url('../assets/fonts/larosa-sans.woff2') format('woff2'),
+         url('../assets/fonts/larosa-sans.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Larosa Sans';
+    src: url('../assets/fonts/larosa-sans.woff2') format('woff2'),
+         url('../assets/fonts/larosa-sans.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
 
 * {
     margin: 0;
@@ -48,13 +64,13 @@ header {
 
 @layer base {
     body {
-        font-family: 'Lora', serif;
+        font-family: 'Larosa Sans', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
         background-color: var(--background);
         color: var(--text);
     }
 
     h1, h2, h3, h4, h5, h6 {
-        font-family: 'Playfair Display', serif;
+        font-family: 'Larosa Sans', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     }
 }
 

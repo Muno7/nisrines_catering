@@ -11,8 +11,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        header: ['Playfair Display', 'serif'],
-        body: ['Lora', 'serif'],
+        header: ['Larosa Sans', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        body: ['Larosa Sans', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
       },
     colors: {
         background: "#FDF8F5", // Cleaner off-white cream
