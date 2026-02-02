@@ -19,27 +19,55 @@
     color: var(--lightGray);
 }
 
-.bar {
-    width: 100%; 
-    height: 3px; 
-    background-color: var(--darkGray);
-    border-radius: 1.5px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-/* Toggled state styles */
-.hamburger.open #bar1 {
-    transform: translateY(8.7px) rotate(45deg); 
-}
-
-.hamburger.open #bar2 {
-    opacity: 0;
-}
-
-.hamburger.open #bar3 {
-    transform: translateY(-8.7px) rotate(-45deg);
-}
 
 .no-scroll {
     overflow: hidden;
+}
+
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(1.5px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease;
+    z-index: 15;
+}
+
+.sidebar-overlay--visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.nav-close-btn {
+    top: 10px;
+    left: 10px;
+    z-index: 40;
+}
+
+.hamburger .bar {
+    width: 100%;
+    height: 3px;
+    background-color: var(--darkGray);
+    border-radius: 1.5px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    align-self: flex-start;
+}
+
+/* Toggled state styles */
+
+.hamburger.open .bar:nth-child(1) {
+    transform: translateY(8.7px) rotate(45deg);
+}
+.hamburger.open .bar:nth-child(2) {
+    opacity: 0;
+}
+.hamburger.open .bar:nth-child(3) {
+    transform: translateY(-8.7px) rotate(-45deg);
+}
+
+/* Subtle asymmetry for a more modern look */
+.hamburger .bar:nth-child(2) {
+    width: 60%;
 }

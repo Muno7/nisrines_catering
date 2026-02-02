@@ -2,6 +2,7 @@ import { products, loadProducts } from "../models/products.js";
 import { productCardHTML } from "../handlers/productHandler.js";
 import { updateCartQuantity } from '../handlers/cartHandler.js';
 import { addToFavoriteEventListeners } from "../handlers/favoriteHandler.js";
+import { favorite } from "../models/favorites.js";
 import { appendOverlayDiv, renderProductOverlay } from "../utils/overlay.js";
 import { isProductAvailable } from "../utils/day.js";
 import { bindSlidingPanel, setSiderbarNavigation } from "../utils/animations/sideBarAnimation.js";
@@ -158,7 +159,7 @@ function renderMenuGrid() {
 
   sectionsContainer.innerHTML = `
     <div class="filter-navigation fixed bg-surface top-0 w-[75%] sm:w-[50%] lg:w-[33%] h-[100vh] shadow-lg transition-all duration-500 z-30 left-[-75%] md:left-[-50%] lg:left-[-33%]">
-      <nav class="filter-bar-js flex flex-col top-0 w-full pl-4 sm:pl-8 lg:pl-10 pb-4 pt-[82px] h-full">
+      <nav class="filter-bar-js flex flex-col top-0 w-full pl-4 sm:pl-8 lg:pl-10 py-4 h-full">
         ${getFilterPanelMarkup()}
       </nav>
     </div>
@@ -335,10 +336,6 @@ function getFilterPanelMarkup() {
         <h4 class="filter-section-title">Portion Size</h4>
         <div class="space-y-3">
           <label class="filter-option">
-            <input type="checkbox" value="single" class="js-filter-portion" />
-            <span>For one</span>
-          </label>
-          <label class="filter-option">
             <input type="checkbox" value="family" class="js-filter-portion" />
             <span>Family of 4</span>
           </label>
@@ -382,8 +379,8 @@ function getFilterPanelMarkup() {
     </div>
 
     <div class="mt-6 pr-6 flex items-center justify-between gap-3 border-t border-muted/20 pt-4">
-      <button type="button" class="js-filter-clear text-sm font-semibold text-muted hover:text-text transition">Clear</button>
-      <button type="button" class="js-filter-apply button-cta w-full py-3 text-sm uppercase tracking-wide">Apply</button>
+      <button type="button" class="js-filter-clear flex-1 py-3 text-sm font-semibold text-text underline underline-offset-4 decoration-muted hover:decoration-text transition">Clear</button>
+      <button type="button" class="js-filter-apply flex-1 button-cta py-3 text-sm uppercase tracking-wide">Apply</button>
     </div>
   `;
 }
@@ -611,7 +608,7 @@ function updateAppliedFiltersChips() {
   });
 
   filterState.portions.forEach((portion) => {
-    const label = portion === "family" ? "Family of 4" : "For one";
+    const label = portion === "family" ? "Family of 4" : portion;
     chips.push({ type: "portion", value: portion, label });
   });
 

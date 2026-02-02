@@ -102,9 +102,10 @@ const footerSocialLinks = [
 ];
 
 function navLinkHTML(activePage, link) {
-  const activeClasses = activePage === link.id ? 'text-text bg-surface' : '';
-  return `<li class="w-full ${activeClasses}">
-            <a href="${link.href}" class="flex items-center w-full p-3 rounded-lg transition-colors duration-200 lg:hover:bg-muted/10">
+  const isActive = activePage === link.id;
+  const anchorClasses = isActive ? 'bg-surface text-text' : 'text-accent';
+  return `<li class="w-full">
+            <a href="${link.href}" class="flex items-center w-full p-3 rounded-lg transition-colors duration-200 lg:hover:bg-muted/10 ${anchorClasses}">
               ${link.icon}
               ${link.label}
             </a>
@@ -168,31 +169,39 @@ function headerTemplate(activePage = '', { useFavoriteIcon = false, lang = "en" 
        </div>`
     : '';
 
-  return `<header class="header-js rounded-b-md bg-surface shadow-sm fixed top-0 left-0 w-full z-10 transition-transform duration-200 ease-in-out">
+  return `
+          <div class="flex navigation fixed bg-surface top-0 w-[75%] sm:w-[50%] lg:w-[33%] h-[100vh] shadow-lg transition-all duration-500 z-30 left-[-75%] md:left-[-50%] lg:left-[-33%]">
+            <nav class="side-bar-js relative flex flex-col top-0 w-full pl-4 sm:pl-8 lg:pl-10 pb-4 pt-[82px] justify-between h-full">
+              <button class="js-hamburger-toggle nav-close-btn absolute p-4 rounded-full lg:hover:bg-muted/10 transition duration-200" aria-label="Close navigation">
+                <div class="hamburger flex flex-col justify-around pointer w-[26px] h-[26px]">
+                  <div class="bar"></div>
+                  <div class="bar"></div>
+                  <div class="bar"></div>
+                </div>
+              </button>
+              <ul class="flex flex-col w-full space-y-2 mt-10">
+                ${navItems}
+              </ul>
+              <div class="flex flex-col gap-4 mt-auto pr-4">
+                <div class="flex justify-start">
+                  ${languageToggle}
+                </div>
+                <div class="flex flex-wrap gap-4">
+                  ${socials}
+                  <span class="order-2 w-full">&copy; ${new Date().getFullYear()} Nisrine's Catering. All rights reserved</span>
+                </div>
+              </div>
+            </nav>
+          </div>
+          <header class="header-js rounded-b-md bg-surface shadow-sm fixed top-0 left-0 w-full z-10 transition-transform duration-200 ease-in-out">
             <div class="flex items-center justify-between px-2 sm:px-4 lg:px-8 py-1 sm:py-3">
-              <button class="z-30 p-4 lg:hover:bg-muted/10 rounded-full transition duration-200 " id="hamburger-button">
+              <button class="js-hamburger-toggle z-30 p-4 lg:hover:bg-muted/10 rounded-full transition duration-200 " id="hamburger-button" aria-label="Open navigation">
                 <div class="hamburger flex flex-col justify-around pointer w-[26px] h-[26px]">
                   <div id="bar1" class="bar"></div>
                   <div id="bar2" class="bar"></div>
                   <div id="bar3" class="bar"></div>
                 </div>
               </button>
-              <div class="flex navigation fixed bg-surface top-0 w-[75%] sm:w-[50%] lg:w-[33%] h-[100vh] shadow-lg transition-all duration-500 z-20 left-[-75%] md:left-[-50%] lg:left-[-33%]">
-                <nav class="side-bar-js flex flex-col top-0 w-full pl-4 sm:pl-8 lg:pl-10 pb-4 pt-[82px] justify-between h-full">
-                  <ul class="flex flex-col w-full space-y-2">
-                    ${navItems}
-                  </ul>
-                  <div class="flex flex-col gap-4 mt-auto pr-4">
-                    <div class="flex justify-start">
-                      ${languageToggle}
-                    </div>
-                    <div class="flex flex-wrap gap-4">
-                      ${socials}
-                      <span class="order-2 w-full">&copy; ${new Date().getFullYear()} Nisrine's Catering. All rights reserved</span>
-                    </div>
-                  </div>
-                </nav>
-              </div>
               <a href="./home.html" class="flex items-center rounded-full">
                 <img src="./assets/icons/logo.png" alt="Nisrine's Catering Logo" class="w-[100px] sm:w-[150px]">
               </a>
