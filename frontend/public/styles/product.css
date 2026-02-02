@@ -8,6 +8,13 @@
   max-width: 11rem;
 }
 
+/* Allow full-width cards inside the favorites grid so they don't shrink */
+.js-favorite-container .product-container {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
 /* Lock card width for the home page slider without affecting the menu grid */
 .products-container .product-container {
   width: 11rem;
