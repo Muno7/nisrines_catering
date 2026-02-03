@@ -242,7 +242,7 @@ body.hero-loading .home-hero__media {
 
 body.hero-loading.hero-ready .home-hero__media {
     transform: scale(1);
-    animation: homeHeroZoomOut 1.35s ease-out forwards;
+    animation: homeHeroZoomOut 1.85s ease-out forwards;
 }
 
 body.hero-loading .home-hero__overlay {
@@ -255,12 +255,12 @@ body.hero-loading.hero-ready .home-hero__overlay {
 }
 
 @keyframes homeHeroZoomOut {
-    from { transform: scale(1.04); }
+    from { transform: scale(1.06); }
     to { transform: scale(1); }
 }
 
 @keyframes homeHeroCopyIn {
-    from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    from { opacity: 0; transform: translateY(12px) scale(0.96); }
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
