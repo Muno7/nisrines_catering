@@ -49,12 +49,13 @@
 }
 
 body.hero-loading .catering-hero__media {
-  transform: scale(1.08);
+  transform: scale(1.05);
   transform-origin: center;
 }
 
 body.hero-loading.hero-ready .catering-hero__media {
-  animation: cateringHeroZoomOut 2.2s ease-out forwards;
+  transform: scale(1);
+  animation: cateringHeroZoomOut 1.35s ease-out forwards;
 }
 
 body.hero-loading .catering-hero__copy {
@@ -63,7 +64,7 @@ body.hero-loading .catering-hero__copy {
 }
 
 body.hero-loading.hero-ready .catering-hero__copy {
-  animation: cateringHeroCopyIn 0.9s ease-out 0.15s forwards;
+  animation: cateringHeroCopyIn 0.6s ease-out 0.08s forwards;
 }
 
 .catering-eyebrow {
@@ -206,20 +207,6 @@ body.hero-loading.hero-ready .catering-hero__copy {
   display: block;
 }
 
-.menu-card__label {
-  position: absolute;
-  left: 16px;
-  bottom: 16px;
-  background: rgba(255, 255, 255, 0.92);
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--cta);
-  font-weight: 700;
-}
-
 .menu-card__hint {
   position: absolute;
   right: 16px;
@@ -287,6 +274,46 @@ body.hero-loading.hero-ready .catering-hero__copy {
   box-shadow: 0 32px 60px rgba(0, 0, 0, 0.35);
 }
 
+.catering-lightbox__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(82, 28, 13, 0.2);
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--cta);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 12px 26px rgba(62, 22, 10, 0.18);
+  cursor: pointer;
+}
+
+.catering-lightbox__nav svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.catering-lightbox__nav--prev {
+  left: 12px;
+}
+
+.catering-lightbox__nav--next {
+  right: 12px;
+}
+
+.catering-lightbox__nav.is-hidden {
+  display: none;
+}
+
+.catering-lightbox__nav:disabled {
+  opacity: 0.35;
+  cursor: default;
+  pointer-events: none;
+}
+
 .catering-lightbox__image {
   width: 100%;
   max-height: 75vh;
@@ -324,7 +351,7 @@ body.hero-loading.hero-ready .catering-hero__copy {
 }
 
 @keyframes cateringHeroZoomOut {
-  from { transform: scale(1.08); }
+  from { transform: scale(1.05); }
   to { transform: scale(1); }
 }
 
@@ -360,6 +387,14 @@ body.hero-loading.hero-ready .catering-hero__copy {
   .menu-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 28px 48px rgba(62, 22, 10, 0.18);
+  }
+
+  .catering-lightbox__nav--prev {
+    left: -20px;
+  }
+
+  .catering-lightbox__nav--next {
+    right: -20px;
   }
 }
 

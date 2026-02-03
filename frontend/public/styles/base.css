@@ -222,7 +222,7 @@ body.hero-loading {
 body.hero-loading.hero-ready {
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.65s ease;
+    transition: opacity 0.45s ease;
 }
 
 .home-hero__media,
@@ -236,12 +236,13 @@ body.hero-loading.hero-ready {
 }
 
 body.hero-loading .home-hero__media {
-    transform: scale(1.06);
+    transform: scale(1.04);
     transform-origin: center;
 }
 
 body.hero-loading.hero-ready .home-hero__media {
-    animation: homeHeroZoomOut 2.2s ease-out forwards;
+    transform: scale(1);
+    animation: homeHeroZoomOut 1.35s ease-out forwards;
 }
 
 body.hero-loading .home-hero__overlay {
@@ -250,11 +251,11 @@ body.hero-loading .home-hero__overlay {
 }
 
 body.hero-loading.hero-ready .home-hero__overlay {
-    animation: homeHeroCopyIn 0.9s ease-out 0.15s forwards;
+    animation: homeHeroCopyIn 0.6s ease-out 0.08s forwards;
 }
 
 @keyframes homeHeroZoomOut {
-    from { transform: scale(1.06); }
+    from { transform: scale(1.04); }
     to { transform: scale(1); }
 }
 
