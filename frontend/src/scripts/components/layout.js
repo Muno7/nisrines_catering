@@ -1,4 +1,9 @@
+import { inject } from "@vercel/analytics";
 import { initLanguage, setLanguage, getCurrentLanguage } from "../utils/language.js";
+
+if (import.meta.env.PROD) {
+  inject();
+}
 
 const navLinks = [
   {
