@@ -10,24 +10,47 @@ async function fetchSlideshowImages() {
   } catch (e) {
     console.warn("Falling back to local slideshow assets:", e);
   }
+  return [];
 }
 
 export async function initSlideshow() {
   const slideContainer = document.querySelector(".js-slideshow-container");
-  if (!slideContainer) return;
+  if (!slideContainer) return Promise.resolve();
+
+  let resolveFirstImage = null;
+  let firstImageResolved = false;
+  const firstImageReady = new Promise((resolve) => {
+    resolveFirstImage = resolve;
+  });
+
+  const markFirstImageReady = () => {
+    if (firstImageResolved) return;
+    firstImageResolved = true;
+    if (resolveFirstImage) resolveFirstImage();
+  };
 
   const transitionMs = 1750;
   const intervalMs = 4000;
 
   const images = await fetchSlideshowImages();
-  if (images.length === 0) return;
+  if (images.length === 0) {
+    markFirstImageReady();
+    return firstImageReady;
+  }
 
-  images.forEach((src) => {
+  images.forEach((src, index) => {
     const img = document.createElement("img");
+    if (index === 0) {
+      img.addEventListener("load", markFirstImageReady, { once: true });
+      img.addEventListener("error", markFirstImageReady, { once: true });
+    }
     img.src = src;
     img.alt = "Slideshow image";
     img.classList.add("w-full", "h-full", "object-cover", "shrink-0");
     slideContainer.appendChild(img);
+    if (index === 0 && img.complete) {
+      markFirstImageReady();
+    }
   });
 
   // Clone first slide to the end for seamless forward-only loop
@@ -66,4 +89,6 @@ export async function initSlideshow() {
   
   // Auto advance every 5 seconds
   setInterval(nextSlide, intervalMs);
+
+  return firstImageReady;
 }

@@ -12,9 +12,32 @@ renderLayout("home");
 
 const DAY_OPTIONS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 const DAY_ORDER = Object.fromEntries(DAY_OPTIONS.map((day, index) => [day, index]));
+const HERO_TIMEOUT_MS = 2500;
+
+function createHeroReadyHandler() {
+  let isReady = false;
+  return () => {
+    if (isReady) return;
+    isReady = true;
+    document.body.classList.add("hero-ready");
+  };
+}
 
 async function loadHomePage() {
-  initSlideshow();
+  const markHeroReady = createHeroReadyHandler();
+  const heroTimeout = window.setTimeout(markHeroReady, HERO_TIMEOUT_MS);
+
+  const heroPromise = initSlideshow();
+  Promise.resolve(heroPromise)
+    .then(() => {
+      window.clearTimeout(heroTimeout);
+      markHeroReady();
+    })
+    .catch(() => {
+      window.clearTimeout(heroTimeout);
+      markHeroReady();
+    });
+
   animateFeatureCards();
   setSiderbarNavigation();
   try {

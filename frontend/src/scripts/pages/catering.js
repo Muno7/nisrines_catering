@@ -5,6 +5,48 @@ import { API_BASE_URL } from "../../config.js";
 renderLayout("catering");
 setSiderbarNavigation();
 
+const HERO_TIMEOUT_MS = 2500;
+const markHeroReady = (() => {
+  let isReady = false;
+  return () => {
+    if (isReady) return;
+    isReady = true;
+    document.body.classList.add("hero-ready");
+  };
+})();
+
+const preloadCateringHero = () => {
+  const hero = document.querySelector(".catering-hero__media") || document.querySelector(".catering-hero");
+  if (!hero) {
+    markHeroReady();
+    return;
+  }
+
+  const backgroundImage = window.getComputedStyle(hero).backgroundImage || "";
+  const match = backgroundImage.match(/url\(["']?([^"')]+)["']?\)/);
+  if (!match || !match[1]) {
+    markHeroReady();
+    return;
+  }
+
+  let isComplete = false;
+  const finalize = () => {
+    if (isComplete) return;
+    isComplete = true;
+    window.clearTimeout(timeoutId);
+    markHeroReady();
+  };
+
+  const timeoutId = window.setTimeout(finalize, HERO_TIMEOUT_MS);
+  const img = new Image();
+  img.onload = finalize;
+  img.onerror = finalize;
+  img.src = match[1];
+  if (img.complete) finalize();
+};
+
+preloadCateringHero();
+
 const menusContainer = document.querySelector(".js-catering-menus");
 
 const buildMenuCard = (menu, index) => {

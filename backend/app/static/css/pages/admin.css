@@ -34,22 +34,25 @@
 
 .nav-group {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-wrap: nowrap;
+  gap: 6px;
   align-items: center;
   padding: 4px;
   border: 1px solid var(--color-border);
   border-radius: 999px;
   background: #fffaf6;
+  overflow-x: auto;
 }
 
 .nav-pill {
-  padding: 8px 12px;
+  padding: 8px 10px;
   border-radius: 999px;
   border: 1px solid transparent;
   font-weight: 600;
   color: var(--color-text);
   background: transparent;
+  white-space: nowrap;
+  flex: 0 0 auto;
 }
 
 .nav-pill:hover {

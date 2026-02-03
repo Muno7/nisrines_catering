@@ -6,13 +6,21 @@
   position: relative;
   padding: 72px 16px 96px;
   min-height: clamp(420px, 62vh, 620px);
-  background:
-    linear-gradient(180deg, rgba(253, 248, 245, 0.88), rgba(253, 248, 245, 0.65)),
-    url("../assets/images/catering-hero.jpg") center/cover no-repeat;
   overflow: hidden;
 }
 
-.catering-hero::before {
+.catering-hero__media {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(253, 248, 245, 0.88), rgba(253, 248, 245, 0.65)),
+    url("../assets/images/catering-hero.jpg") center/cover no-repeat;
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.catering-hero__media::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -20,7 +28,7 @@
   opacity: 0.6;
 }
 
-.catering-hero::after {
+.catering-hero__media::after {
   content: "";
   position: absolute;
   right: -80px;
@@ -38,6 +46,24 @@
   gap: 24px;
   align-items: center;
   justify-items: start;
+}
+
+body.hero-loading .catering-hero__media {
+  transform: scale(1.08);
+  transform-origin: center;
+}
+
+body.hero-loading.hero-ready .catering-hero__media {
+  animation: cateringHeroZoomOut 2.2s ease-out forwards;
+}
+
+body.hero-loading .catering-hero__copy {
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+}
+
+body.hero-loading.hero-ready .catering-hero__copy {
+  animation: cateringHeroCopyIn 0.9s ease-out 0.15s forwards;
 }
 
 .catering-eyebrow {
@@ -297,6 +323,16 @@
   }
 }
 
+@keyframes cateringHeroZoomOut {
+  from { transform: scale(1.08); }
+  to { transform: scale(1); }
+}
+
+@keyframes cateringHeroCopyIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 @media (min-width: 1024px) {
   .catering-hero {
     padding: 120px 24px 130px;
@@ -333,5 +369,14 @@
   .menu-skeleton__label {
     transition: none;
     animation: none;
+  }
+
+  body.hero-loading .catering-hero__media,
+  body.hero-loading.hero-ready .catering-hero__media,
+  body.hero-loading .catering-hero__copy,
+  body.hero-loading.hero-ready .catering-hero__copy {
+    animation: none;
+    transform: none;
+    opacity: 1;
   }
 }
