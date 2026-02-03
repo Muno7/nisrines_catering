@@ -1,0 +1,91 @@
+{% extends "admin/base.html" %}
+{% block title %}Catering Menus{% endblock %}
+{% block head %}
+  <script defer src="{{ url_for('static', filename='js/image_compress.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='js/catering.js') }}"></script>
+{% endblock %}
+{% block content %}
+  <header class="page-header">
+    <div class="page-header__title">
+      <h2>Catering menus</h2>
+    </div>
+    <div class="page-header__nav">
+      <div class="nav-group">
+        <a class="nav-pill {% if request.endpoint == 'admin.products' %}is-active{% endif %}" href="{{ url_for('admin.products') }}">Products</a>
+        <a class="nav-pill {% if request.endpoint == 'admin.categories' %}is-active{% endif %}" href="{{ url_for('admin.categories') }}">Categories</a>
+        <a class="nav-pill {% if request.endpoint == 'admin.catering' %}is-active{% endif %}" href="{{ url_for('admin.catering') }}">Catering</a>
+        <a class="nav-pill {% if request.endpoint == 'admin.slideshow' %}is-active{% endif %}" href="{{ url_for('admin.slideshow') }}">Slideshow</a>
+      </div>
+    </div>
+    <div class="page-header__actions"></div>
+  </header>
+  <form id="cateringForm" method="post" action="{{ url_for('admin.catering') }}" enctype="multipart/form-data" class="form-grid single-column">
+    {{ form.hidden_tag() }}
+    <div class="card">
+      <div class="field">
+        {{ form.images.label }}{{ form.images(class="file-input") }}
+      </div>
+      <div class="actions" style="margin-top:12px;">
+        <button class="btn" type="submit">Upload</button>
+      </div>
+    </div>
+  </form>
+
+  {% if menus %}
+    <form method="post" action="{{ url_for('admin.reorder_catering_menus') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="card" style="margin-top:12px; overflow:auto;">
+        <h3>Current menus ({{ menus|length }})</h3>
+        <table class="responsive-table table">
+          <thead>
+            <tr>
+              <th style="width:80px;">Image</th>
+              <th>Menu</th>
+              <th style="width:120px;">Order</th>
+              <th style="text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for img in menus %}
+              <tr>
+                <td style="width:80px;">
+                  <img class="thumb" src="{{ img.image }}" alt="Menu {{ loop.index }}" style="width:70px; height:70px; object-fit:cover; border-radius:6px;">
+                </td>
+                <td>
+                  <div class="text-block">
+                    <div class="row-title">Menu {{ loop.index }}</div>
+                  </div>
+                </td>
+                <td>
+                  <input type="number" name="order_{{ img.id }}" value="{{ img.sort_order }}" min="0" step="1" class="input">
+                </td>
+                <td style="text-align:right;">
+                  <button class="btn btn-icon btn-danger"
+                          type="submit"
+                          formmethod="post"
+                          formaction="{{ url_for('admin.delete_catering_menu', menu_id=img.id) }}"
+                          title="Delete">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+                      <path d="M10 11v6"></path>
+                      <path d="M14 11v6"></path>
+                      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="actions" style="justify-content: flex-end; margin-top: 10px;">
+        <button class="btn" type="submit">Save order</button>
+      </div>
+    </form>
+  {% else %}
+    <div class="card" style="margin-top:12px;">
+      <p class="muted">No catering menus yet. Upload images to get started.</p>
+    </div>
+  {% endif %}
+{% endblock %}

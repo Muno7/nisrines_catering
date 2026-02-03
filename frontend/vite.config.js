@@ -34,6 +34,7 @@ export default defineConfig({
       input: {
         home: resolve(__dirname, 'home.html'),
         menu: resolve(__dirname, 'menu.html'),
+        catering: resolve(__dirname, 'catering.html'),
         favorites: resolve(__dirname, 'favorites.html'),
         order: resolve(__dirname, 'order.html'),
         subscriptions: resolve(__dirname, 'subscriptions.html'),

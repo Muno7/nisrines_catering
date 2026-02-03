@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200">
+  <defs>
+    <linearGradient id="g4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFF3EC"/>
+      <stop offset="100%" stop-color="#F7E1CF"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1200" fill="url(#g4)"/>
+  <rect x="80" y="100" width="740" height="1000" rx="32" fill="#ffffff" opacity="0.75" stroke="#BC4B20" stroke-width="4" stroke-dasharray="16 12"/>
+  <text x="140" y="620" font-family="Playfair Display, Lora, serif" font-size="72" fill="#3E160A">
+    Menu
+  </text>
+  <text x="140" y="700" font-family="Larosa Sans, Segoe UI, sans-serif" font-size="28" fill="#8A4B3A">
+    Upload your catering menu image
+  </text>
+</svg>

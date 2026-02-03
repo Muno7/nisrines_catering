@@ -41,6 +41,7 @@ html {
     --cta-hover: #3E160A;
     --text: #3E160A;
     --muted: #8A4B3A;
+    --header-height: 84px;
     
     /* Legacy variables mapped to new palette to maintain your classes */
     --lightGray: var(--muted);
@@ -50,6 +51,10 @@ html {
 main,
 header {
     color: var(--text);
+}
+
+.site-main {
+    padding-top: calc(var(--header-height, 84px) + env(safe-area-inset-top, 0px));
 }
 
 /* Hide scrollbar for Firefox */

@@ -14,8 +14,8 @@ from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy import or_, func
 
 from ..extensions import db
-from ..models import User, Product, Category, SlideshowImage, slugify
-from .forms import LoginForm, ProductForm, SlideshowForm
+from ..models import User, Product, Category, SlideshowImage, CateringMenuImage, slugify
+from .forms import LoginForm, ProductForm, SlideshowForm, CateringMenuForm
 from ..s3 import upload_file
 
 admin_bp = Blueprint("admin", __name__, template_folder="../templates/admin")
@@ -623,3 +623,79 @@ def delete_category(category_id: int):
     db.session.commit()
     flash("Category deleted.", "success")
     return redirect(url_for("admin.categories"))
+
+
+@admin_bp.route("/catering", methods=["GET", "POST"])
+@login_required
+def catering():
+    form = CateringMenuForm()
+    menus = CateringMenuImage.query.order_by(
+        CateringMenuImage.sort_order,
+        CateringMenuImage.created_at
+    ).all()
+
+    if form.validate_on_submit():
+        files = request.files.getlist("images")
+        if not files or not any(f.filename for f in files):
+            flash("Please select at least one image to upload.", "warning")
+            return redirect(url_for("admin.catering"))
+
+        next_order = (
+            db.session.query(func.coalesce(func.max(CateringMenuImage.sort_order), 0)).scalar() or 0
+        )
+
+        uploaded = 0
+        errors: list[str] = []
+        for file in files:
+            if not file or not file.filename:
+                continue
+            ok, result = upload_file(file)
+            if not ok:
+                errors.append(f"{file.filename}: {result}")
+                continue
+            next_order += 1
+            menu = CateringMenuImage(image=result, sort_order=next_order)
+            db.session.add(menu)
+            uploaded += 1
+
+        if uploaded:
+            db.session.commit()
+            flash(f"Added {uploaded} catering menu image(s).", "success")
+
+        if errors:
+            flash("Failed to upload: " + "; ".join(errors), "danger")
+        if not uploaded and not errors:
+            flash("No images were uploaded.", "warning")
+
+        return redirect(url_for("admin.catering"))
+
+    return render_template("admin/catering.html", form=form, menus=menus)
+
+
+@admin_bp.route("/catering/<menu_id>/delete", methods=["POST"])
+@login_required
+def delete_catering_menu(menu_id: str):
+    menu = CateringMenuImage.query.get_or_404(menu_id)
+    db.session.delete(menu)
+    db.session.commit()
+    flash("Catering menu image removed.", "success")
+    return redirect(url_for("admin.catering"))
+
+
+@admin_bp.route("/catering/reorder", methods=["POST"])
+@login_required
+def reorder_catering_menus():
+    menus = CateringMenuImage.query.order_by(
+        CateringMenuImage.sort_order,
+        CateringMenuImage.created_at
+    ).all()
+    for menu in menus:
+        key = f"order_{menu.id}"
+        if key in request.form:
+            try:
+                menu.sort_order = int(request.form[key])
+            except ValueError:
+                continue
+    db.session.commit()
+    flash("Catering menu order updated.", "success")
+    return redirect(url_for("admin.catering"))

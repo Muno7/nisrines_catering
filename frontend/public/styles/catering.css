@@ -1,0 +1,337 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.catering-hero {
+  position: relative;
+  padding: 72px 16px 96px;
+  min-height: clamp(420px, 62vh, 620px);
+  background:
+    linear-gradient(180deg, rgba(253, 248, 245, 0.88), rgba(253, 248, 245, 0.65)),
+    url("../assets/images/catering-hero.jpg") center/cover no-repeat;
+  overflow: hidden;
+}
+
+.catering-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(232, 130, 42, 0.16), rgba(82, 28, 13, 0.18));
+  opacity: 0.6;
+}
+
+.catering-hero::after {
+  content: "";
+  position: absolute;
+  right: -80px;
+  top: -120px;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, rgba(82, 28, 13, 0.16), transparent 70%);
+  border-radius: 50%;
+}
+
+.catering-hero__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 24px;
+  align-items: center;
+  justify-items: start;
+}
+
+.catering-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-size: 0.7rem;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.catering-eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--secondary);
+  opacity: 0.6;
+}
+
+.catering-hero__copy {
+  display: grid;
+  gap: 14px;
+  max-width: 560px;
+  padding: 20px 22px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(82, 28, 13, 0.12);
+  box-shadow: 0 18px 40px rgba(62, 22, 10, 0.18);
+  backdrop-filter: blur(8px);
+}
+
+.catering-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(2rem, 2.6vw + 1.4rem, 3.2rem);
+  color: var(--cta);
+  line-height: 1.1;
+}
+
+.catering-subtitle {
+  font-size: 1.05rem;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.catering-hero__actions {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+}
+
+.catering-hero__actions .button-cta {
+  width: 100%;
+  justify-content: center;
+}
+
+.catering-hero__cta {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  padding: 0.95rem 1.7rem;
+  box-shadow: 0 16px 32px rgba(82, 28, 13, 0.22);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.catering-hero__cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 22px 40px rgba(82, 28, 13, 0.28);
+}
+
+.catering-menus-section {
+  padding: 72px 16px 90px;
+  background: linear-gradient(180deg, rgba(255, 243, 236, 0.7), rgba(253, 248, 245, 1));
+}
+
+.catering-section-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.catering-section-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.8rem, 2vw + 1.2rem, 2.8rem);
+  color: var(--cta);
+  margin-top: 6px;
+}
+
+.catering-section-subtitle {
+  max-width: 520px;
+  color: var(--text);
+  margin-top: 12px;
+}
+
+.catering-menus-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1fr;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.catering-empty {
+  text-align: center;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 32px 12px;
+}
+
+.menu-card {
+  position: relative;
+  background: #fff;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(82, 28, 13, 0.12);
+  box-shadow: 0 20px 40px rgba(62, 22, 10, 0.12);
+  cursor: zoom-in;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 0;
+  appearance: none;
+  font: inherit;
+  text-align: left;
+  width: 100%;
+}
+
+.menu-card:focus-visible {
+  outline: 3px solid rgba(232, 130, 42, 0.45);
+  outline-offset: 3px;
+}
+
+.menu-card__image {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+}
+
+.menu-card__label {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cta);
+  font-weight: 700;
+}
+
+.menu-card__hint {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  background: rgba(82, 28, 13, 0.85);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.menu-skeleton {
+  background: #fff;
+  border-radius: 22px;
+  border: 1px solid rgba(82, 28, 13, 0.12);
+  padding: 16px;
+  display: grid;
+  gap: 12px;
+  box-shadow: 0 20px 40px rgba(62, 22, 10, 0.08);
+}
+
+.menu-skeleton__image {
+  background: rgba(82, 28, 13, 0.08);
+  border-radius: 16px;
+  height: 320px;
+  animation: cateringPulse 1.6s ease-in-out infinite;
+}
+
+.menu-skeleton__label {
+  height: 14px;
+  width: 60%;
+  background: rgba(82, 28, 13, 0.12);
+  border-radius: 999px;
+  animation: cateringPulse 1.6s ease-in-out infinite;
+}
+
+.catering-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 7, 4, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 60;
+  padding: 24px;
+}
+
+.catering-lightbox.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.catering-lightbox__dialog {
+  position: relative;
+  background: #fff;
+  border-radius: 24px;
+  padding: 18px;
+  max-width: min(92vw, 980px);
+  max-height: 85vh;
+  box-shadow: 0 32px 60px rgba(0, 0, 0, 0.35);
+}
+
+.catering-lightbox__image {
+  width: 100%;
+  max-height: 75vh;
+  object-fit: contain;
+  border-radius: 16px;
+  display: block;
+}
+
+.catering-lightbox__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(82, 28, 13, 0.2);
+  background: #fff;
+  font-size: 1.4rem;
+  color: var(--cta);
+  line-height: 1;
+  cursor: pointer;
+}
+
+.catering-lightbox__close:hover {
+  background: rgba(232, 130, 42, 0.12);
+}
+
+@keyframes cateringPulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+@media (min-width: 1024px) {
+  .catering-hero {
+    padding: 120px 24px 130px;
+    min-height: clamp(520px, 70vh, 720px);
+  }
+
+  .catering-hero__inner {
+    gap: 48px;
+  }
+
+  .catering-hero__actions {
+    display: flex;
+    align-items: center;
+  }
+
+  .catering-hero__actions .button-cta {
+    width: auto;
+  }
+
+  .catering-hero__cta {
+    font-size: 0.9rem;
+    padding: 1.05rem 2.3rem;
+  }
+
+  .menu-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 28px 48px rgba(62, 22, 10, 0.18);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-card,
+  .menu-skeleton__image,
+  .menu-skeleton__label {
+    transition: none;
+    animation: none;
+  }
+}

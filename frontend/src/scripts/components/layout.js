@@ -18,6 +18,14 @@ const navLinks = [
            </svg>`
   },
   {
+    id: 'catering',
+    href: './catering.html',
+    label: 'Catering',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="68 96 887 800" class="fill-current w-[20px] h-[20px] mr-3">
+             <path d="M384.064 274.56l.064-50.688A128 128 0 01512.128 96c70.528 0 127.68 57.152 127.68 127.68v50.752A448.192 448.192 0 01955.392 768H68.544A448.192 448.192 0 01384 274.56zM96 832h832a32 32 0 110 64H96a32 32 0 110-64zm32-128h768a384 384 0 10-768 0zm447.808-448v-32.32a63.68 63.68 0 00-63.68-63.68 64 64 0 00-64 63.936V256h127.68z"/>
+           </svg>`
+  },
+  {
     id: 'subscriptions',
     href: './subscriptions.html',
     label: 'Subscriptions',
@@ -274,6 +282,12 @@ function footerTemplate() {
                       </svg>
                       Menu
                     </a>
+                    <a href="./catering.html" class="hover:text-secondary transition-colors duration-300 flex items-center gap-2">
+                      <svg class="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="68 96 887 800">
+                        <path d="M384.064 274.56l.064-50.688A128 128 0 01512.128 96c70.528 0 127.68 57.152 127.68 127.68v50.752A448.192 448.192 0 01955.392 768H68.544A448.192 448.192 0 01384 274.56zM96 832h832a32 32 0 110 64H96a32 32 0 110-64zm32-128h768a384 384 0 10-768 0zm447.808-448v-32.32a63.68 63.68 0 00-63.68-63.68 64 64 0 00-64 63.936V256h127.68z"/>
+                      </svg>
+                      Catering
+                    </a>
                     <a href="./subscriptions.html" class="hover:text-secondary transition-colors duration-300 flex items-center gap-2">
                       <svg class="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="5 4 14 14">
                         <path
@@ -331,6 +345,26 @@ export function renderLayout(activePage, options = {}) {
   }
 
   bindLanguageToggle();
+  bindHeaderOffset();
+}
+
+function updateHeaderOffset() {
+  const header = document.querySelector('.header-js');
+  if (!header) return;
+  const height = Math.ceil(header.getBoundingClientRect().height);
+  document.documentElement.style.setProperty('--header-height', `${height}px`);
+}
+
+function bindHeaderOffset() {
+  updateHeaderOffset();
+  if (document.documentElement.dataset.headerOffsetBound === 'true') return;
+  document.documentElement.dataset.headerOffsetBound = 'true';
+
+  window.addEventListener('resize', updateHeaderOffset);
+  window.addEventListener('orientationchange', updateHeaderOffset);
+  if (document.fonts?.ready) {
+    document.fonts.ready.then(updateHeaderOffset).catch(() => {});
+  }
 }
 
 function updateToggleStyles(selected) {

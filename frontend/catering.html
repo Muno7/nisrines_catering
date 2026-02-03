@@ -1,0 +1,85 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Premium catering menus crafted for intimate gatherings and grand events.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nisrine's Catering">
+  <meta property="og:title" content="Nisrine's Catering | Catering">
+  <meta property="og:description" content="Premium catering menus crafted for intimate gatherings and grand events.">
+  <meta property="og:image" content="/assets/favicons/apple-touch-icon.png">
+  <meta property="og:image:alt" content="Nisrine's Catering logo">
+  <meta property="og:url" content="/catering.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nisrine's Catering | Catering">
+  <meta name="twitter:description" content="Premium catering menus crafted for intimate gatherings and grand events.">
+  <meta name="twitter:image" content="/assets/favicons/apple-touch-icon.png">
+  <meta name="twitter:image:alt" content="Nisrine's Catering logo">
+  <title>Nisrine's Catering | Catering</title>
+  <link rel="icon" type="image/png" href="/assets/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicons/favicon.svg">
+  <link rel="shortcut icon" href="/assets/favicons/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/favicons/site.webmanifest">
+  <link rel="stylesheet" href="./public/styles/output.css">
+  <link rel="stylesheet" href="./public/styles/header.css">
+  <link rel="stylesheet" href="./public/styles/base.css">
+  <link rel="stylesheet" href="./public/styles/catering.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-background text-text">
+  <div data-component="header"></div>
+  <main class="site-main">
+    <section class="catering-hero">
+      <div class="container mx-auto px-4 lg:px-8 catering-hero__inner">
+        <div class="catering-hero__copy">
+          <p class="catering-eyebrow">Catering</p>
+          <h1 class="catering-title">Menus made for your next event.</h1>
+          <p class="catering-subtitle">Curated menus for gatherings and celebrations.</p>
+          <div class="catering-hero__actions">
+            <a href="#catering-menus" class="button-cta catering-hero__cta">View catering menus</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="catering-menus" class="catering-menus-section">
+      <div class="container mx-auto px-4 lg:px-8">
+        <div class="catering-section-header">
+          <div>
+            <p class="catering-eyebrow">Menus</p>
+            <h2 class="catering-section-title">Catering menus</h2>
+            <p class="catering-section-subtitle">Tap any menu to zoom in.</p>
+          </div>
+        </div>
+
+        <div class="catering-menus-grid js-catering-menus">
+          <div class="menu-skeleton">
+            <div class="menu-skeleton__image"></div>
+            <div class="menu-skeleton__label"></div>
+          </div>
+          <div class="menu-skeleton">
+            <div class="menu-skeleton__image"></div>
+            <div class="menu-skeleton__label"></div>
+          </div>
+          <div class="menu-skeleton">
+            <div class="menu-skeleton__image"></div>
+            <div class="menu-skeleton__label"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="catering-lightbox js-catering-lightbox" aria-hidden="true">
+      <div class="catering-lightbox__dialog" role="dialog" aria-modal="true" aria-label="Catering menu preview">
+        <button type="button" class="catering-lightbox__close" data-lightbox-close aria-label="Close menu preview">
+          &times;
+        </button>
+        <img class="catering-lightbox__image" src="" alt="Catering menu preview">
+      </div>
+    </div>
+  </main>
+  <div data-component="footer"></div>
+  <script src="./src/scripts/pages/catering.js" type="module"></script>
+</body>
+</html>

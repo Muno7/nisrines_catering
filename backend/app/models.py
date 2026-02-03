@@ -65,6 +65,15 @@ class SlideshowImage(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
 
+class CateringMenuImage(db.Model):
+    __tablename__ = "catering_menu_images"
+
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    image = db.Column(db.Text, nullable=False)
+    sort_order = db.Column(db.Integer, default=0, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+
 class Category(db.Model):
     __tablename__ = "categories"
 

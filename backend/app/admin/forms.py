@@ -96,3 +96,11 @@ class SlideshowForm(FlaskForm):
         validators=[Optional()],
         render_kw={"multiple": True, "accept": "image/*"},
     )
+
+
+class CateringMenuForm(FlaskForm):
+    images = MultipleFileField(
+        "Upload catering menus",
+        validators=[Optional()],
+        render_kw={"multiple": True, "accept": "image/*"},
+    )
