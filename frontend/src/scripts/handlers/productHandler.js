@@ -39,7 +39,7 @@ export function productCardHTML(product, preferredPortion = 'single') {
       </label>
     <div class="flex flex-col p-2 gap-1 items-center text-center">
       <p class="product-name-js text-lg font-semibold leading-tight line-clamp-1 truncate text-accent notranslate w-full text-center" translate="no">${displayName}</p>
-      <p class="price-js font-bold text-center"><span translate="no">$</span>${displayedPrice}</p>
+      <p class="price-js text-center"><span translate="no">$</span>${displayedPrice}</p>
     </div>
   </div>`;
   return productCard;

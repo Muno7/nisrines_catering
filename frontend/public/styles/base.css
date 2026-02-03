@@ -43,6 +43,7 @@ html {
     --muted: #8A4B3A;
     --header-height: 84px;
     --font-base: "Playfair Display", serif;
+    --font-numeric: "Larosa Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     
     /* Legacy variables mapped to new palette to maintain your classes */
     --lightGray: var(--muted);
@@ -71,6 +72,7 @@ header {
 @layer base {
     body {
         font-family: var(--font-base);
+        font-variant-numeric: lining-nums tabular-nums;
         background-color: var(--background);
         color: var(--text);
     }
@@ -78,6 +80,31 @@ header {
     h1, h2, h3, h4, h5, h6 {
         font-family: var(--font-base);
     }
+}
+
+.font-numeric {
+    font-family: var(--font-numeric);
+    font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* Use a cleaner sans face for numeric-heavy UI */
+.price-js,
+.js-cart-quantity,
+.js-favorite-quantity,
+.overlay-item-quantity-js,
+[class*="item-quantity-js-"],
+#overlay-product-price-js,
+#subtotal,
+#total,
+#delivery-fee {
+    font-family: var(--font-numeric);
+    font-variant-numeric: lining-nums tabular-nums;
+}
+
+input[type="number"],
+input[type="tel"] {
+    font-family: var(--font-numeric);
+    font-variant-numeric: lining-nums tabular-nums;
 }
 
 @keyframes quantityPulse {

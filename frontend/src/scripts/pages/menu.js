@@ -200,7 +200,10 @@ function renderMenuGrid() {
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M6 12h12M10 18h4"/>
                 </svg>
               </button>
-              <div class="js-products-count text-sm text-gray-600 text-right">${products.length} items</div>
+              <div class="js-products-count text-sm text-gray-600 text-right">
+                <span class="js-products-count__number font-numeric">${products.length}</span>
+                <span class="js-products-count__label">items</span>
+              </div>
             </div>
           </div>
           <div class="js-active-filters hidden flex flex-wrap gap-2 items-center px-1 text-sm"></div>
@@ -245,7 +248,12 @@ function getDisplayPortionPreference() {
 function updateProductCount(count) {
   const countElement = document.querySelector(".js-products-count");
   if (!countElement) return;
-  countElement.textContent = `${count} item${count === 1 ? "" : "s"}`;
+
+  const numberElement = countElement.querySelector(".js-products-count__number");
+  if (numberElement) numberElement.textContent = count;
+
+  const labelElement = countElement.querySelector(".js-products-count__label");
+  if (labelElement) labelElement.textContent = `item${count === 1 ? "" : "s"}`;
 }
 
 function setupFilterPanel() {

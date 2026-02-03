@@ -47,7 +47,7 @@ export function appendOverlayDiv() {
               <!-- Price and Portions -->
               <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2">
-                  <span id="overlay-product-price-js" class="text-xl md:text-2xl font-bold"></span>
+                  <span id="overlay-product-price-js" class="text-xl md:text-2xl"></span>
                 </div>
                 <div class="portion-container-js hidden items-center gap-2">
                   <button class="family-portion-button-js button-primary portion-button rounded-full h-full w-full flex items-center justify-center text-lg md:text-xl">
