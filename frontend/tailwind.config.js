@@ -11,8 +11,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        header: ['Larosa Sans', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
-        body: ['Larosa Sans', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        header: ['Playfair Display', 'ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
+        body: ['Playfair Display', 'ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
       },
     colors: {
         background: "#FDF8F5", // Cleaner off-white cream

@@ -42,6 +42,7 @@ html {
     --text: #3E160A;
     --muted: #8A4B3A;
     --header-height: 84px;
+    --font-base: "Playfair Display", serif;
     
     /* Legacy variables mapped to new palette to maintain your classes */
     --lightGray: var(--muted);
@@ -69,13 +70,13 @@ header {
 
 @layer base {
     body {
-        font-family: 'Larosa Sans', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        font-family: var(--font-base);
         background-color: var(--background);
         color: var(--text);
     }
 
     h1, h2, h3, h4, h5, h6 {
-        font-family: 'Larosa Sans', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        font-family: var(--font-base);
     }
 }
 
