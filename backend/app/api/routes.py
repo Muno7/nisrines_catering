@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 from sqlalchemy import or_
 
-from ..models import Product, Category, SlideshowImage, CateringMenuImage
+from ..models import Product, Category, SlideshowImage, CateringMenuImage, SubscriptionPlan
 
 api_bp = Blueprint("api", __name__)
 
@@ -72,4 +72,23 @@ def get_catering_menus():
         CateringMenuImage.created_at
     ).all()
     payload = [{"id": m.id, "image": m.image, "sort_order": m.sort_order} for m in menus]
+    return jsonify(payload)
+
+
+@api_bp.route("/subscriptions", methods=["GET"])
+def get_subscriptions():
+    plans = SubscriptionPlan.query.order_by(
+        SubscriptionPlan.audience,
+        SubscriptionPlan.days_per_month,
+    ).all()
+    payload = [
+        {
+            "id": plan.id,
+            "audience": plan.audience,
+            "daysPerMonth": plan.days_per_month,
+            "platDuJour": plan.price_plat_du_jour,
+            "withSalad": plan.price_with_salad,
+        }
+        for plan in plans
+    ]
     return jsonify(payload)

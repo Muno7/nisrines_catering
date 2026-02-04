@@ -90,6 +90,35 @@ class ProductForm(FlaskForm):
         return secure_filename(self.image.data.filename or "")
 
 
+SUBSCRIPTION_AUDIENCE_CHOICES = [
+    ("person", "1 Person"),
+    ("family", "Family of 4"),
+]
+
+
+class SubscriptionPlanForm(FlaskForm):
+    audience = SelectField(
+        "Plan type",
+        choices=SUBSCRIPTION_AUDIENCE_CHOICES,
+        validators=[DataRequired()],
+    )
+
+    days_per_month = IntegerField(
+        "Days / month",
+        validators=[DataRequired(), NumberRange(min=1)],
+    )
+
+    price_plat_du_jour = IntegerField(
+        "Plat du jour ($)",
+        validators=[DataRequired(), NumberRange(min=0)],
+    )
+
+    price_with_salad = IntegerField(
+        "With salad ($)",
+        validators=[DataRequired(), NumberRange(min=0)],
+    )
+
+
 class SlideshowForm(FlaskForm):
     images = MultipleFileField(
         "Upload slideshow images",

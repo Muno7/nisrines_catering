@@ -74,6 +74,31 @@ class CateringMenuImage(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
 
+class SubscriptionPlan(db.Model):
+    __tablename__ = "subscription_plans"
+
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    audience = db.Column(db.String(20), nullable=False)
+    days_per_month = db.Column(db.Integer, nullable=False)
+    price_plat_du_jour = db.Column(db.Integer, nullable=False)
+    price_with_salad = db.Column(db.Integer, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow,
+        nullable=False,
+    )
+
+    __table_args__ = (
+        db.UniqueConstraint(
+            "audience",
+            "days_per_month",
+            name="uq_subscription_plans_audience_days",
+        ),
+    )
+
+
 class Category(db.Model):
     __tablename__ = "categories"
 

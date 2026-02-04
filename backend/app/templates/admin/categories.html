@@ -12,6 +12,7 @@
       <div class="nav-group">
         <a class="nav-pill {% if request.endpoint == 'admin.products' %}is-active{% endif %}" href="{{ url_for('admin.products') }}">Products</a>
         <a class="nav-pill {% if request.endpoint == 'admin.categories' %}is-active{% endif %}" href="{{ url_for('admin.categories') }}">Categories</a>
+        <a class="nav-pill {% if request.endpoint in ['admin.subscriptions', 'admin.new_subscription_plan', 'admin.edit_subscription_plan'] %}is-active{% endif %}" href="{{ url_for('admin.subscriptions') }}">Subscriptions</a>
         <a class="nav-pill {% if request.endpoint == 'admin.catering' %}is-active{% endif %}" href="{{ url_for('admin.catering') }}">Catering</a>
         <a class="nav-pill {% if request.endpoint == 'admin.slideshow' %}is-active{% endif %}" href="{{ url_for('admin.slideshow') }}">Slideshow</a>
       </div>

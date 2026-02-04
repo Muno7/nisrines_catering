@@ -14,8 +14,22 @@ from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy import or_, func
 
 from ..extensions import db
-from ..models import User, Product, Category, SlideshowImage, CateringMenuImage, slugify
-from .forms import LoginForm, ProductForm, SlideshowForm, CateringMenuForm
+from ..models import (
+    User,
+    Product,
+    Category,
+    SlideshowImage,
+    CateringMenuImage,
+    SubscriptionPlan,
+    slugify,
+)
+from .forms import (
+    LoginForm,
+    ProductForm,
+    SlideshowForm,
+    CateringMenuForm,
+    SubscriptionPlanForm,
+)
 from ..s3 import upload_file
 
 admin_bp = Blueprint("admin", __name__, template_folder="../templates/admin")
@@ -699,3 +713,111 @@ def reorder_catering_menus():
     db.session.commit()
     flash("Catering menu order updated.", "success")
     return redirect(url_for("admin.catering"))
+
+
+@admin_bp.route("/subscriptions")
+@login_required
+def subscriptions():
+    plans = SubscriptionPlan.query.order_by(
+        SubscriptionPlan.audience,
+        SubscriptionPlan.days_per_month,
+    ).all()
+    person_plans = [plan for plan in plans if plan.audience == "person"]
+    family_plans = [plan for plan in plans if plan.audience == "family"]
+    return render_template(
+        "admin/subscriptions.html",
+        person_plans=person_plans,
+        family_plans=family_plans,
+    )
+
+
+@admin_bp.route("/subscriptions/new", methods=["GET", "POST"])
+@login_required
+def new_subscription_plan():
+    form = SubscriptionPlanForm()
+    if form.validate_on_submit():
+        audience = form.audience.data
+        days_per_month = form.days_per_month.data
+
+        existing = SubscriptionPlan.query.filter_by(
+            audience=audience,
+            days_per_month=days_per_month,
+        ).first()
+
+        if existing:
+            existing.price_plat_du_jour = form.price_plat_du_jour.data
+            existing.price_with_salad = form.price_with_salad.data
+            db.session.commit()
+            flash("Subscription plan updated.", "success")
+            return redirect(url_for("admin.subscriptions"))
+
+        plan = SubscriptionPlan(
+            audience=audience,
+            days_per_month=days_per_month,
+            price_plat_du_jour=form.price_plat_du_jour.data,
+            price_with_salad=form.price_with_salad.data,
+        )
+        db.session.add(plan)
+        db.session.commit()
+        flash("Subscription plan created.", "success")
+        return redirect(url_for("admin.subscriptions"))
+
+    return render_template(
+        "admin/subscription_form.html",
+        form=form,
+        plan=None,
+        is_edit=False,
+    )
+
+
+@admin_bp.route("/subscriptions/<plan_id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_subscription_plan(plan_id: str):
+    plan = SubscriptionPlan.query.get_or_404(plan_id)
+    form = SubscriptionPlanForm(obj=plan if request.method == "GET" else None)
+
+    if form.validate_on_submit():
+        audience = form.audience.data
+        days_per_month = form.days_per_month.data
+
+        conflict = (
+            SubscriptionPlan.query.filter_by(
+                audience=audience,
+                days_per_month=days_per_month,
+            )
+            .filter(SubscriptionPlan.id != plan.id)
+            .first()
+        )
+        if conflict:
+            flash("A subscription plan already exists for that plan type and days.", "danger")
+            return render_template(
+                "admin/subscription_form.html",
+                form=form,
+                plan=plan,
+                is_edit=True,
+            )
+
+        plan.audience = audience
+        plan.days_per_month = days_per_month
+        plan.price_plat_du_jour = form.price_plat_du_jour.data
+        plan.price_with_salad = form.price_with_salad.data
+        db.session.commit()
+        flash("Subscription plan updated.", "success")
+        return redirect(url_for("admin.subscriptions"))
+
+    return render_template(
+        "admin/subscription_form.html",
+        form=form,
+        plan=plan,
+        is_edit=True,
+    )
+
+
+@admin_bp.route("/subscriptions/<plan_id>/delete", methods=["POST"])
+@login_required
+def delete_subscription_plan(plan_id: str):
+    plan = SubscriptionPlan.query.get_or_404(plan_id)
+    db.session.delete(plan)
+    db.session.commit()
+    flash("Subscription plan deleted.", "success")
+    return redirect(url_for("admin.subscriptions"))
