@@ -201,7 +201,7 @@ function headerTemplate(activePage = '', { useFavoriteIcon = false, lang = "en" 
               </div>
             </nav>
           </div>
-          <header class="header-js rounded-b-md bg-surface shadow-sm fixed top-0 left-0 w-full z-10 transition-transform duration-200 ease-in-out">
+          <header class="header-js rounded-b-md bg-white shadow-sm fixed top-0 left-0 w-full z-10 transition-transform duration-200 ease-in-out">
             <div class="flex items-center justify-between px-2 sm:px-4 lg:px-8 py-1 sm:py-3">
               <button class="js-hamburger-toggle z-30 p-4 lg:hover:bg-muted/10 rounded-full transition duration-200 " id="hamburger-button" aria-label="Open navigation">
                 <div class="hamburger flex flex-col justify-around pointer w-[26px] h-[26px]">
