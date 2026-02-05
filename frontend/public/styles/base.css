@@ -194,7 +194,7 @@ input[type="tel"] {
 }
 
 .button-social-media {
-    background-color: var(--secondary);
+    background-color: var(--muted);
     color: white;
     padding: 0.5rem;
     border-radius: 100%;
