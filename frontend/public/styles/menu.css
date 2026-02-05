@@ -97,7 +97,6 @@ section {
   border-radius: 9999px;
   background: transparent;
   box-shadow: none;
-  color: var(--darkGray);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
@@ -111,6 +110,11 @@ section {
 .menu-scroll-button svg {
   width: 16px;
   height: 16px;
+}
+
+.menu-scroll-left svg {
+  transform: rotate(180deg);
+  transform-origin: center;
 }
 
 .menu-scroll-button:hover {

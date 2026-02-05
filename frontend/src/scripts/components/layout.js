@@ -161,10 +161,10 @@ function headerTemplate(activePage = '', { useFavoriteIcon = false, lang = "en" 
     ? `<div class="menu-categories-wrapper px-4 flex items-center gap-2">
          <button class="menu-scroll-button menu-scroll-left" type="button" aria-label="Scroll categories left">
            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-             <path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
+             <path d="m8.59 16.59 1.41 1.41 6-6-6-6-1.41 1.41L12.17 12z"></path>
            </svg>
          </button>
-         <nav class="text-darkGray shadow-sm whitespace-nowrap flex-1 overflow-hidden">
+         <nav class="whitespace-nowrap flex-1 overflow-hidden">
            <ul class="menu-categories flex overflow-x-auto lg:justify-center gap-6 lg:gap-8 px-2 scroll-smooth">
 
            </ul>
