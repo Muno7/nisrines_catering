@@ -111,9 +111,9 @@ const footerSocialLinks = [
 
 function navLinkHTML(activePage, link) {
   const isActive = activePage === link.id;
-  const anchorClasses = isActive ? 'bg-surface text-text' : 'text-accent';
+  const anchorClasses = isActive ? 'sidebar-link sidebar-link--active' : 'sidebar-link';
   return `<li class="w-full">
-            <a href="${link.href}" class="flex items-center w-full p-3 rounded-lg transition-colors duration-200 lg:hover:bg-muted/10 ${anchorClasses}">
+            <a href="${link.href}" class="flex items-center w-full ${anchorClasses}">
               ${link.icon}
               ${link.label}
             </a>
@@ -179,7 +179,7 @@ function headerTemplate(activePage = '', { useFavoriteIcon = false, lang = "en" 
 
   return `
           <div class="flex navigation fixed bg-surface top-0 w-[75%] sm:w-[50%] lg:w-[33%] h-[100vh] shadow-lg transition-all duration-500 z-30 left-[-75%] md:left-[-50%] lg:left-[-33%]">
-            <nav class="side-bar-js relative flex flex-col top-0 w-full pl-4 sm:pl-8 lg:pl-10 pb-4 pt-[82px] justify-between h-full">
+            <nav class="side-bar-js relative flex flex-col top-0 w-full px-4 sm:px-8 lg:px-10 pb-4 pt-[82px] justify-between h-full">
               <button class="js-hamburger-toggle nav-close-btn absolute p-4 rounded-full lg:hover:bg-muted/10 transition duration-200" aria-label="Close navigation">
                 <div class="hamburger flex flex-col justify-around pointer w-[26px] h-[26px]">
                   <div class="bar"></div>
@@ -187,16 +187,16 @@ function headerTemplate(activePage = '', { useFavoriteIcon = false, lang = "en" 
                   <div class="bar"></div>
                 </div>
               </button>
-              <ul class="flex flex-col w-full space-y-2 mt-10">
+              <ul class="sidebar-list flex flex-col w-full mt-10">
                 ${navItems}
               </ul>
-              <div class="flex flex-col gap-4 mt-auto pr-4">
+              <div class="sidebar-footer flex flex-col gap-4 mt-auto pr-4">
                 <div class="flex justify-start">
                   ${languageToggle}
                 </div>
                 <div class="flex flex-wrap gap-4">
                   ${socials}
-                  <span class="order-2 w-full">&copy; ${new Date().getFullYear()} Nisrine's Catering. All rights reserved</span>
+                  <span class="sidebar-footer-copy order-2 w-full">&copy; ${new Date().getFullYear()} Nisrine's Catering. All rights reserved</span>
                 </div>
               </div>
             </nav>
