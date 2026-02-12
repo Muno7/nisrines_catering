@@ -256,6 +256,17 @@ function updateProductCount(count) {
   if (labelElement) labelElement.textContent = `item${count === 1 ? "" : "s"}`;
 }
 
+function applyMenuCardAnimations() {
+  const gridContainer = document.querySelector('.products-grid');
+  if (!gridContainer) return;
+  const cards = gridContainer.querySelectorAll('.product-container');
+  cards.forEach((card, index) => {
+    const delay = Math.min(index, 10) * 70;
+    card.classList.add('menu-card-enter');
+    card.style.setProperty('--menu-card-delay', `${delay}ms`);
+  });
+}
+
 function setupFilterPanel() {
   bindSlidingPanel({
     buttonSelector: ".js-filter-toggle",
@@ -282,6 +293,8 @@ function renderProductsGrid() {
       return productCardHTML(product, portion);
     })
     .join('');
+
+  applyMenuCardAnimations();
 
   const addToFavoriteButtonElement = document.querySelectorAll(".js-add-to-favorite-button");
   addToFavoriteEventListeners(addToFavoriteButtonElement);

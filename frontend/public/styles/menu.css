@@ -63,6 +63,12 @@ section {
   gap: 1rem !important;
 }
 
+.menu-card-enter {
+  animation: menuCardSlideUp 0.45s ease-out both;
+  animation-delay: var(--menu-card-delay, 0ms);
+  will-change: transform, opacity;
+}
+
 /* Keep search input chrome clean and icon-integrated */
 .js-menu-search::-webkit-search-cancel-button {
   -webkit-appearance: none;
@@ -236,4 +242,15 @@ section {
   color: white;
   border-color: var(--primary);
   cursor: pointer;
+}
+
+@keyframes menuCardSlideUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-card-enter {
+    animation: none;
+  }
 }
