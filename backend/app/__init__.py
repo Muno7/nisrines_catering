@@ -1,15 +1,15 @@
 from flask import Flask, request
 from flask_login import LoginManager
-from .config import Config
+from .config import BaseConfig, DevelopmentConfig
 from .extensions import db, migrate, login_manager, csrf
 from .models import User
 from .admin import admin_bp
 from .api import api_bp
 
 
-def create_app(config_object: type | None = None) -> Flask:
+def create_app(config_object: type[BaseConfig] = DevelopmentConfig) -> Flask:
     app = Flask(__name__)
-    app.config.from_object(config_object or Config)
+    app.config.from_object(config_object)
 
     db.init_app(app)
     migrate.init_app(app, db)
