@@ -1,212 +1,220 @@
 import pytest
 
-from app.models import User, Product, Category, SlideshowImage, CateringMenuImage, SubscriptionPlan
-from app.exceptions import ValidationError, ConflictError, NotFoundError
+from app.models import Product, Category, SlideshowImage, CateringMenuImage, SubscriptionPlan
+from app.services import (
+    UserService,
+    ProductService,
+    CategoryService,
+    SlideshowService,
+    CateringService,
+    SubscriptionService,
+)
+from app.exceptions import ConflictError, NotFoundError
 
 
 # ===========================================================================
-# User
+# UserService
 # ===========================================================================
 
-class TestUser:
+class TestUserService:
 
     def test_create_user(self, db):
-        user = User.create("muhammad", "securepass")
+        user = UserService.create("muhammad", "securepass")
         assert user.id is not None
         assert user.username == "muhammad"
 
     def test_create_user_hashes_password(self, db):
-        user = User.create("muhammad", "securepass")
+        user = UserService.create("muhammad", "securepass")
         assert user.password_hash != "securepass"
         assert user.check_password("securepass") is True
 
     def test_create_user_wrong_password(self, db):
-        user = User.create("muhammad", "securepass")
+        user = UserService.create("muhammad", "securepass")
         assert user.check_password("wrongpass") is False
 
     def test_create_user_duplicate_raises_conflict(self, db):
-        User.create("muhammad", "pass1")
+        UserService.create("muhammad", "pass1")
         with pytest.raises(ConflictError):
-            User.create("muhammad", "pass2")
+            UserService.create("muhammad", "pass2")
 
     def test_create_user_blank_username_raises_validation(self, db):
-        with pytest.raises(ValidationError):
-            User.create("", "pass")
+        with pytest.raises(ValueError):
+            UserService.create("", "pass")
 
     def test_create_user_whitespace_username_raises_validation(self, db):
-        with pytest.raises(ValidationError):
-            User.create("   ", "pass")
+        with pytest.raises(ValueError):
+            UserService.create("   ", "pass")
 
     def test_create_user_blank_password_raises_validation(self, db):
-        with pytest.raises(ValidationError):
-            User.create("muhammad", "")
+        with pytest.raises(ValueError):
+            UserService.create("muhammad", "")
 
     def test_get_by_username(self, db):
-        User.create("muhammad", "pass")
-        user = User.get_by_username("muhammad")
+        UserService.create("muhammad", "pass")
+        user = UserService.get_by_username("muhammad")
         assert user.username == "muhammad"
 
     def test_get_by_username_not_found_raises(self, db):
         with pytest.raises(NotFoundError):
-            User.get_by_username("nobody")
+            UserService.get_by_username("nobody")
 
 
 # ===========================================================================
-# Category
+# CategoryService
 # ===========================================================================
 
-class TestCategory:
+class TestCategoryService:
 
     def test_create_category(self, db):
-        cat = Category.create("Salads")
+        cat = CategoryService.create("Salads")
         assert cat.id is not None
         assert cat.name == "Salads"
         assert cat.slug == "salads"
         assert cat.active is True
 
     def test_create_category_blank_raises_validation(self, db):
-        with pytest.raises(ValidationError):
-            Category.create("")
+        with pytest.raises(ValueError):
+            CategoryService.create("")
 
     def test_create_category_whitespace_raises_validation(self, db):
-        with pytest.raises(ValidationError):
-            Category.create("   ")
+        with pytest.raises(ValueError):
+            CategoryService.create("   ")
 
     def test_create_duplicate_category_raises_conflict(self, db):
-        Category.create("Salads")
+        CategoryService.create("Salads")
         with pytest.raises(ConflictError):
-            Category.create("Salads")
+            CategoryService.create("Salads")
 
     def test_create_duplicate_case_insensitive_raises_conflict(self, db):
-        Category.create("Salads")
+        CategoryService.create("Salads")
         with pytest.raises(ConflictError):
-            Category.create("salads")
+            CategoryService.create("salads")
 
     def test_update_category_name(self, db):
-        cat = Category.create("Salads")
-        cat.update(name="Soups")
+        cat = CategoryService.create("Salads")
+        CategoryService.update(cat, name="Soups")
         assert cat.name == "Soups"
         assert cat.slug == "soups"
 
     def test_update_category_name_conflict_raises(self, db):
-        Category.create("Salads")
-        cat = Category.create("Soups")
+        CategoryService.create("Salads")
+        cat = CategoryService.create("Soups")
         with pytest.raises(ConflictError):
-            cat.update(name="Salads")
+            CategoryService.update(cat, name="Salads")
 
     def test_update_sort_order(self, db):
-        cat = Category.create("Salads")
-        cat.update(sort_order=5)
+        cat = CategoryService.create("Salads")
+        CategoryService.update(cat, sort_order=5)
         assert cat.sort_order == 5
 
     def test_set_active(self, db):
-        cat = Category.create("Salads")
-        cat.set_active(False)
+        cat = CategoryService.create("Salads")
+        CategoryService.set_active(cat, False)
         assert cat.active is False
 
     def test_set_active_toggle_back(self, db):
-        cat = Category.create("Salads")
-        cat.set_active(False)
-        cat.set_active(True)
+        cat = CategoryService.create("Salads")
+        CategoryService.set_active(cat, False)
+        CategoryService.set_active(cat, True)
         assert cat.active is True
 
     def test_delete_empty_category(self, db):
-        cat = Category.create("Salads")
-        cat.delete()
-        assert Category.query.get(cat.id) is None
+        cat = CategoryService.create("Salads")
+        cat_id = cat.id
+        CategoryService.delete(cat)
+        assert db.session.get(Category, cat_id) is None
 
     def test_delete_category_with_products_raises(self, db):
-        cat = Category.create("Salads")
-        Product.create(
+        cat = CategoryService.create("Salads")
+        ProductService.create(
             name="Caesar",
             price_single=1000,
             category=cat.name,
             category_id=cat.id,
         )
-        with pytest.raises(ValidationError):
-            cat.delete()
+        with pytest.raises(ValueError):
+            CategoryService.delete(cat)
 
 
 # ===========================================================================
-# Product
+# ProductService
 # ===========================================================================
 
-class TestProduct:
+class TestProductService:
 
     def _make_category(self):
-        return Category.create("Mains")
+        return CategoryService.create("Mains")
 
     def test_create_product(self, db):
         cat = self._make_category()
-        p = Product.create(
+        p = ProductService.create(
             name="grilled chicken",
             price_single=1500,
             category=cat.name,
             category_id=cat.id,
         )
         assert p.id is not None
-        assert p.name == "Grilled chicken"  # normalized
+        assert p.name == "Grilled chicken"
         assert p.priceSingleCents == 1500
         assert p.status == "active"
         assert p.is_active is True
 
     def test_create_product_blank_name_raises(self, db):
-        with pytest.raises(ValidationError):
-            Product.create(name="", price_single=1000, category="Mains")
+        with pytest.raises(ValueError):
+            ProductService.create(name="", price_single=1000, category="Mains")
 
     def test_create_product_negative_price_raises(self, db):
-        with pytest.raises(ValidationError):
-            Product.create(name="Chicken", price_single=-1, category="Mains")
+        with pytest.raises(ValueError):
+            ProductService.create(name="Chicken", price_single=-1, category="Mains")
 
     def test_create_product_negative_family_price_raises(self, db):
-        with pytest.raises(ValidationError):
-            Product.create(name="Chicken", price_single=1000, price_family=-1, category="Mains")
+        with pytest.raises(ValueError):
+            ProductService.create(name="Chicken", price_single=1000, price_family=-1, category="Mains")
 
     def test_create_product_zero_family_price_is_valid(self, db):
-        # 0 means no family size option — should be allowed
         cat = self._make_category()
-        p = Product.create(name="Chicken", price_single=1000, price_family=0, category=cat.name, category_id=cat.id)
+        p = ProductService.create(name="Chicken", price_single=1000, price_family=0, category=cat.name, category_id=cat.id)
         assert p.priceFamilyCents == 0
 
     def test_create_product_name_normalised(self, db):
         cat = self._make_category()
-        p = Product.create(name="GRILLED CHICKEN", price_single=1000, category=cat.name, category_id=cat.id)
+        p = ProductService.create(name="GRILLED CHICKEN", price_single=1000, category=cat.name, category_id=cat.id)
         assert p.name == "Grilled chicken"
 
     def test_create_product_invalid_status_raises(self, db):
-        with pytest.raises(ValidationError):
-            Product.create(name="Chicken", price_single=1000, category="Mains", status="draft")
+        with pytest.raises(ValueError):
+            ProductService.create(name="Chicken", price_single=1000, category="Mains", status="draft")
 
     def test_update_product(self, db):
         cat = self._make_category()
-        p = Product.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
-        p.update(name="Fish", price_single=2000)
+        p = ProductService.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
+        ProductService.update(p, name="Fish", price_single=2000)
         assert p.name == "Fish"
         assert p.priceSingleCents == 2000
 
     def test_update_blank_name_raises(self, db):
         cat = self._make_category()
-        p = Product.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
-        with pytest.raises(ValidationError):
-            p.update(name="")
+        p = ProductService.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
+        with pytest.raises(ValueError):
+            ProductService.update(p, name="")
 
     def test_set_status(self, db):
         cat = self._make_category()
-        p = Product.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
-        p.set_status("inactive")
+        p = ProductService.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
+        ProductService.set_status(p, "inactive")
         assert p.status == "inactive"
         assert p.is_active is False
 
     def test_set_invalid_status_raises(self, db):
         cat = self._make_category()
-        p = Product.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
-        with pytest.raises(ValidationError):
-            p.set_status("draft")
+        p = ProductService.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
+        with pytest.raises(ValueError):
+            ProductService.set_status(p, "draft")
 
     def test_duplicate_product(self, db):
         cat = self._make_category()
-        p = Product.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
-        copy = p.duplicate()
+        p = ProductService.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
+        copy = ProductService.duplicate(p)
         assert copy.id != p.id
         assert copy.name == "Chicken (copy)"
         assert copy.status == "inactive"
@@ -214,64 +222,64 @@ class TestProduct:
 
     def test_delete_product(self, db):
         cat = self._make_category()
-        p = Product.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
+        p = ProductService.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
         pid = p.id
-        p.delete()
-        assert Product.query.get(pid) is None
+        ProductService.delete(p)
+        assert db.session.get(Product, pid) is None
 
 
 # ===========================================================================
-# SlideshowImage
+# SlideshowService
 # ===========================================================================
 
-class TestSlideshowImage:
+class TestSlideshowService:
 
     def test_create_slide(self, db):
-        slide = SlideshowImage.create("https://example.com/img.jpg", sort_order=1)
+        slide = SlideshowService.create("https://example.com/img.jpg", sort_order=1)
         assert slide.id is not None
         assert slide.image == "https://example.com/img.jpg"
         assert slide.sort_order == 1
 
     def test_create_slide_blank_url_raises(self, db):
-        with pytest.raises(ValidationError):
-            SlideshowImage.create("", sort_order=1)
+        with pytest.raises(ValueError):
+            SlideshowService.create("", sort_order=1)
 
     def test_delete_slide(self, db):
-        slide = SlideshowImage.create("https://example.com/img.jpg", sort_order=1)
+        slide = SlideshowService.create("https://example.com/img.jpg", sort_order=1)
         sid = slide.id
-        slide.delete()
-        assert SlideshowImage.query.get(sid) is None
+        SlideshowService.delete(slide)
+        assert db.session.get(SlideshowImage, sid) is None
 
 
 # ===========================================================================
-# CateringMenuImage
+# CateringService
 # ===========================================================================
 
-class TestCateringMenuImage:
+class TestCateringService:
 
     def test_create_menu(self, db):
-        menu = CateringMenuImage.create("https://example.com/menu.jpg", sort_order=1)
+        menu = CateringService.create("https://example.com/menu.jpg", sort_order=1)
         assert menu.id is not None
 
     def test_create_menu_blank_url_raises(self, db):
-        with pytest.raises(ValidationError):
-            CateringMenuImage.create("", sort_order=1)
+        with pytest.raises(ValueError):
+            CateringService.create("", sort_order=1)
 
     def test_delete_menu(self, db):
-        menu = CateringMenuImage.create("https://example.com/menu.jpg", sort_order=1)
+        menu = CateringService.create("https://example.com/menu.jpg", sort_order=1)
         mid = menu.id
-        menu.delete()
-        assert CateringMenuImage.query.get(mid) is None
+        CateringService.delete(menu)
+        assert db.session.get(CateringMenuImage, mid) is None
 
 
 # ===========================================================================
-# SubscriptionPlan
+# SubscriptionService
 # ===========================================================================
 
-class TestSubscriptionPlan:
+class TestSubscriptionService:
 
     def test_create_plan(self, db):
-        plan = SubscriptionPlan.create(
+        plan = SubscriptionService.create(
             audience="person",
             days_per_month=20,
             price_plat_du_jour=5000,
@@ -282,50 +290,51 @@ class TestSubscriptionPlan:
         assert plan.days_per_month == 20
 
     def test_create_duplicate_plan_raises_conflict(self, db):
-        SubscriptionPlan.create(
+        SubscriptionService.create(
             audience="person", days_per_month=20,
             price_plat_du_jour=5000, price_with_salad=6000,
         )
         with pytest.raises(ConflictError):
-            SubscriptionPlan.create(
+            SubscriptionService.create(
                 audience="person", days_per_month=20,
                 price_plat_du_jour=5500, price_with_salad=6500,
             )
 
     def test_create_plan_invalid_audience_raises(self, db):
-        with pytest.raises(ValidationError):
-            SubscriptionPlan.create(
+        with pytest.raises(ValueError):
+            SubscriptionService.create(
                 audience="vip", days_per_month=20,
                 price_plat_du_jour=5000, price_with_salad=6000,
             )
 
     def test_create_plan_zero_days_raises(self, db):
-        with pytest.raises(ValidationError):
-            SubscriptionPlan.create(
+        with pytest.raises(ValueError):
+            SubscriptionService.create(
                 audience="person", days_per_month=0,
                 price_plat_du_jour=5000, price_with_salad=6000,
             )
 
     def test_create_plan_negative_plat_du_jour_raises(self, db):
-        with pytest.raises(ValidationError):
-            SubscriptionPlan.create(
+        with pytest.raises(ValueError):
+            SubscriptionService.create(
                 audience="person", days_per_month=20,
                 price_plat_du_jour=-1, price_with_salad=6000,
             )
 
     def test_create_plan_negative_with_salad_raises(self, db):
-        with pytest.raises(ValidationError):
-            SubscriptionPlan.create(
+        with pytest.raises(ValueError):
+            SubscriptionService.create(
                 audience="person", days_per_month=20,
                 price_plat_du_jour=5000, price_with_salad=-1,
             )
 
     def test_update_plan(self, db):
-        plan = SubscriptionPlan.create(
+        plan = SubscriptionService.create(
             audience="person", days_per_month=20,
             price_plat_du_jour=5000, price_with_salad=6000,
         )
-        plan.update(
+        SubscriptionService.update(
+            plan,
             audience="person", days_per_month=20,
             price_plat_du_jour=5500, price_with_salad=6500,
         )
@@ -333,25 +342,26 @@ class TestSubscriptionPlan:
         assert plan.price_with_salad == 6500
 
     def test_update_plan_conflict_raises(self, db):
-        SubscriptionPlan.create(
+        SubscriptionService.create(
             audience="person", days_per_month=20,
             price_plat_du_jour=5000, price_with_salad=6000,
         )
-        plan2 = SubscriptionPlan.create(
+        plan2 = SubscriptionService.create(
             audience="person", days_per_month=15,
             price_plat_du_jour=4000, price_with_salad=5000,
         )
         with pytest.raises(ConflictError):
-            plan2.update(
+            SubscriptionService.update(
+                plan2,
                 audience="person", days_per_month=20,
                 price_plat_du_jour=4000, price_with_salad=5000,
             )
 
     def test_delete_plan(self, db):
-        plan = SubscriptionPlan.create(
+        plan = SubscriptionService.create(
             audience="person", days_per_month=20,
             price_plat_du_jour=5000, price_with_salad=6000,
         )
         pid = plan.id
-        plan.delete()
-        assert SubscriptionPlan.query.get(pid) is None
+        SubscriptionService.delete(plan)
+        assert db.session.get(SubscriptionPlan, pid) is None
