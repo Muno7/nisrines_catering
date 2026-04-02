@@ -6,7 +6,7 @@ from .models import (
     User, Product, Category, SlideshowImage,
     CateringMenuImage, SubscriptionPlan, slugify,
 )
-from .exceptions import ConflictError, NotFoundError
+from .exceptions import ValidationError, ConflictError, NotFoundError
 
 
 # ---------------------------------------------------------------------------
@@ -272,7 +272,7 @@ class CategoryService:
     def delete(category: Category) -> None:
         product_count = Product.query.filter_by(category_id=category.id).count()
         if product_count:
-            raise ValueError(
+            raise ValidationError(
                 "Cannot delete a category that still has products. "
                 "Move or delete its products first."
             )

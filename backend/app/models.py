@@ -6,6 +6,7 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from .extensions import db
+from .exceptions import ValidationError
 
 
 # ---------------------------------------------------------------------------
@@ -36,12 +37,12 @@ class User(UserMixin, db.Model):
     def set_username(self, username: str) -> None:
         username = (username or "").strip()
         if not username:
-            raise ValueError("Username is required.")
+            raise ValidationError("Username is required.")
         self.username = username
 
     def set_password(self, password: str) -> None:
         if not password:
-            raise ValueError("Password is required.")
+            raise ValidationError("Password is required.")
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password: str) -> bool:
@@ -83,7 +84,7 @@ class Product(db.Model):
     def set_name(self, name: str) -> None:
         text = (name or "").strip()
         if not text:
-            raise ValueError("Product name is required.")
+            raise ValidationError("Product name is required.")
         self.name = text[:1].upper() + text[1:].lower()
 
     def set_name_ar(self, name_ar: str | None) -> None:
@@ -91,17 +92,17 @@ class Product(db.Model):
 
     def set_price_single(self, price: int) -> None:
         if price < 0:
-            raise ValueError("Single price cannot be negative.")
+            raise ValidationError("Single price cannot be negative.")
         self.priceSingleCents = price
 
     def set_price_family(self, price: int) -> None:
         if price < 0:
-            raise ValueError("Family price cannot be negative.")
+            raise ValidationError("Family price cannot be negative.")
         self.priceFamilyCents = price
 
     def set_status(self, status: str) -> None:
         if status not in {"active", "inactive"}:
-            raise ValueError(f"Invalid status '{status}'.")
+            raise ValidationError(f"Invalid status '{status}'.")
         self.status = status
         self.is_active = status == "active"
 
@@ -133,7 +134,7 @@ class SlideshowImage(db.Model):
 
     def set_image(self, url: str) -> None:
         if not (url or "").strip():
-            raise ValueError("Image URL is required.")
+            raise ValidationError("Image URL is required.")
         self.image = url
 
 
@@ -154,7 +155,7 @@ class CateringMenuImage(db.Model):
 
     def set_image(self, url: str) -> None:
         if not (url or "").strip():
-            raise ValueError("Image URL is required.")
+            raise ValidationError("Image URL is required.")
         self.image = url
 
 
@@ -194,22 +195,22 @@ class SubscriptionPlan(db.Model):
 
     def set_audience(self, audience: str) -> None:
         if audience not in {"person", "family"}:
-            raise ValueError(f"Invalid audience '{audience}'. Must be 'person' or 'family'.")
+            raise ValidationError(f"Invalid audience '{audience}'. Must be 'person' or 'family'.")
         self.audience = audience
 
     def set_days_per_month(self, days: int) -> None:
         if days < 1:
-            raise ValueError("Days per month must be at least 1.")
+            raise ValidationError("Days per month must be at least 1.")
         self.days_per_month = days
 
     def set_price_plat_du_jour(self, price: int) -> None:
         if price < 0:
-            raise ValueError("Plat du jour price cannot be negative.")
+            raise ValidationError("Plat du jour price cannot be negative.")
         self.price_plat_du_jour = price
 
     def set_price_with_salad(self, price: int) -> None:
         if price < 0:
-            raise ValueError("With-salad price cannot be negative.")
+            raise ValidationError("With-salad price cannot be negative.")
         self.price_with_salad = price
 
 
@@ -246,7 +247,7 @@ class Category(db.Model):
     def set_name(self, name: str) -> None:
         name = (name or "").strip()
         if not name:
-            raise ValueError("Category name is required.")
+            raise ValidationError("Category name is required.")
         self.name = name
         self.slug = slugify(name)
 

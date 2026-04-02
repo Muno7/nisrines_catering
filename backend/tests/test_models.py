@@ -9,7 +9,7 @@ from app.services import (
     CateringService,
     SubscriptionService,
 )
-from app.exceptions import ConflictError, NotFoundError
+from app.exceptions import ValidationError, ConflictError, NotFoundError
 
 
 # ===========================================================================
@@ -38,15 +38,15 @@ class TestUserService:
             UserService.create("muhammad", "pass2")
 
     def test_create_user_blank_username_raises_validation(self, db):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             UserService.create("", "pass")
 
     def test_create_user_whitespace_username_raises_validation(self, db):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             UserService.create("   ", "pass")
 
     def test_create_user_blank_password_raises_validation(self, db):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             UserService.create("muhammad", "")
 
     def test_get_by_username(self, db):
@@ -73,11 +73,11 @@ class TestCategoryService:
         assert cat.active is True
 
     def test_create_category_blank_raises_validation(self, db):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             CategoryService.create("")
 
     def test_create_category_whitespace_raises_validation(self, db):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             CategoryService.create("   ")
 
     def test_create_duplicate_category_raises_conflict(self, db):
@@ -132,7 +132,7 @@ class TestCategoryService:
             category=cat.name,
             category_id=cat.id,
         )
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             CategoryService.delete(cat)
 
 
@@ -160,15 +160,15 @@ class TestProductService:
         assert p.is_active is True
 
     def test_create_product_blank_name_raises(self, db):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             ProductService.create(name="", price_single=1000, category="Mains")
 
     def test_create_product_negative_price_raises(self, db):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             ProductService.create(name="Chicken", price_single=-1, category="Mains")
 
     def test_create_product_negative_family_price_raises(self, db):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             ProductService.create(name="Chicken", price_single=1000, price_family=-1, category="Mains")
 
     def test_create_product_zero_family_price_is_valid(self, db):
@@ -182,7 +182,7 @@ class TestProductService:
         assert p.name == "Grilled chicken"
 
     def test_create_product_invalid_status_raises(self, db):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             ProductService.create(name="Chicken", price_single=1000, category="Mains", status="draft")
 
     def test_update_product(self, db):
@@ -195,7 +195,7 @@ class TestProductService:
     def test_update_blank_name_raises(self, db):
         cat = self._make_category()
         p = ProductService.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             ProductService.update(p, name="")
 
     def test_set_status(self, db):
@@ -208,7 +208,7 @@ class TestProductService:
     def test_set_invalid_status_raises(self, db):
         cat = self._make_category()
         p = ProductService.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             ProductService.set_status(p, "draft")
 
     def test_duplicate_product(self, db):
@@ -241,7 +241,7 @@ class TestSlideshowService:
         assert slide.sort_order == 1
 
     def test_create_slide_blank_url_raises(self, db):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             SlideshowService.create("", sort_order=1)
 
     def test_delete_slide(self, db):
@@ -262,7 +262,7 @@ class TestCateringService:
         assert menu.id is not None
 
     def test_create_menu_blank_url_raises(self, db):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             CateringService.create("", sort_order=1)
 
     def test_delete_menu(self, db):
@@ -301,28 +301,28 @@ class TestSubscriptionService:
             )
 
     def test_create_plan_invalid_audience_raises(self, db):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             SubscriptionService.create(
                 audience="vip", days_per_month=20,
                 price_plat_du_jour=5000, price_with_salad=6000,
             )
 
     def test_create_plan_zero_days_raises(self, db):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             SubscriptionService.create(
                 audience="person", days_per_month=0,
                 price_plat_du_jour=5000, price_with_salad=6000,
             )
 
     def test_create_plan_negative_plat_du_jour_raises(self, db):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             SubscriptionService.create(
                 audience="person", days_per_month=20,
                 price_plat_du_jour=-1, price_with_salad=6000,
             )
 
     def test_create_plan_negative_with_salad_raises(self, db):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             SubscriptionService.create(
                 audience="person", days_per_month=20,
                 price_plat_du_jour=5000, price_with_salad=-1,
