@@ -2,7 +2,7 @@ import pytest
 
 from app.models import Product, Category, SlideshowImage, CateringMenuImage, SubscriptionPlan
 from app.services import (
-    UserService,
+    AdminService,
     ProductService,
     CategoryService,
     SlideshowService,
@@ -13,50 +13,50 @@ from app.exceptions import ValidationError, ConflictError, NotFoundError
 
 
 # ===========================================================================
-# UserService
+# AdminService
 # ===========================================================================
 
-class TestUserService:
+class TestAdminService:
 
-    def test_create_user(self, db):
-        user = UserService.create("muhammad", "securepass")
-        assert user.id is not None
-        assert user.username == "muhammad"
+    def test_create_admin(self, db):
+        admin = AdminService.create("muhammad", "securepass")
+        assert admin.id is not None
+        assert admin.username == "muhammad"
 
-    def test_create_user_hashes_password(self, db):
-        user = UserService.create("muhammad", "securepass")
-        assert user.password_hash != "securepass"
-        assert user.check_password("securepass") is True
+    def test_create_admin_hashes_password(self, db):
+        admin = AdminService.create("muhammad", "securepass")
+        assert admin.password_hash != "securepass"
+        assert admin.check_password("securepass") is True
 
-    def test_create_user_wrong_password(self, db):
-        user = UserService.create("muhammad", "securepass")
-        assert user.check_password("wrongpass") is False
+    def test_create_admin_wrong_password(self, db):
+        admin = AdminService.create("muhammad", "securepass")
+        assert admin.check_password("wrongpass") is False
 
-    def test_create_user_duplicate_raises_conflict(self, db):
-        UserService.create("muhammad", "pass1")
+    def test_create_admin_duplicate_raises_conflict(self, db):
+        AdminService.create("muhammad", "pass1")
         with pytest.raises(ConflictError):
-            UserService.create("muhammad", "pass2")
+            AdminService.create("muhammad", "pass2")
 
-    def test_create_user_blank_username_raises_validation(self, db):
+    def test_create_admin_blank_username_raises_validation(self, db):
         with pytest.raises(ValidationError):
-            UserService.create("", "pass")
+            AdminService.create("", "pass")
 
-    def test_create_user_whitespace_username_raises_validation(self, db):
+    def test_create_admin_whitespace_username_raises_validation(self, db):
         with pytest.raises(ValidationError):
-            UserService.create("   ", "pass")
+            AdminService.create("   ", "pass")
 
-    def test_create_user_blank_password_raises_validation(self, db):
+    def test_create_admin_blank_password_raises_validation(self, db):
         with pytest.raises(ValidationError):
-            UserService.create("muhammad", "")
+            AdminService.create("muhammad", "")
 
     def test_get_by_username(self, db):
-        UserService.create("muhammad", "pass")
-        user = UserService.get_by_username("muhammad")
-        assert user.username == "muhammad"
+        AdminService.create("muhammad", "pass")
+        admin = AdminService.get_by_username("muhammad")
+        assert admin.username == "muhammad"
 
     def test_get_by_username_not_found_raises(self, db):
         with pytest.raises(NotFoundError):
-            UserService.get_by_username("nobody")
+            AdminService.get_by_username("nobody")
 
 
 # ===========================================================================
