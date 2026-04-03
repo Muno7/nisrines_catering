@@ -20,11 +20,11 @@ def slugify(value: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# User
+# Admin
 # ---------------------------------------------------------------------------
 
-class User(UserMixin, db.Model):
-    __tablename__ = "users"
+class Admin(UserMixin, db.Model):
+    __tablename__ = "admins"
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -32,7 +32,7 @@ class User(UserMixin, db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     def __repr__(self) -> str:
-        return f"<User id={self.id} username={self.username!r}>"
+        return f"<Admin id={self.id} username={self.username!r}>"
 
     def set_username(self, username: str) -> None:
         username = (username or "").strip()

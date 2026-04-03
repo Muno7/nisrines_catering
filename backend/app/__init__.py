@@ -2,7 +2,7 @@ from flask import Flask, request
 from flask_login import LoginManager
 from .config import BaseConfig, DevelopmentConfig
 from .extensions import db, migrate, login_manager, csrf
-from .models import User
+from .models import Admin
 from .admin import admin_bp
 from .api import api_bp
 
@@ -20,8 +20,8 @@ def create_app(config_object: type[BaseConfig] = DevelopmentConfig) -> Flask:
     login_manager.login_message_category = "warning"
 
     @login_manager.user_loader
-    def load_user(user_id: str) -> User | None:
-        return User.query.get(user_id)
+    def load_user(user_id: str) -> Admin | None:
+        return Admin.query.get(user_id)
 
     register_cli_commands(app)
 
@@ -46,7 +46,6 @@ def create_app(config_object: type[BaseConfig] = DevelopmentConfig) -> Flask:
 
 def register_cli_commands(app: Flask) -> None:
     import click
-    from werkzeug.security import generate_password_hash
 
     @app.cli.command("create-admin")
     @click.option("--username", prompt=True, help="Admin username")
@@ -59,17 +58,13 @@ def register_cli_commands(app: Flask) -> None:
     )
     def create_admin(username: str, password: str) -> None:
         """Create an admin user if it does not already exist."""
-        from .models import User
+        from .services import AdminService
+        from .exceptions import ValidationError, ConflictError
 
-        existing = User.query.filter_by(username=username).first()
-        if existing:
-            click.echo("User already exists.")
-            return
-
-        user = User(
-            username=username,
-            password_hash=generate_password_hash(password),
-        )
-        db.session.add(user)
-        db.session.commit()
-        click.echo("Admin user created.")
+        try:
+            AdminService.create(username, password)
+            click.echo("Admin user created.")
+        except ConflictError:
+            click.echo("Admin already exists.")
+        except ValidationError as e:
+            click.echo(f"Error: {e}")
