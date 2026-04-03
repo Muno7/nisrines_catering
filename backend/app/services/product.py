@@ -9,6 +9,16 @@ from ..exceptions import ValidationError, NotFoundError
 class ProductService:
 
     @staticmethod
+    def stats(items: list[Product]) -> dict:
+        return {
+            "total": len(items),
+            "active": sum(1 for p in items if p.status == "active"),
+            "inactive": sum(1 for p in items if p.status == "inactive"),
+            "range_start": 1 if items else 0,
+            "range_end": len(items),
+        }
+
+    @staticmethod
     def _get_or_raise(product_id: str) -> Product:
         product = db.session.get(Product, product_id)
         if not product:

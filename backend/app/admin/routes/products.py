@@ -5,7 +5,6 @@ from flask_login import login_required
 from sqlalchemy.exc import SQLAlchemyError
 
 from . import bp
-from ...extensions import db
 from ...services import ImageService, ProductService, CategoryService
 from ...exceptions import ValidationError, ConflictError, NotFoundError
 from ..forms import ProductForm
@@ -17,7 +16,7 @@ def _resolve_category(form: ProductForm):
     return None
 
 
-@bp.route("/products")
+@bp.get("/products")
 @login_required
 def products():
     filters = {
@@ -32,18 +31,10 @@ def products():
     categories = CategoryService.list_all()
     category_counts = Counter([p.category for p in items if p.category])
 
-    stats = {
-        "total": len(items),
-        "active": sum(1 for p in items if p.status == "active"),
-        "inactive": sum(1 for p in items if p.status == "inactive"),
-        "range_start": 1 if items else 0,
-        "range_end": len(items),
-    }
-
     return render_template(
         "admin/products.html",
         products=items,
-        stats=stats,
+        stats=ProductService.stats(items),
         category_counts=category_counts,
         latest=items[0] if items else None,
         categories=categories,
@@ -74,19 +65,9 @@ def new_product():
 
         # --- resolve category ---
         category_obj = _resolve_category(form)
-        new_cat_name = (form.new_category.data or "").strip()
-
-        if not category_obj and not new_cat_name:
-            flash("Choose an existing category or enter a new one.", "danger")
-            return render_template("admin/product_form.html", form=form, is_edit=False, product=None)
-
         if not category_obj:
-            try:
-                category_obj = CategoryService.ensure(new_cat_name)
-                db.session.commit()
-            except (ValidationError, ConflictError) as e:
-                flash(str(e), "danger")
-                return render_template("admin/product_form.html", form=form, is_edit=False, product=None)
+            flash("Please select a category.", "danger")
+            return render_template("admin/product_form.html", form=form, is_edit=False, product=None)
 
         # --- create product ---
         try:
@@ -155,15 +136,6 @@ def edit_product(product_id: str):
 
         # --- resolve category ---
         category_obj = _resolve_category(form)
-        new_cat_name = (form.new_category.data or "").strip()
-
-        if not category_obj and new_cat_name:
-            try:
-                category_obj = CategoryService.ensure(new_cat_name)
-                db.session.commit()
-            except (ValidationError, ConflictError) as e:
-                flash(str(e), "danger")
-                return render_template("admin/product_form.html", form=form, product=product, is_edit=True)
 
         # --- update product ---
         try:
@@ -201,7 +173,7 @@ def edit_product(product_id: str):
     return render_template("admin/product_form.html", form=form, product=product, is_edit=True)
 
 
-@bp.route("/products/<product_id>/toggle", methods=["POST"])
+@bp.post("/products/<product_id>/toggle")
 @login_required
 def toggle_product(product_id: str):
     try:
@@ -230,7 +202,7 @@ def toggle_product(product_id: str):
     return redirect(request.referrer or url_for("admin.products"))
 
 
-@bp.route("/products/<product_id>/set-status", methods=["POST"])
+@bp.post("/products/<product_id>/set-status")
 @login_required
 def set_product_status(product_id: str):
     try:
@@ -250,7 +222,7 @@ def set_product_status(product_id: str):
         return jsonify({"ok": False, "message": "Database error."}), 500
 
 
-@bp.route("/products/<product_id>/duplicate", methods=["POST"])
+@bp.post("/products/<product_id>/duplicate")
 @login_required
 def duplicate_product(product_id: str):
     try:
@@ -265,7 +237,7 @@ def duplicate_product(product_id: str):
     return redirect(url_for("admin.products"))
 
 
-@bp.route("/products/<product_id>/delete", methods=["POST"])
+@bp.post("/products/<product_id>/delete")
 @login_required
 def delete_product(product_id: str):
     try:
@@ -279,7 +251,7 @@ def delete_product(product_id: str):
     return redirect(url_for("admin.products"))
 
 
-@bp.route("/products/bulk", methods=["POST"])
+@bp.post("/products/bulk")
 @login_required
 def bulk_products():
     product_ids = request.form.getlist("product_ids")

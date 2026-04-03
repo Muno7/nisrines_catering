@@ -24,7 +24,7 @@ def login():
     return render_template("admin/login.html", form=form)
 
 
-@bp.route("/logout")
+@bp.get("/logout")
 @login_required
 def logout():
     logout_user()
