@@ -36,5 +36,6 @@ backend/app/.env
 *.py[cod]
 *.sqlite3
 
+.claude/
 backend/claude
 AGENTS.md
