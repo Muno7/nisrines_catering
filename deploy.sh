@@ -7,7 +7,4 @@ git pull origin master
 
 docker compose up -d --build --force-recreate api
 
-# Quick health check (adjust endpoint if needed)
-curl -fsS http://127.0.0.1:8000/api/products >/dev/null
-
 echo "Deploy complete."
