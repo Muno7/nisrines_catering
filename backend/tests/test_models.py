@@ -129,7 +129,6 @@ class TestCategoryService:
         ProductService.create(
             name="Caesar",
             price_single=1000,
-            category=cat.name,
             category_id=cat.id,
         )
         with pytest.raises(ValidationError):
@@ -150,7 +149,6 @@ class TestProductService:
         p = ProductService.create(
             name="grilled chicken",
             price_single=1500,
-            category=cat.name,
             category_id=cat.id,
         )
         assert p.id is not None
@@ -161,59 +159,59 @@ class TestProductService:
 
     def test_create_product_blank_name_raises(self, db):
         with pytest.raises(ValidationError):
-            ProductService.create(name="", price_single=1000, category="Mains")
+            ProductService.create(name="", price_single=1000)
 
     def test_create_product_negative_price_raises(self, db):
         with pytest.raises(ValidationError):
-            ProductService.create(name="Chicken", price_single=-1, category="Mains")
+            ProductService.create(name="Chicken", price_single=-1)
 
     def test_create_product_negative_family_price_raises(self, db):
         with pytest.raises(ValidationError):
-            ProductService.create(name="Chicken", price_single=1000, price_family=-1, category="Mains")
+            ProductService.create(name="Chicken", price_single=1000, price_family=-1)
 
     def test_create_product_zero_family_price_is_valid(self, db):
         cat = self._make_category()
-        p = ProductService.create(name="Chicken", price_single=1000, price_family=0, category=cat.name, category_id=cat.id)
+        p = ProductService.create(name="Chicken", price_single=1000, price_family=0, category_id=cat.id)
         assert p.priceFamilyCents == 0
 
     def test_create_product_name_normalised(self, db):
         cat = self._make_category()
-        p = ProductService.create(name="GRILLED CHICKEN", price_single=1000, category=cat.name, category_id=cat.id)
+        p = ProductService.create(name="GRILLED CHICKEN", price_single=1000, category_id=cat.id)
         assert p.name == "Grilled chicken"
 
     def test_create_product_invalid_status_raises(self, db):
         with pytest.raises(ValidationError):
-            ProductService.create(name="Chicken", price_single=1000, category="Mains", status="draft")
+            ProductService.create(name="Chicken", price_single=1000, status="draft")
 
     def test_update_product(self, db):
         cat = self._make_category()
-        p = ProductService.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
+        p = ProductService.create(name="Chicken", price_single=1000, category_id=cat.id)
         ProductService.update(p, name="Fish", price_single=2000)
         assert p.name == "Fish"
         assert p.priceSingleCents == 2000
 
     def test_update_blank_name_raises(self, db):
         cat = self._make_category()
-        p = ProductService.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
+        p = ProductService.create(name="Chicken", price_single=1000, category_id=cat.id)
         with pytest.raises(ValidationError):
             ProductService.update(p, name="")
 
     def test_set_status(self, db):
         cat = self._make_category()
-        p = ProductService.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
+        p = ProductService.create(name="Chicken", price_single=1000, category_id=cat.id)
         ProductService.set_status(p, "inactive")
         assert p.status == "inactive"
         assert p.is_active is False
 
     def test_set_invalid_status_raises(self, db):
         cat = self._make_category()
-        p = ProductService.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
+        p = ProductService.create(name="Chicken", price_single=1000, category_id=cat.id)
         with pytest.raises(ValidationError):
             ProductService.set_status(p, "draft")
 
     def test_duplicate_product(self, db):
         cat = self._make_category()
-        p = ProductService.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
+        p = ProductService.create(name="Chicken", price_single=1000, category_id=cat.id)
         copy = ProductService.duplicate(p)
         assert copy.id != p.id
         assert copy.name == "Chicken (copy)"
@@ -222,7 +220,7 @@ class TestProductService:
 
     def test_delete_product(self, db):
         cat = self._make_category()
-        p = ProductService.create(name="Chicken", price_single=1000, category=cat.name, category_id=cat.id)
+        p = ProductService.create(name="Chicken", price_single=1000, category_id=cat.id)
         pid = p.id
         ProductService.delete(p)
         assert db.session.get(Product, pid) is None

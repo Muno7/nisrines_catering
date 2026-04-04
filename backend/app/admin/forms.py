@@ -30,6 +30,12 @@ class LoginForm(FlaskForm):
 
 
 class ProductForm(FlaskForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        from ..services import CategoryService
+        self.category_id.choices = CategoryService.choices()
+
     name = StringField(
         "Name",
         validators=[DataRequired(), Length(max=255)]

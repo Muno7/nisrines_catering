@@ -2,7 +2,7 @@ from sqlalchemy import func, or_
 from sqlalchemy.exc import SQLAlchemyError
 
 from ..extensions import db
-from ..models import Product, Category
+from ..models import Product
 from ..exceptions import ValidationError, NotFoundError
 
 
@@ -33,7 +33,6 @@ class ProductService:
         price_single: int,
         price_family: int = 0,
         image: str | None = None,
-        category: str,
         category_id: int | None = None,
         ingredients: str = "",
         day: str | None = None,
@@ -44,7 +43,7 @@ class ProductService:
         product.set_name_ar(name_ar)
         product.set_price_single(price_single)
         product.set_price_family(price_family)
-        product.set_category(category, category_id)
+        product.set_category(category_id)
         product.set_ingredients(ingredients)
         product.set_day(day)
         product.set_status(status)
@@ -67,7 +66,6 @@ class ProductService:
         price_single: int | None = None,
         price_family: int | None = None,
         image: str | None = None,
-        category: str | None = None,
         category_id: int | None = None,
         ingredients: str | None = None,
         day: str | None = None,
@@ -83,8 +81,8 @@ class ProductService:
             product.set_price_family(price_family)
         if image is not None:
             product.image = image
-        if category is not None:
-            product.set_category(category, category_id if category_id is not None else product.category_id)
+        if category_id is not None:
+            product.set_category(category_id)
         if ingredients is not None:
             product.set_ingredients(ingredients)
         if day is not None:
@@ -116,7 +114,7 @@ class ProductService:
         copy.set_name_ar(product.name_ar)
         copy.set_price_single(product.priceSingleCents)
         copy.set_price_family(product.priceFamilyCents)
-        copy.set_category(product.category, product.category_id)
+        copy.set_category(product.category_id)
         copy.set_ingredients(product.ingredients)
         copy.set_day(product.day)
         copy.set_status("inactive")
@@ -178,9 +176,7 @@ class ProductService:
             if status in {"active", "inactive"}:
                 product.set_status(status)
             if category_id:
-                category = db.session.get(Category, category_id)
-                if category:
-                    product.set_category(category.name, category.id)
+                product.set_category(category_id)
             if price_single is not None:
                 product.set_price_single(price_single)
             if price_family is not None:

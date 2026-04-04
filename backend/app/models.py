@@ -62,7 +62,6 @@ class Product(db.Model):
     priceSingleCents = db.Column(db.Integer, nullable=False)
     priceFamilyCents = db.Column(db.Integer, nullable=False)
     image = db.Column(db.Text, nullable=True)
-    category = db.Column(db.String(100), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=True)
     ingredients = db.Column(db.Text, nullable=False)
     day = db.Column(db.String(20), nullable=True)
@@ -106,8 +105,7 @@ class Product(db.Model):
         self.status = status
         self.is_active = status == "active"
 
-    def set_category(self, name: str, category_id: int | None = None) -> None:
-        self.category = (name or "uncategorized").lower()
+    def set_category(self, category_id: int | None) -> None:
         self.category_id = category_id
 
     def set_ingredients(self, ingredients: str) -> None:

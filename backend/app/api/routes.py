@@ -22,7 +22,7 @@ def get_products():
         single_price = getattr(p, "priceSingleCents", None) or getattr(p, "priceCents", None)
         family_price = getattr(p, "priceFamilyCents", None)
         status = p.status or ("active" if p.is_active else "inactive")
-        category_slug = p.category_rel.slug if getattr(p, "category_rel", None) else p.category
+        category_slug = p.category_rel.slug if p.category_rel else None
 
         product_json = {
             "id": p.id,

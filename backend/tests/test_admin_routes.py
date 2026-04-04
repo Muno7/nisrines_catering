@@ -42,7 +42,7 @@ def product(db, category):
     return ProductService.create(
         name="Grilled Chicken",
         price_single=1500,
-        category=category.name,
+
         category_id=category.id,
     )
 
