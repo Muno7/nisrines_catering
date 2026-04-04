@@ -13,5 +13,7 @@ COPY . /app
 
 EXPOSE 8000
 
-# Run with Gunicorn (production server)
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "run:app", "--workers", "1", "--threads", "2", "--timeout", "120"]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
