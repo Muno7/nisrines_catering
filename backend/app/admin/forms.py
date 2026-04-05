@@ -57,7 +57,7 @@ class ProductForm(FlaskForm):
 
     category_id = SelectField(
         "Category",
-        validators=[Optional()],
+        validators=[DataRequired()],
         coerce=int,
         choices=[],
     )

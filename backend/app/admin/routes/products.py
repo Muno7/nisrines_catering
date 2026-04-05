@@ -48,10 +48,6 @@ def new_product():
                 flash(str(e), "danger")
                 return render_template("admin/product_form.html", form=form, is_edit=False, product=None)
 
-        if not form.category_id.data:
-            flash("Please select a category.", "danger")
-            return render_template("admin/product_form.html", form=form, is_edit=False, product=None)
-
         # --- create product ---
         try:
             ProductService.create(
