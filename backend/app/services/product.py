@@ -1,3 +1,5 @@
+from collections import Counter
+
 from sqlalchemy import func, or_
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -13,7 +15,8 @@ class ProductService:
         return {
             "total": len(items),
             "active": sum(1 for p in items if p.status == "active"),
-            "inactive": sum(1 for p in items if p.status == "inactive")
+            "inactive": sum(1 for p in items if p.status == "inactive"),
+            "category_counts": Counter(p.category_rel.name for p in items if p.category_rel),
         }
 
     @staticmethod

@@ -1,5 +1,3 @@
-from collections import Counter
-
 from flask import render_template, redirect, url_for, flash, request, jsonify
 from flask_login import login_required
 from sqlalchemy.exc import SQLAlchemyError
@@ -23,14 +21,12 @@ def products():
 
     items = ProductService.list_filtered(**filters)
     categories = CategoryService.list_all()
-    category_counts = Counter([p.category_rel.name for p in items if p.category_rel])
+    stats = ProductService.stats(items)
 
     return render_template(
         "admin/products.html",
         products=items,
-        stats=ProductService.stats(items),
-        category_counts=category_counts,
-        latest=items[0] if items else None,
+        stats=stats,
         categories=categories,
         filters=filters,
     )

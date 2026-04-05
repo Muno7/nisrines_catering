@@ -84,9 +84,9 @@
     </div>
   </form>
 
-  {% if category_counts %}
+  {% if stats.category_counts %}
     <div class="actions align-center mb-3">
-      {% for cat, count in category_counts.items() %}
+      {% for cat, count in stats.category_counts.items() %}
         <span class="badge badge-neutral">{{ cat.title() }} · {{ count }}</span>
       {% endfor %}
     </div>
