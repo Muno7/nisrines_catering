@@ -13,9 +13,7 @@ class ProductService:
         return {
             "total": len(items),
             "active": sum(1 for p in items if p.status == "active"),
-            "inactive": sum(1 for p in items if p.status == "inactive"),
-            "range_start": 1 if items else 0,
-            "range_end": len(items),
+            "inactive": sum(1 for p in items if p.status == "inactive")
         }
 
     @staticmethod
