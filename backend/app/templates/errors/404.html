@@ -1,0 +1,10 @@
+{% extends "admin/base.html" %}
+{% block title %}404 — Not Found{% endblock %}
+{% block content %}
+  <div class="empty-state">
+    <p class="eyebrow">404</p>
+    <h1 class="page-title">Page not found</h1>
+    <p class="muted">The page you're looking for doesn't exist or has been moved.</p>
+    <a class="btn" href="{{ url_for('admin.products') }}">Back to products</a>
+  </div>
+{% endblock %}

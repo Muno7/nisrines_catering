@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 from flask_login import LoginManager
 from .config import BaseConfig, DevelopmentConfig
 from .extensions import db, migrate, login_manager, csrf
@@ -27,6 +27,14 @@ def create_app(config_object: type[BaseConfig] = DevelopmentConfig) -> Flask:
 
     app.register_blueprint(admin_bp, url_prefix="/admin")
     app.register_blueprint(api_bp, url_prefix="/api")
+
+    @app.errorhandler(404)
+    def not_found(e):
+        return render_template("errors/404.html"), 404
+
+    @app.errorhandler(500)
+    def server_error(e):
+        return render_template("errors/500.html"), 500
 
     @app.after_request
     def add_cors_headers(response):

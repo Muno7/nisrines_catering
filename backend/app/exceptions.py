@@ -1,18 +1,20 @@
 class AppError(Exception):
     """Base class for all application-level errors."""
+    status_code = 400
+
+    def __init__(self, message: str, *, status_code: int | None = None):
+        super().__init__(message)
+        if status_code is not None:
+            self.status_code = status_code
 
 
 class ValidationError(AppError):
-    """Raised when input data fails a business rule or constraint."""
+    status_code = 400
 
 
 class ConflictError(AppError):
-    """Raised when a resource already exists and a duplicate is not allowed."""
+    status_code = 409
 
 
 class NotFoundError(AppError):
-    """Raised when a requested resource does not exist."""
-
-# Not nesseccary for now since we only use API get requests
-#  so no need for status codes, raising exceptions is enough
-#  and we handle different ones based on the route
+    status_code = 404
