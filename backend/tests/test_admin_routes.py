@@ -166,15 +166,6 @@ class TestProductRoutes:
         assert response.status_code == 200
         assert b"not found" in response.data.lower()
 
-    def test_toggle_product_via_json(self, logged_in_client, product):
-        response = logged_in_client.post(
-            f"/admin/products/{product.id}/toggle",
-            json={"is_active": False},
-        )
-        assert response.status_code == 200
-        data = response.get_json()
-        assert data["ok"] is True
-        assert data["status"] == "inactive"
 
     def test_set_product_status(self, logged_in_client, product):
         response = logged_in_client.post(

@@ -135,35 +135,6 @@ def edit_product(product_id: str):
     return render_template("admin/product_form.html", form=form, product=product, is_edit=True)
 
 
-@bp.post("/products/<product_id>/toggle")
-@login_required
-def toggle_product(product_id: str):
-    try:
-        product = ProductService._get_or_raise(product_id)
-    except NotFoundError:
-        return jsonify({"ok": False, "message": "Product not found."}), 404
-
-    payload = request.get_json(silent=True) or {}
-    desired = payload.get("is_active", request.form.get("is_active"))
-    if desired is None:
-        return jsonify({"ok": False, "message": "Missing desired state."}), 400
-
-    new_status = "active" if str(desired).lower() in {"true", "1", "on", "yes"} else "inactive"
-
-    try:
-        ProductService.set_status(product, new_status)
-    except ValidationError as e:
-        return jsonify({"ok": False, "message": str(e)}), 400
-    except SQLAlchemyError:
-        return jsonify({"ok": False, "message": "Database error."}), 500
-
-    if request.is_json or request.headers.get("Accept") == "application/json":
-        return jsonify({"ok": True, "is_active": product.is_active, "status": product.status})
-
-    flash(f"Product {'activated' if product.is_active else 'paused'}.", "success")
-    return redirect(request.referrer or url_for("admin.products"))
-
-
 @bp.post("/products/<product_id>/set-status")
 @login_required
 def set_product_status(product_id: str):
