@@ -4,7 +4,7 @@ from .config import BaseConfig, DevelopmentConfig
 from .extensions import db, migrate, login_manager, csrf
 from .models import Admin
 from .admin import admin_bp
-from .api import api_bp
+from .public import bp as public_bp
 
 
 def create_app(config_object: type[BaseConfig] = DevelopmentConfig) -> Flask:
@@ -26,7 +26,7 @@ def create_app(config_object: type[BaseConfig] = DevelopmentConfig) -> Flask:
     register_cli_commands(app)
 
     app.register_blueprint(admin_bp, url_prefix="/admin")
-    app.register_blueprint(api_bp, url_prefix="/api")
+    app.register_blueprint(public_bp, url_prefix="/api")
 
     @app.errorhandler(404)
     def not_found(e):

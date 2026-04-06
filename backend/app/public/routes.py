@@ -3,10 +3,10 @@ from sqlalchemy import or_
 
 from ..models import Product, Category, SlideshowImage, CateringMenuImage, SubscriptionPlan
 
-api_bp = Blueprint("api", __name__)
+bp = Blueprint("public", __name__)
 
 
-@api_bp.route("/products", methods=["GET"])
+@bp.get("/products")
 def get_products():
     query = Product.query.outerjoin(Category, Product.category_id == Category.id).filter(
         or_(Product.status == "active", Product.status.is_(None)),
@@ -48,7 +48,7 @@ def get_products():
     return jsonify(payload)
 
 
-@api_bp.route("/categories", methods=["GET"])
+@bp.get("/categories")
 def get_categories():
     categories = Category.query.filter_by(active=True).order_by(Category.sort_order, Category.name).all()
     payload = [
@@ -58,14 +58,14 @@ def get_categories():
     return jsonify(payload)
 
 
-@api_bp.route("/slideshow", methods=["GET"])
+@bp.get("/slideshow")
 def get_slideshow():
     slides = SlideshowImage.query.order_by(SlideshowImage.sort_order, SlideshowImage.created_at).all()
     payload = [{"id": s.id, "image": s.image, "sort_order": s.sort_order} for s in slides]
     return jsonify(payload)
 
 
-@api_bp.route("/catering-menus", methods=["GET"])
+@bp.get("/catering-menus")
 def get_catering_menus():
     menus = CateringMenuImage.query.order_by(
         CateringMenuImage.sort_order,
@@ -75,7 +75,7 @@ def get_catering_menus():
     return jsonify(payload)
 
 
-@api_bp.route("/subscriptions", methods=["GET"])
+@bp.get("/subscriptions")
 def get_subscriptions():
     plans = SubscriptionPlan.query.order_by(
         SubscriptionPlan.audience,
