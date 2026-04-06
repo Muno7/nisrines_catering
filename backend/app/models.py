@@ -60,7 +60,7 @@ class Product(db.Model):
     name = db.Column(db.String(255), nullable=False)
     name_ar = db.Column(db.String(255), nullable=True)
     priceSingleCents = db.Column(db.Integer, nullable=False)
-    priceFamilyCents = db.Column(db.Integer, nullable=False)
+    priceFamilyCents = db.Column(db.Integer, nullable=True)
     image = db.Column(db.Text, nullable=True)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=True)
     ingredients = db.Column(db.Text, nullable=False)
@@ -94,8 +94,8 @@ class Product(db.Model):
             raise ValidationError("Single price cannot be negative.")
         self.priceSingleCents = price
 
-    def set_price_family(self, price: int) -> None:
-        if price < 0:
+    def set_price_family(self, price: int | None) -> None:
+        if price is not None and price < 0:
             raise ValidationError("Family price cannot be negative.")
         self.priceFamilyCents = price
 

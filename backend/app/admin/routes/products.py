@@ -54,7 +54,7 @@ def new_product():
                 name=form.name.data,
                 name_ar=form.name_ar.data,
                 price_single=form.priceSingleCents.data,
-                price_family=form.priceFamilyCents.data or 0,
+                price_family=form.priceFamilyCents.data or None,
                 image=image_url,
                 category_id=form.category_id.data,
                 ingredients=form.ingredients.data or "",
@@ -89,14 +89,6 @@ def edit_product(product_id: str):
 
     form = ProductForm(obj=product)
 
-    if request.method == "GET":
-        if product.category_id:
-            form.category_id.data = product.category_id
-        if not product.status:
-            form.status.data = "active" if product.is_active else "inactive"
-        if product.priceFamilyCents == 0:
-            form.priceFamilyCents.data = None
-
     if form.validate_on_submit():
         # --- image upload ---
         image_url = None
@@ -115,7 +107,7 @@ def edit_product(product_id: str):
                 name=form.name.data,
                 name_ar=form.name_ar.data,
                 price_single=form.priceSingleCents.data,
-                price_family=form.priceFamilyCents.data or 0,
+                price_family=form.priceFamilyCents.data or None,
                 image=image_url,
                 category_id=form.category_id.data or None,
                 ingredients=form.ingredients.data or "",

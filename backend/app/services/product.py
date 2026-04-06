@@ -32,7 +32,7 @@ class ProductService:
         name: str,
         name_ar: str | None = None,
         price_single: int,
-        price_family: int = 0,
+        price_family: int | None = None,
         image: str | None = None,
         category_id: int | None = None,
         ingredients: str = "",
