@@ -54,19 +54,4 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
-
-  document.querySelectorAll(".category-toggle").forEach((toggle) => {
-    toggle.addEventListener("change", () => {
-      const form = document.createElement("form");
-      form.method = "post";
-      form.action = "";
-      form.innerHTML = `
-        <input type="hidden" name="csrf_token" value="${csrfToken}">
-        <input type="hidden" name="action" value="toggle_active">
-        <input type="hidden" name="category_id" value="${toggle.dataset.categoryId}">
-      `;
-      document.body.appendChild(form);
-      form.submit();
-    });
-  });
 });
