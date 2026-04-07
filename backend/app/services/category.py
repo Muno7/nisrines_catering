@@ -129,6 +129,18 @@ class CategoryService:
         return {category_id: n for category_id, n in rows}
 
     @staticmethod
+    def reorder(ids: list[int]) -> None:
+        try:
+            for i, category_id in enumerate(ids):
+                category = db.session.get(Category, category_id)
+                if category:
+                    category.sort_order = i
+            db.session.commit()
+        except SQLAlchemyError:
+            db.session.rollback()
+            raise
+
+    @staticmethod
     def delete(category: Category) -> None:
         product_count = Product.query.filter_by(category_id=category.id).count()
         if product_count:

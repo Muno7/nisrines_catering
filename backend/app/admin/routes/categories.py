@@ -19,7 +19,6 @@ def categories():
 @login_required
 def manage_categories():
     action = request.form.get("action")
-    all_categories = CategoryService.list_all()
 
     if action == "create":
         try:
@@ -47,18 +46,10 @@ def manage_categories():
             flash("A database error occurred.", "danger")
 
     elif action == "reorder":
+        ids = [int(i) for i in request.form.getlist("item_ids")] #ids for categories are integers not UUID strings
         try:
-            for cat in all_categories:
-                new_name = (request.form.get(f"name_{cat.id}") or "").strip()
-                new_order = request.form.get(f"order_{cat.id}", type=int)
-                CategoryService.update(
-                    cat,
-                    name=new_name if new_name and new_name != cat.name else None,
-                    sort_order=new_order if new_order is not None and new_order != cat.sort_order else None,
-                )
+            CategoryService.reorder(ids)
             flash("Category order updated.", "success")
-        except (ValidationError, ConflictError) as e:
-            flash(str(e), "danger")
         except SQLAlchemyError:
             flash("A database error occurred.", "danger")
 

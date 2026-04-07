@@ -7,7 +7,7 @@ Every test gets a fresh DB (via the db fixture in conftest.py).
 import pytest
 from unittest.mock import patch
 
-from app.services import AdminService, CategoryService, ProductService, SubscriptionService
+from app.services import AdminService, CategoryService, ProductService, SubscriptionService, SlideshowService, CateringService
 
 
 # ---------------------------------------------------------------------------
@@ -256,6 +256,24 @@ class TestCategoryRoutes:
         assert response.status_code == 200
         assert b"products" in response.data.lower()
 
+    def test_reorder_categories(self, logged_in_client, db):
+        c1 = CategoryService.create("Mains")
+        c2 = CategoryService.create("Desserts")
+        c3 = CategoryService.create("Drinks")
+
+        response = logged_in_client.post(
+            "/admin/categories",
+            data={"action": "reorder", "item_ids": [c3.id, c1.id, c2.id]},
+            follow_redirects=True,
+        )
+        assert response.status_code == 200
+        assert b"updated" in response.data.lower()
+
+        categories = CategoryService.list_all()
+        assert categories[0].id == c3.id
+        assert categories[1].id == c1.id
+        assert categories[2].id == c2.id
+
     def test_set_category_status(self, logged_in_client, category):
         response = logged_in_client.post(
             f"/admin/categories/{category.id}/set-status",
@@ -263,6 +281,56 @@ class TestCategoryRoutes:
         )
         assert response.status_code == 200
         assert response.get_json()["ok"] is True
+
+
+# ---------------------------------------------------------------------------
+# Catering routes
+# ---------------------------------------------------------------------------
+
+class TestCateringRoutes:
+
+    def test_reorder_catering_menus(self, logged_in_client, db):
+        m1 = CateringService.create("http://example.com/1.jpg", 1)
+        m2 = CateringService.create("http://example.com/2.jpg", 2)
+        m3 = CateringService.create("http://example.com/3.jpg", 3)
+
+        response = logged_in_client.post(
+            "/admin/catering/reorder",
+            data={"item_ids": [m3.id, m1.id, m2.id]},
+            follow_redirects=True,
+        )
+        assert response.status_code == 200
+        assert b"updated" in response.data.lower()
+
+        menus = CateringService._get_all()
+        assert menus[0].id == m3.id
+        assert menus[1].id == m1.id
+        assert menus[2].id == m2.id
+
+
+# ---------------------------------------------------------------------------
+# Slideshow routes
+# ---------------------------------------------------------------------------
+
+class TestSlideshowRoutes:
+
+    def test_reorder_slideshow(self, logged_in_client, db):
+        s1 = SlideshowService.create("http://example.com/1.jpg", 1)
+        s2 = SlideshowService.create("http://example.com/2.jpg", 2)
+        s3 = SlideshowService.create("http://example.com/3.jpg", 3)
+
+        response = logged_in_client.post(
+            "/admin/slideshow/reorder",
+            data={"item_ids": [s3.id, s1.id, s2.id]},
+            follow_redirects=True,
+        )
+        assert response.status_code == 200
+        assert b"updated" in response.data.lower()
+
+        slides = SlideshowService._get_all()
+        assert slides[0].id == s3.id
+        assert slides[1].id == s1.id
+        assert slides[2].id == s2.id
 
 
 # ---------------------------------------------------------------------------

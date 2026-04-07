@@ -70,17 +70,9 @@ def delete_catering_menu(menu_id: str):
 @bp.post("/catering/reorder")
 @login_required
 def reorder_catering_menus():
-    menus = CateringService._get_all()
-    updates = {}
-    for menu in menus:
-        key = f"order_{menu.id}"
-        if key in request.form:
-            try:
-                updates[menu.id] = int(request.form[key])
-            except ValueError:
-                continue
+    ids = request.form.getlist("item_ids")
     try:
-        CateringService.reorder(updates)
+        CateringService.reorder(ids)
         flash("Catering menu order updated.", "success")
     except SQLAlchemyError:
         flash("A database error occurred.", "danger")

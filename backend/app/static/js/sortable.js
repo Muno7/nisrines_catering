@@ -64,11 +64,11 @@
       if (e.submitter?.hasAttribute("formaction")) return;
       bar.classList.remove("is-visible");
       form.querySelectorAll("input[data-order-inject]").forEach((el) => el.remove());
-      tbody.querySelectorAll("tr[data-id]").forEach((row, i) => {
+      tbody.querySelectorAll("tr[data-id]").forEach((row) => {
         const input = document.createElement("input");
         input.type = "hidden";
-        input.name = `order_${row.dataset.id}`;
-        input.value = i + 1;
+        input.name = "item_ids";
+        input.value = row.dataset.id;
         input.dataset.orderInject = "";
         form.appendChild(input);
       });

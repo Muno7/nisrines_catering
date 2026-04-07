@@ -50,12 +50,12 @@ class CateringService:
             raise
 
     @staticmethod
-    def reorder(updates: dict[str, int]) -> None:
+    def reorder(ids: list[str]) -> None:
         try:
-            for menu_id, order in updates.items():
+            for i, menu_id in enumerate(ids):
                 menu = db.session.get(CateringMenuImage, menu_id)
                 if menu:
-                    menu.sort_order = order
+                    menu.sort_order = i
             db.session.commit()
         except SQLAlchemyError:
             db.session.rollback()

@@ -78,17 +78,9 @@ def delete_slide(slide_id: str):
 @bp.post("/slideshow/reorder")
 @login_required
 def reorder_slideshow():
-    slides = SlideshowService._get_all()
-    updates = {}
-    for slide in slides:
-        key = f"order_{slide.id}"
-        if key in request.form:
-            try:
-                updates[slide.id] = int(request.form[key])
-            except ValueError:
-                continue
+    ids = request.form.getlist("item_ids")
     try:
-        SlideshowService.reorder(updates)
+        SlideshowService.reorder(ids)
         flash("Slide order updated.", "success")
     except SQLAlchemyError:
         flash("A database error occurred.", "danger")

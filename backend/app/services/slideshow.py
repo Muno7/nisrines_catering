@@ -50,12 +50,12 @@ class SlideshowService:
             raise
 
     @staticmethod
-    def reorder(updates: dict[str, int]) -> None:
+    def reorder(ids: list[str]) -> None:
         try:
-            for slide_id, order in updates.items():
+            for i, slide_id in enumerate(ids):
                 slide = db.session.get(SlideshowImage, slide_id)
                 if slide:
-                    slide.sort_order = order
+                    slide.sort_order = i
             db.session.commit()
         except SQLAlchemyError:
             db.session.rollback()
