@@ -42,7 +42,6 @@
       <table class="responsive-table table">
         <thead>
           <tr>
-            <th style="width:110px;">Order</th>
             <th>Category</th>
             <th style="width:120px;">Products</th>
             <th style="width:120px;">Status</th>
@@ -50,13 +49,10 @@
             <th style="text-align:right;">Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody data-sortable>
           {% for cat in categories %}
             {% set current_status = "active" if cat.active else "inactive" %}
-            <tr data-category-row="{{ cat.id }}">
-              <td>
-                <input type="number" name="order_{{ cat.id }}" value="{{ cat.sort_order }}" class="input-narrow order-input" style="width:80px;" data-original="{{ cat.sort_order }}">
-              </td>
+            <tr data-id="{{ cat.id }}">
               <td>
                 <input type="text" name="name_{{ cat.id }}" value="{{ cat.name }}" class="input-medium name-input" style="min-width:220px;" data-original="{{ cat.name }}">
               </td>
@@ -86,9 +82,6 @@
         </tbody>
       </table>
 
-      <div class="actions mt-3" style="justify-content:flex-end;">
-        <button class="btn" type="submit">Save order</button>
-      </div>
     </form>
 
     {% for cat in categories %}

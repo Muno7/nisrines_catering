@@ -251,6 +251,48 @@ input:checked + .slider:before {
   margin-top: var(--space-2);
 }
 
+.drag-handle {
+  cursor: grab;
+  color: var(--color-muted);
+  text-align: center;
+  width: 40px;
+  user-select: none;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+tr.is-dragging {
+  opacity: 0.35;
+}
+
+
+.sort-save-bar {
+  position: fixed;
+  bottom: -80px;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 1px solid var(--color-border);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 -4px 20px rgba(62, 22, 10, 0.08);
+  transition: bottom 0.22s ease;
+  z-index: 100;
+}
+
+.sort-save-bar.is-visible {
+  bottom: 0;
+}
+
+.sort-save-bar__label {
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
 .mb-3 {
   margin-bottom: var(--space-3);
 }

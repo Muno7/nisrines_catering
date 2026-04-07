@@ -42,13 +42,12 @@
             <tr>
               <th style="width:80px;">Image</th>
               <th>Menu</th>
-              <th style="width:120px;">Order</th>
               <th style="text-align:right;">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody data-sortable>
             {% for img in menus %}
-              <tr>
+              <tr data-id="{{ img.id }}">
                 <td style="width:80px;">
                   <img class="thumb" src="{{ img.image }}" alt="Menu {{ loop.index }}" style="width:70px; height:70px; object-fit:cover; border-radius:6px;">
                 </td>
@@ -56,9 +55,6 @@
                   <div class="text-block">
                     <div class="row-title">Menu {{ loop.index }}</div>
                   </div>
-                </td>
-                <td>
-                  <input type="number" name="order_{{ img.id }}" value="{{ img.sort_order }}" min="0" step="1" class="input">
                 </td>
                 <td style="text-align:right;">
                   <button class="btn btn-icon btn-danger"
@@ -79,9 +75,6 @@
             {% endfor %}
           </tbody>
         </table>
-      </div>
-      <div class="actions" style="justify-content: flex-end; margin-top: 10px;">
-        <button class="btn" type="submit">Save order</button>
       </div>
     </form>
   {% else %}
