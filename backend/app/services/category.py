@@ -120,6 +120,15 @@ class CategoryService:
             raise
 
     @staticmethod
+    def product_counts() -> dict[int, int]:
+        rows = (
+            db.session.query(Product.category_id, func.count(Product.id))
+            .group_by(Product.category_id)
+            .all()
+        )
+        return {category_id: n for category_id, n in rows}
+
+    @staticmethod
     def delete(category: Category) -> None:
         product_count = Product.query.filter_by(category_id=category.id).count()
         if product_count:

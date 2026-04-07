@@ -11,7 +11,7 @@ from ...exceptions import ValidationError, ConflictError, NotFoundError
 @login_required
 def categories():
     all_categories = CategoryService.list_all()
-    counts = {cat.id: len(cat.products) for cat in all_categories}
+    counts = CategoryService.product_counts()
     return render_template("admin/categories.html", categories=all_categories, counts=counts)
 
 
