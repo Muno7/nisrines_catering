@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let previous = input.dataset.previous;
 
       if (!categoryId) {
-        alert("Missing category id; cannot update status.");
+        showToast("Missing category id; cannot update status.", "danger");
         input.checked = previous === "active";
         return;
       }
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
         input.checked = data.status === "active";
       } catch (err) {
         input.checked = previous === "active";
-        alert("Could not update category status. Please try again.");
+        showToast("Could not update category status. Please try again.", "danger");
       } finally {
         input.disabled = false;
       }

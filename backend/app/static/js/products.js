@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
         input.checked = data.status === "active";
       } catch (err) {
         input.checked = previous === "active";
-        alert("Could not update status. Please try again.");
+        showToast("Could not update status. Please try again.", "danger");
       } finally {
         input.disabled = false;
       }
