@@ -138,21 +138,13 @@ def edit_product(product_id: str):
 @bp.post("/products/<product_id>/set-status")
 @login_required
 def set_product_status(product_id: str):
-    try:
-        product = ProductService._get_or_raise(product_id)
-    except NotFoundError:
-        return jsonify({"ok": False, "message": "Product not found."}), 404
+    product = ProductService._get_or_raise(product_id)
 
     payload = request.get_json(silent=True) or {}
     status = (payload.get("status") or request.form.get("status") or "").strip().lower()
 
-    try:
-        ProductService.set_status(product, status)
-        return jsonify({"ok": True, "status": product.status, "is_active": product.is_active})
-    except ValidationError as e:
-        return jsonify({"ok": False, "message": str(e)}), 400
-    except SQLAlchemyError:
-        return jsonify({"ok": False, "message": "Database error."}), 500
+    ProductService.set_status(product, status)
+    return jsonify({"ok": True, "status": product.status, "is_active": product.is_active})
 
 
 @bp.post("/products/<product_id>/duplicate")

@@ -68,10 +68,7 @@ def manage_categories():
 @bp.post("/categories/<int:category_id>/set-status")
 @login_required
 def set_category_status(category_id: int):
-    try:
-        category = CategoryService._get_or_raise(category_id)
-    except NotFoundError:
-        return jsonify({"ok": False, "message": "Category not found."}), 404
+    category = CategoryService._get_or_raise(category_id)
 
     payload = request.get_json(silent=True) or {}
     status = (payload.get("status") or request.form.get("status") or "").strip().lower()
@@ -79,15 +76,12 @@ def set_category_status(category_id: int):
     if status not in {"active", "inactive"}:
         return jsonify({"ok": False, "message": "Invalid status."}), 400
 
-    try:
-        CategoryService.set_active(category, status == "active")
-        return jsonify({
-            "ok": True,
-            "status": "active" if category.active else "inactive",
-            "active": category.active,
-        })
-    except SQLAlchemyError:
-        return jsonify({"ok": False, "message": "Database error."}), 500
+    CategoryService.set_active(category, status == "active")
+    return jsonify({
+        "ok": True,
+        "status": "active" if category.active else "inactive",
+        "active": category.active,
+    })
 
 
 @bp.post("/categories/<int:category_id>/delete")
