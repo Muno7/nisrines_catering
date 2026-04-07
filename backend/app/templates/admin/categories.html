@@ -69,9 +69,6 @@
               </td>
               <td class="muted">{{ cat.created_at.strftime('%b %d %Y') }}</td>
               <td style="text-align:right; white-space:nowrap;">
-                  <button class="btn btn-small row-save-btn" type="submit" name="category_id" value="{{ cat.id }}">
-                    Save Changes
-                  </button>
                   <button class="btn btn-icon btn-danger" type="button" title="Delete"
                           data-confirm-form="delete-category-{{ cat.id }}"
                           data-confirm-message="Delete {{ cat.name }}? This cannot be undone.">
