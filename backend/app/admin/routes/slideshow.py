@@ -71,7 +71,7 @@ def delete_slide(slide_id: str):
     except NotFoundError:
         flash("Slide not found.", "danger")
     except SQLAlchemyError:
-        flash("A database error occurred.", "danger")
+        flash("Failed to delete slide due to a database error.", "danger")
     return redirect(url_for("admin.slideshow"))
 
 
@@ -83,5 +83,5 @@ def reorder_slideshow():
         SlideshowService.reorder(ids)
         flash("Slide order updated.", "success")
     except SQLAlchemyError:
-        flash("A database error occurred.", "danger")
+        flash("Failed to save slide order due to a database error.", "danger")
     return redirect(url_for("admin.slideshow"))

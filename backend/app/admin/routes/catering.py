@@ -63,7 +63,7 @@ def delete_catering_menu(menu_id: str):
     except NotFoundError:
         flash("Image not found.", "danger")
     except SQLAlchemyError:
-        flash("A database error occurred.", "danger")
+        flash("Failed to delete catering menu image due to a database error.", "danger")
     return redirect(url_for("admin.catering"))
 
 
@@ -75,5 +75,5 @@ def reorder_catering_menus():
         CateringService.reorder(ids)
         flash("Catering menu order updated.", "success")
     except SQLAlchemyError:
-        flash("A database error occurred.", "danger")
+        flash("Failed to save catering menu order due to a database error.", "danger")
     return redirect(url_for("admin.catering"))

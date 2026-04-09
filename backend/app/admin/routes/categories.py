@@ -27,7 +27,7 @@ def manage_categories():
         except (ValidationError, ConflictError) as e:
             flash(str(e), "danger")
         except SQLAlchemyError:
-            flash("A database error occurred.", "danger")
+            flash("Failed to create category due to a database error.", "danger")
 
     elif action == "update":
         try:
@@ -43,7 +43,7 @@ def manage_categories():
         except (ValidationError, ConflictError) as e:
             flash(str(e), "danger")
         except SQLAlchemyError:
-            flash("A database error occurred.", "danger")
+            flash("Failed to update category due to a database error.", "danger")
 
     elif action == "reorder":
         ids = [int(i) for i in request.form.getlist("item_ids")] #ids for categories are integers not UUID strings
@@ -51,7 +51,7 @@ def manage_categories():
             CategoryService.reorder(ids)
             flash("Category order updated.", "success")
         except SQLAlchemyError:
-            flash("A database error occurred.", "danger")
+            flash("Failed to save category order due to a database error.", "danger")
 
     return redirect(url_for("admin.categories"))
 
@@ -87,5 +87,5 @@ def delete_category(category_id: int):
     except ValidationError as e:
         flash(str(e), "warning")
     except SQLAlchemyError:
-        flash("A database error occurred.", "danger")
+        flash("Failed to delete category due to a database error.", "danger")
     return redirect(url_for("admin.categories"))

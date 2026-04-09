@@ -47,7 +47,7 @@ def create_subscription_plan():
         except (ValidationError, ConflictError) as e:
             flash(str(e), "danger")
         except SQLAlchemyError:
-            flash("A database error occurred.", "danger")
+            flash("Failed to create subscription plan due to a database error.", "danger")
 
     return render_template("admin/subscription_form.html", form=form, plan=None, is_edit=False)
 
@@ -93,7 +93,7 @@ def update_subscription_plan(plan_id: str):
         except (ValidationError, ConflictError) as e:
             flash(str(e), "danger")
         except SQLAlchemyError:
-            flash("A database error occurred.", "danger")
+            flash("Failed to update subscription plan due to a database error.", "danger")
 
     return render_template("admin/subscription_form.html", form=form, plan=plan, is_edit=True)
 
@@ -108,5 +108,5 @@ def delete_subscription_plan(plan_id: str):
     except NotFoundError:
         flash("Subscription plan not found.", "danger")
     except SQLAlchemyError:
-        flash("A database error occurred.", "danger")
+        flash("Failed to delete subscription plan due to a database error.", "danger")
     return redirect(url_for("admin.subscriptions"))

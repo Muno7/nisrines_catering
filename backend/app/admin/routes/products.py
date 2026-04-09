@@ -65,7 +65,7 @@ def new_product():
             flash(str(e), "danger")
             return render_template("admin/product_form.html", form=form, is_edit=False, product=None)
         except SQLAlchemyError:
-            flash("A database error occurred.", "danger")
+            flash("Failed to create product due to a database error.", "danger")
             return render_template("admin/product_form.html", form=form, is_edit=False, product=None)
 
         if "save_add_another" in request.form:
@@ -118,7 +118,7 @@ def edit_product(product_id: str):
             flash(str(e), "danger")
             return render_template("admin/product_form.html", form=form, product=product, is_edit=True)
         except SQLAlchemyError:
-            flash("A database error occurred.", "danger")
+            flash("Failed to update product due to a database error.", "danger")
             return render_template("admin/product_form.html", form=form, product=product, is_edit=True)
 
         if "save_duplicate" in request.form:
@@ -158,7 +158,7 @@ def duplicate_product(product_id: str):
     except NotFoundError:
         flash("Product not found.", "danger")
     except SQLAlchemyError:
-        flash("A database error occurred.", "danger")
+        flash("Failed to duplicate product due to a database error.", "danger")
     return redirect(url_for("admin.products"))
 
 
@@ -172,7 +172,7 @@ def delete_product(product_id: str):
     except NotFoundError:
         flash("Product not found.", "danger")
     except SQLAlchemyError:
-        flash("A database error occurred.", "danger")
+        flash("Failed to delete product due to a database error.", "danger")
     return redirect(url_for("admin.products"))
 
 
@@ -197,6 +197,6 @@ def bulk_products():
     except ValidationError as e:
         flash(str(e), "danger")
     except SQLAlchemyError:
-        flash("A database error occurred.", "danger")
+        flash("Failed to bulk update products due to a database error.", "danger")
 
     return redirect(url_for("admin.products"))
