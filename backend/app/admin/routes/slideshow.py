@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request, jsonify
+from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_required
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -22,20 +22,15 @@ def slideshow():
 @login_required
 def upload_slideshow():
     form = SlideshowForm()
-    images = SlideshowService._get_all()
-    wants_json = request.accept_mimetypes["application/json"] >= request.accept_mimetypes["text/html"]
 
     if not form.validate():
-        if wants_json:
-            return jsonify({"ok": False, "uploaded": 0, "errors": ["Invalid form submission."]}), 400
-        return render_template("admin/slideshow.html", form=form, images=images)
+        flash("Invalid form submission.", "danger")
+        return redirect(url_for("admin.slideshow"))
 
     files = request.files.getlist("images")
     if not files or not any(f.filename for f in files):
-        if wants_json:
-            return jsonify({"ok": False, "uploaded": 0, "errors": ["No files provided."]}), 400
         flash("Please select at least one image.", "warning")
-        return render_template("admin/slideshow.html", form=form, images=images)
+        return redirect(url_for("admin.slideshow"))
 
     uploaded, errors = 0, []
     for file in files:
@@ -48,13 +43,10 @@ def upload_slideshow():
         except (ValidationError, SQLAlchemyError) as e:
             errors.append(f"{file.filename}: {e}")
 
-    if wants_json:
-        return jsonify({"ok": uploaded > 0, "uploaded": uploaded, "errors": errors}), (200 if uploaded else 400)
-
     if uploaded:
         flash(f"Added {uploaded} slideshow image(s).", "success")
     if errors:
-        flash(f"Failed to upload {len(errors)} image(s): " + "; ".join(errors), "danger")
+        flash("Failed to upload: " + "; ".join(errors), "danger")
     if not uploaded and not errors:
         flash("No images were uploaded.", "warning")
 

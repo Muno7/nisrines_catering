@@ -5,6 +5,7 @@ S3 uploads are mocked — no real AWS calls are made.
 Every test gets a fresh DB (via the db fixture in conftest.py).
 """
 import pytest
+from io import BytesIO
 from unittest.mock import patch
 
 from app.services import AdminService, CategoryService, ProductService, SubscriptionService, SlideshowService, CateringService
@@ -313,6 +314,46 @@ class TestCateringRoutes:
 # ---------------------------------------------------------------------------
 
 class TestSlideshowRoutes:
+
+    def test_upload_slideshow(self, logged_in_client, db):
+        with patch("app.services.ImageService.upload", return_value="http://example.com/slide.jpg"):
+            response = logged_in_client.post(
+                "/admin/slideshow",
+                data={"images": (BytesIO(b"fake image data"), "slide.jpg")},
+                content_type="multipart/form-data",
+                follow_redirects=True,
+            )
+        assert response.status_code == 200
+        assert b"added" in response.data.lower()
+        assert len(SlideshowService._get_all()) == 1
+
+    def test_upload_slideshow_multiple_files(self, logged_in_client, db):
+        with patch("app.services.ImageService.upload", side_effect=[
+            "http://example.com/1.jpg",
+            "http://example.com/2.jpg",
+        ]):
+            response = logged_in_client.post(
+                "/admin/slideshow",
+                data={"images": [
+                    (BytesIO(b"img1"), "slide1.jpg"),
+                    (BytesIO(b"img2"), "slide2.jpg"),
+                ]},
+                content_type="multipart/form-data",
+                follow_redirects=True,
+            )
+        assert response.status_code == 200
+        assert len(SlideshowService._get_all()) == 2
+
+    def test_upload_slideshow_no_files(self, logged_in_client, db):
+        response = logged_in_client.post(
+            "/admin/slideshow",
+            data={},
+            content_type="multipart/form-data",
+            follow_redirects=True,
+        )
+        assert response.status_code == 200
+        assert b"select" in response.data.lower()
+        assert len(SlideshowService._get_all()) == 0
 
     def test_reorder_slideshow(self, logged_in_client, db):
         s1 = SlideshowService.create("http://example.com/1.jpg", 1)
