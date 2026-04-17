@@ -155,7 +155,6 @@ class TestProductService:
         assert p.name == "Grilled chicken"
         assert p.priceSingleCents == 1500
         assert p.status == "active"
-        assert p.is_active is True
 
     def test_create_product_blank_name_raises(self, db):
         with pytest.raises(ValidationError):
@@ -201,7 +200,6 @@ class TestProductService:
         p = ProductService.create(name="Chicken", price_single=1000, category_id=cat.id)
         ProductService.set_status(p, "inactive")
         assert p.status == "inactive"
-        assert p.is_active is False
 
     def test_set_invalid_status_raises(self, db):
         cat = self._make_category()
@@ -216,7 +214,6 @@ class TestProductService:
         assert copy.id != p.id
         assert copy.name == "Chicken (copy)"
         assert copy.status == "inactive"
-        assert copy.is_active is False
 
     def test_delete_product(self, db):
         cat = self._make_category()

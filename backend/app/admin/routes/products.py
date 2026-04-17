@@ -144,7 +144,7 @@ def set_product_status(product_id: str):
     status = (payload.get("status") or request.form.get("status") or "").strip().lower()
 
     ProductService.set_status(product, status)
-    return jsonify({"ok": True, "status": product.status, "is_active": product.is_active})
+    return jsonify({"ok": True, "status": product.status})
 
 
 @bp.post("/products/<product_id>/duplicate")

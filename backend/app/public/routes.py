@@ -9,8 +9,7 @@ bp = Blueprint("public", __name__)
 @bp.get("/products")
 def get_products():
     query = Product.query.outerjoin(Category, Product.category_id == Category.id).filter(
-        or_(Product.status == "active", Product.status.is_(None)),
-        Product.is_active.is_(True),
+        Product.status == "active",
         or_(Category.active.is_(True), Product.category_id.is_(None)),
     )
 
@@ -19,9 +18,8 @@ def get_products():
     payload = []
 
     for p in products:
-        single_price = getattr(p, "priceSingleCents", None) or getattr(p, "priceCents", None)
-        family_price = getattr(p, "priceFamilyCents", None)
-        status = p.status or ("active" if p.is_active else "inactive")
+        single_price = p.priceSingleCents
+        family_price = p.priceFamilyCents
         category_slug = p.category_rel.slug if p.category_rel else None
 
         product_json = {
@@ -32,7 +30,7 @@ def get_products():
             "category": category_slug,
             "ingredients": p.ingredients,
             "day": p.day,
-            "status": status,
+            "status": p.status,
         }
 
         if family_price is not None and family_price > 0 and single_price is not None:

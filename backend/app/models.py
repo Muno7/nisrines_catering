@@ -65,7 +65,6 @@ class Product(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=True)
     ingredients = db.Column(db.Text, nullable=False)
     day = db.Column(db.String(20), nullable=True)
-    is_active = db.Column(db.Boolean, default=True, nullable=False)
     status = db.Column(db.String(20), default="active", nullable=False)
     is_ramadan = db.Column(db.Boolean, default=False, nullable=False)
     is_seasonal = db.Column(db.Boolean, default=False, nullable=False)
@@ -103,7 +102,6 @@ class Product(db.Model):
         if status not in {"active", "inactive"}:
             raise ValidationError(f"Invalid status '{status}'.")
         self.status = status
-        self.is_active = status == "active"
 
     def set_category(self, category_id: int | None) -> None:
         self.category_id = category_id
