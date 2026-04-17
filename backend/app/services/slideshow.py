@@ -22,13 +22,11 @@ class SlideshowService:
         ).all()
 
     @staticmethod
-    def next_order() -> int:
-        return (
-            db.session.query(func.coalesce(func.max(SlideshowImage.sort_order), 0)).scalar() or 0
-        ) + 1
-
-    @staticmethod
-    def create(image_url: str, sort_order: int) -> SlideshowImage:
+    def create(image_url: str, sort_order: int | None = None) -> SlideshowImage:
+        if sort_order is None:
+            sort_order = (
+                db.session.query(func.coalesce(func.max(SlideshowImage.sort_order), 0)).scalar() or 0
+            ) + 1
         slide = SlideshowImage(sort_order=sort_order)
         slide.set_image(image_url)  # raises ValueError if blank
 

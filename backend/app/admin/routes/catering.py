@@ -38,7 +38,7 @@ def upload_catering():
             continue
         try:
             url = ImageService.upload(file)
-            CateringService.create(url, CateringService.next_order())
+            CateringService.create(url)
             uploaded += 1
         except (ValidationError, SQLAlchemyError) as e:
             errors.append(f"{file.filename}: {e}")

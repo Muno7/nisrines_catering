@@ -38,7 +38,7 @@ def upload_slideshow():
             continue
         try:
             url = ImageService.upload(file)
-            SlideshowService.create(url, SlideshowService.next_order())
+            SlideshowService.create(url)
             uploaded += 1
         except (ValidationError, SQLAlchemyError) as e:
             errors.append(f"{file.filename}: {e}")
