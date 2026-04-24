@@ -4,7 +4,7 @@ from sqlalchemy import func, or_
 from sqlalchemy.exc import SQLAlchemyError
 
 from ..extensions import db
-from ..models import Product
+from ..models import Product, Category
 from ..exceptions import ValidationError, NotFoundError
 
 
@@ -204,3 +204,36 @@ class ProductService:
         except SQLAlchemyError:
             db.session.rollback()
             raise
+
+    @staticmethod
+    def list_public() -> list[Product]:
+        return (
+            Product.query
+            .outerjoin(Category, Product.category_id == Category.id)
+            .filter(
+                Product.status == "active",
+                or_(Category.active.is_(True), Product.category_id.is_(None)),
+            )
+            .order_by(Product.updated_at.desc())
+            .all()
+        )
+
+    @staticmethod
+    def serialize_public(p: Product) -> dict:
+        data = {
+            "id": p.id,
+            "name": p.name,
+            "name_ar": p.name_ar,
+            "image": p.image,
+            "category": p.category_rel.slug if p.category_rel else None,
+            "ingredients": p.ingredients,
+            "day": p.day,
+            "status": p.status,
+        }
+
+        if p.priceFamilyCents is not None and p.priceFamilyCents > 0:
+            data["price"] = {"single": p.priceSingleCents, "family": p.priceFamilyCents}
+        else:
+            data["priceCents"] = p.priceSingleCents
+
+        return data

@@ -1,49 +1,15 @@
 from flask import Blueprint, jsonify
-from sqlalchemy import or_
 
-from ..models import Product, Category, SlideshowImage, CateringMenuImage, SubscriptionPlan
+from ..models import Category, SlideshowImage, CateringMenuImage, SubscriptionPlan
+from ..services import ProductService
 
 bp = Blueprint("public", __name__)
 
 
 @bp.get("/products")
 def get_products():
-    query = Product.query.outerjoin(Category, Product.category_id == Category.id).filter(
-        Product.status == "active",
-        or_(Category.active.is_(True), Product.category_id.is_(None)),
-    )
-
-    products = query.order_by(Product.updated_at.desc()).all()
-
-    payload = []
-
-    for p in products:
-        single_price = p.priceSingleCents
-        family_price = p.priceFamilyCents
-        category_slug = p.category_rel.slug if p.category_rel else None
-
-        product_json = {
-            "id": p.id,
-            "name": p.name,
-            "name_ar": p.name_ar,
-            "image": p.image,
-            "category": category_slug,
-            "ingredients": p.ingredients,
-            "day": p.day,
-            "status": p.status,
-        }
-
-        if family_price is not None and family_price > 0 and single_price is not None:
-            product_json["price"] = {
-                "single": single_price,
-                "family": family_price,
-            }
-        elif single_price is not None:
-            product_json["priceCents"] = single_price
-
-        payload.append(product_json)
-
-    return jsonify(payload)
+    products = ProductService.list_public()
+    return jsonify([ProductService.serialize_public(p) for p in products])
 
 
 @bp.get("/categories")
