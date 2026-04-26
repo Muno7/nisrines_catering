@@ -477,6 +477,39 @@ tr.is-dragging {
   width: 100%;
 }
 
+.error-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  text-align: center;
+  gap: var(--space-3);
+}
+
+.error-code {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(7rem, 20vw, 14rem);
+  font-weight: 700;
+  line-height: 1;
+  background: #521c0d;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  user-select: none;
+}
+
+.error-title {
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  margin: 0;
+}
+
+.error-message {
+  color: var(--color-muted);
+  max-width: 340px;
+  margin: 0;
+}
+
 @media (max-width: 900px) {
   .form-grid {
     grid-template-columns: 1fr;

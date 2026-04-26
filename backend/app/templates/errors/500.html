@@ -1,10 +1,10 @@
 {% extends "admin/base.html" %}
 {% block title %}500 — Server Error{% endblock %}
 {% block content %}
-  <div class="empty-state">
-    <p class="eyebrow">500</p>
-    <h1 class="page-title">Something went wrong</h1>
-    <p class="muted">An unexpected error occurred. Please try again.</p>
+  <div class="error-page">
+    <div class="error-code">500</div>
+    <h1 class="error-title">Something went wrong</h1>
+    <p class="error-message">An unexpected error occurred. Please try again.</p>
     <a class="btn" href="{{ url_for('admin.products') }}">Back to products</a>
   </div>
 {% endblock %}
