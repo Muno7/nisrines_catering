@@ -303,7 +303,7 @@ class TestCateringRoutes:
         assert response.status_code == 200
         assert b"updated" in response.data.lower()
 
-        menus = CateringService._get_all()
+        menus = CateringService.list_all()
         assert menus[0].id == m3.id
         assert menus[1].id == m1.id
         assert menus[2].id == m2.id
@@ -325,7 +325,7 @@ class TestSlideshowRoutes:
             )
         assert response.status_code == 200
         assert b"added" in response.data.lower()
-        assert len(SlideshowService._get_all()) == 1
+        assert len(SlideshowService.list_all()) == 1
 
     def test_upload_slideshow_multiple_files(self, logged_in_client, db):
         with patch("app.services.ImageService.upload", side_effect=[
@@ -342,7 +342,7 @@ class TestSlideshowRoutes:
                 follow_redirects=True,
             )
         assert response.status_code == 200
-        assert len(SlideshowService._get_all()) == 2
+        assert len(SlideshowService.list_all()) == 2
 
     def test_upload_slideshow_no_files(self, logged_in_client, db):
         response = logged_in_client.post(
@@ -353,7 +353,7 @@ class TestSlideshowRoutes:
         )
         assert response.status_code == 200
         assert b"select" in response.data.lower()
-        assert len(SlideshowService._get_all()) == 0
+        assert len(SlideshowService.list_all()) == 0
 
     def test_reorder_slideshow(self, logged_in_client, db):
         s1 = SlideshowService.create("http://example.com/1.jpg", 1)
@@ -368,7 +368,7 @@ class TestSlideshowRoutes:
         assert response.status_code == 200
         assert b"updated" in response.data.lower()
 
-        slides = SlideshowService._get_all()
+        slides = SlideshowService.list_all()
         assert slides[0].id == s3.id
         assert slides[1].id == s1.id
         assert slides[2].id == s2.id

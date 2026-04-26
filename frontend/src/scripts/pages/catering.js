@@ -198,7 +198,7 @@ const loadCateringMenus = async () => {
     if (!response.ok) {
       throw new Error(`Failed to load catering menus: ${response.status}`);
     }
-    const data = await response.json();
+    const { data } = await response.json();
     const menus = Array.isArray(data) ? data : [];
     renderMenus(menus);
   } catch (error) {

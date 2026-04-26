@@ -68,7 +68,7 @@ async function fetchMenuCategories() {
     if (!response.ok) {
       throw new Error(`Failed to fetch categories: ${response.status}`);
     }
-    const data = await response.json();
+    const { data } = await response.json();
     if (Array.isArray(data) && data.length) {
       menuCategories = data;
       return;

@@ -16,7 +16,7 @@ class SlideshowService:
         return slide
 
     @staticmethod
-    def _get_all() -> list[SlideshowImage]:
+    def list_all() -> list[SlideshowImage]:
         return SlideshowImage.query.order_by(
             SlideshowImage.sort_order, SlideshowImage.created_at
         ).all()

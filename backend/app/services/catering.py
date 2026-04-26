@@ -16,7 +16,7 @@ class CateringService:
         return menu
 
     @staticmethod
-    def _get_all() -> list[CateringMenuImage]:
+    def list_all() -> list[CateringMenuImage]:
         return CateringMenuImage.query.order_by(
             CateringMenuImage.sort_order, CateringMenuImage.created_at
         ).all()

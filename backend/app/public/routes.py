@@ -1,58 +1,46 @@
 from flask import Blueprint, jsonify
 
-from ..models import Category, SlideshowImage, CateringMenuImage, SubscriptionPlan
-from ..services import ProductService
+from ..services import ProductService, CategoryService, SlideshowService, CateringService, SubscriptionService
 
 bp = Blueprint("public", __name__)
+
+
+def ok(data=None, status: int = 200):
+    body = {"ok": True}
+    if data is not None:
+        body["data"] = data
+    return jsonify(body), status
+
+
+def error(message: str, status: int = 400):
+    return jsonify({"ok": False, "error": message}), status
 
 
 @bp.get("/products")
 def get_products():
     products = ProductService.list_public()
-    return jsonify([ProductService.serialize_public(p) for p in products])
+    return ok([p.to_dict() for p in products])
 
 
 @bp.get("/categories")
 def get_categories():
-    categories = Category.query.filter_by(active=True).order_by(Category.sort_order, Category.name).all()
-    payload = [
-        {"id": c.id, "name": c.name, "slug": c.slug, "sort_order": c.sort_order}
-        for c in categories
-    ]
-    return jsonify(payload)
+    categories = CategoryService.list_active()
+    return ok([c.to_dict() for c in categories])
 
 
 @bp.get("/slideshow")
 def get_slideshow():
-    slides = SlideshowImage.query.order_by(SlideshowImage.sort_order, SlideshowImage.created_at).all()
-    payload = [{"id": s.id, "image": s.image, "sort_order": s.sort_order} for s in slides]
-    return jsonify(payload)
+    slides = SlideshowService.list_all()
+    return ok([s.to_dict() for s in slides])
 
 
 @bp.get("/catering-menus")
 def get_catering_menus():
-    menus = CateringMenuImage.query.order_by(
-        CateringMenuImage.sort_order,
-        CateringMenuImage.created_at
-    ).all()
-    payload = [{"id": m.id, "image": m.image, "sort_order": m.sort_order} for m in menus]
-    return jsonify(payload)
+    menus = CateringService.list_all()
+    return ok([m.to_dict() for m in menus])
 
 
 @bp.get("/subscriptions")
 def get_subscriptions():
-    plans = SubscriptionPlan.query.order_by(
-        SubscriptionPlan.audience,
-        SubscriptionPlan.days_per_month,
-    ).all()
-    payload = [
-        {
-            "id": plan.id,
-            "audience": plan.audience,
-            "daysPerMonth": plan.days_per_month,
-            "platDuJour": plan.price_plat_du_jour,
-            "withSalad": plan.price_with_salad,
-        }
-        for plan in plans
-    ]
-    return jsonify(payload)
+    plans = SubscriptionService.list_all()
+    return ok([p.to_dict() for p in plans])

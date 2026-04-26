@@ -14,7 +14,7 @@ def catering():
     return render_template(
         "admin/catering.html",
         form=CateringMenuForm(),
-        menus=CateringService._get_all(),
+        menus=CateringService.list_all(),
     )
 
 

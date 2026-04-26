@@ -14,7 +14,7 @@ def slideshow():
     return render_template(
         "admin/slideshow.html",
         form=SlideshowForm(),
-        images=SlideshowService._get_all(),
+        images=SlideshowService.list_all(),
     )
 
 

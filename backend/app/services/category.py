@@ -13,6 +13,10 @@ class CategoryService:
         return Category.query.order_by(Category.sort_order, Category.name).all()
 
     @staticmethod
+    def list_active() -> list[Category]:
+        return Category.query.filter_by(active=True).order_by(Category.sort_order, Category.name).all()
+
+    @staticmethod
     def choices(include_placeholder: bool = True) -> list[tuple[int, str]]:
         """Return WTForms-compatible choices list for category select fields."""
         categories = Category.query.order_by(Category.sort_order, Category.name).all()

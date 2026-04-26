@@ -4,7 +4,7 @@ async function fetchSlideshowImages() {
   try {
     const res = await fetch(`${API_BASE_URL}/api/slideshow`);
     if (!res.ok) throw new Error("Failed to load slideshow images");
-    const data = await res.json();
+    const { data } = await res.json();
     if (!Array.isArray(data) || data.length === 0) return [];
     return data.map((item) => item.image).filter(Boolean);
   } catch (e) {

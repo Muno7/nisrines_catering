@@ -83,7 +83,7 @@ export async function loadProducts() {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    const productData = await response.json();
+    const { data: productData } = await response.json();
     products = productData.map((productDetails) => new Product(productDetails));
     console.log('Products loaded');
   } catch (error) {

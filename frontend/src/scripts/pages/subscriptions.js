@@ -61,7 +61,7 @@ const loadSubscriptionPlans = async () => {
       throw new Error(`Failed to load subscription plans: ${response.status}`);
     }
 
-    const data = await response.json();
+    const { data } = await response.json();
     const plans = Array.isArray(data) ? data : [];
 
     const planDay = (plan) => formatNumber(plan?.daysPerMonth) ?? Number.POSITIVE_INFINITY;

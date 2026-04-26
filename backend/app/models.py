@@ -112,6 +112,23 @@ class Product(db.Model):
     def set_day(self, day: str | None) -> None:
         self.day = (day or "").strip() or None
 
+    def to_dict(self) -> dict:
+        data = {
+            "id": self.id,
+            "name": self.name,
+            "name_ar": self.name_ar,
+            "image": self.image,
+            "category": self.category_rel.slug if self.category_rel else None,
+            "ingredients": self.ingredients,
+            "day": self.day,
+            "status": self.status,
+        }
+        if self.priceFamilyCents is not None and self.priceFamilyCents > 0:
+            data["price"] = {"single": self.priceSingleCents, "family": self.priceFamilyCents}
+        else:
+            data["priceCents"] = self.priceSingleCents
+        return data
+
 
 # ---------------------------------------------------------------------------
 # SlideshowImage
@@ -133,6 +150,9 @@ class SlideshowImage(db.Model):
             raise ValidationError("Image URL is required.")
         self.image = url
 
+    def to_dict(self) -> dict:
+        return {"id": self.id, "image": self.image, "sort_order": self.sort_order}
+
 
 # ---------------------------------------------------------------------------
 # CateringMenuImage
@@ -153,6 +173,9 @@ class CateringMenuImage(db.Model):
         if not (url or "").strip():
             raise ValidationError("Image URL is required.")
         self.image = url
+
+    def to_dict(self) -> dict:
+        return {"id": self.id, "image": self.image, "sort_order": self.sort_order}
 
 
 # ---------------------------------------------------------------------------
@@ -209,6 +232,15 @@ class SubscriptionPlan(db.Model):
             raise ValidationError("With-salad price cannot be negative.")
         self.price_with_salad = price
 
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "audience": self.audience,
+            "daysPerMonth": self.days_per_month,
+            "platDuJour": self.price_plat_du_jour,
+            "withSalad": self.price_with_salad,
+        }
+
 
 # ---------------------------------------------------------------------------
 # Category
@@ -246,6 +278,9 @@ class Category(db.Model):
             raise ValidationError("Category name is required.")
         self.name = name
         self.slug = slugify(name)
+
+    def to_dict(self) -> dict:
+        return {"id": self.id, "name": self.name, "slug": self.slug, "sort_order": self.sort_order}
 
 
 # ---------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 from flask_login import LoginManager
 from .config import BaseConfig, DevelopmentConfig
 from .extensions import db, migrate, login_manager, csrf
@@ -34,6 +34,8 @@ def create_app(config_object: type[BaseConfig] = DevelopmentConfig) -> Flask:
 
     @app.errorhandler(500)
     def server_error(e):
+        if request.path.startswith("/api/"):
+            return jsonify({"ok": False, "error": "An unexpected error occurred."}), 500
         return render_template("errors/500.html"), 500
 
     @app.after_request

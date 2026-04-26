@@ -218,22 +218,3 @@ class ProductService:
             .all()
         )
 
-    @staticmethod
-    def serialize_public(p: Product) -> dict:
-        data = {
-            "id": p.id,
-            "name": p.name,
-            "name_ar": p.name_ar,
-            "image": p.image,
-            "category": p.category_rel.slug if p.category_rel else None,
-            "ingredients": p.ingredients,
-            "day": p.day,
-            "status": p.status,
-        }
-
-        if p.priceFamilyCents is not None and p.priceFamilyCents > 0:
-            data["price"] = {"single": p.priceSingleCents, "family": p.priceFamilyCents}
-        else:
-            data["priceCents"] = p.priceSingleCents
-
-        return data
