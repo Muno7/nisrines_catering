@@ -1,4 +1,3 @@
-import re
 import uuid
 from datetime import datetime
 
@@ -7,16 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from .extensions import db
 from .exceptions import ValidationError
-
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-def slugify(value: str) -> str:
-    base = re.sub(r"[^a-zA-Z0-9\s-]", "", value or "").strip().lower()
-    base = re.sub(r"[\s_-]+", "-", base)
-    return base or str(uuid.uuid4())
+from slugify import slugify
 
 
 # ---------------------------------------------------------------------------

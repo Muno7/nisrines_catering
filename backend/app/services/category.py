@@ -2,7 +2,8 @@ from sqlalchemy import func, or_
 from sqlalchemy.exc import SQLAlchemyError
 
 from ..extensions import db
-from ..models import Category, Product, slugify
+from ..models import Category, Product
+from slugify import slugify
 from ..exceptions import ValidationError, ConflictError, NotFoundError
 
 
