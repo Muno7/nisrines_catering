@@ -58,7 +58,7 @@ def new_product():
                 image=image_url,
                 category_id=form.category_id.data,
                 ingredients=form.ingredients.data or "",
-                day=form.day.data or None,
+                day=form.day.data,
                 status=form.status.data or "active",
             )
         except (ValidationError, ConflictError) as e:
@@ -111,7 +111,7 @@ def edit_product(product_id: str):
                 image=image_url,
                 category_id=form.category_id.data or None,
                 ingredients=form.ingredients.data or "",
-                day=form.day.data or None,
+                day=form.day.data,
                 status=form.status.data or "active",
             )
         except (ValidationError, ConflictError) as e:

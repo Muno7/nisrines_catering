@@ -143,6 +143,26 @@ class TestProductRoutes:
         response = logged_in_client.get(f"/admin/products/{product.id}/edit")
         assert response.status_code == 200
 
+    def test_edit_product_can_clear_day(self, logged_in_client, product, category, db):
+        ProductService.update(product, day="monday")
+
+        response = logged_in_client.post(
+            f"/admin/products/{product.id}/edit",
+            data={
+                "name": product.name,
+                "priceSingleCents": product.priceSingleCents,
+                "category_id": category.id,
+                "ingredients": product.ingredients,
+                "day": "",
+                "status": product.status,
+            },
+            follow_redirects=True,
+        )
+
+        db.session.refresh(product)
+        assert response.status_code == 200
+        assert product.day is None
+
     def test_edit_product_not_found(self, logged_in_client, db):
         response = logged_in_client.get(
             "/admin/products/nonexistent-id/edit",
