@@ -243,18 +243,17 @@ footer {
 }
 
 body.hero-loading {
-    opacity: 0;
-    visibility: hidden;
+    opacity: 1;
+    visibility: visible;
 }
 
 body.hero-loading.hero-ready {
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.45s ease;
 }
 
 .home-hero__media,
-.home-hero__overlay {
+.home-hero__copy {
     will-change: transform, opacity;
 }
 
@@ -274,12 +273,15 @@ body.hero-loading.hero-ready .home-hero__media {
 }
 
 body.hero-loading .home-hero__overlay {
-    opacity: 0;
-    transform: translateY(12px) scale(0.98);
+    transform: none;
 }
 
-body.hero-loading.hero-ready .home-hero__overlay {
-    animation: homeHeroCopyIn 0.6s ease-out 0.08s forwards;
+body.hero-loading .home-hero__copy {
+    transform: scale(0.92);
+}
+
+body.hero-loading.hero-ready .home-hero__copy {
+    animation: homeHeroCopyIn 1.0s ease-out 0.08s forwards;
 }
 
 @keyframes homeHeroZoomOut {
@@ -288,8 +290,8 @@ body.hero-loading.hero-ready .home-hero__overlay {
 }
 
 @keyframes homeHeroCopyIn {
-    from { opacity: 0; transform: translateY(12px) scale(0.96); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+    from { transform: scale(0.92); }
+    to { transform: scale(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -306,7 +308,9 @@ body.hero-loading.hero-ready .home-hero__overlay {
     body.hero-loading .home-hero__media,
     body.hero-loading.hero-ready .home-hero__media,
     body.hero-loading .home-hero__overlay,
-    body.hero-loading.hero-ready .home-hero__overlay {
+    body.hero-loading.hero-ready .home-hero__overlay,
+    body.hero-loading .home-hero__copy,
+    body.hero-loading.hero-ready .home-hero__copy {
         animation: none;
         transform: none;
         opacity: 1;
