@@ -252,14 +252,19 @@ body.hero-loading.hero-ready {
     visibility: visible;
 }
 
-.home-hero__media,
-.home-hero__copy {
+.home-hero__media {
     will-change: transform, opacity;
 }
 
 .home-hero__media {
     overflow: hidden;
     transform-origin: center;
+}
+
+.home-hero__copy {
+    opacity: 0;
+    transform: translateY(2rem);
+    will-change: transform, opacity;
 }
 
 body.hero-loading .home-hero__media {
@@ -276,12 +281,8 @@ body.hero-loading .home-hero__overlay {
     transform: none;
 }
 
-body.hero-loading .home-hero__copy {
-    transform: scale(0.92);
-}
-
 body.hero-loading.hero-ready .home-hero__copy {
-    animation: homeHeroCopyIn 1.0s ease-out 0.08s forwards;
+    animation: homeHeroCopyIn 0.8s ease-out 0.12s forwards;
 }
 
 @keyframes homeHeroZoomOut {
@@ -290,8 +291,14 @@ body.hero-loading.hero-ready .home-hero__copy {
 }
 
 @keyframes homeHeroCopyIn {
-    from { transform: scale(0.92); }
-    to { transform: scale(1); }
+    0% {
+        opacity: 0;
+        transform: translateY(2rem);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
