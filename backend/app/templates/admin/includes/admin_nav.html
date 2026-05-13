@@ -1,0 +1,15 @@
+{% set admin_nav_items = [
+  {"label": "Products", "endpoint": "admin.products", "active_endpoints": ["admin.products"]},
+  {"label": "Categories", "endpoint": "admin.categories", "active_endpoints": ["admin.categories"]},
+  {"label": "Subscriptions", "endpoint": "admin.subscriptions", "active_endpoints": ["admin.subscriptions", "admin.new_subscription_plan", "admin.edit_subscription_plan"]},
+  {"label": "Catering", "endpoint": "admin.catering", "active_endpoints": ["admin.catering"]},
+  {"label": "Slideshow", "endpoint": "admin.slideshow", "active_endpoints": ["admin.slideshow"]}
+] %}
+
+<div class="page-header__nav">
+  <div class="nav-group">
+    {% for item in admin_nav_items %}
+      <a class="nav-pill {% if request.endpoint in item.active_endpoints %}is-active{% endif %}" href="{{ url_for(item.endpoint) }}">{{ item.label }}</a>
+    {% endfor %}
+  </div>
+</div>

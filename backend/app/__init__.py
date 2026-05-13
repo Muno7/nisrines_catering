@@ -23,6 +23,7 @@ def create_app(config_object: type[BaseConfig] = DevelopmentConfig) -> Flask:
     def load_user(user_id: str) -> Admin | None:
         return Admin.query.get(user_id)
 
+    register_template_filters(app)
     register_cli_commands(app)
 
     app.register_blueprint(admin_bp, url_prefix="/admin")
@@ -52,6 +53,13 @@ def create_app(config_object: type[BaseConfig] = DevelopmentConfig) -> Flask:
         return response
 
     return app
+
+
+def register_template_filters(app: Flask) -> None:
+    @app.template_filter("money_cents")
+    def money_cents(value: int | None) -> str:
+        cents = value or 0
+        return f"${cents / 100:.2f}"
 
 
 def register_cli_commands(app: Flask) -> None:

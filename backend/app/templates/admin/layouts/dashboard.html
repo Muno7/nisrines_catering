@@ -1,0 +1,15 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+  <header class="page-header">
+    <div class="page-header__title">
+      <h2>{% block page_title %}{% endblock %}</h2>
+    </div>
+    {% include "admin/includes/admin_nav.html" %}
+    <div class="page-header__actions">
+      {% block page_actions %}{% endblock %}
+    </div>
+  </header>
+
+  {% block page_content %}{% endblock %}
+{% endblock %}

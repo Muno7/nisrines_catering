@@ -1,0 +1,16 @@
+{% macro render_form_field(wtform_field, wrapper_data_field=none, label_note="", show_inline_error=false) %}
+  <div class="field" data-field="{{ wrapper_data_field or wtform_field.name }}">
+    {{ wtform_field.label }}
+    {% if label_note %}
+      <small class="muted" style="margin-left:6px;">{{ label_note }}</small>
+    {% endif %}
+    {{ wtform_field(**kwargs) }}
+    {% if show_inline_error %}
+      <div class="inline-error" data-inline-error-for="{{ wtform_field.name }}"></div>
+    {% endif %}
+    {% if caller is defined %}
+      {{ caller() }}
+    {% endif %}
+    {% for error in wtform_field.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+  </div>
+{% endmacro %}

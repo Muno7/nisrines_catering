@@ -1,107 +1,109 @@
-{% extends "admin/base.html" %}
+{% extends "admin/layouts/form.html" %}
+{% import "admin/macros/forms.html" as forms %}
 {% block title %}{{ "Edit Product" if is_edit else "New Product" }}{% endblock %}
 {% block head %}
+  {{ super() }}
   <script defer src="{{ url_for('static', filename='js/image_compress.js') }}"></script>
   <script defer src="{{ url_for('static', filename='js/product_form.js') }}"></script>
 {% endblock %}
-{% block content %}
-  <header class="page-header">
-    <div>
-      <p class="eyebrow">Product builder</p>
-      <h2>
-        {{ "Edit product" if is_edit else "Create a new product" }}
-      </h2>
-    </div>
-    {% if product %}
-      <span class="badge {{ 'badge-success' if product.is_active else 'badge-warning' }}">
-        <span class="status-dot {{ 'live' if product.is_active else 'paused' }}"></span>
-        {{ "Live" if product.is_active else "Paused" }}
-      </span>
-    {% endif %}
-  </header>
+{% block form_eyebrow %}
+  <p class="eyebrow">Product builder</p>
+{% endblock %}
+{% block form_title %}
+  {{ "Edit product" if is_edit else "Create a new product" }}
+{% endblock %}
+{% block form_header_aside %}
+  {% if product %}
+    <span class="badge {{ 'badge-success' if product.is_active else 'badge-warning' }}">
+      <span class="status-dot {{ 'live' if product.is_active else 'paused' }}"></span>
+      {{ "Live" if product.is_active else "Paused" }}
+    </span>
+  {% endif %}
+{% endblock %}
+{% block form_content %}
+  <form id="productForm" method="post" enctype="multipart/form-data" class="form-grid single-column">
+    {{ form.hidden_tag() }}
 
-  <div class="form-wrapper">
-    <form id="productForm" method="post" enctype="multipart/form-data" class="form-grid single-column">
-      {{ form.hidden_tag() }}
+    <section class="form-card">
+      {{ forms.render_form_field(
+        form.name,
+        show_inline_error=true,
+        placeholder="Ex: Chicken shawarma platter",
+        autocomplete="off",
+        required=true,
+        maxlength=255
+      ) }}
 
-      <section class="form-card">
-        <div class="field" data-field="name">
-          {{ form.name.label }}{{ form.name(placeholder="Ex: Chicken shawarma platter", autocomplete="off", required=True, maxlength=255) }}
-          <div class="inline-error" data-inline-error-for="name"></div>
-          {% for error in form.name.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-        </div>
-        <div class="field" data-field="name_ar">
-          {{ form.name_ar.label }}<small class="muted" style="margin-left:6px;">Optional</small>
-          {{ form.name_ar(placeholder="مثال: شاورما دجاج", autocomplete="off", dir="rtl", maxlength=255) }}
-          <div class="inline-error" data-inline-error-for="name_ar"></div>
-          {% for error in form.name_ar.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-        </div>
+      {{ forms.render_form_field(
+        form.name_ar,
+        label_note="Optional",
+        show_inline_error=true,
+        placeholder="مثال: شاورما دجاج",
+        autocomplete="off",
+        dir="rtl",
+        maxlength=255
+      ) }}
 
-        <div class="field" data-field="category">
-          {{ form.category_id.label }}
-          {{ form.category_id() }}
-          <div class="inline-error" data-inline-error-for="category_id"></div>
-          {% for error in form.category_id.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-        </div>
+      {{ forms.render_form_field(
+        form.category_id,
+        wrapper_data_field="category",
+        show_inline_error=true
+      ) }}
 
-        <div class="two-col">
-          <div class="field" data-field="priceSingleCents">
-            {{ form.priceSingleCents.label }}{{ form.priceSingleCents(placeholder="In cents, e.g. 1299", min=0, step=1, inputmode="numeric", required=True) }}
-            <div class="inline-error" data-inline-error-for="priceSingleCents"></div>
-            {% for error in form.priceSingleCents.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-          </div>
-          <div class="field" data-field="priceFamilyCents">
-            {{ form.priceFamilyCents.label }}{{ form.priceFamilyCents(placeholder="Optional, in cents", min=0, step=1, inputmode="numeric") }}
-            <div class="inline-error" data-inline-error-for="priceFamilyCents"></div>
-            {% for error in form.priceFamilyCents.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-          </div>
-        </div>
+      <div class="two-col">
+        {{ forms.render_form_field(
+          form.priceSingleCents,
+          show_inline_error=true,
+          placeholder="In cents, e.g. 1299",
+          min=0,
+          step=1,
+          inputmode="numeric",
+          required=true
+        ) }}
 
-        <div class="field" data-field="ingredients">
-          {{ form.ingredients.label }}{{ form.ingredients(rows=4, placeholder="List main ingredients or allergens (optional)") }}
-          <div class="inline-error" data-inline-error-for="ingredients"></div>
-          {% for error in form.ingredients.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-        </div>
-
-        <div class="field" data-field="day">
-          {{ form.day.label }}{{ form.day() }}
-          <div class="inline-error" data-inline-error-for="day"></div>
-          {% for error in form.day.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-        </div>
-
-        <div class="field" data-field="status">
-          {{ form.status.label }}{{ form.status() }}
-          <div class="inline-error" data-inline-error-for="status"></div>
-          {% for error in form.status.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-        </div>
-
-        <div class="field" data-field="image">
-          {{ form.image.label }}<small class="muted" style="margin-left:6px;">Optional</small>
-          {{ form.image(class="file-input") }}
-          {% if product and product.image %}
-          <div class="inline-media">
-              <img class="thumb" src="{{ product.image }}" alt="{{ product.name }}">
-              <span class="muted">Current image</span>
-          </div>
-          {% elif product %}
-          <div class="inline-media">
-              <div class="thumb thumb-placeholder" data-initial="{{ product.name[:1]|upper }}"></div>
-              <span class="muted">No image uploaded</span>
-          </div>
-          {% endif %}
-          {% for error in form.image.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-        </div>
-      </section>
-
-      <div class="actions full-row">
-        <a class="btn btn-ghost" href="{{ url_for('admin.products') }}">Cancel</a>
-        {% if not is_edit %}
-          <button class="btn btn-secondary" type="submit" name="save_add_another" value="1">Save &amp; add another</button>
-        {% else %}
-          <button class="btn btn-secondary" type="submit" name="save_duplicate" value="1">Save &amp; duplicate</button>
-        {% endif %}
-        <button class="btn" type="submit">{{ "Save changes" if is_edit else "Create product" }}</button>
+        {{ forms.render_form_field(
+          form.priceFamilyCents,
+          show_inline_error=true,
+          placeholder="Optional, in cents",
+          min=0,
+          step=1,
+          inputmode="numeric"
+        ) }}
       </div>
-    </form>
-  </div>
+
+      {{ forms.render_form_field(
+        form.ingredients,
+        show_inline_error=true,
+        rows=4,
+        placeholder="List main ingredients or allergens (optional)"
+      ) }}
+
+      {{ forms.render_form_field(form.day, show_inline_error=true) }}
+      {{ forms.render_form_field(form.status, show_inline_error=true) }}
+
+      {% call forms.render_form_field(form.image, label_note="Optional", class="file-input") %}
+        {% if product and product.image %}
+          <div class="inline-media">
+            <img class="thumb" src="{{ product.image }}" alt="{{ product.name }}">
+            <span class="muted">Current image</span>
+          </div>
+        {% elif product %}
+          <div class="inline-media">
+            <div class="thumb thumb-placeholder" data-initial="{{ product.name[:1]|upper }}"></div>
+            <span class="muted">No image uploaded</span>
+          </div>
+        {% endif %}
+      {% endcall %}
+    </section>
+
+    <div class="actions full-row">
+      <a class="btn btn-ghost" href="{{ url_for('admin.products') }}">Cancel</a>
+      {% if not is_edit %}
+        <button class="btn btn-secondary" type="submit" name="save_add_another" value="1">Save &amp; add another</button>
+      {% else %}
+        <button class="btn btn-secondary" type="submit" name="save_duplicate" value="1">Save &amp; duplicate</button>
+      {% endif %}
+      <button class="btn" type="submit">{{ "Save changes" if is_edit else "Create product" }}</button>
+    </div>
+  </form>
 {% endblock %}

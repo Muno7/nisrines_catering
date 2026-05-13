@@ -26,36 +26,14 @@
           {% endif %}
         </div>
       </header>
-      {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-          <div class="toast-stack" id="toast-stack">
-            {% for category, message in messages %}
-              <div class="toast alert-{{ category }}" role="status">
-                <span class="toast-text">{{ message }}</span>
-                <button class="toast-close" type="button" aria-label="Dismiss">&times;</button>
-              </div>
-            {% endfor %}
-          </div>
-        {% endif %}
-      {% endwith %}
+      {% include "admin/includes/flash_messages.html" %}
       <div class="panel">
         {% block content %}{% endblock %}
       </div>
     </div>
   </div>
 
-  <div class="modal-backdrop" id="confirm-modal" hidden>
-    <div class="modal">
-      <header>
-        <h3>Confirm action</h3>
-      </header>
-      <p id="confirm-message" class="muted">Are you sure?</p>
-      <div class="modal-actions">
-        <button id="confirm-no" class="btn btn-ghost" type="button">Cancel</button>
-        <button id="confirm-yes" class="btn btn-danger" type="button">Delete</button>
-      </div>
-    </div>
-  </div>
+  {% include "admin/includes/confirm_modal.html" %}
   <script src="{{ url_for('static', filename='js/toast.js') }}"></script>
   <script src="{{ url_for('static', filename='js/confirm.js') }}"></script>
   <script src="{{ url_for('static', filename='js/sortable.js') }}"></script>

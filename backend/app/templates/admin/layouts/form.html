@@ -1,0 +1,16 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+  <header class="page-header">
+    <div>
+      {% block form_eyebrow %}{% endblock %}
+      <h2>{% block form_title %}{% endblock %}</h2>
+      {% block form_description %}{% endblock %}
+    </div>
+    {% block form_header_aside %}{% endblock %}
+  </header>
+
+  <div class="form-wrapper">
+    {% block form_content %}{% endblock %}
+  </div>
+{% endblock %}

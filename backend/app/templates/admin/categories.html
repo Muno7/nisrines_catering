@@ -1,25 +1,12 @@
-{% extends "admin/base.html" %}
+{% extends "admin/layouts/dashboard.html" %}
+{% import "admin/macros/ui.html" as ui %}
 {% block title %}Categories{% endblock %}
 {% block head %}
+  {{ super() }}
   <script defer src="{{ url_for('static', filename='js/categories.js') }}"></script>
 {% endblock %}
-{% block content %}
-  <header class="page-header">
-    <div class="page-header__title">
-      <h2>Categories</h2>
-    </div>
-    <div class="page-header__nav">
-      <div class="nav-group">
-        <a class="nav-pill {% if request.endpoint == 'admin.products' %}is-active{% endif %}" href="{{ url_for('admin.products') }}">Products</a>
-        <a class="nav-pill {% if request.endpoint == 'admin.categories' %}is-active{% endif %}" href="{{ url_for('admin.categories') }}">Categories</a>
-        <a class="nav-pill {% if request.endpoint in ['admin.subscriptions', 'admin.new_subscription_plan', 'admin.edit_subscription_plan'] %}is-active{% endif %}" href="{{ url_for('admin.subscriptions') }}">Subscriptions</a>
-        <a class="nav-pill {% if request.endpoint == 'admin.catering' %}is-active{% endif %}" href="{{ url_for('admin.catering') }}">Catering</a>
-        <a class="nav-pill {% if request.endpoint == 'admin.slideshow' %}is-active{% endif %}" href="{{ url_for('admin.slideshow') }}">Slideshow</a>
-      </div>
-    </div>
-    <div class="page-header__actions"></div>
-  </header>
-
+{% block page_title %}Categories{% endblock %}
+{% block page_content %}
   <div class="card mb-3">
     <form method="post" class="actions align-center" style="gap:10px; flex-wrap:wrap;">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -58,24 +45,11 @@
               </td>
               <td class="muted">{{ counts.get(cat.id, 0) }}</td>
               <td>
-                <label class="switch">
-                  <input type="checkbox" class="status-toggle" data-category-id="{{ cat.id }}" data-previous="{{ current_status }}" {% if current_status == "active" %}checked{% endif %}>
-                  <span class="slider"></span>
-                </label>
+                {{ ui.status_switch("category", cat.id, current_status) }}
               </td>
               <td class="muted">{{ cat.created_at.strftime('%b %d %Y') }}</td>
               <td style="text-align:right; white-space:nowrap;">
-                  <button class="btn btn-icon btn-danger" type="button" title="Delete"
-                          data-confirm-form="delete-category-{{ cat.id }}"
-                          data-confirm-message="Delete {{ cat.name }}? This cannot be undone.">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polyline points="3 6 5 6 21 6"></polyline>
-                      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
-                      <path d="M10 11v6"></path>
-                      <path d="M14 11v6"></path>
-                      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
-                    </svg>
-                  </button>
+                  {{ ui.delete_button("delete-category-" ~ cat.id, "Delete " ~ cat.name ~ "? This cannot be undone.") }}
               </td>
             </tr>
           {% endfor %}
@@ -85,14 +59,9 @@
     </form>
 
     {% for cat in categories %}
-      <form id="delete-category-{{ cat.id }}" method="post" action="{{ url_for('admin.delete_category', category_id=cat.id) }}" style="display:none;">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      </form>
+      {{ ui.hidden_delete_form("delete-category-" ~ cat.id, url_for('admin.delete_category', category_id=cat.id)) }}
     {% endfor %}
   {% else %}
-    <div class="card">
-      <p class="row-title" style="margin:0 0 6px 0;">No categories yet</p>
-      <p class="muted" style="margin:0;">Create your first category to organize products.</p>
-    </div>
+    {{ ui.empty_state("No categories yet", "Create your first category to organize products.") }}
   {% endif %}
 {% endblock %}

@@ -1,48 +1,34 @@
-{% extends "admin/base.html" %}
+{% extends "admin/layouts/form.html" %}
+{% import "admin/macros/forms.html" as forms %}
 {% block title %}{{ "Edit Subscription Plan" if is_edit else "New Subscription Plan" }}{% endblock %}
-{% block content %}
-  <header class="page-header">
-    <div>
-      <p class="eyebrow">Subscription pricing</p>
-      <h2>{{ "Edit subscription plan" if is_edit else "Create a subscription plan" }}</h2>
-      {% if not is_edit %}
-        <p class="muted" style="margin:4px 0 0 0;">If a plan with the same type and days already exists, it will be updated.</p>
-      {% endif %}
-    </div>
-  </header>
-
-  <div class="form-wrapper">
-    <form method="post" class="form-grid single-column">
-      {{ form.hidden_tag() }}
-
-      <section class="form-card">
-        <div class="field" data-field="audience">
-          {{ form.audience.label }}{{ form.audience(required=True) }}
-          {% for error in form.audience.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-        </div>
-
-        <div class="field" data-field="days_per_month">
-          {{ form.days_per_month.label }}{{ form.days_per_month(min=1, step=1, inputmode="numeric", required=True) }}
-          {% for error in form.days_per_month.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-        </div>
-
-        <div class="two-col">
-          <div class="field" data-field="price_plat_du_jour">
-            {{ form.price_plat_du_jour.label }}{{ form.price_plat_du_jour(min=0, step=1, inputmode="numeric", required=True) }}
-            {% for error in form.price_plat_du_jour.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-          </div>
-          <div class="field" data-field="price_with_salad">
-            {{ form.price_with_salad.label }}{{ form.price_with_salad(min=0, step=1, inputmode="numeric", required=True) }}
-            {% for error in form.price_with_salad.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-          </div>
-        </div>
-      </section>
-
-      <div class="actions full-row">
-        <a class="btn btn-ghost" href="{{ url_for('admin.subscriptions') }}">Cancel</a>
-        <button class="btn" type="submit">{{ "Save changes" if is_edit else "Create plan" }}</button>
-      </div>
-    </form>
-  </div>
+{% block form_eyebrow %}
+  <p class="eyebrow">Subscription pricing</p>
 {% endblock %}
+{% block form_title %}
+  {{ "Edit subscription plan" if is_edit else "Create a subscription plan" }}
+{% endblock %}
+{% block form_description %}
+  {% if not is_edit %}
+    <p class="muted" style="margin:4px 0 0 0;">If a plan with the same type and days already exists, it will be updated.</p>
+  {% endif %}
+{% endblock %}
+{% block form_content %}
+  <form method="post" class="form-grid single-column">
+    {{ form.hidden_tag() }}
 
+    <section class="form-card">
+      {{ forms.render_form_field(form.audience, required=true) }}
+      {{ forms.render_form_field(form.days_per_month, min=1, step=1, inputmode="numeric", required=true) }}
+
+      <div class="two-col">
+        {{ forms.render_form_field(form.price_plat_du_jour, min=0, step=1, inputmode="numeric", required=true) }}
+        {{ forms.render_form_field(form.price_with_salad, min=0, step=1, inputmode="numeric", required=true) }}
+      </div>
+    </section>
+
+    <div class="actions full-row">
+      <a class="btn btn-ghost" href="{{ url_for('admin.subscriptions') }}">Cancel</a>
+      <button class="btn" type="submit">{{ "Save changes" if is_edit else "Create plan" }}</button>
+    </div>
+  </form>
+{% endblock %}
