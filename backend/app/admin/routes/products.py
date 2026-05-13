@@ -24,7 +24,7 @@ def products():
     stats = ProductService.stats(items)
 
     return render_template(
-        "admin/products.html",
+        "admin/pages/catalog/products.html",
         products=items,
         stats=stats,
         categories=categories,
@@ -46,7 +46,7 @@ def new_product():
                 image_url = ImageService.upload(file)
             except ValidationError as e:
                 flash(str(e), "danger")
-                return render_template("admin/product_form.html", form=form, is_edit=False, product=None)
+                return render_template("admin/pages/catalog/product_form.html", form=form, is_edit=False, product=None)
 
         # --- create product ---
         try:
@@ -63,10 +63,10 @@ def new_product():
             )
         except (ValidationError, ConflictError) as e:
             flash(str(e), "danger")
-            return render_template("admin/product_form.html", form=form, is_edit=False, product=None)
+            return render_template("admin/pages/catalog/product_form.html", form=form, is_edit=False, product=None)
         except SQLAlchemyError:
             flash("Failed to create product due to a database error.", "danger")
-            return render_template("admin/product_form.html", form=form, is_edit=False, product=None)
+            return render_template("admin/pages/catalog/product_form.html", form=form, is_edit=False, product=None)
 
         if "save_add_another" in request.form:
             flash("Product created. Add another.", "success")
@@ -75,7 +75,7 @@ def new_product():
         flash("Product created.", "success")
         return redirect(url_for("admin.products"))
 
-    return render_template("admin/product_form.html", form=form, is_edit=False, product=None)
+    return render_template("admin/pages/catalog/product_form.html", form=form, is_edit=False, product=None)
 
 
 @bp.route("/products/<product_id>/edit", methods=["GET", "POST"])
@@ -98,7 +98,7 @@ def edit_product(product_id: str):
                 image_url = ImageService.upload(file)
             except ValidationError as e:
                 flash(str(e), "danger")
-                return render_template("admin/product_form.html", form=form, product=product, is_edit=True)
+                return render_template("admin/pages/catalog/product_form.html", form=form, product=product, is_edit=True)
 
         # --- update product ---
         try:
@@ -116,10 +116,10 @@ def edit_product(product_id: str):
             )
         except (ValidationError, ConflictError) as e:
             flash(str(e), "danger")
-            return render_template("admin/product_form.html", form=form, product=product, is_edit=True)
+            return render_template("admin/pages/catalog/product_form.html", form=form, product=product, is_edit=True)
         except SQLAlchemyError:
             flash("Failed to update product due to a database error.", "danger")
-            return render_template("admin/product_form.html", form=form, product=product, is_edit=True)
+            return render_template("admin/pages/catalog/product_form.html", form=form, product=product, is_edit=True)
 
         if "save_duplicate" in request.form:
             try:
@@ -132,7 +132,7 @@ def edit_product(product_id: str):
         flash("Product updated.", "success")
         return redirect(url_for("admin.products"))
 
-    return render_template("admin/product_form.html", form=form, product=product, is_edit=True)
+    return render_template("admin/pages/catalog/product_form.html", form=form, product=product, is_edit=True)
 
 
 @bp.post("/products/<product_id>/set-status")

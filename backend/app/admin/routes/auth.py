@@ -21,7 +21,7 @@ def login():
         except ValidationError as e:
             flash(str(e), "danger")
 
-    return render_template("admin/login.html", form=form)
+    return render_template("admin/pages/auth/login.html", form=form)
 
 
 @bp.get("/logout")

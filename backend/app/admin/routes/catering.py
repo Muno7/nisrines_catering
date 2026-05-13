@@ -12,7 +12,7 @@ from ..forms import CateringMenuForm
 @login_required
 def catering():
     return render_template(
-        "admin/catering.html",
+        "admin/pages/media/catering.html",
         form=CateringMenuForm(),
         menus=CateringService.list_all(),
     )

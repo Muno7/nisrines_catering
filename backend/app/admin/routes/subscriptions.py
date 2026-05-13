@@ -13,7 +13,7 @@ from ..forms import SubscriptionPlanForm
 def subscriptions():
     plans = SubscriptionService.list_all()
     return render_template(
-        "admin/subscriptions.html",
+        "admin/pages/subscriptions/subscriptions.html",
         person_plans=[p for p in plans if p.audience == "person"],
         family_plans=[p for p in plans if p.audience == "family"],
     )
@@ -23,7 +23,7 @@ def subscriptions():
 @login_required
 def new_subscription_plan():
     return render_template(
-        "admin/subscription_form.html",
+        "admin/pages/subscriptions/subscription_form.html",
         form=SubscriptionPlanForm(),
         plan=None,
         is_edit=False,
@@ -49,7 +49,7 @@ def create_subscription_plan():
         except SQLAlchemyError:
             flash("Failed to create subscription plan due to a database error.", "danger")
 
-    return render_template("admin/subscription_form.html", form=form, plan=None, is_edit=False)
+    return render_template("admin/pages/subscriptions/subscription_form.html", form=form, plan=None, is_edit=False)
 
 
 @bp.get("/subscriptions/<plan_id>/edit")
@@ -62,7 +62,7 @@ def edit_subscription_plan(plan_id: str):
         return redirect(url_for("admin.subscriptions"))
 
     return render_template(
-        "admin/subscription_form.html",
+        "admin/pages/subscriptions/subscription_form.html",
         form=SubscriptionPlanForm(obj=plan),
         plan=plan,
         is_edit=True,
@@ -95,7 +95,7 @@ def update_subscription_plan(plan_id: str):
         except SQLAlchemyError:
             flash("Failed to update subscription plan due to a database error.", "danger")
 
-    return render_template("admin/subscription_form.html", form=form, plan=plan, is_edit=True)
+    return render_template("admin/pages/subscriptions/subscription_form.html", form=form, plan=plan, is_edit=True)
 
 
 @bp.post("/subscriptions/<plan_id>/delete")

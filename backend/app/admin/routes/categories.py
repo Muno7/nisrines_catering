@@ -12,7 +12,7 @@ from ...exceptions import ValidationError, ConflictError, NotFoundError
 def categories():
     all_categories = CategoryService.list_all()
     counts = CategoryService.product_counts()
-    return render_template("admin/categories.html", categories=all_categories, counts=counts)
+    return render_template("admin/pages/catalog/categories.html", categories=all_categories, counts=counts)
 
 
 @bp.post("/categories")

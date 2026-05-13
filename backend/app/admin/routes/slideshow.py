@@ -12,7 +12,7 @@ from ..forms import SlideshowForm
 @login_required
 def slideshow():
     return render_template(
-        "admin/slideshow.html",
+        "admin/pages/media/slideshow.html",
         form=SlideshowForm(),
         images=SlideshowService.list_all(),
     )
