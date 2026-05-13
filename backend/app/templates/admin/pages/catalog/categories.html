@@ -8,12 +8,12 @@
 {% block page_title %}Categories{% endblock %}
 {% block page_content %}
   <div class="card mb-3">
-    <form method="post" class="actions align-center" style="gap:10px; flex-wrap:wrap;">
+    <form method="post" class="actions align-center">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <input type="hidden" name="action" value="create">
-      <div class="field tight" style="margin:0;">
+      <div class="field tight">
         <label for="new_cat">Add category</label>
-        <div style="display:flex; gap:8px; align-items:center;">
+        <div class="inline-create">
           <input id="new_cat" name="name" placeholder="Ex: Appetizers" required>
           <button class="btn" type="submit">Create</button>
         </div>
@@ -30,10 +30,10 @@
         <thead>
           <tr>
             <th>Category</th>
-            <th style="width:120px;">Products</th>
-            <th style="width:120px;">Status</th>
-            <th style="width:140px;">Created</th>
-            <th style="text-align:right;">Actions</th>
+            <th class="col-status">Products</th>
+            <th class="col-status">Status</th>
+            <th class="col-date">Created</th>
+            <th class="cell-actions">Actions</th>
           </tr>
         </thead>
         <tbody data-sortable>
@@ -41,14 +41,14 @@
             {% set current_status = "active" if cat.active else "inactive" %}
             <tr data-id="{{ cat.id }}">
               <td>
-                <input type="text" name="name_{{ cat.id }}" value="{{ cat.name }}" class="input-medium name-input" style="min-width:220px;" data-original="{{ cat.name }}">
+                <input type="text" name="name_{{ cat.id }}" value="{{ cat.name }}" class="input-medium name-input" data-original="{{ cat.name }}">
               </td>
               <td class="muted">{{ counts.get(cat.id, 0) }}</td>
               <td>
                 {{ ui.status_switch("category", cat.id, current_status) }}
               </td>
               <td class="muted">{{ cat.created_at.strftime('%b %d %Y') }}</td>
-              <td style="text-align:right; white-space:nowrap;">
+              <td class="cell-actions">
                   {{ ui.delete_button("delete-category-" ~ cat.id, "Delete " ~ cat.name ~ "? This cannot be undone.") }}
               </td>
             </tr>

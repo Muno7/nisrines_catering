@@ -28,7 +28,7 @@
 {% endmacro %}
 
 {% macro hidden_delete_form(form_id, action) %}
-  <form id="{{ form_id }}" method="post" action="{{ action }}" style="display:none;">
+  <form id="{{ form_id }}" method="post" action="{{ action }}" hidden>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   </form>
 {% endmacro %}
@@ -44,10 +44,10 @@
   </label>
 {% endmacro %}
 
-{% macro empty_state(title, message, style="") %}
-  <div class="card"{% if style %} style="{{ style }}"{% endif %}>
-    <p class="row-title" style="margin:0 0 6px 0;">{{ title }}</p>
-    <p class="muted" style="margin:0;">{{ message }}</p>
+{% macro empty_state(title, message) %}
+  <div class="card empty-state">
+    <p class="row-title">{{ title }}</p>
+    <p class="muted">{{ message }}</p>
   </div>
 {% endmacro %}
 

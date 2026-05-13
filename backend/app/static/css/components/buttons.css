@@ -2,18 +2,27 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  height: 35px;
-  min-width: 100px;
-  padding: 6px 12px;
+  gap: var(--space-2);
+  min-height: 40px;
+  max-width: 100%;
+  min-width: 0;
+  padding: 8px 14px;
   border-radius: var(--radius-md);
   border: 1px solid transparent;
+  font-size: var(--font-size-sm);
   font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
   background: var(--color-primary);
   color: var(--color-primary-contrast);
-  box-shadow: 0 10px 24px rgba(232, 130, 42, 0.22);
+  box-shadow: 0 8px 20px rgba(232, 130, 42, 0.18);
 }
 
 .btn:hover {
@@ -25,28 +34,49 @@
   transform: translateY(0);
 }
 
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
 .btn-secondary {
-  background: #fff;
+  background: var(--color-surface);
   color: var(--color-text);
   border-color: var(--color-border);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-xs);
+}
+
+.btn-secondary:hover {
+  background: var(--color-bg-soft);
+  border-color: var(--color-border-strong);
+  color: var(--color-heading);
 }
 
 .btn-ghost {
-  background: #fff;
+  background: var(--color-surface);
   border-color: var(--color-border);
   color: var(--color-text);
   box-shadow: none;
 }
 
+.btn-ghost:hover {
+  background: var(--color-surface-warm);
+  border-color: var(--color-border-strong);
+}
+
 .btn-danger {
   background: var(--color-danger);
-  color: #fff;
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  background: #931b13;
 }
 
 .btn.btn-icon.btn-danger {
   box-shadow: none;
 }
+
 .btn[disabled] {
   opacity: 0.6;
   cursor: not-allowed;
@@ -63,7 +93,13 @@
   width: 38px;
   min-width: 38px;
   height: 38px;
+  min-height: 38px;
   padding: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-md);
   justify-content: center;
+}
+
+.btn-icon svg {
+  width: 16px;
+  height: 16px;
 }

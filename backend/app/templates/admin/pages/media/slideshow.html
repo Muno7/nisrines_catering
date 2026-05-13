@@ -23,28 +23,28 @@
   {% if images %}
     <form method="post" action="{{ url_for('admin.reorder_slideshow') }}">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <div class="card" style="margin-top:12px; overflow:auto;">
+      <div class="card media-list-card">
         <h3>Current slides ({{ images|length }})</h3>
         <table class="responsive-table table">
           <thead>
             <tr>
-              <th style="width:80px;">Image</th>
+              <th class="col-image">Image</th>
               <th>Slide</th>
-              <th style="text-align:right;">Actions</th>
+              <th class="cell-actions">Actions</th>
             </tr>
           </thead>
           <tbody data-sortable>
             {% for img in images %}
               <tr data-id="{{ img.id }}">
-                <td style="width:80px;">
-                  <img class="thumb" src="{{ img.image }}" alt="Slide {{ loop.index }}" style="width:70px; height:70px; object-fit:cover; border-radius:6px;">
+                <td class="cell-image">
+                  <img class="thumb thumb--table" src="{{ img.image }}" alt="Slide {{ loop.index }}">
                 </td>
                 <td>
                   <div class="text-block">
                     <div class="row-title">Slide {{ loop.index }}</div>
                   </div>
                 </td>
-                <td style="text-align:right;">
+                <td class="cell-actions">
                   {{ ui.delete_submit_button(url_for('admin.delete_slide', slide_id=img.id)) }}
                 </td>
               </tr>

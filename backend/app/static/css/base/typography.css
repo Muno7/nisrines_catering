@@ -1,10 +1,25 @@
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Playfair Display", serif;
-  font-weight: 600;
-  color: var(--color-text);
+  color: var(--color-heading);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.15;
 }
 
-p {
+h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+h2 {
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+}
+
+h3 {
+  font-size: var(--font-size-lg);
+}
+
+p,
+small {
   color: var(--color-text);
 }
 
@@ -16,11 +31,21 @@ p {
 .eyebrow {
   margin: 0;
   color: var(--color-muted);
-  font-size: 0.85rem;
-  letter-spacing: 0.5px;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
 .row-title {
   font-weight: 600;
+  color: var(--color-heading);
+}
+
+.value {
+  color: var(--color-heading);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  line-height: 1.1;
 }

@@ -26,7 +26,7 @@
       <div class="field-header">
         <div>
           <h3>{{ section.title }}</h3>
-          <p class="muted" style="margin:0;">{{ section.description }}</p>
+          <p class="muted u-m-0">{{ section.description }}</p>
         </div>
       </div>
 
@@ -38,7 +38,7 @@
                 <th>Days / month</th>
                 <th>Plat du jour ($)</th>
                 <th>With salad ($)</th>
-                <th style="text-align:right;">Actions</th>
+                <th class="cell-actions">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -47,7 +47,7 @@
                   <td>{{ plan.days_per_month }} days</td>
                   <td>{{ plan.price_plat_du_jour }}</td>
                   <td>{{ plan.price_with_salad }}</td>
-                  <td style="text-align:right;">
+                  <td class="cell-actions">
                     {{ ui.edit_button(url_for('admin.edit_subscription_plan', plan_id=plan.id)) }}
                     {{ ui.delete_button(
                       "delete-subscription-plan-" ~ plan.id,
@@ -60,7 +60,7 @@
           </table>
         </div>
       {% else %}
-        <p class="muted" style="margin:10px 0 0 0;">No plans yet.</p>
+        <p class="muted u-mt-3">No plans yet.</p>
       {% endif %}
     </div>
   {% endfor %}

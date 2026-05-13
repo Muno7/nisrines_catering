@@ -1,12 +1,13 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: var(--space-2);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
 }
 
 .table th,
 .table td {
-  padding: 12px 10px;
+  padding: 13px 12px;
   border-bottom: 1px solid var(--color-border);
   text-align: left;
   vertical-align: middle;
@@ -14,21 +15,18 @@
 
 .table th {
   color: var(--color-muted);
-  font-size: 0.95rem;
-  letter-spacing: 0.3px;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
-/* For categories */
-.row-save-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 110px;
-  visibility: hidden;
+.table tbody tr {
+  transition: background-color var(--transition-fast);
 }
-.row-save-btn.show {
-  visibility: visible;
+
+.table tbody tr:hover {
+  background: rgba(255, 243, 236, 0.55);
 }
 
 .products-table {
@@ -55,6 +53,65 @@
   width: 100%;
 }
 
+.table-scroll {
+  margin-top: var(--space-2);
+  max-height: 62vh;
+  overflow: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-xs);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+
+.table-scroll .table {
+  margin: 0;
+}
+
+.table.sticky-header thead th {
+  position: sticky;
+  top: 0;
+  background: var(--color-surface);
+  z-index: 2;
+  box-shadow: 0 1px 0 var(--color-border);
+}
+
+.table-scroll tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.col-checkbox {
+  width: 40px;
+}
+
+.col-image,
+.cell-image {
+  width: 84px;
+}
+
+.col-category,
+.col-day {
+  width: 140px;
+}
+
+.col-status {
+  width: 120px;
+}
+
+.col-date {
+  width: 140px;
+}
+
+.col-actions {
+  width: 126px;
+}
+
+.cell-actions {
+  text-align: right;
+  white-space: nowrap;
+}
+
 @media (max-width: 720px) {
   .table thead {
     display: none;
@@ -69,50 +126,16 @@
   .table tr {
     margin-bottom: var(--space-3);
     border: 1px solid var(--color-border);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     padding: var(--space-3);
-    background: #fff;
-    box-shadow: var(--shadow-sm);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-xs);
   }
   .table td {
     border: none;
     padding: 6px 0;
   }
-}
 
-
-.table-scroll {
-  margin-top: var(--space-2);
-  max-height: 60vh;
-  overflow: auto;
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: var(--shadow-sm);
-  scrollbar-width: none; /* Firefox */
-}
-
-.table-scroll::-webkit-scrollbar {
-  display: none; /* Safari & Chrome */
-}
-
-.table-scroll .table {
-  margin: 0;
-}
-
-.table.sticky-header thead th {
-  position: sticky;
-  top: 0;
-  background: #fff;
-  z-index: 2;
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.03);
-}
-
-.table-scroll tbody tr:last-child td {
-  border-bottom: none;
-}
-
-@media (max-width: 720px) {
   .table-scroll {
     max-height: none;
     overflow: visible;

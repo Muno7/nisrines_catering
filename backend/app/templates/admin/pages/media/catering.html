@@ -14,7 +14,7 @@
       <div class="field">
         {{ form.images.label }}{{ form.images(class="file-input") }}
       </div>
-      <div class="actions" style="margin-top:12px;">
+      <div class="actions upload-actions">
         <button class="btn" type="submit">Upload</button>
       </div>
     </div>
@@ -23,28 +23,28 @@
   {% if menus %}
     <form method="post" action="{{ url_for('admin.reorder_catering_menus') }}">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <div class="card" style="margin-top:12px; overflow:auto;">
+      <div class="card media-list-card">
         <h3>Current menus ({{ menus|length }})</h3>
         <table class="responsive-table table">
           <thead>
             <tr>
-              <th style="width:80px;">Image</th>
+              <th class="col-image">Image</th>
               <th>Menu</th>
-              <th style="text-align:right;">Actions</th>
+              <th class="cell-actions">Actions</th>
             </tr>
           </thead>
           <tbody data-sortable>
             {% for img in menus %}
               <tr data-id="{{ img.id }}">
-                <td style="width:80px;">
-                  <img class="thumb" src="{{ img.image }}" alt="Menu {{ loop.index }}" style="width:70px; height:70px; object-fit:cover; border-radius:6px;">
+                <td class="cell-image">
+                  <img class="thumb thumb--table" src="{{ img.image }}" alt="Menu {{ loop.index }}">
                 </td>
                 <td>
                   <div class="text-block">
                     <div class="row-title">Menu {{ loop.index }}</div>
                   </div>
                 </td>
-                <td style="text-align:right;">
+                <td class="cell-actions">
                   {{ ui.delete_submit_button(url_for('admin.delete_catering_menu', menu_id=img.id)) }}
                 </td>
               </tr>
@@ -54,7 +54,7 @@
       </div>
     </form>
   {% else %}
-    <div class="card" style="margin-top:12px;">
+    <div class="card u-mt-3">
       <p class="muted">No catering menus yet. Upload images to get started.</p>
     </div>
   {% endif %}
