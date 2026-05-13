@@ -3,17 +3,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalMessage = document.getElementById("confirm-message");
   const confirmBtn = document.getElementById("confirm-yes");
   const cancelBtn = document.getElementById("confirm-no");
+  const hideDelayMs = 200;
   let pendingFormId = null;
 
   const openModal = (message, formId) => {
     pendingFormId = formId;
     if (modalMessage) modalMessage.textContent = message;
-    if (modal) modal.classList.add("show");
+    if (modal) {
+      modal.hidden = false;
+      modal.classList.add("show");
+    }
   };
 
   const closeModal = () => {
     pendingFormId = null;
-    if (modal) modal.classList.remove("show");
+    if (modal) {
+      modal.classList.remove("show");
+      window.setTimeout(() => {
+        if (!modal.classList.contains("show")) {
+          modal.hidden = true;
+        }
+      }, hideDelayMs);
+    }
   };
 
   document.querySelectorAll("[data-confirm-form]").forEach((btn) => {
