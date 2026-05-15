@@ -17,6 +17,12 @@
   flex-wrap: wrap;
 }
 
+.page-header__nav {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
 @media (max-width: 860px) {
   .page-header {
     grid-template-columns: 1fr;
@@ -24,6 +30,10 @@
   }
 
   .page-header__actions {
+    justify-content: flex-start;
+  }
+
+  .page-header__nav {
     justify-content: flex-start;
   }
 }

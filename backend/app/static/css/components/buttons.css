@@ -22,7 +22,7 @@
     transform var(--transition-fast);
   background: var(--color-primary);
   color: var(--color-primary-contrast);
-  box-shadow: 0 8px 20px rgba(232, 130, 42, 0.18);
+  box-shadow: var(--shadow-primary);
 }
 
 .btn:hover {

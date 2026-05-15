@@ -1,0 +1,49 @@
+.auth-layout {
+  display: grid;
+  place-items: center;
+  min-height: 70vh;
+  padding: var(--space-4) 0;
+}
+
+.auth-card {
+  max-width: 520px;
+  width: 100%;
+  padding: var(--space-5);
+  display: grid;
+  gap: var(--space-4);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+}
+
+.auth-header {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.auth-pill {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-lg);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.auth-header h2 {
+  margin: 0 0 var(--space-1);
+}
+
+.auth-meta {
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.auth-form .actions {
+  width: 100%;
+}

@@ -1,15 +1,17 @@
 @layer tokens, reset, base, layout, components, utilities, pages;
 
-@import url("./abstracts/tokens.css") layer(tokens);
+@import url("./base/tokens.css") layer(tokens);
 
 @import url("./base/reset.css") layer(reset);
 @import url("./base/global.css") layer(base);
 @import url("./base/typography.css") layer(base);
 
-@import url("./layout/shell.css") layer(layout);
-@import url("./layout/topbar.css") layer(layout);
-@import url("./layout/page-header.css") layer(layout);
+@import url("./layouts/shell.css") layer(layout);
+@import url("./layouts/topbar.css") layer(layout);
+@import url("./layouts/page-header.css") layer(layout);
+@import url("./layouts/form.css") layer(layout);
 
+@import url("./components/actions.css") layer(components);
 @import url("./components/buttons.css") layer(components);
 @import url("./components/forms.css") layer(components);
 @import url("./components/cards.css") layer(components);
@@ -19,8 +21,13 @@
 @import url("./components/feedback.css") layer(components);
 @import url("./components/modal.css") layer(components);
 @import url("./components/media.css") layer(components);
+@import url("./components/sortable.css") layer(components);
 
 @import url("./utilities/spacing.css") layer(utilities);
-@import url("./utilities/display.css") layer(utilities);
 
-@import url("./pages/admin.css") layer(pages);
+@import url("./pages/errors.css") layer(pages);
+@import url("./pages/admin/auth.css") layer(pages);
+@import url("./pages/admin/media.css") layer(pages);
+@import url("./pages/admin/catalog/products.css") layer(pages);
+@import url("./pages/admin/catalog/categories.css") layer(pages);
+@import url("./pages/admin/subscriptions/subscriptions.css") layer(pages);

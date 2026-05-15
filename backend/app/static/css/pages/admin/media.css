@@ -1,0 +1,8 @@
+.upload-actions {
+  margin-top: var(--space-3);
+}
+
+.media-list-card {
+  margin-top: var(--space-3);
+  overflow: auto;
+}

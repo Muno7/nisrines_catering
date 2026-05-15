@@ -1,0 +1,32 @@
+.two-col {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+  gap: var(--space-4);
+}
+
+.form-grid.single-column {
+  grid-template-columns: 1fr;
+}
+
+.form-wrapper {
+  max-width: 820px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.full-row {
+  grid-column: 1 / -1;
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 900px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
