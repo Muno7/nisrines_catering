@@ -48,10 +48,11 @@
   <label class="switch">
     <input type="checkbox"
            class="status-toggle"
+           aria-label="Toggle {{ entity }} status"
            data-{{ entity }}-id="{{ entity_id }}"
            data-previous="{{ current_status }}"
            {% if current_status == "active" %}checked{% endif %}>
-    <span class="slider"></span>
+    <span class="switch-slider"></span>
   </label>
 {% endmacro %}
 

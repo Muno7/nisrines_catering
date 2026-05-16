@@ -13,7 +13,8 @@
 
 @import url("./components/actions.css") layer(components);
 @import url("./components/buttons.css") layer(components);
-@import url("./components/forms.css") layer(components);
+@import url("./components/form-controls.css") layer(components);
+@import url("./components/switch.css") layer(components);
 @import url("./components/cards.css") layer(components);
 @import url("./components/badges.css") layer(components);
 @import url("./components/tables.css") layer(components);
