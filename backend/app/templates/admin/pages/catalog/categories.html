@@ -41,7 +41,7 @@
             {% set current_status = "active" if cat.active else "inactive" %}
             <tr data-id="{{ cat.id }}">
               <td>
-                <input type="text" name="name_{{ cat.id }}" value="{{ cat.name }}" class="input-medium name-input" data-original="{{ cat.name }}">
+                <input type="text" name="name_{{ cat.id }}" value="{{ cat.name }}" class="input-medium name-input" data-original="{{ cat.name }}" data-category-id="{{ cat.id }}">
               </td>
               <td class="muted">{{ counts.get(cat.id, 0) }}</td>
               <td>
@@ -49,7 +49,8 @@
               </td>
               <td class="muted">{{ cat.created_at.strftime('%b %d %Y') }}</td>
               <td class="cell-actions">
-                  {{ ui.delete_button("delete-category-" ~ cat.id, "Delete " ~ cat.name ~ "? This cannot be undone.") }}
+                {{ ui.delete_button("delete-category-" ~ cat.id, "Delete " ~ cat.name ~ "? This cannot be undone.") }}
+                {{ ui.save_button("update-category-" ~ cat.id, extra_class="category-save-btn", disabled=true, aria_hidden=true) }}
               </td>
             </tr>
           {% endfor %}
@@ -59,6 +60,12 @@
     </form>
 
     {% for cat in categories %}
+      <form id="update-category-{{ cat.id }}" method="post" action="{{ url_for('admin.categories') }}" hidden>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="action" value="update">
+        <input type="hidden" name="category_id" value="{{ cat.id }}">
+        <input type="hidden" name="name" value="{{ cat.name }}" data-category-update-name="{{ cat.id }}">
+      </form>
       {{ ui.hidden_delete_form("delete-category-" ~ cat.id, url_for('admin.delete_category', category_id=cat.id)) }}
     {% endfor %}
   {% else %}

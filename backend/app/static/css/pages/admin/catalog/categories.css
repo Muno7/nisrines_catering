@@ -3,6 +3,16 @@
   min-width: min(220px, 100%);
 }
 
+.category-save-btn {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.category-save-btn.is-visible {
+  visibility: visible;
+  pointer-events: auto;
+}
+
 .inline-create {
   display: flex;
   gap: var(--space-2);

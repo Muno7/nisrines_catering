@@ -1,6 +1,40 @@
 document.addEventListener("DOMContentLoaded", () => {
   const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || "";
 
+  document.querySelectorAll(".name-input[data-category-id]").forEach((input) => {
+    const row = input.closest("tr");
+    const saveButton = row?.querySelector(".category-save-btn");
+    const updateNameInput = document.querySelector(
+      `[data-category-update-name="${input.dataset.categoryId}"]`
+    );
+
+    if (!saveButton || !updateNameInput) return;
+
+    const syncSaveState = () => {
+      const original = (input.dataset.original || "").trim();
+      const current = input.value.trim();
+      const changed = current !== original;
+
+      saveButton.classList.toggle("is-visible", changed);
+      saveButton.setAttribute("aria-hidden", String(!changed));
+      saveButton.disabled = !current;
+      updateNameInput.value = input.value;
+    };
+
+    input.addEventListener("input", syncSaveState);
+    input.addEventListener("change", syncSaveState);
+    input.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" || !saveButton.classList.contains("is-visible") || saveButton.disabled) return;
+      event.preventDefault();
+      updateNameInput.value = input.value;
+      saveButton.click();
+    });
+
+    saveButton.addEventListener("click", () => {
+      updateNameInput.value = input.value;
+    });
+  });
+
   document.querySelectorAll(".status-toggle").forEach((toggle) => {
     toggle.addEventListener("change", async (event) => {
       const input = event.currentTarget;

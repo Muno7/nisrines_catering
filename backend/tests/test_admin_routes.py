@@ -261,6 +261,22 @@ class TestCategoryRoutes:
         assert response.status_code == 200
         assert b"already exists" in response.data.lower()
 
+    def test_update_category_name(self, logged_in_client, category):
+        response = logged_in_client.post(
+            "/admin/categories",
+            data={
+                "action": "update",
+                "category_id": category.id,
+                "name": "Updated Category",
+            },
+            follow_redirects=True,
+        )
+        assert response.status_code == 200
+        assert b"category updated" in response.data.lower()
+
+        updated = CategoryService._get_or_raise(category.id)
+        assert updated.name == "Updated Category"
+
     def test_delete_empty_category(self, logged_in_client, category):
         response = logged_in_client.post(
             f"/admin/categories/{category.id}/delete",
