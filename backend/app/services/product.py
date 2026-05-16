@@ -8,6 +8,9 @@ from ..models import Product, Category
 from ..exceptions import ValidationError, NotFoundError
 
 
+_UNSET = object()
+
+
 class ProductService:
 
     @staticmethod
@@ -65,7 +68,7 @@ class ProductService:
         name: str | None = None,
         name_ar: str | None = None,
         price_single: int | None = None,
-        price_family: int | None = None,
+        price_family: int | None | object = _UNSET,
         image: str | None = None,
         category_id: int | None = None,
         ingredients: str | None = None,
@@ -78,7 +81,7 @@ class ProductService:
             product.set_name_ar(name_ar)
         if price_single is not None:
             product.set_price_single(price_single)
-        if price_family is not None:
+        if price_family is not _UNSET:
             product.set_price_family(price_family)
         if image is not None:
             product.image = image
@@ -217,4 +220,3 @@ class ProductService:
             .order_by(Product.updated_at.desc())
             .all()
         )
-

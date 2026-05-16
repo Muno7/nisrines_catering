@@ -9,7 +9,7 @@ from wtforms import (
     SelectField,
     MultipleFileField,
 )
-from wtforms.validators import DataRequired, NumberRange, Length, Optional
+from wtforms.validators import DataRequired, InputRequired, NumberRange, Length, Optional
 from werkzeug.utils import secure_filename
 
 DAY_CHOICES = [
@@ -47,7 +47,7 @@ class ProductForm(FlaskForm):
 
     priceSingleCents = IntegerField(
         "Single price (cents)",
-        validators=[DataRequired(), NumberRange(min=0)]
+        validators=[InputRequired(), NumberRange(min=0)]
     )
 
     priceFamilyCents = IntegerField(
@@ -116,12 +116,12 @@ class SubscriptionPlanForm(FlaskForm):
 
     price_plat_du_jour = IntegerField(
         "Plat du jour ($)",
-        validators=[DataRequired(), NumberRange(min=0)],
+        validators=[InputRequired(), NumberRange(min=0)],
     )
 
     price_with_salad = IntegerField(
         "With salad ($)",
-        validators=[DataRequired(), NumberRange(min=0)],
+        validators=[InputRequired(), NumberRange(min=0)],
     )
 
 

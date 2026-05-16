@@ -31,6 +31,8 @@ def create_app(config_object: type[BaseConfig] = DevelopmentConfig) -> Flask:
 
     @app.errorhandler(404)
     def not_found(e):
+        if request.path.startswith("/api/"):
+            return jsonify({"ok": False, "error": "Not found."}), 404
         return render_template("errors/404.html"), 404
 
     @app.errorhandler(500)

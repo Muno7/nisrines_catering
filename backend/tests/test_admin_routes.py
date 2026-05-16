@@ -4,48 +4,10 @@ Admin route tests.
 S3 uploads are mocked — no real AWS calls are made.
 Every test gets a fresh DB (via the db fixture in conftest.py).
 """
-import pytest
 from io import BytesIO
 from unittest.mock import patch
 
-from app.services import AdminService, CategoryService, ProductService, SubscriptionService, SlideshowService, CateringService
-
-
-# ---------------------------------------------------------------------------
-# Fixtures
-# ---------------------------------------------------------------------------
-
-@pytest.fixture
-def client(app):
-    return app.test_client()
-
-
-@pytest.fixture
-def admin(db):
-    """Create an admin user and return it."""
-    return AdminService.create("admin", "password123")
-
-
-@pytest.fixture
-def logged_in_client(client, admin):
-    """Return a test client that is already logged in as admin."""
-    client.post("/admin/login", data={"username": "admin", "password": "password123"})
-    return client
-
-
-@pytest.fixture
-def category(db):
-    return CategoryService.create("Mains")
-
-
-@pytest.fixture
-def product(db, category):
-    return ProductService.create(
-        name="Grilled Chicken",
-        price_single=1500,
-
-        category_id=category.id,
-    )
+from app.services import CategoryService, ProductService, SubscriptionService, SlideshowService, CateringService
 
 
 # ---------------------------------------------------------------------------

@@ -46,10 +46,12 @@ def manage_categories():
             flash("Failed to update category due to a database error.", "danger")
 
     elif action == "reorder":
-        ids = [int(i) for i in request.form.getlist("item_ids")] #ids for categories are integers not UUID strings
         try:
+            ids = [int(i) for i in request.form.getlist("item_ids")]
             CategoryService.reorder(ids)
             flash("Category order updated.", "success")
+        except (TypeError, ValueError):
+            flash("Invalid category order.", "danger")
         except SQLAlchemyError:
             flash("Failed to save category order due to a database error.", "danger")
 

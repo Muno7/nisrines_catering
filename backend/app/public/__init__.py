@@ -5,11 +5,11 @@ from ..exceptions import AppError
 
 @bp.errorhandler(AppError)
 def handle_app_error(e: AppError):
-    return jsonify({"ok": False, "message": str(e)}), e.status_code
+    return jsonify({"ok": False, "error": str(e)}), e.status_code
 
 @bp.errorhandler(500)
 def server_error(_):
-    return jsonify({"ok": False, "message": "An unexpected error occurred."}), 500
+    return jsonify({"ok": False, "error": "An unexpected error occurred."}), 500
 
 
 __all__ = ["bp"]

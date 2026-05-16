@@ -69,6 +69,11 @@ class Product(db.Model):
     def __repr__(self) -> str:
         return f"<Product id={self.id} name={self.name!r} status={self.status!r}>"
 
+    @property
+    def is_active(self) -> bool:
+        """Legacy template compatibility for the old boolean product flag."""
+        return self.status == "active"
+
     def set_name(self, name: str) -> None:
         text = (name or "").strip()
         if not text:
