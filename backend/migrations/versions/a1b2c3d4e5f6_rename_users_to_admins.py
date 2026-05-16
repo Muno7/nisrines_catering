@@ -16,6 +16,8 @@ depends_on = None
 
 
 def upgrade():
+    # Keep existing login records while aligning the table name with the
+    # admin-only authentication model.
     op.rename_table('users', 'admins')
 
 

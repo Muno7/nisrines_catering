@@ -30,7 +30,8 @@ ALLOWED_MIME = {
 
 def allowed_file(filename: str, content_type: str) -> bool:
     ext = filename.rsplit(".", 1)[-1].lower()
-    # Accept broader set of common image types; Pillow will convert them to JPEG
+    # Browser-provided MIME values can vary, so extension allow-listing remains
+    # the main guardrail while still accepting valid `image/*` uploads.
     return ext in ALLOWED_EXTENSIONS and (
         content_type in ALLOWED_MIME or content_type.startswith("image/")
     )
@@ -46,6 +47,12 @@ def build_s3_client():
 
 
 def _object_url(bucket: str, key: str) -> str:
+    """
+    Build the URL stored in the database and sent to the frontend/admin UI.
+
+    `S3_PUBLIC_BASE_URL` lets production use a CDN or custom asset hostname
+    without changing existing upload records or response shapes.
+    """
     base_url = current_app.config.get("S3_PUBLIC_BASE_URL")
     if base_url:
         return f"{base_url.rstrip('/')}/{key}"
@@ -64,7 +71,7 @@ def _hash_stream(stream) -> str:
 
 
 def upload_file(file_storage) -> Tuple[bool, str]:
-    """Upload file to S3 and return (success, url or error)."""
+    """Return a public URL on success, or a route-displayable error on failure."""
     filename = file_storage.filename or ""
     content_type = file_storage.mimetype or mimetypes.guess_type(filename)[0] or ""
 
@@ -89,8 +96,10 @@ def upload_file(file_storage) -> Tuple[bool, str]:
         return False, "S3 bucket not configured."
 
     client = build_s3_client()
-    # Use deterministic key based on file hash to avoid duplicates
     digest = _hash_stream(file_storage.stream)
+    # Hash-based keys deduplicate exact uploads. NOTE: this helper currently
+    # serves product, slideshow, and catering uploads; changing the shared prefix
+    # may require migrating stored image URLs already consumed by clients.
     key = f"products/{digest}.{ext}"
 
     try:

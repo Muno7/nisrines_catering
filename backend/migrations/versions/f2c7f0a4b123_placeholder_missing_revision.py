@@ -16,7 +16,8 @@ depends_on = None
 
 
 def upgrade():
-    # Placeholder revision to restore migration chain.
+    # This revision exists only to preserve Alembic history for databases that
+    # already reference the missing id; do not delete or squash it casually.
     pass
 
 

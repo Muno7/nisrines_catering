@@ -49,6 +49,8 @@ class Product(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(255), nullable=False)
     name_ar = db.Column(db.String(255), nullable=True)
+    # Keep the camelCase database names because admin forms and migration
+    # history already depend on this spelling.
     priceSingleCents = db.Column(db.Integer, nullable=False)
     priceFamilyCents = db.Column(db.Integer, nullable=True)
     image = db.Column(db.Text, nullable=True)
@@ -108,11 +110,19 @@ class Product(db.Model):
         self.day = (day or "").strip() or None
 
     def to_dict(self) -> dict:
+        """
+        Preserve the public product JSON contract used by the deployed frontend.
+
+        Single-price items still expose `priceCents`; products with a positive
+        family price expose the newer nested `price` shape. Coordinate frontend
+        releases before normalizing this response.
+        """
         data = {
             "id": self.id,
             "name": self.name,
             "name_ar": self.name_ar,
             "image": self.image,
+            # Public filters/grouping use the stable category slug, not DB ids.
             "category": self.category_rel.slug if self.category_rel else None,
             "ingredients": self.ingredients,
             "day": self.day,
@@ -261,6 +271,8 @@ class Category(db.Model):
         "Product",
         backref="category_rel",
         lazy=True,
+        # Category maintenance must not delete menu items; CategoryService.delete
+        # blocks deletion while products still reference the category.
         cascade="save-update",
     )
 

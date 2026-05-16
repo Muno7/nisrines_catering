@@ -38,7 +38,6 @@ def new_product():
     form = ProductForm()
 
     if form.validate_on_submit():
-        # --- image upload ---
         image_url = None
         file = form.image.data
         if file and getattr(file, "filename", ""):
@@ -48,7 +47,6 @@ def new_product():
                 flash(str(e), "danger")
                 return render_template("admin/pages/catalog/product_form.html", form=form, is_edit=False, product=None)
 
-        # --- create product ---
         try:
             ProductService.create(
                 name=form.name.data,
@@ -90,7 +88,8 @@ def edit_product(product_id: str):
     form = ProductForm(obj=product)
 
     if form.validate_on_submit():
-        # --- image upload ---
+        # Keep product image replacement optional so admins can edit text,
+        # prices, or scheduling without re-uploading the existing S3 asset.
         image_url = None
         file = form.image.data
         if file and getattr(file, "filename", ""):
@@ -100,7 +99,6 @@ def edit_product(product_id: str):
                 flash(str(e), "danger")
                 return render_template("admin/pages/catalog/product_form.html", form=form, product=product, is_edit=True)
 
-        # --- update product ---
         try:
             ProductService.update(
                 product,

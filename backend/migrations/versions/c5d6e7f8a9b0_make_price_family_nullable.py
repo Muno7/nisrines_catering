@@ -17,6 +17,8 @@ depends_on = None
 
 def upgrade():
     op.alter_column('products', 'priceFamilyCents', existing_type=sa.Integer(), nullable=True)
+    # Existing zero values represented "no family option"; NULL now carries that
+    # meaning so the public API keeps returning the single-price `priceCents` shape.
     op.execute('UPDATE products SET "priceFamilyCents" = NULL WHERE "priceFamilyCents" = 0')
 
 

@@ -8,6 +8,7 @@ from ..models import Product, Category
 from ..exceptions import ValidationError, NotFoundError
 
 
+# Distinguish "leave the nullable family price unchanged" from "clear it".
 _UNSET = object()
 
 
@@ -103,7 +104,7 @@ class ProductService:
 
     @staticmethod
     def set_status(product: Product, status: str) -> Product:
-        product.set_status(status)  # raises ValueError if invalid
+        product.set_status(status)
         try:
             db.session.commit()
             return product
@@ -113,6 +114,9 @@ class ProductService:
 
     @staticmethod
     def duplicate(product: Product) -> Product:
+        """
+        Create an unpublished copy so admins can review it before it appears publicly.
+        """
         copy = Product()
         copy.set_name(f"{product.name} (copy)")
         copy.set_name_ar(product.name_ar)
@@ -210,6 +214,12 @@ class ProductService:
 
     @staticmethod
     def list_public() -> list[Product]:
+        """
+        Return only products that should appear on the public menu.
+
+        Uncategorized active products remain visible, but products under inactive
+        categories are hidden so admins can pause a whole category at once.
+        """
         return (
             Product.query
             .outerjoin(Category, Product.category_id == Category.id)

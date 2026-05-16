@@ -1,78 +1,201 @@
-# Nisrine's Catering Flask Backend (MVP)
+# Nisrine's Kitchen Backend
 
-Flask-based admin + API for products with S3 image uploads. This folder is separate from the frontend; run all commands from within `backend/`.
+Flask backend for the admin dashboard and public API used by the separate
+frontend. It manages menu products, categories, slideshow images, catering menu
+images, subscription plans, admin login, database persistence, and S3-backed
+image URLs.
 
-## Requirements
-- Python 3.10+
-- PostgreSQL (local `DATABASE_URL`)
-- AWS S3 bucket with public read (or presigned alternative)
+Run commands from this `backend/` directory unless noted otherwise.
+
+## Architecture
+
+- `run.py` loads `.env`, selects config from `FLASK_ENV`, and creates the app.
+- `app/__init__.py` contains the Flask app factory, extension setup, blueprint
+  registration, JSON error handling for `/api/*`, CORS headers, and the
+  `create-admin` CLI command.
+- `app/config.py` reads environment variables for Flask, SQLAlchemy, CORS, and
+  S3 settings.
+- `app/models.py` defines SQLAlchemy models for admins, products, categories,
+  slideshow images, catering menu images, subscription plans, and settings.
+- `app/services/` contains the database-facing business operations used by
+  routes and tests.
+- `app/admin/routes/` contains authenticated admin pages and JSON actions.
+- `app/public/routes.py` exposes read-only API endpoints under `/api`.
+- `app/s3.py` validates image uploads, writes them to S3, and returns public
+  asset URLs.
+- `migrations/` is the Flask-Migrate/Alembic migration history.
+- `tests/` contains pytest coverage for services, admin routes, public API
+  routes, and S3 upload behavior.
 
 ## Setup
-1. (From repo root) `cd backend`.
-2. Create/activate venv.
-3. `pip install -r requirements.txt`
-4. Set environment variables (e.g. in `.env`):
+
+Python 3.10+ is required by the code syntax. The Dockerfile uses Python 3.12.
+
+```powershell
+cd backend
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
 ```
+
+Create a local `.env` file with placeholder values like:
+
+```env
 FLASK_APP=run.py
 FLASK_ENV=development
-SECRET_KEY=replace-me
-DATABASE_URL=postgresql+psycopg2://user:pass@localhost:5432/nisrine_catering
-AWS_ACCESS_KEY_ID=...
-AWS_SECRET_ACCESS_KEY=...
+SECRET_KEY=replace-with-a-local-secret
+DATABASE_URL=postgresql+psycopg2://user:password@localhost:5432/nisrines_kitchen
+AWS_ACCESS_KEY_ID=replace-me
+AWS_SECRET_ACCESS_KEY=replace-me
 AWS_REGION=us-east-1
-S3_BUCKET_NAME=your-bucket
-S3_PUBLIC_BASE_URL=https://your-bucket.s3.amazonaws.com
+S3_BUCKET_NAME=your-bucket-name
+S3_PUBLIC_BASE_URL=https://cdn.example.com
+CORS_ALLOW_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 ```
 
-## Database
-```
-flask db init
-flask db migrate -m "init"
+Initialize an existing database schema from the checked-in migrations:
+
+```powershell
 flask db upgrade
-```
-
-### New tables/columns for categories & menu toggles
-1) Create `categories` and `settings` tables plus new product columns:
-   - `category_id` (nullable for migration), `status`, `is_ramadan`, `is_seasonal`, ensure `updated_at` is onupdate.
-2) Data migration: for each distinct `products.category`, create a Category row with `slug` (use `slugify` logic) and set `products.category_id` to the new id. Keep the legacy `category` string populated for backward compatibility.
-3) Apply with Alembic (preferred) or raw SQL; then run `flask db upgrade`.
-
-
-## Create admin user
-```
-flask create-admin --username admin --password secret
-```
-
-## Run server
-Local dev (Flask):
-```
+flask create-admin --username admin --password local-password
 flask run
 ```
-Visit `/admin/login`.
 
-Production-style (Gunicorn on Linux/macOS):
-```
-gunicorn --bind 0.0.0.0:8000 wsgi:app
-```
-Use a reverse proxy (e.g., Nginx) in front of Gunicorn for TLS/headers.
+Do not run `flask db init` during normal development; the migration folder is
+already part of the project.
 
-## API
-- `GET /api/products` -> `[{"id": "...", "name": "...", "priceCents": 0, "image": "url", "category": "slug", "ingredients": "text", "day": "monday"}]`
+## Environment Variables
 
-## Schema update required
-Run this SQL (or equivalent migration) to align the database with the new fields:
-```
-ALTER TABLE products RENAME COLUMN ingridients TO ingredients;
-ALTER TABLE products ADD COLUMN day VARCHAR(20);
-CREATE TABLE slideshow_images (
-  id VARCHAR(36) PRIMARY KEY,
-  image TEXT NOT NULL,
-  sort_order INTEGER NOT NULL DEFAULT 0,
-  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
-);
+- `FLASK_APP`: Flask entrypoint. Use `run.py`.
+- `FLASK_ENV`: selects `development`, `production`, or `testing` config.
+- `SECRET_KEY`: signs Flask sessions and CSRF tokens.
+- `DATABASE_URL`: SQLAlchemy database URL for local or deployed PostgreSQL.
+- `TEST_DATABASE_URL`: optional test database override. Tests default to
+  in-memory SQLite.
+- `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`: S3 client
+  credentials and region.
+- `S3_BUCKET_NAME`: bucket used by image uploads.
+- `S3_PUBLIC_BASE_URL`: optional CDN/custom asset host used when building stored
+  image URLs.
+- `CORS_ALLOW_ORIGINS`: comma-separated frontend origins allowed to call
+  `/api/*`. Development defaults to Vite localhost origins when this is unset.
+- `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`: used by `entrypoint.sh`
+  when running the Docker setup against a database host named `db`.
+
+Never commit real secrets or production credentials.
+
+## Database
+
+The app uses Flask-SQLAlchemy and Flask-Migrate/Alembic. Important relationships
+and rules visible in the code:
+
+- Products optionally reference `categories.id` through `category_id`.
+- Categories have a `slug`, `sort_order`, and `active` flag.
+- Product publication uses the `status` field (`active` or `inactive`).
+- `Product.is_active` remains as a legacy template compatibility property.
+- Subscription plans are unique by `audience` and `days_per_month`.
+- Product image URLs are nullable so products can exist without an uploaded
+  image.
+
+Common migration commands:
+
+```powershell
+flask db migrate -m "describe change"
+flask db upgrade
+flask db downgrade
 ```
 
-## S3 notes
-- Bucket must allow `PutObject` and public read for uploaded keys (or configure presigned URLs).
-- Keys stored as `products/<uuid>.<ext>` with `ACL=public-read`.
-- 5MB upload limit enforced via `MAX_CONTENT_LENGTH`.
+Review generated migrations before applying them, especially data migrations
+that touch product pricing, category visibility, image URLs, or auth tables.
+
+## Public API
+
+All public routes live under `/api` and return JSON with an `ok` flag.
+
+- `GET /api/products`: active public products. Products in inactive categories
+  are hidden, while active uncategorized products remain visible.
+- `GET /api/categories`: active categories ordered by `sort_order`, then name.
+- `GET /api/slideshow`: slideshow images ordered by `sort_order`, then creation
+  time.
+- `GET /api/catering-menus`: catering menu images ordered by `sort_order`, then
+  creation time.
+- `GET /api/subscriptions`: subscription plans ordered by audience, then days.
+
+Product responses intentionally preserve two price shapes:
+
+- Single-price products return `priceCents`.
+- Products with a positive family price return
+  `price: { "single": ..., "family": ... }`.
+
+Coordinate frontend changes before renaming fields, changing the `ok/data`
+wrapper, or replacing category slugs with IDs.
+
+## Admin Workflows
+
+- Admin login is handled with Flask-Login under `/admin/login`.
+- Create the first admin with `flask create-admin`.
+- Product create/edit uses `ProductForm` and `ProductService`.
+- Product image replacement is optional during edits; leaving the image field
+  blank keeps the existing S3 URL.
+- Duplicated products are forced inactive so copied products do not publish
+  before an admin reviews them.
+- Category deletes are blocked when products still reference the category.
+- Inactive categories hide their products from the public API.
+- Slideshow and catering menu uploads accept multiple files. Partial upload
+  failures keep successful rows and flash the failed filenames.
+- Subscription plans are grouped by `person` and `family` in the admin UI.
+
+## Image Uploads
+
+`app/s3.py` validates extension and MIME type, enforces `MAX_FILE_SIZE`, uploads
+to S3, and stores the public URL returned by `_object_url()`. Hash-based object
+keys deduplicate exact uploads. The same upload helper currently serves product,
+slideshow, and catering menu images.
+
+Default limits from `app/config.py`:
+
+- `MAX_CONTENT_LENGTH`: 50 MB per request.
+- `MAX_FILE_SIZE`: 15 MB per individual file.
+
+## Deployment
+
+The Dockerfile installs dependencies, copies this backend folder, exposes port
+`8000`, and runs `entrypoint.sh`.
+
+`entrypoint.sh` waits for PostgreSQL at host `db`, runs `flask db upgrade`, and
+starts Gunicorn with:
+
+```sh
+gunicorn --bind 0.0.0.0:8000 run:app --workers 1 --threads 2 --timeout 120
+```
+
+If deploying outside Docker, provide the same environment variables, run
+migrations before serving traffic, and put a reverse proxy in front of Gunicorn
+for TLS and production headers.
+
+## Testing
+
+Run the backend test suite from `backend/`:
+
+```powershell
+pytest
+```
+
+The tests use `TestingConfig`, disable CSRF, create a fresh database per test,
+and mock S3 where network access would otherwise be required. Coverage includes
+service validation, admin route behavior, public API response contracts, CORS,
+and S3 upload edge cases.
+
+## Maintenance Notes
+
+- Keep `priceSingleCents` and `priceFamilyCents` database field names stable
+  unless migrations, admin forms, tests, and frontend contracts are coordinated.
+- Keep the public product price response shapes stable unless the frontend is
+  released with matching changes.
+- Keep category slugs stable for public API filtering/grouping behavior.
+- Do not delete the placeholder Alembic revision unless every deployed database
+  history is known not to reference it.
+- Generic login failures are intentional so invalid usernames and wrong
+  passwords receive the same message.
+- Stored image URLs are consumed directly by clients, so changing bucket
+  prefixes or public URL generation can require data migration.
