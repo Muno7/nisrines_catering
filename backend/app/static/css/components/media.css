@@ -1,15 +1,22 @@
 .thumb {
-  width: 64px;
-  height: 64px;
+  --thumb-size: 64px;
+
+  display: block;
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  min-width: var(--thumb-size);
+  max-width: var(--thumb-size);
+  flex: 0 0 var(--thumb-size);
+  aspect-ratio: 1 / 1;
   object-fit: cover;
+  overflow: hidden;
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
   background: var(--color-surface-warm);
 }
 
 .thumb--table {
-  width: 70px;
-  height: 70px;
+  --thumb-size: 70px;
 }
 
 .thumb-placeholder {
