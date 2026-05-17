@@ -36,6 +36,7 @@ backend/app/.env
 *.py[cod]
 *.sqlite3
 backend/.pytest_cache
+.pytest_cache
 
 */.agents/
 .claude/
