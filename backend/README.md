@@ -1,4 +1,4 @@
-# Nisrine's Kitchen Backend
+# Nisrine's Catering Backend
 
 Flask backend for the admin dashboard and public API used by the separate
 frontend. It manages menu products, categories, slideshow images, catering menu
@@ -26,6 +26,9 @@ Run commands from this `backend/` directory unless noted otherwise.
 - `migrations/` is the Flask-Migrate/Alembic migration history.
 - `tests/` contains pytest coverage for services, admin routes, public API
   routes, and S3 upload behavior.
+
+For a Swedish planning and reflection document about the backend, see
+[`docs/backend-planering.md`](docs/backend-planering.md).
 
 ## Request Flow Diagrams
 
@@ -115,7 +118,7 @@ Create a local `.env` file with placeholder values like:
 FLASK_APP=run.py
 FLASK_ENV=development
 SECRET_KEY=replace-with-a-local-secret
-DATABASE_URL=postgresql+psycopg2://user:password@localhost:5432/nisrines_kitchen
+DATABASE_URL=postgresql+psycopg2://user:password@localhost:5432/app
 AWS_ACCESS_KEY_ID=replace-me
 AWS_SECRET_ACCESS_KEY=replace-me
 AWS_REGION=us-east-1
@@ -245,6 +248,12 @@ The tests use `TestingConfig`, disable CSRF, create a fresh database per test,
 and mock S3 where network access would otherwise be required. Coverage includes
 service validation, admin route behavior, public API response contracts, CORS,
 and S3 upload edge cases.
+
+## Accessibility Tests
+
+Manual accessibility checks should cover keyboard navigation, visible focus
+states, form labels, validation errors, and readable contrast in the admin UI.
+Check [Waves ](https://wave.webaim.org/) for a more detailed test review.
 
 ## Maintenance Notes
 
