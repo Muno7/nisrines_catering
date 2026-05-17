@@ -14,7 +14,7 @@
     <div class="shell">
       <header class="topbar">
         <div class="brand">
-          <div class="brand-mark">NC</div>
+          <div class="brand-mark" aria-hidden="true">NC</div>
           <div>
             <p class="eyebrow">Nisrine's Catering</p>
             <p class="brand-title">Operations Dashboard</p>
@@ -27,9 +27,9 @@
         </div>
       </header>
       {% include "admin/includes/flash_messages.html" %}
-      <div class="panel">
+      <main id="main-content" class="panel">
         {% block content %}{% endblock %}
-      </div>
+      </main>
     </div>
   </div>
 

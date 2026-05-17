@@ -15,7 +15,7 @@
 {% block form_header_aside %}
   {% if product %}
     <span class="badge {{ 'badge-success' if product.is_active else 'badge-warning' }}">
-      <span class="status-dot {{ 'live' if product.is_active else 'paused' }}"></span>
+      <span class="status-dot {{ 'live' if product.is_active else 'paused' }}" aria-hidden="true"></span>
       {{ "Live" if product.is_active else "Paused" }}
     </span>
   {% endif %}
@@ -24,7 +24,7 @@
   <form id="productForm" method="post" enctype="multipart/form-data" class="form-grid single-column">
     {{ form.hidden_tag() }}
 
-    <section class="form-card">
+    <div class="form-card">
       {{ forms.render_form_field(
         form.name,
         show_inline_error=true,
@@ -47,7 +47,8 @@
       {{ forms.render_form_field(
         form.category_id,
         wrapper_data_field="category",
-        show_inline_error=true
+        show_inline_error=true,
+        required=true
       ) }}
 
       <div class="two-col">
@@ -79,22 +80,22 @@
       ) }}
 
       {{ forms.render_form_field(form.day, show_inline_error=true) }}
-      {{ forms.render_form_field(form.status, show_inline_error=true) }}
+      {{ forms.render_form_field(form.status, show_inline_error=true, required=true) }}
 
       {% call forms.render_form_field(form.image, label_note="Optional", class="file-input") %}
         {% if product and product.image %}
           <div class="inline-media">
-            <img class="thumb" src="{{ product.image }}" alt="{{ product.name }}">
+            <img class="thumb" src="{{ product.image }}" alt="Current image for {{ product.name }}">
             <span class="muted">Current image</span>
           </div>
         {% elif product %}
           <div class="inline-media">
-            <div class="thumb thumb-placeholder" data-initial="{{ product.name[:1]|upper }}"></div>
+            <div class="thumb thumb-placeholder" data-initial="{{ product.name[:1]|upper }}" aria-hidden="true"></div>
             <span class="muted">No image uploaded</span>
           </div>
         {% endif %}
       {% endcall %}
-    </section>
+    </div>
 
     <div class="actions full-row">
       <a class="btn btn-ghost" href="{{ url_for('admin.products') }}">Cancel</a>

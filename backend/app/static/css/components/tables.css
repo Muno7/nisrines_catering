@@ -25,8 +25,16 @@
   transition: background-color var(--transition-fast);
 }
 
-.table tbody tr:hover {
+.table tbody tr:hover,
+.table tbody tr:focus-within {
   background: rgba(255, 243, 236, 0.55);
+}
+
+.table tbody th {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  text-transform: none;
 }
 
 .responsive-table {
@@ -57,7 +65,8 @@
   box-shadow: 0 1px 0 var(--color-border);
 }
 
-.table-scroll tbody tr:last-child td {
+.table-scroll tbody tr:last-child td,
+.table-scroll tbody tr:last-child th {
   border-bottom: none;
 }
 
@@ -111,9 +120,12 @@
     background: var(--color-surface);
     box-shadow: var(--shadow-xs);
   }
-  .table td {
+  .table td,
+  .table tbody th {
     border: none;
     padding: 6px 0;
+    display: block;
+    width: 100%;
   }
 
   .table-scroll {

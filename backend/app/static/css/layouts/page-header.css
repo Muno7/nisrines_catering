@@ -10,6 +10,10 @@
   min-width: 0;
 }
 
+.page-header h1 {
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+}
+
 .page-header__actions {
   display: flex;
   justify-content: flex-end;

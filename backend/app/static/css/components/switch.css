@@ -44,6 +44,11 @@
   border-color: var(--color-success-border);
 }
 
+.switch input:focus-visible + .switch-slider {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 3px;
+}
+
 .switch input:checked + .switch-slider:before {
   transform: translateX(20px);
 }

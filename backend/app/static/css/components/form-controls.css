@@ -40,6 +40,13 @@ textarea:focus {
   box-shadow: var(--shadow-focus);
 }
 
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
 input[disabled],
 select[disabled],
 textarea[disabled] {
@@ -103,6 +110,11 @@ input[type="file"]::file-selector-button:focus {
 .inline-error {
   color: var(--color-danger);
   font-size: var(--font-size-sm);
+}
+
+.field-errors {
+  display: grid;
+  gap: var(--space-2);
 }
 
 .hint {

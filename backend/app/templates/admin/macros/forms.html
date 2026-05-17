@@ -1,16 +1,40 @@
 {% macro render_form_field(wtform_field, wrapper_data_field=none, label_note="", show_inline_error=false) %}
+  {% set field_id = wtform_field.id %}
+  {% set describedby_ids = [] %}
+  {% if label_note %}
+    {% set note_id = field_id ~ "-note" %}
+    {% set _ = describedby_ids.append(note_id) %}
+  {% endif %}
+  {% if show_inline_error %}
+    {% set inline_error_id = field_id ~ "-inline-error" %}
+    {% set _ = describedby_ids.append(inline_error_id) %}
+  {% endif %}
+  {% if wtform_field.errors %}
+    {% set error_id = field_id ~ "-error" %}
+    {% set _ = describedby_ids.append(error_id) %}
+  {% endif %}
   <div class="field" data-field="{{ wrapper_data_field or wtform_field.name }}">
     {{ wtform_field.label }}
     {% if label_note %}
-      <small class="muted label-note">{{ label_note }}</small>
+      <small id="{{ note_id }}" class="muted label-note">{{ label_note }}</small>
     {% endif %}
-    {{ wtform_field(**kwargs) }}
+    {% if wtform_field.errors %}
+      {{ wtform_field(aria_describedby=describedby_ids|join(" "), aria_invalid="true", **kwargs) }}
+    {% elif describedby_ids %}
+      {{ wtform_field(aria_describedby=describedby_ids|join(" "), **kwargs) }}
+    {% else %}
+      {{ wtform_field(**kwargs) }}
+    {% endif %}
     {% if show_inline_error %}
-      <div class="inline-error" data-inline-error-for="{{ wtform_field.name }}"></div>
+      <div id="{{ inline_error_id }}" class="inline-error" data-inline-error-for="{{ wtform_field.name }}" aria-live="polite"></div>
     {% endif %}
     {% if caller is defined %}
       {{ caller() }}
     {% endif %}
-    {% for error in wtform_field.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+    {% if wtform_field.errors %}
+      <div id="{{ error_id }}" class="field-errors" role="alert">
+        {% for error in wtform_field.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
+      </div>
+    {% endif %}
   </div>
 {% endmacro %}

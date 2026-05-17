@@ -27,30 +27,32 @@
       <input type="hidden" name="action" value="reorder">
 
       <table class="responsive-table table">
+        <caption class="sr-only">Product categories</caption>
         <thead>
           <tr>
-            <th>Category</th>
-            <th class="col-status">Products</th>
-            <th class="col-status">Status</th>
-            <th class="col-date">Created</th>
-            <th class="cell-actions">Actions</th>
+            <th scope="col">Category</th>
+            <th scope="col" class="col-status">Products</th>
+            <th scope="col" class="col-status">Status</th>
+            <th scope="col" class="col-date">Created</th>
+            <th scope="col" class="cell-actions">Actions</th>
           </tr>
         </thead>
         <tbody data-sortable>
           {% for cat in categories %}
             {% set current_status = "active" if cat.active else "inactive" %}
             <tr data-id="{{ cat.id }}">
-              <td>
-                <input type="text" name="name_{{ cat.id }}" value="{{ cat.name }}" class="input-medium name-input" data-original="{{ cat.name }}" data-category-id="{{ cat.id }}">
-              </td>
+              <th scope="row">
+                <label class="sr-only" for="category-name-{{ cat.id }}">Category name for {{ cat.name }}</label>
+                <input id="category-name-{{ cat.id }}" type="text" name="name_{{ cat.id }}" value="{{ cat.name }}" class="input-medium name-input" data-original="{{ cat.name }}" data-category-id="{{ cat.id }}">
+              </th>
               <td class="muted">{{ counts.get(cat.id, 0) }}</td>
               <td>
-                {{ ui.status_switch("category", cat.id, current_status) }}
+                {{ ui.status_switch("category", cat.id, current_status, "Toggle status for " ~ cat.name) }}
               </td>
               <td class="muted">{{ cat.created_at.strftime('%b %d %Y') }}</td>
               <td class="cell-actions">
-                {{ ui.delete_button("delete-category-" ~ cat.id, "Delete " ~ cat.name ~ "? This cannot be undone.") }}
-                {{ ui.save_button("update-category-" ~ cat.id, extra_class="category-save-btn", disabled=true, aria_hidden=true) }}
+                {{ ui.delete_button("delete-category-" ~ cat.id, "Delete " ~ cat.name ~ "? This cannot be undone.", "Delete " ~ cat.name) }}
+                {{ ui.save_button("update-category-" ~ cat.id, "Save changes to " ~ cat.name, extra_class="category-save-btn", disabled=true, aria_hidden=true) }}
               </td>
             </tr>
           {% endfor %}

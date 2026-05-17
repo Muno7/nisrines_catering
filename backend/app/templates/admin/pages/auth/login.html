@@ -1,25 +1,20 @@
 {% extends "admin/base.html" %}
+{% import "admin/macros/forms.html" as forms %}
 {% block title %}Admin Login{% endblock %}
 {% block content %}
   <div class="auth-layout">
     <div class="auth-card">
       <div class="auth-header">
-        <div class="auth-pill">NC</div>
+        <div class="auth-pill" aria-hidden="true">NC</div>
         <div>
           <p class="eyebrow">Nisrine's Catering</p>
-          <h2>Welcome back</h2>
+          <h1>Welcome back</h1>
         </div>
       </div>
       <form method="post" class="auth-form">
         {{ form.hidden_tag() }}
-        <div class="field">
-          {{ form.username.label }}{{ form.username(size=32, placeholder="Admin username") }}
-          {% for error in form.username.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-        </div>
-        <div class="field">
-          {{ form.password.label }}{{ form.password(size=32, placeholder="Password") }}
-          {% for error in form.password.errors %}<small class="alert alert-danger">{{ error }}</small>{% endfor %}
-        </div>
+        {{ forms.render_form_field(form.username, size=32, placeholder="Admin username", autocomplete="username", required=true) }}
+        {{ forms.render_form_field(form.password, size=32, placeholder="Password", autocomplete="current-password", required=true) }}
         <div class="actions">
           <button class="btn btn-block" type="submit">Sign in</button>
         </div>

@@ -24,28 +24,29 @@
     <form method="post" action="{{ url_for('admin.reorder_catering_menus') }}">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="card media-list-card">
-        <h3>Current menus ({{ menus|length }})</h3>
+        <h2>Current menus ({{ menus|length }})</h2>
         <table class="responsive-table table">
+          <caption class="sr-only">Uploaded catering menu images</caption>
           <thead>
             <tr>
-              <th class="col-image">Image</th>
-              <th>Menu</th>
-              <th class="cell-actions">Actions</th>
+              <th scope="col" class="col-image">Image</th>
+              <th scope="col">Menu</th>
+              <th scope="col" class="cell-actions">Actions</th>
             </tr>
           </thead>
           <tbody data-sortable>
             {% for img in menus %}
               <tr data-id="{{ img.id }}">
                 <td class="cell-image">
-                  <img class="thumb thumb--table" src="{{ img.image }}" alt="Menu {{ loop.index }}">
+                  <img class="thumb thumb--table" src="{{ img.image }}" alt="Catering menu image {{ loop.index }}">
                 </td>
-                <td>
+                <th scope="row">
                   <div class="text-block">
                     <div class="row-title">Menu {{ loop.index }}</div>
                   </div>
-                </td>
+                </th>
                 <td class="cell-actions">
-                  {{ ui.delete_submit_button(url_for('admin.delete_catering_menu', menu_id=img.id)) }}
+                  {{ ui.delete_submit_button(url_for('admin.delete_catering_menu', menu_id=img.id), "Delete catering menu image " ~ loop.index) }}
                 </td>
               </tr>
             {% endfor %}

@@ -25,7 +25,7 @@
     <div class="card{% if not loop.last %} mb-3{% endif %}">
       <div class="field-header">
         <div>
-          <h3>{{ section.title }}</h3>
+          <h2>{{ section.title }}</h2>
           <p class="muted u-m-0">{{ section.description }}</p>
         </div>
       </div>
@@ -33,25 +33,30 @@
       {% if section.plans %}
         <div class="table-scroll">
           <table class="responsive-table table sticky-header">
+            <caption class="sr-only">{{ section.title }} subscription plans</caption>
             <thead>
               <tr>
-                <th>Days / month</th>
-                <th>Plat du jour ($)</th>
-                <th>With salad ($)</th>
-                <th class="cell-actions">Actions</th>
+                <th scope="col">Days / month</th>
+                <th scope="col">Plat du jour ($)</th>
+                <th scope="col">With salad ($)</th>
+                <th scope="col" class="cell-actions">Actions</th>
               </tr>
             </thead>
             <tbody>
               {% for plan in section.plans %}
                 <tr>
-                  <td>{{ plan.days_per_month }} days</td>
+                  <th scope="row">{{ plan.days_per_month }} days</th>
                   <td>{{ plan.price_plat_du_jour }}</td>
                   <td>{{ plan.price_with_salad }}</td>
                   <td class="cell-actions">
-                    {{ ui.edit_button(url_for('admin.edit_subscription_plan', plan_id=plan.id)) }}
+                    {{ ui.edit_button(
+                      url_for('admin.edit_subscription_plan', plan_id=plan.id),
+                      "Edit " ~ section.label ~ " plan for " ~ plan.days_per_month ~ " days"
+                    ) }}
                     {{ ui.delete_button(
                       "delete-subscription-plan-" ~ plan.id,
-                      "Delete " ~ plan.days_per_month ~ " days (" ~ section.label ~ ") plan?"
+                      "Delete " ~ plan.days_per_month ~ " days (" ~ section.label ~ ") plan?",
+                      "Delete " ~ section.label ~ " plan for " ~ plan.days_per_month ~ " days"
                     ) }}
                   </td>
                 </tr>

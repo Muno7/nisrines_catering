@@ -16,7 +16,7 @@
   <form method="post" class="form-grid single-column">
     {{ form.hidden_tag() }}
 
-    <section class="form-card">
+    <div class="form-card">
       {{ forms.render_form_field(form.audience, required=true) }}
       {{ forms.render_form_field(form.days_per_month, min=1, step=1, inputmode="numeric", required=true) }}
 
@@ -24,7 +24,7 @@
         {{ forms.render_form_field(form.price_plat_du_jour, min=0, step=1, inputmode="numeric", required=true) }}
         {{ forms.render_form_field(form.price_with_salad, min=0, step=1, inputmode="numeric", required=true) }}
       </div>
-    </section>
+    </div>
 
     <div class="actions full-row">
       <a class="btn btn-ghost" href="{{ url_for('admin.subscriptions') }}">Cancel</a>

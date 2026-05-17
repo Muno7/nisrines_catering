@@ -6,10 +6,12 @@
   {"label": "Slideshow", "endpoint": "admin.slideshow", "active_endpoints": ["admin.slideshow"]}
 ] %}
 
-<div class="page-header__nav">
+<nav class="page-header__nav" aria-label="Admin sections">
   <div class="nav-group">
     {% for item in admin_nav_items %}
-      <a class="nav-pill {% if request.endpoint in item.active_endpoints %}is-active{% endif %}" href="{{ url_for(item.endpoint) }}">{{ item.label }}</a>
+      <a class="nav-pill {% if request.endpoint in item.active_endpoints %}is-active{% endif %}"
+         href="{{ url_for(item.endpoint) }}"
+         {% if request.endpoint in item.active_endpoints %}aria-current="page"{% endif %}>{{ item.label }}</a>
     {% endfor %}
   </div>
-</div>
+</nav>

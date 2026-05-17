@@ -10,6 +10,11 @@
   cursor: grabbing;
 }
 
+.drag-handle:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: -2px;
+}
+
 tr.is-dragging {
   opacity: 0.35;
 }

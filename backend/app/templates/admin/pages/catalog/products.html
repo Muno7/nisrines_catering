@@ -13,19 +13,19 @@
 
   <div class="stat-grid">
     <div class="card">
-      <h3>Total products</h3>
+      <h2>Total products</h2>
       <p class="value" id="stat-total">{{ stats.total }}</p>
       <p class="muted">Across all categories</p>
     </div>
     <div class="card">
-      <h3>Active</h3>
+      <h2>Active</h2>
       <p class="value" id="stat-active">{{ stats.active }}</p>
-      <div class="badge badge-success"><span class="status-dot live"></span>Live on site</div>
+      <div class="badge badge-success"><span class="status-dot live" aria-hidden="true"></span>Live on site</div>
     </div>
     <div class="card">
-      <h3>Inactive</h3>
+      <h2>Inactive</h2>
       <p class="value" id="stat-inactive">{{ stats.inactive }}</p>
-      <div class="badge badge-warning"><span class="status-dot paused"></span>Hidden</div>
+      <div class="badge badge-warning"><span class="status-dot paused" aria-hidden="true"></span>Hidden</div>
     </div>
   </div>
 
@@ -86,37 +86,41 @@
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="table-scroll">
         <table class="responsive-table table sticky-header products-table">
+        <caption class="sr-only">Products matching the current filters</caption>
         <thead>
           <tr>
-            <th class="col-checkbox"><input type="checkbox" id="bulk-all"></th>
-            <th class="col-image">Image</th>
-            <th>Product</th>
-            <th class="col-category">Category</th>
-            <th class="col-day">Day</th>
-            <th>Pricing</th>
-            <th class="col-status">Status</th>
-            <th class="col-actions cell-actions">Actions</th>
+            <th scope="col" class="col-checkbox">
+              <label class="sr-only" for="bulk-all">Select all products</label>
+              <input type="checkbox" id="bulk-all">
+            </th>
+            <th scope="col" class="col-image">Image</th>
+            <th scope="col">Product</th>
+            <th scope="col" class="col-category">Category</th>
+            <th scope="col" class="col-day">Day</th>
+            <th scope="col">Pricing</th>
+            <th scope="col" class="col-status">Status</th>
+            <th scope="col" class="col-actions cell-actions">Actions</th>
           </tr>
         </thead>
         <tbody>
           {% for p in products %}
             <tr data-product-row="{{ p.id }}">
-              <td><input type="checkbox" class="bulk-check" name="product_ids" value="{{ p.id }}"></td>
+              <td><input type="checkbox" class="bulk-check" name="product_ids" value="{{ p.id }}" aria-label="Select {{ p.name }}"></td>
               <td class="cell-image">
                 {% if p.image %}
                   <img class="thumb thumb--table" src="{{ p.image }}" alt="{{ p.name }}">
                 {% else %}
-                  <div class="thumb thumb--table thumb-placeholder" data-initial="{{ p.name[:1]|upper }}"></div>
+                  <div class="thumb thumb--table thumb-placeholder" data-initial="{{ p.name[:1]|upper }}" aria-hidden="true"></div>
                 {% endif %}
               </td>
-              <td class="product-cell">
+              <th scope="row" class="product-cell">
                 <div class="text-block">
                   <div class="row-title">{{ p.name }}</div>
                   {% if p.name_ar %}
                     <div class="muted" dir="rtl" translate="no">{{ p.name_ar }}</div>
                   {% endif %}
                 </div>
-              </td>
+              </th>
               <td>
                 <div class="muted">{{ p.category_rel.name if p.category_rel else "Uncategorized" }}</div>
               </td>
@@ -138,11 +142,11 @@
               </td>
               {% set current_status = p.status or ('active' if p.is_active else 'inactive') %}
               <td>
-                {{ ui.status_switch("product", p.id, current_status) }}
+                {{ ui.status_switch("product", p.id, current_status, "Toggle status for " ~ p.name) }}
               </td>
               <td class="cell-actions">
-                  {{ ui.edit_button(url_for('admin.edit_product', product_id=p.id)) }}
-                  {{ ui.delete_button("delete-product-" ~ p.id, "Delete " ~ p.name ~ "?") }}
+                  {{ ui.edit_button(url_for('admin.edit_product', product_id=p.id), "Edit " ~ p.name) }}
+                  {{ ui.delete_button("delete-product-" ~ p.id, "Delete " ~ p.name ~ "?", "Delete " ~ p.name) }}
               </td>
             </tr>
           {% endfor %}
@@ -153,18 +157,21 @@
       <div class="card bulk-card">
         <div class="bulk-bar">
           <strong>Bulk edit:</strong>
-          <select name="bulk_status">
+          <label class="sr-only" for="bulk_status">Bulk status</label>
+          <select id="bulk_status" name="bulk_status">
             <option value="">Status</option>
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>
-          <select name="bulk_category_id">
+          <label class="sr-only" for="bulk_category_id">Bulk category</label>
+          <select id="bulk_category_id" name="bulk_category_id">
             <option value="">Category</option>
             {% for cat in categories %}
               <option value="{{ cat.id }}">{{ cat.name }}</option>
             {% endfor %}
           </select>
-          <select name="bulk_day">
+          <label class="sr-only" for="bulk_day">Bulk day</label>
+          <select id="bulk_day" name="bulk_day">
             <option value="">Day</option>
             <option value="monday">Monday</option>
             <option value="tuesday">Tuesday</option>
@@ -175,8 +182,10 @@
             <option value="sunday">Sunday</option>
             <option value="clear">Clear day</option>
           </select>
-          <input type="number" name="bulk_price_single" min="0" step="1" placeholder="Single price (cents)">
-          <input type="number" name="bulk_price_family" min="0" step="1" placeholder="Family price (cents)">
+          <label class="sr-only" for="bulk_price_single">Bulk single price in cents</label>
+          <input id="bulk_price_single" type="number" name="bulk_price_single" min="0" step="1" placeholder="Single price (cents)">
+          <label class="sr-only" for="bulk_price_family">Bulk family price in cents</label>
+          <input id="bulk_price_family" type="number" name="bulk_price_family" min="0" step="1" placeholder="Family price (cents)">
           <button class="btn" type="submit">Apply bulk</button>
         </div>
       </div>
