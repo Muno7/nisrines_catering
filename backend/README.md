@@ -27,6 +27,77 @@ Run commands from this `backend/` directory unless noted otherwise.
 - `tests/` contains pytest coverage for services, admin routes, public API
   routes, and S3 upload behavior.
 
+## Request Flow Diagrams
+
+### Public API GET Flow
+
+```mermaid
+sequenceDiagram
+    actor Användare
+    participant Frontend
+    participant Browser as Webbläsare
+    participant API as Flask /api
+    participant ProductService
+    participant DB as Databas
+
+    Användare->>Frontend: Öppnar meny/sida
+    Frontend->>Browser: Skickar GET /api/products
+    Browser->>API: GET /api/products med Origin-header
+    API->>ProductService: list_public()
+    ProductService->>DB: Hämta aktiva produkter
+    DB-->>ProductService: Produktlista
+    ProductService-->>API: Produkter
+    API-->>Browser: JSON + CORS headers
+
+    alt Origin är tillåten
+        Browser-->>Frontend: Frontend får läsa svaret
+        Frontend-->>Användare: Visar produkter
+    else Origin är inte tillåten
+        Browser-->>Frontend: Blockerar svaret via CORS
+        Frontend-->>Användare: Kan inte visa API-data
+    end
+```
+
+### Admin Create Product Flow
+
+```mermaid
+sequenceDiagram
+    actor Admin
+    participant AdminUI as Admin UI
+    participant Server as Flask /admin
+    participant Auth as Login + CSRF
+    participant Form as ProductForm
+    participant Image as ImageService/S3
+    participant ProductService
+    participant DB as Databas
+
+    Admin->>AdminUI: Fyller i produktformulär
+    AdminUI->>Server: POST /admin/products/new
+    Server->>Auth: Kontrollera inloggning och CSRF
+    Server->>Form: Validera formulär
+
+    alt Formuläret är ogiltigt
+        Server-->>AdminUI: Visa formulär med fel
+    else Formuläret är giltigt
+        alt Bild finns
+            Server->>Image: Ladda upp bild
+            Image-->>Server: Bild-URL
+        end
+
+        Server->>ProductService: create(...)
+        ProductService->>DB: Skapa produkt och commit
+
+        alt Produkten sparas
+            DB-->>ProductService: Commit OK
+            ProductService-->>Server: Ny produkt
+            Server-->>AdminUI: Redirect till produktlista
+        else Valideringsfel eller databasfel
+            ProductService-->>Server: Fel
+            Server-->>AdminUI: Visa felmeddelande
+        end
+    end
+```
+
 ## Setup
 
 Python 3.10+ is required by the code syntax. The Dockerfile uses Python 3.12.
