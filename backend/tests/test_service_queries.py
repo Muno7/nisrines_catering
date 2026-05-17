@@ -132,7 +132,18 @@ class TestProductServiceQueries:
     def test_update_can_clear_family_price(self, make_product):
         product = make_product(price_family=3000)
 
-        ProductService.update(product, price_family=None)
+        ProductService.update(
+            product,
+            name=product.name,
+            name_ar=product.name_ar,
+            price_single=product.priceSingleCents,
+            price_family=None,
+            image=product.image,
+            category_id=product.category_id,
+            ingredients=product.ingredients,
+            day=product.day,
+            status=product.status,
+        )
 
         assert product.priceFamilyCents is None
 
@@ -140,7 +151,18 @@ class TestProductServiceQueries:
         product = make_product()
 
         with pytest.raises(ValidationError):
-            ProductService.update(product, price_family=-1)
+            ProductService.update(
+                product,
+                name=product.name,
+                name_ar=product.name_ar,
+                price_single=product.priceSingleCents,
+                price_family=-1,
+                image=product.image,
+                category_id=product.category_id,
+                ingredients=product.ingredients,
+                day=product.day,
+                status=product.status,
+            )
 
     def test_duplicate_copies_product_fields_and_forces_inactive(self, make_category, make_product):
         category = make_category("Mains")

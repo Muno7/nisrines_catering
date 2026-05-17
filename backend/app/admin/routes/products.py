@@ -88,8 +88,6 @@ def edit_product(product_id: str):
     form = ProductForm(obj=product)
 
     if form.validate_on_submit():
-        # Keep product image replacement optional so admins can edit text,
-        # prices, or scheduling without re-uploading the existing S3 asset.
         image_url = None
         file = form.image.data
         if file and getattr(file, "filename", ""):
@@ -105,12 +103,16 @@ def edit_product(product_id: str):
                 name=form.name.data,
                 name_ar=form.name_ar.data,
                 price_single=form.priceSingleCents.data,
+                # A blank family price means this product has no family-size option, in case value is 0 we store none.
                 price_family=form.priceFamilyCents.data or None,
-                image=image_url,
-                category_id=form.category_id.data or None,
+                # No new upload means keep the current S3 image URL.
+                image=image_url if image_url is not None else product.image,
+                category_id=form.category_id.data,
+                # Ingredients is required by the model, so blank form text stays text.
                 ingredients=form.ingredients.data or "",
-                day=form.day.data,
-                status=form.status.data or "active",
+                # Blank day means the product is not assigned to a weekday, we store none instead of "".
+                day=form.day.data or None,
+                status=form.status.data,
             )
         except (ValidationError, ConflictError) as e:
             flash(str(e), "danger")

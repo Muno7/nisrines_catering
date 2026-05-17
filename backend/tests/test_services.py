@@ -185,7 +185,18 @@ class TestProductService:
     def test_update_product(self, db):
         cat = self._make_category()
         p = ProductService.create(name="Chicken", price_single=1000, category_id=cat.id)
-        ProductService.update(p, name="Fish", price_single=2000)
+        ProductService.update(
+            p,
+            name="Fish",
+            name_ar=p.name_ar,
+            price_single=2000,
+            price_family=p.priceFamilyCents,
+            image=p.image,
+            category_id=p.category_id,
+            ingredients=p.ingredients,
+            day=p.day,
+            status=p.status,
+        )
         assert p.name == "Fish"
         assert p.priceSingleCents == 2000
 
@@ -193,7 +204,18 @@ class TestProductService:
         cat = self._make_category()
         p = ProductService.create(name="Chicken", price_single=1000, category_id=cat.id)
         with pytest.raises(ValidationError):
-            ProductService.update(p, name="")
+            ProductService.update(
+                p,
+                name="",
+                name_ar=p.name_ar,
+                price_single=p.priceSingleCents,
+                price_family=p.priceFamilyCents,
+                image=p.image,
+                category_id=p.category_id,
+                ingredients=p.ingredients,
+                day=p.day,
+                status=p.status,
+            )
 
     def test_set_status(self, db):
         cat = self._make_category()

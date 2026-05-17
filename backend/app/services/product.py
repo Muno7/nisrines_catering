@@ -8,10 +8,6 @@ from ..models import Product, Category
 from ..exceptions import ValidationError, NotFoundError
 
 
-# Distinguish "leave the nullable family price unchanged" from "clear it".
-_UNSET = object()
-
-
 class ProductService:
 
     @staticmethod
@@ -66,34 +62,25 @@ class ProductService:
     def update(
         product: Product,
         *,
-        name: str | None = None,
-        name_ar: str | None = None,
-        price_single: int | None = None,
-        price_family: int | None | object = _UNSET,
-        image: str | None = None,
-        category_id: int | None = None,
-        ingredients: str | None = None,
-        day: str | None = None,
-        status: str | None = None,
+        name: str,
+        name_ar: str | None,
+        price_single: int,
+        price_family: int | None,
+        image: str | None,
+        category_id: int | None,
+        ingredients: str,
+        day: str | None,
+        status: str,
     ) -> Product:
-        if name is not None:
-            product.set_name(name)
-        if name_ar is not None:
-            product.set_name_ar(name_ar)
-        if price_single is not None:
-            product.set_price_single(price_single)
-        if price_family is not _UNSET:
-            product.set_price_family(price_family)
-        if image is not None:
-            product.image = image
-        if category_id is not None:
-            product.set_category(category_id)
-        if ingredients is not None:
-            product.set_ingredients(ingredients)
-        if day is not None:
-            product.set_day(day)
-        if status is not None:
-            product.set_status(status)
+        product.set_name(name)
+        product.set_name_ar(name_ar)
+        product.set_price_single(price_single)
+        product.set_price_family(price_family)
+        product.image = image
+        product.set_category(category_id)
+        product.set_ingredients(ingredients)
+        product.set_day(day)
+        product.set_status(status)
 
         try:
             db.session.commit()

@@ -40,7 +40,8 @@ class TestAdminProductRouteEdges:
     def test_edit_product_can_clear_family_price(
         self, logged_in_client, product, category, product_form_data, db
     ):
-        ProductService.update(product, price_family=3500)
+        product.set_price_family(3500)
+        db.session.commit()
 
         response = logged_in_client.post(
             f"/admin/products/{product.id}/edit",

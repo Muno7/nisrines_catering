@@ -7,7 +7,7 @@ Every test gets a fresh DB (via the db fixture in conftest.py).
 from io import BytesIO
 from unittest.mock import patch
 
-from app.services import CategoryService, ProductService, SubscriptionService, SlideshowService, CateringService
+from app.services import CategoryService, SubscriptionService, SlideshowService, CateringService
 
 
 # ---------------------------------------------------------------------------
@@ -106,7 +106,8 @@ class TestProductRoutes:
         assert response.status_code == 200
 
     def test_edit_product_can_clear_day(self, logged_in_client, product, category, db):
-        ProductService.update(product, day="monday")
+        product.set_day("monday")
+        db.session.commit()
 
         response = logged_in_client.post(
             f"/admin/products/{product.id}/edit",
