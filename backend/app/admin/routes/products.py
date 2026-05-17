@@ -124,7 +124,7 @@ def edit_product(product_id: str):
         if "save_duplicate" in request.form:
             try:
                 copy = ProductService.duplicate(product)
-                flash("Product duplicated as draft.", "success")
+                flash("Product duplicated. Adjust the new product.", "success")
                 return redirect(url_for("admin.edit_product", product_id=copy.id))
             except SQLAlchemyError:
                 flash("Failed to duplicate product.", "danger")
@@ -153,7 +153,7 @@ def duplicate_product(product_id: str):
     try:
         product = ProductService._get_or_raise(product_id)
         copy = ProductService.duplicate(product)
-        flash("Product duplicated as draft.", "success")
+        flash("Product duplicated. Adjust the new product.", "success")
         return redirect(url_for("admin.edit_product", product_id=copy.id))
     except NotFoundError:
         flash("Product not found.", "danger")

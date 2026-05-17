@@ -102,7 +102,7 @@ class ProductService:
     @staticmethod
     def duplicate(product: Product) -> Product:
         """
-        Create an unpublished copy so admins can review it before it appears publicly.
+        Create a copy that reuses the source product's setup fields.
         """
         copy = Product()
         copy.set_name(f"{product.name} (copy)")

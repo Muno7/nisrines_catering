@@ -97,17 +97,6 @@ and rules visible in the code:
 - Product image URLs are nullable so products can exist without an uploaded
   image.
 
-Common migration commands:
-
-```powershell
-flask db migrate -m "describe change"
-flask db upgrade
-flask db downgrade
-```
-
-Review generated migrations before applying them, especially data migrations
-that touch product pricing, category visibility, image URLs, or auth tables.
-
 ## Public API
 
 All public routes live under `/api` and return JSON with an `ok` flag.
@@ -137,8 +126,8 @@ wrapper, or replacing category slugs with IDs.
 - Product create/edit uses `ProductForm` and `ProductService`.
 - Product image replacement is optional during edits; leaving the image field
   blank keeps the existing S3 URL.
-- Duplicated products are forced inactive so copied products do not publish
-  before an admin reviews them.
+- Product duplication helps admins create another product with similar setup,
+  such as category, prices, day, ingredients, and image.
 - Category deletes are blocked when products still reference the category.
 - Inactive categories hide their products from the public API.
 - Slideshow and catering menu uploads accept multiple files. Partial upload
