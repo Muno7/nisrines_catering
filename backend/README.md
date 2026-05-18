@@ -163,7 +163,7 @@ Never commit real secrets or production credentials.
 The app uses Flask-SQLAlchemy and Flask-Migrate/Alembic. Important relationships
 and rules visible in the code:
 
-- Products optionally reference `categories.id` through `category_id`.
+- Products must reference `categories.id` through `category_id`.
 - Categories have a `slug`, `sort_order`, and `active` flag.
 - Product publication uses the `status` field (`active` or `inactive`).
 - `Product.is_active` remains as a legacy template compatibility property.
@@ -175,8 +175,8 @@ and rules visible in the code:
 
 All public routes live under `/api` and return JSON with an `ok` flag.
 
-- `GET /api/products`: active public products. Products in inactive categories
-  are hidden, while active uncategorized products remain visible.
+- `GET /api/products`: active public products whose categories are also active.
+  Products without a valid category are not supported.
 - `GET /api/categories`: active categories ordered by `sort_order`, then name.
 - `GET /api/slideshow`: slideshow images ordered by `sort_order`, then creation
   time.

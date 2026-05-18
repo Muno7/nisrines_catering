@@ -54,7 +54,7 @@ class Product(db.Model):
     priceSingleCents = db.Column(db.Integer, nullable=False)
     priceFamilyCents = db.Column(db.Integer, nullable=True)
     image = db.Column(db.Text, nullable=True)
-    category_id = db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=True)
+    category_id = db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=False)
     ingredients = db.Column(db.Text, nullable=False)
     day = db.Column(db.String(20), nullable=True)
     status = db.Column(db.String(20), default="active", nullable=False)
@@ -101,6 +101,8 @@ class Product(db.Model):
         self.status = status
 
     def set_category(self, category_id: int | None) -> None:
+        if not category_id:
+            raise ValidationError("Product category is required.")
         self.category_id = category_id
 
     def set_ingredients(self, ingredients: str) -> None:

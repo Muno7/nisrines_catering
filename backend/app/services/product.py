@@ -27,6 +27,14 @@ class ProductService:
         return product
 
     @staticmethod
+    def _require_category_id(category_id: int | None) -> int:
+        if not category_id:
+            raise ValidationError("Product category is required.")
+        if not db.session.get(Category, category_id):
+            raise ValidationError("Product category does not exist.")
+        return category_id
+
+    @staticmethod
     def create(
         *,
         name: str,
@@ -34,7 +42,7 @@ class ProductService:
         price_single: int,
         price_family: int | None = None,
         image: str | None = None,
-        category_id: int | None = None,
+        category_id: int,
         ingredients: str = "",
         day: str | None = None,
         status: str = "active",
@@ -44,7 +52,7 @@ class ProductService:
         product.set_name_ar(name_ar)
         product.set_price_single(price_single)
         product.set_price_family(price_family)
-        product.set_category(category_id)
+        product.set_category(ProductService._require_category_id(category_id))
         product.set_ingredients(ingredients)
         product.set_day(day)
         product.set_status(status)
@@ -67,7 +75,7 @@ class ProductService:
         price_single: int,
         price_family: int | None,
         image: str | None,
-        category_id: int | None,
+        category_id: int,
         ingredients: str,
         day: str | None,
         status: str,
@@ -77,7 +85,7 @@ class ProductService:
         product.set_price_single(price_single)
         product.set_price_family(price_family)
         product.image = image
-        product.set_category(category_id)
+        product.set_category(ProductService._require_category_id(category_id))
         product.set_ingredients(ingredients)
         product.set_day(day)
         product.set_status(status)
@@ -170,8 +178,8 @@ class ProductService:
         for product in products:
             if status in {"active", "inactive"}:
                 product.set_status(status)
-            if category_id:
-                product.set_category(category_id)
+            if category_id is not None:
+                product.set_category(ProductService._require_category_id(category_id))
             if price_single is not None:
                 product.set_price_single(price_single)
             if price_family is not None:
@@ -204,15 +212,14 @@ class ProductService:
         """
         Return only products that should appear on the public menu.
 
-        Uncategorized active products remain visible, but products under inactive
-        categories are hidden so admins can pause a whole category at once.
+        Products must belong to an active category to appear publicly.
         """
         return (
             Product.query
-            .outerjoin(Category, Product.category_id == Category.id)
+            .join(Category, Product.category_id == Category.id)
             .filter(
                 Product.status == "active",
-                or_(Category.active.is_(True), Product.category_id.is_(None)),
+                Category.active.is_(True),
             )
             .order_by(Product.updated_at.desc())
             .all()

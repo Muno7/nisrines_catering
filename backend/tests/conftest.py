@@ -93,7 +93,7 @@ def make_product(db, make_category):
         category_id = overrides.pop("category_id", None)
         if category_id is None and category is not None:
             category_id = category.id
-        if category_id is None and not overrides.pop("without_category", False):
+        if category_id is None:
             category_id = make_category(f"Product Category {counter['value']}").id
 
         values = {

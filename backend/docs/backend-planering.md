@@ -91,10 +91,10 @@ datat. Exempelvis kan en produkt inte få negativt pris, och status måste vara
 `active` eller `inactive`.
 
 Jag planerade också relationen mellan produkter och kategorier försiktigt.
-Produkter kan sakna kategori, men om de har en kategori används relationen för
-att visa rätt slug i public API. Kategorier tas inte bort automatiskt med sina
-produkter, eftersom det hade varit riskabelt för admin. I stället blockerar
-servicen borttagning av en kategori om produkter fortfarande använder den.
+Produkter ska alltid ha en kategori, och relationen används för att visa rätt
+slug i public API. Kategorier tas inte bort automatiskt med sina produkter,
+eftersom det hade varit riskabelt för admin. I stället blockerar servicen
+borttagning av en kategori om produkter fortfarande använder den.
 
 ## Public API
 
@@ -235,4 +235,3 @@ Resultatet blev en backend där public API, admin routes, services, modeller,
 bilduppladdning och tester har tydliga ansvar. Det gör projektet lättare att
 förstå, lättare att vidareutveckla och mindre riskabelt att ändra feature för
 feature.
-

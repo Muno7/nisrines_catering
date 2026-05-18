@@ -157,16 +157,27 @@ class TestProductService:
         assert p.status == "active"
 
     def test_create_product_blank_name_raises(self, db):
+        cat = self._make_category()
         with pytest.raises(ValidationError):
-            ProductService.create(name="", price_single=1000)
+            ProductService.create(name="", price_single=1000, category_id=cat.id)
 
     def test_create_product_negative_price_raises(self, db):
+        cat = self._make_category()
         with pytest.raises(ValidationError):
-            ProductService.create(name="Chicken", price_single=-1)
+            ProductService.create(name="Chicken", price_single=-1, category_id=cat.id)
 
     def test_create_product_negative_family_price_raises(self, db):
+        cat = self._make_category()
         with pytest.raises(ValidationError):
-            ProductService.create(name="Chicken", price_single=1000, price_family=-1)
+            ProductService.create(name="Chicken", price_single=1000, price_family=-1, category_id=cat.id)
+
+    def test_create_product_without_category_raises(self, db):
+        with pytest.raises(ValidationError, match="category"):
+            ProductService.create(name="Chicken", price_single=1000, category_id=None)
+
+    def test_create_product_missing_category_raises(self, db):
+        with pytest.raises(ValidationError, match="does not exist"):
+            ProductService.create(name="Chicken", price_single=1000, category_id=999)
 
     def test_create_product_zero_family_price_is_valid(self, db):
         cat = self._make_category()
@@ -179,8 +190,9 @@ class TestProductService:
         assert p.name == "Grilled chicken"
 
     def test_create_product_invalid_status_raises(self, db):
+        cat = self._make_category()
         with pytest.raises(ValidationError):
-            ProductService.create(name="Chicken", price_single=1000, status="draft")
+            ProductService.create(name="Chicken", price_single=1000, category_id=cat.id, status="draft")
 
     def test_update_product(self, db):
         cat = self._make_category()

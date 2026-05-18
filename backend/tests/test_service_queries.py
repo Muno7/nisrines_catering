@@ -90,13 +90,12 @@ class TestCategoryServiceQueries:
         make_product(category=mains)
         make_product(category=mains)
         make_product(category=desserts)
-        make_product(without_category=True)
 
         result = CategoryService.product_counts()
 
         assert result[mains.id] == 2
         assert result[desserts.id] == 1
-        assert result[None] == 1
+        assert None not in result
 
     def test_reorder_ignores_missing_ids(self, make_category):
         first = make_category("First")
@@ -116,12 +115,11 @@ class TestProductServiceQueries:
         mains = make_category("Mains")
         active = make_product(category=mains, status="active")
         inactive = make_product(category=mains, status="inactive")
-        uncategorized = make_product(without_category=True)
 
-        result = ProductService.stats([active, inactive, uncategorized])
+        result = ProductService.stats([active, inactive])
 
-        assert result["total"] == 3
-        assert result["active"] == 2
+        assert result["total"] == 2
+        assert result["active"] == 1
         assert result["inactive"] == 1
         assert result["category_counts"]["Mains"] == 2
 
@@ -159,6 +157,23 @@ class TestProductServiceQueries:
                 price_family=-1,
                 image=product.image,
                 category_id=product.category_id,
+                ingredients=product.ingredients,
+                day=product.day,
+                status=product.status,
+            )
+
+    def test_update_rejects_missing_category(self, make_product):
+        product = make_product()
+
+        with pytest.raises(ValidationError, match="category"):
+            ProductService.update(
+                product,
+                name=product.name,
+                name_ar=product.name_ar,
+                price_single=product.priceSingleCents,
+                price_family=product.priceFamilyCents,
+                image=product.image,
+                category_id=None,
                 ingredients=product.ingredients,
                 day=product.day,
                 status=product.status,
@@ -254,13 +269,12 @@ class TestProductServiceQueries:
         inactive_category = make_category("Inactive")
         CategoryService.set_active(inactive_category, False)
         visible = make_product(category=active_category)
-        uncategorized = make_product(without_category=True)
         make_product(category=active_category, status="inactive")
         make_product(category=inactive_category)
 
         result = ProductService.list_public()
 
-        assert {product.id for product in result} == {visible.id, uncategorized.id}
+        assert {product.id for product in result} == {visible.id}
 
     def test_product_to_dict_keeps_legacy_and_new_price_formats(self, make_product):
         single = make_product(price_single=1200, price_family=None)
