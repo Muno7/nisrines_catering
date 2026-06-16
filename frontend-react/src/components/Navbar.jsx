@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
+import { useCart } from '../context/CartContext.jsx'
 
 const navLinks = [
   { id: 'home', to: '/', label: 'Home', icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="fill-current w-[20px] h-[20px] mr-3"><path d="M23.121,9.069,15.536,1.483a5.008,5.008,0,0,0-7.072,0L.879,9.069A2.978,2.978,0,0,0,0,11.19v9.817a3,3,0,0,0,3,3H21a3,3,0,0,0,3-3V11.19A2.978,2.978,0,0,0,23.121,9.069ZM15,22.007H9V18.073a3,3,0,0,1,6,0Zm7-1a1,1,0,0,1-1,1H17V18.073a5,5,0,0,0-10,0v3.934H3a1,1,0,0,1-1-1V11.19a1.008,1.008,0,0,1,.293-.707L9.878,2.9a3.008,3.008,0,0,1,4.244,0l7.585,7.586A1.008,1.008,0,0,1,22,11.19Z" /></svg> },
@@ -32,6 +33,7 @@ function getStoredLanguage() {
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [language, setLanguage] = useState(getStoredLanguage)
+  const { totalQuantity } = useCart()
   const location = useLocation()
   const headerRef = useRef(null)
 
@@ -157,7 +159,7 @@ function Navbar() {
           <div className="flex items-center gap-2 sm:gap-3">
             <Link to="/order" className="relative p-4 rounded-full lg:hover:bg-muted/10 active:text-muted transition duration-200">
               <BasketIcon className="fill-current h-[24px] w-[24px]" />
-              <span className="js-cart-quantity absolute top-[10px] right-[8px] bg-secondary text-white text-xs rounded-full px-1.5 py-0.5 font-bold">0</span>
+              <span className="js-cart-quantity absolute top-[10px] right-[8px] bg-secondary text-white text-xs rounded-full px-1.5 py-0.5 font-bold">{totalQuantity}</span>
             </Link>
           </div>
         </div>
