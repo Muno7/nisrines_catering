@@ -93,7 +93,7 @@ function Navbar() {
             </div>
           </button>
 
-          <ul className="sidebar-list flex flex-col w-full mt-10">
+          <ul className="sidebar-list flex flex-col w-full mt-4">
             {navLinks.map((link) => (
               <li key={link.id} className="w-full">
                 <Link
