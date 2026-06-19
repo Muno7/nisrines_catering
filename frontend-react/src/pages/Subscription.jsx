@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useSEO } from '../hooks/useSEO.js'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -63,6 +64,11 @@ function PlanTable({ title, plans, status }) {
 }
 
 function Subscription() {
+  useSEO({
+    title: "Meal Subscriptions – Weekly & Monthly Plans | Nisrine's Catering",
+    description: "Subscribe to weekly or monthly homemade Lebanese meal plans. Flexible plans for individuals and families. Delivered to your door in Beirut.",
+  })
+
   const [personPlans, setPersonPlans] = useState([])
   const [familyPlans, setFamilyPlans] = useState([])
   const [status, setStatus] = useState(LOADING)

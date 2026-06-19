@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /order
+Disallow: /favorite
+
+Sitemap: https://www.nisrinecatering.com/sitemap.xml

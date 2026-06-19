@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext.jsx'
 import { getProductPrice, formatCurrency } from '../utils/pricing.js'
+import { useSEO } from '../hooks/useSEO.js'
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || ''
 
@@ -137,6 +138,11 @@ function ComingSoonOverlay() {
 }
 
 function Order() {
+  useSEO({
+    title: "Order Basket | Nisrine's Catering",
+    description: "Review your order from Nisrine's Catering and choose pickup or delivery.",
+  })
+
   const { cartItems } = useCart()
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)

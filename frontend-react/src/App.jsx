@@ -10,6 +10,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import { CartProvider } from './context/CartContext.jsx'
 import { FavoriteProvider } from './context/FavoriteContext.jsx'
 import { useEffect } from 'react'
+import { MotionConfig } from 'framer-motion'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -19,21 +20,23 @@ function ScrollToTop() {
 
 function App() {
   return (
-    <CartProvider>
-      <FavoriteProvider>
-        <ScrollToTop />
-        <Navbar />
-        <Routes>
-          <Route index element={<Home/>} />
-          <Route path="/menu" element={<Menu/>} />
-          <Route path="/order" element={<Order/>} />
-          <Route path="/subscription" element={<Subscription/>} />
-          <Route path="/favorite" element={<Favorite/>} />
-          <Route path="/catering" element={<Catering/>} />
-        </Routes>
-        <Footer />
-      </FavoriteProvider>
-    </CartProvider>
+    <MotionConfig reducedMotion="user">
+      <CartProvider>
+        <FavoriteProvider>
+          <ScrollToTop />
+          <Navbar />
+          <Routes>
+            <Route index element={<Home/>} />
+            <Route path="/menu" element={<Menu/>} />
+            <Route path="/order" element={<Order/>} />
+            <Route path="/subscription" element={<Subscription/>} />
+            <Route path="/favorite" element={<Favorite/>} />
+            <Route path="/catering" element={<Catering/>} />
+          </Routes>
+          <Footer />
+        </FavoriteProvider>
+      </CartProvider>
+    </MotionConfig>
   )
 }
 

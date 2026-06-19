@@ -1,10 +1,16 @@
 import { useState, useEffect, useRef } from 'react'
 import './Catering.css'
 import { useHeroReady } from '../utils/useHeroReady.js'
+import { useSEO } from '../hooks/useSEO.js'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
 
 function Catering() {
+  useSEO({
+    title: "Catering Services | Nisrine's Catering",
+    description: "Professional catering for events and gatherings. Customised Lebanese menus, fresh homemade food for any occasion in Beirut.",
+  })
+
   const [menus, setMenus] = useState([])
   const [loading, setLoading] = useState(true)
   const [lightbox, setLightbox] = useState({ open: false, index: 0 })

@@ -2,34 +2,34 @@ import { useFavorite } from '../context/FavoriteContext.jsx'
 import { getProductPrice, formatCurrency } from '../utils/pricing.js'
 import { resolveProductImageSrc } from '../utils/imagePlaceholder.js'
 
-export default function ProductCard({ product, onOpen, onAdd, onRemove, qty, className, style }) {
+export default function ProductCard({ product, onOpen, className, style }) {
   const { isFavorite, toggleFavorite } = useFavorite()
   const imageSrc = resolveProductImageSrc(product.image, product.name)
   const price = getProductPrice(product, 'single')
 
   return (
     <div
-      className={`product-container relative flex flex-col gap-2 bg-surface border border-muted/30 p-2 rounded-[10px] transition-all duration-500 sm:hover:-translate-y-1 sm:hover:shadow-lg${onOpen ? ' cursor-pointer' : ''}${className ? ' ' + className : ''}`}
+      className={`product-container relative flex flex-col gap-2 bg-surface p-2 rounded-2xl transition-all duration-300 sm:hover:-translate-y-1.5${onOpen ? ' cursor-pointer' : ''}${className ? ' ' + className : ''}`}
       style={style}
       onClick={onOpen ? () => onOpen(product) : undefined}
     >
-      <div className="relative h-[10rem] w-full">
+      <div className="relative h-44 w-full overflow-hidden rounded-xl">
         <img
           loading="lazy"
-          className="w-full h-full object-cover rounded-[10px]"
+          className="w-full h-full object-cover"
           src={imageSrc}
           alt={product.name}
         />
+        <div className="absolute inset-x-0 bottom-0 h-10 bg-linear-to-t from-black/20 to-transparent pointer-events-none" />
         {product.day && (
-          <span className="bg-primary absolute left-0 top-0 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md capitalize">
+          <span className="bg-primary absolute left-0 top-0 text-white text-xs font-bold px-2 py-1 rounded-tl-none rounded-br-lg shadow-sm capitalize">
             {product.day.charAt(0).toUpperCase() + product.day.slice(1)}
           </span>
         )}
       </div>
 
-      {/* Heart button: direct child of card (not image div), matching old frontend DOM structure */}
       <label
-        className="z-[3] shadow-sm product-heart-button absolute bg-white rounded-full p-[7px] top-4 right-4 cursor-pointer select-none transition duration-100"
+        className="z-3 shadow-md product-heart-button absolute bg-white rounded-full p-1.75 top-4 right-4 cursor-pointer select-none transition duration-100"
         onClick={e => e.stopPropagation()}
       >
         <input
@@ -38,7 +38,7 @@ export default function ProductCard({ product, onOpen, onAdd, onRemove, qty, cla
           checked={isFavorite(product.id)}
           onChange={() => toggleFavorite(product.id)}
         />
-        <div className="heart-checkmark h-[16px] w-[16px]">
+        <div className="heart-checkmark h-4 w-4">
           <svg viewBox="0 0 256 256">
             <rect fill="none" height="256" width="256" />
             <path
@@ -51,49 +51,19 @@ export default function ProductCard({ product, onOpen, onAdd, onRemove, qty, cla
         </div>
       </label>
 
-      <div className="flex flex-col p-2 gap-1 items-center text-center">
-        <p
-          className="text-lg font-semibold leading-tight line-clamp-1 truncate text-accent w-full text-center"
-          translate="no"
-        >
-          {product.name}
-        </p>
+      <div className="flex flex-col px-1 gap-1">
+        <div className="h-10 overflow-hidden">
+          <p
+            className="text-sm font-bold leading-snug line-clamp-2 text-accent"
+            translate="no"
+          >
+            {product.name}
+          </p>
+        </div>
         {price !== null && (
-          <p className="price-js text-center">
+          <p className="price-js text-xs font-medium text-muted">
             <span translate="no">$</span>{formatCurrency(price)}
           </p>
-        )}
-        {onAdd !== undefined && (
-          <div className="relative w-full mt-1">
-            {!qty ? (
-              <button
-                onClick={e => { e.stopPropagation(); onAdd() }}
-                className="flex w-full text-sm justify-center button-primary py-1 rounded-xl transition-opacity duration-300"
-              >
-                Add
-              </button>
-            ) : (
-              <div className="flex justify-between items-center rounded-xl border-2 bg-muted/20">
-                <button
-                  onClick={e => { e.stopPropagation(); onRemove() }}
-                  className="rounded-full transition-all active:bg-muted/30 w-6 h-6 flex items-center justify-center"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="fill-current w-[12px] h-[12px]">
-                    <path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" />
-                  </svg>
-                </button>
-                <span className="bg-surface rounded-md font-medium w-10 text-center font-numeric">{qty}</span>
-                <button
-                  onClick={e => { e.stopPropagation(); onAdd() }}
-                  className="rounded-full transition-all active:bg-muted/30 w-6 h-6 flex items-center justify-center"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="fill-current w-[12px] h-[12px]">
-                    <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z" />
-                  </svg>
-                </button>
-              </div>
-            )}
-          </div>
         )}
       </div>
     </div>

@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useCart } from '../context/CartContext.jsx'
 import ProductCard from '../components/ProductCard.jsx'
 import ProductOverlay from '../components/ProductOverlay.jsx'
 import heroImg from '../assets/hero.png'
+import { useSEO } from '../hooks/useSEO.js'
+
+const MotionLink = motion(Link)
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
 
@@ -144,10 +148,14 @@ function HeroSection() {
         </div>
       </div>
       <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-center text-white px-4">
-        <div className={`home-hero__copy ${heroReady ? 'home-hero__copy--ready' : ''}`}>
+        <motion.div
+          initial={{ opacity: 0, y: 32 }}
+          animate={heroReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 }}
+          transition={{ duration: 0.8, delay: 0.12, ease: 'easeOut' }}
+        >
           <h1 className="text-4xl md:text-6xl font-bold">Welcome to Nisrine's Catering</h1>
           <p className="mt-4 text-lg md:text-2xl">All made with love from our kitchen to your table</p>
-        </div>
+        </motion.div>
       </div>
     </section>
   )
@@ -217,38 +225,12 @@ const FEATURES = [
 ]
 
 function FeaturesSection() {
-  const cardRefs = useRef([])
-
-  useEffect(() => {
-    const cards = cardRefs.current.filter(Boolean)
-
-    if (window.innerWidth >= 640) {
-      cards.forEach(c => c.classList.add('animate'))
-      return
-    }
-
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate')
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.2 }
-    )
-
-    cards.forEach(c => observer.observe(c))
-    return () => observer.disconnect()
-  }, [])
-
   return (
     <section className="flex flex-col gap-12 relative h-auto px-4 py-16 sm:px-8 lg:px-16 sm:items-center bg-background rounded-t-md">
       <div className="flex flex-col gap-6 sm:items-center max-w-3xl mx-auto text-center">
-        <h1 className="text-4xl font-bold sm:text-5xl lg:text-6xl text-accent">
+        <h2 className="text-4xl font-bold sm:text-5xl lg:text-6xl text-accent">
           What we offer
-        </h1>
+        </h2>
         <p className="text-xl sm:text-2xl text-accent leading-relaxed">
           Home cooked meals made from scratch, delivered to your door
         </p>
@@ -265,16 +247,20 @@ function FeaturesSection() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto w-full">
         {FEATURES.map((feature, i) => {
-          const Tag = feature.to ? Link : 'div'
+          const MotionTag = feature.to ? MotionLink : motion.div
           const extraProps = feature.to ? { to: feature.to } : {}
           const spanClass = feature.spanClass ?? ''
 
           return (
-            <Tag
+            <MotionTag
               key={feature.title}
-              ref={el => (cardRefs.current[i] = el)}
               {...extraProps}
-              className={`feature-card group relative p-6 bg-surface rounded-2xl border border-muted/30 transition-all duration-500 sm:hover:-translate-y-1 sm:hover:shadow-lg ${spanClass}`}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ type: 'tween', duration: 0.5, delay: i * 0.06, ease: 'easeOut' }}
+              whileHover={{ y: -4, transition: { type: 'tween', duration: 0.25, ease: 'easeOut' } }}
+              className={`feature-card group relative p-6 bg-surface rounded-2xl border border-muted/30 transition-shadow duration-300 sm:hover:shadow-lg ${spanClass}`}
             >
               <div className="flex items-center gap-4 mb-4">
                 <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 text-accent group-hover:bg-accent group-hover:text-white transition-colors duration-300">
@@ -283,7 +269,7 @@ function FeaturesSection() {
                 <h3 className="text-xl text-accent font-semibold">{feature.title}</h3>
               </div>
               <p className="text-accent">{feature.desc}</p>
-            </Tag>
+            </MotionTag>
           )
         })}
       </div>
@@ -297,8 +283,8 @@ function FeaturesSection() {
 
 function ProductSkeleton() {
   return (
-    <div className="product-container flex-shrink-0 flex flex-col gap-2 shadow-[0_0_10px_rgba(0,0,0,0.15)] p-4 rounded-[10px] animate-pulse">
-      <div className="w-full h-[10rem] bg-muted/30 rounded-[10px]" />
+    <div className="product-container flex-shrink-0 flex flex-col gap-2 p-2 rounded-2xl animate-pulse">
+      <div className="w-full h-44 bg-muted/30 rounded-xl" />
       <div className="flex flex-col gap-2">
         <div className="bg-muted/30 h-6 w-3/4 rounded" />
         <div className="bg-muted/30 h-4 w-1/2 rounded" />
@@ -400,7 +386,7 @@ function PlatDuJourSection() {
     <>
       <section className="flex flex-col gap-2 relative h-auto py-6 sm:px-8 sm:py-10 bg-background">
         <div className="flex flex-col font-bold px-4">
-          <h1 className="text-4xl text-accent">Plat du Jour</h1>
+          <h2 className="text-4xl text-accent">Plat du Jour</h2>
           <p className="font-normal">Note: (salad/yogurt included)</p>
         </div>
         <div className="products-wrapper overflow-x-auto whitespace-nowrap relative">
@@ -424,9 +410,11 @@ function PlatDuJourSection() {
         </Link>
       </section>
 
-      {selectedProduct && (
-        <ProductOverlay product={selectedProduct} onClose={() => setSelectedProduct(null)} />
-      )}
+      <AnimatePresence>
+        {selectedProduct && (
+          <ProductOverlay key="overlay" product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+        )}
+      </AnimatePresence>
 
       {dayConflict && (
         <DayConflictModal
@@ -443,6 +431,11 @@ function PlatDuJourSection() {
 // Home Page
 // ============================================================
 function Home() {
+  useSEO({
+    title: "Nisrine's Catering – Fresh Lebanese Meals, Delivery & Catering | Beirut",
+    description: "Order fresh homemade Lebanese meals from Nisrine's Catering. Family portions, weekly meal subscriptions, and full catering services. Delivery or pickup available in Beirut.",
+  })
+
   return (
     <main>
       <HeroSection />

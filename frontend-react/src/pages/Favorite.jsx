@@ -1,20 +1,22 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
 import { useFavorite } from '../context/FavoriteContext'
 import { useCart } from '../context/CartContext'
 import { getProductPrice, formatCurrency } from '../utils/pricing'
 import { resolveProductImageSrc } from '../utils/imagePlaceholder.js'
 import ProductOverlay from '../components/ProductOverlay.jsx'
 import BasketNotification from '../components/BasketNotification.jsx'
+import { useSEO } from '../hooks/useSEO.js'
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || ''
 
 function SkeletonCard() {
   return (
-    <div className="relative bg-surface shadow-[0_0_10px_rgba(0,0,0,0.1)] rounded-[10px] overflow-hidden animate-pulse">
+    <div className="favorite-card relative bg-surface rounded-2xl overflow-hidden animate-pulse">
       <div className="flex flex-row items-center gap-2 p-2 lg:gap-4">
         <div className="flex-shrink-0">
-          <div className="w-28 h-28 lg:w-40 lg:h-40 bg-muted/30 rounded-[10px]" />
+          <div className="w-28 h-28 lg:w-40 lg:h-40 bg-muted/30 rounded-xl" />
         </div>
         <div className="flex flex-col justify-between gap-16 w-full lg:py-2 lg:gap-20">
           <div className="w-full h-4 bg-muted/30 rounded" />
@@ -100,13 +102,13 @@ function FavoriteCard({ product, onRemove, onOpen }) {
 
   return (
     <div
-      className="relative bg-surface border border-muted/30 rounded-[10px] overflow-hidden transition-all duration-500 sm:hover:-translate-y-1 sm:hover:shadow-lg cursor-pointer"
+      className="favorite-card relative bg-surface rounded-2xl overflow-hidden transition-all duration-300 sm:hover:-translate-y-1.5 cursor-pointer"
       onClick={() => onOpen(product)}
     >
       <div className="flex flex-row gap-2 p-2 lg:gap-4">
         <div className="relative shrink-0">
           <img
-            className="w-28 h-28 lg:w-40 lg:h-40 object-cover rounded-[10px]"
+            className="w-28 h-28 lg:w-40 lg:h-40 object-cover rounded-xl"
             src={imageSrc}
             alt={product.name}
           />
@@ -119,7 +121,7 @@ function FavoriteCard({ product, onRemove, onOpen }) {
           )}
         </div>
         <div className="flex flex-col justify-between gap-4 w-full lg:py-2 lg:gap-8">
-          <h3 className="text-base md:text-xl font-bold line-clamp-2">{product.name}</h3>
+          <h3 className="text-base md:text-xl font-semibold line-clamp-2">{product.name}</h3>
           <div className="flex justify-between items-center gap-4 w-full">
             <div className="flex items-center gap-2">
               <p className="text-lg font-semibold">${formatCurrency(price)}</p>
@@ -182,6 +184,11 @@ function FavoriteCard({ product, onRemove, onOpen }) {
 }
 
 function Favorite() {
+  useSEO({
+    title: "Your Favorites | Nisrine's Catering",
+    description: "Your saved favorite dishes from Nisrine's Catering. Add them to your basket and order in a click.",
+  })
+
   const { favoriteItems, removeFromFavorite } = useFavorite()
   const { dayConflict, dismissDayConflict } = useCart()
   const [products, setProducts] = useState([])
@@ -250,9 +257,11 @@ function Favorite() {
         </div>
       </div>
 
-      {selectedProduct && (
-        <ProductOverlay product={selectedProduct} onClose={() => setSelectedProduct(null)} />
-      )}
+      <AnimatePresence>
+        {selectedProduct && (
+          <ProductOverlay key="overlay" product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+        )}
+      </AnimatePresence>
 
       {dayConflict && (
         <DayConflictModal

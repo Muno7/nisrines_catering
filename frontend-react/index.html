@@ -2,10 +2,73 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicon & App Icons -->
+    <link rel="icon" type="image/png" href="/assets/icons/logo.png" />
+    <link rel="apple-touch-icon" href="/assets/icons/logo.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#E8822A" />
+
+    <!-- Primary SEO -->
+    <title>Nisrine's Catering – Fresh Lebanese Meals, Delivery & Catering | Beirut</title>
+    <meta name="description" content="Order fresh homemade Lebanese meals from Nisrine's Catering. Family portions, weekly meal subscriptions, and full catering services. Delivery or pickup available in Beirut." />
+    <meta name="keywords" content="Lebanese catering, homemade meals, meal delivery Beirut, Lebanese food, meal subscription, catering Lebanon, Nisrine catering" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Nisrine's Catering" />
+
+    <!-- Open Graph (Facebook, LinkedIn, WhatsApp, iMessage) -->
+    <meta property="og:type" content="restaurant" />
+    <meta property="og:site_name" content="Nisrine's Catering" />
+    <meta property="og:title" content="Nisrine's Catering – Fresh Lebanese Meals, Delivery & Catering" />
+    <meta property="og:description" content="Order fresh homemade Lebanese meals from Nisrine's Catering. Family portions, weekly meal subscriptions, and full catering services. Delivery or pickup available in Beirut." />
+    <meta property="og:image" content="https://www.nisrinecatering.com/assets/images/catering-hero.jpg" />
+    <meta property="og:image:alt" content="Nisrine's Catering – Fresh Lebanese homemade meals" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://www.nisrinecatering.com" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Nisrine's Catering – Fresh Lebanese Meals, Delivery & Catering" />
+    <meta name="twitter:description" content="Order fresh homemade Lebanese meals from Nisrine's Catering. Family portions, weekly meal subscriptions, and full catering services." />
+    <meta name="twitter:image" content="https://www.nisrinecatering.com/assets/images/catering-hero.jpg" />
+    <meta name="twitter:image:alt" content="Nisrine's Catering – Fresh Lebanese homemade meals" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;700&display=swap" rel="stylesheet" />
-    <title>frontend-react</title>
+
+    <!-- Structured Data: LocalBusiness / FoodEstablishment -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FoodEstablishment",
+      "name": "Nisrine's Catering",
+      "image": "https://www.nisrinecatering.com/assets/images/catering-hero.jpg",
+      "description": "Fresh homemade Lebanese meals with family portions, weekly subscriptions, and catering services. Delivery or pickup in Beirut.",
+      "telephone": "+96171226934",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Beirut",
+        "addressCountry": "LB"
+      },
+      "servesCuisine": ["Lebanese", "Middle Eastern"],
+      "hasMenu": "https://www.nisrinecatering.com/menu",
+      "url": "https://www.nisrinecatering.com",
+      "sameAs": [
+        "https://www.facebook.com/Nisrine.kitchen/",
+        "https://www.instagram.com/nisrine_catering/",
+        "https://www.tiktok.com/@nisrine_catering"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+96171226934",
+        "contactType": "customer service",
+        "availableLanguage": ["English", "Arabic"]
+      }
+    }
+    </script>
   </head>
   <body class="bg-background text-text">
     <div id="root"></div>

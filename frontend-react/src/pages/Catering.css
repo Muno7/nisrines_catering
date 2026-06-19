@@ -48,22 +48,22 @@
 }
 
 body.hero-loading .catering-hero__media {
-  transform: scale(1.05);
+  opacity: 0;
+  transform: scale(1.03);
   transform-origin: center;
 }
 
 body.hero-loading.hero-ready .catering-hero__media {
-  transform: scale(1);
-  animation: cateringHeroZoomOut 1.35s ease-out forwards;
+  animation: cateringHeroBgIn 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 body.hero-loading .catering-hero__copy {
-  opacity: 0.5;
-  transform: scale(0.92);
+  opacity: 0;
+  transform: translateY(28px);
 }
 
 body.hero-loading.hero-ready .catering-hero__copy {
-  animation: cateringHeroCopyIn 0.6s ease-out 0.08s forwards;
+  animation: cateringHeroCopyIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
 }
 
 .catering-eyebrow {
@@ -347,14 +347,14 @@ body.hero-loading.hero-ready .catering-hero__copy {
   50% { opacity: 0.95; }
 }
 
-@keyframes cateringHeroZoomOut {
-  from { transform: scale(1.05); }
-  to { transform: scale(1); }
+@keyframes cateringHeroBgIn {
+  from { opacity: 0; transform: scale(1.03); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
 @keyframes cateringHeroCopyIn {
-  from { opacity: 0.5; transform: scale(0.92); }
-  to { opacity: 1; transform: scale(1); }
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @media (min-width: 1024px) {
@@ -410,5 +410,6 @@ body.hero-loading.hero-ready .catering-hero__copy {
     animation: none;
     transform: none;
     opacity: 1;
+    transition: none;
   }
 }

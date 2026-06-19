@@ -1,9 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useCart } from '../context/CartContext'
 import { useFavorite } from '../context/FavoriteContext'
 import SharedProductCard from '../components/ProductCard.jsx'
 import ProductOverlay from '../components/ProductOverlay.jsx'
+import { useSEO } from '../hooks/useSEO.js'
+
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -368,6 +371,11 @@ function SkeletonGrid() {
 // ── Menu Page ─────────────────────────────────────────────────────────
 
 export default function Menu() {
+  useSEO({
+    title: "Menu – Fresh Lebanese Dishes | Nisrine's Catering",
+    description: "Browse Nisrine's full menu of homemade Lebanese dishes. Plats du jour, family portions, fresh & frozen meals. Order online today.",
+  })
+
   const { favoriteItems } = useFavorite()
   const { dayConflict, dismissDayConflict } = useCart()
 
@@ -579,13 +587,22 @@ export default function Menu() {
               ) : (
                 <div className="products-grid grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 justify-items-center">
                   {filteredProducts.map((product, index) => (
-                    <SharedProductCard
+                    <motion.div
                       key={product.id}
-                      product={product}
-                      onOpen={setSelectedProduct}
-                      className="menu-card-enter"
-                      style={{ '--menu-card-delay': `${Math.min(index * 50, 800)}ms` }}
-                    />
+                      initial={{ opacity: 0, y: 18 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{
+                        duration: 0.45,
+                        delay: Math.min(index * 0.04, 0.8),
+                        ease: 'easeOut',
+                      }}
+                      className="w-full flex justify-center"
+                    >
+                      <SharedProductCard
+                        product={product}
+                        onOpen={setSelectedProduct}
+                      />
+                    </motion.div>
                   ))}
                 </div>
               )}
@@ -603,9 +620,11 @@ export default function Menu() {
         categories={categories}
       />
 
-      {selectedProduct && (
-        <ProductOverlay product={selectedProduct} onClose={() => setSelectedProduct(null)} />
-      )}
+      <AnimatePresence>
+        {selectedProduct && (
+          <ProductOverlay key="overlay" product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+        )}
+      </AnimatePresence>
 
       {dayConflict && (
         <DayConflictModal

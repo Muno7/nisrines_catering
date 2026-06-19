@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
 import { useCart } from '../context/CartContext'
 import { useFavorite } from '../context/FavoriteContext'
 import { getProductPrice, formatCurrency } from '../utils/pricing'
@@ -61,8 +62,12 @@ export default function ProductOverlay({ product, onClose }) {
   const { getCartItem, addToCart, removeFromCart } = useCart()
   const [portion, setPortion] = useState('single')
   const [notification, setNotification] = useState(null)
-  const [isClosing, setIsClosing] = useState(false)
   const notifKeyRef = useRef(0)
+
+  function triggerNotification(isAdding) {
+    notifKeyRef.current += 1
+    setNotification({ isAdding, key: notifKeyRef.current })
+  }
 
   const hasFamilyPortion =
     typeof product.family === 'number' ||
@@ -81,25 +86,25 @@ export default function ProductOverlay({ product, onClose }) {
     setPortion('single')
   }, [product.id])
 
-  function handleClose() {
-    setIsClosing(true)
-    setTimeout(onClose, 220)
-  }
-
-  function triggerNotification(isAdding) {
-    notifKeyRef.current += 1
-    setNotification({ isAdding, key: notifKeyRef.current })
-  }
-
   return (
-    <div
-      className={`product-overlay${isClosing ? ' product-overlay--closing' : ''} fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 pt-8 pb-12 sm:p-6 sm:pt-10 sm:pb-14`}
-      onClick={e => { if (e.target === e.currentTarget) handleClose() }}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.22 }}
+      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 pt-8 pb-12 sm:p-6 sm:pt-10 sm:pb-14"
+      onClick={e => { if (e.target === e.currentTarget) onClose() }}
     >
-      <div className="product-overlay__card relative bg-white rounded-xl shadow-lg w-full max-w-[360px] h-[90vh] max-h-[700px] md:max-w-[720px] md:h-[85vh] flex flex-col md:flex-row overflow-hidden">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96, y: 14 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.96, y: 14 }}
+        transition={{ type: 'spring', stiffness: 420, damping: 30 }}
+        className="relative bg-white rounded-xl shadow-lg w-full max-w-[360px] h-[90vh] max-h-[700px] md:max-w-[720px] md:h-[85vh] flex flex-col md:flex-row overflow-hidden"
+      >
         {/* Close */}
         <button
-          onClick={handleClose}
+          onClick={onClose}
           className="absolute top-2 left-2 z-10 bg-white rounded-full p-2 shadow-md lg:hover:bg-gray-100 transition-colors"
           aria-label="Close"
         >
@@ -204,7 +209,7 @@ export default function ProductOverlay({ product, onClose }) {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }
