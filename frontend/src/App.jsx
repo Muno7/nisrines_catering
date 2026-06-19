@@ -4,6 +4,7 @@ import Footer from './components/Footer.jsx'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { CartProvider } from './context/CartContext.jsx'
 import { FavoriteProvider } from './context/FavoriteContext.jsx'
+import { LanguageProvider } from './context/LanguageContext.jsx'
 import { lazy, Suspense, useEffect } from 'react'
 import { MotionConfig } from 'framer-motion'
 
@@ -22,23 +23,25 @@ function ScrollToTop() {
 function App() {
   return (
     <MotionConfig reducedMotion="user">
-      <CartProvider>
-        <FavoriteProvider>
-          <ScrollToTop />
-          <Navbar />
-          <Suspense fallback={null}>
-            <Routes>
-              <Route index element={<Home/>} />
-              <Route path="/menu" element={<Menu/>} />
-              <Route path="/order" element={<Order/>} />
-              <Route path="/subscription" element={<Subscription/>} />
-              <Route path="/favorite" element={<Favorite/>} />
-              <Route path="/catering" element={<Catering/>} />
-            </Routes>
-          </Suspense>
-          <Footer />
-        </FavoriteProvider>
-      </CartProvider>
+      <LanguageProvider>
+        <CartProvider>
+          <FavoriteProvider>
+            <ScrollToTop />
+            <Navbar />
+            <Suspense fallback={null}>
+              <Routes>
+                <Route index element={<Home/>} />
+                <Route path="/menu" element={<Menu/>} />
+                <Route path="/order" element={<Order/>} />
+                <Route path="/subscription" element={<Subscription/>} />
+                <Route path="/favorite" element={<Favorite/>} />
+                <Route path="/catering" element={<Catering/>} />
+              </Routes>
+            </Suspense>
+            <Footer />
+          </FavoriteProvider>
+        </CartProvider>
+      </LanguageProvider>
     </MotionConfig>
   )
 }

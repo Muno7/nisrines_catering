@@ -1,11 +1,15 @@
 import { useFavorite } from '../context/FavoriteContext.jsx'
+import { useLanguage } from '../context/LanguageContext.jsx'
 import { getProductPrice, formatCurrency } from '../utils/pricing.js'
 import { resolveProductImageSrc } from '../utils/imagePlaceholder.js'
 
 export default function ProductCard({ product, onOpen, className, style }) {
   const { isFavorite, toggleFavorite } = useFavorite()
+  const { language } = useLanguage()
   const imageSrc = resolveProductImageSrc(product.image, product.name)
   const price = getProductPrice(product, 'single')
+  const nameAr = product.nameAr || product.name_ar
+  const displayName = language === 'ar' && nameAr ? nameAr : product.name
 
   return (
     <div
@@ -52,19 +56,19 @@ export default function ProductCard({ product, onOpen, className, style }) {
       </label>
 
       <div className="flex flex-col px-1 gap-1">
-        <div className="h-10 overflow-hidden">
-          <p
-            className="text-sm font-bold leading-snug line-clamp-2 text-accent"
-            translate="no"
-          >
-            {product.name}
-          </p>
-        </div>
         {price !== null && (
           <p className="price-js text-xs font-medium text-muted">
             <span translate="no">$</span>{formatCurrency(price)}
           </p>
         )}
+        <div className="h-10 overflow-hidden">
+          <p
+            className="text-sm font-bold leading-snug line-clamp-2 text-accent"
+            translate="no"
+          >
+            {displayName}
+          </p>
+        </div>
       </div>
     </div>
   )

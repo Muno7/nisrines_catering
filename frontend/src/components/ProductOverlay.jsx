@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useCart } from '../context/CartContext'
 import { useFavorite } from '../context/FavoriteContext'
+import { useLanguage } from '../context/LanguageContext.jsx'
 import { getProductPrice, formatCurrency } from '../utils/pricing'
 import { resolveProductImageSrc } from '../utils/imagePlaceholder.js'
 import BasketNotification from './BasketNotification.jsx'
@@ -60,9 +61,12 @@ function getPrice(product, portion) {
 
 export default function ProductOverlay({ product, onClose }) {
   const { getCartItem, addToCart, removeFromCart } = useCart()
+  const { language } = useLanguage()
   const [portion, setPortion] = useState('single')
   const [notification, setNotification] = useState(null)
   const notifKeyRef = useRef(0)
+  const nameAr = product.nameAr || product.name_ar
+  const displayName = language === 'ar' && nameAr ? nameAr : product.name
 
   function triggerNotification(isAdding) {
     notifKeyRef.current += 1
@@ -113,7 +117,7 @@ export default function ProductOverlay({ product, onClose }) {
 
         {/* Image */}
         <div className="relative w-full md:w-1/2 h-[40vh] md:h-full overflow-hidden">
-          <img src={imageSrc} alt={product.name} className="w-full h-full object-cover object-center" />
+          <img src={imageSrc} alt={displayName} className="w-full h-full object-cover object-center" />
           <HeartButton productId={product.id} />
           {notification && (
             <BasketNotification
@@ -128,32 +132,30 @@ export default function ProductOverlay({ product, onClose }) {
         <div className="flex flex-col bg-surface w-full md:w-1/2 h-[50vh] md:h-full overflow-hidden">
           <div className="flex-grow overflow-y-auto p-4 md:p-6">
             <div className="space-y-4">
-              <h1 className="text-xl md:text-2xl font-bold leading-tight">{product.name}</h1>
+              <span className="text-xl md:text-2xl price-js">
+                <span>$</span>{price}
+              </span>
 
-              <div className="flex items-center gap-4">
-                <span className="text-xl md:text-2xl price-js">
-                  <span>$</span>{price}
-                </span>
+              <h1 className="text-lg md:text-xl font-bold leading-tight">{displayName}</h1>
 
-                {hasFamilyPortion && (
-                  <div className="portion-container-js flex items-center gap-2">
-                    <button
-                      className={`button-primary portion-button rounded-full h-9 w-9 flex items-center justify-center ${portion === 'family' ? 'active' : ''}`}
-                      onClick={() => setPortion('family')}
-                      title="Family of 4"
-                    >
-                      <FamilyIcon />
-                    </button>
-                    <button
-                      className={`button-primary portion-button rounded-full h-9 w-9 flex items-center justify-center ${portion === 'single' ? 'active' : ''}`}
-                      onClick={() => setPortion('single')}
-                      title="Single"
-                    >
-                      <SingleIcon />
-                    </button>
-                  </div>
-                )}
-              </div>
+              {hasFamilyPortion && (
+                <div className="portion-container-js flex items-center gap-2">
+                  <button
+                    className={`button-primary portion-button rounded-full h-9 w-9 flex items-center justify-center ${portion === 'family' ? 'active' : ''}`}
+                    onClick={() => setPortion('family')}
+                    title="Family of 4"
+                  >
+                    <FamilyIcon />
+                  </button>
+                  <button
+                    className={`button-primary portion-button rounded-full h-9 w-9 flex items-center justify-center ${portion === 'single' ? 'active' : ''}`}
+                    onClick={() => setPortion('single')}
+                    title="Single"
+                  >
+                    <SingleIcon />
+                  </button>
+                </div>
+              )}
 
               {product.ingredients && (
                 <div className="ingredients-js border-t border-gray-200 pt-4">
