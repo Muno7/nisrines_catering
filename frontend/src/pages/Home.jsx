@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useCart } from '../context/CartContext.jsx'
 import ProductCard from '../components/ProductCard.jsx'
 import ProductOverlay from '../components/ProductOverlay.jsx'
-import heroImg from '../assets/hero.png'
 import { useSEO } from '../hooks/useSEO.js'
 
 const MotionLink = motion(Link)
@@ -76,7 +75,7 @@ function HeroSection() {
     return () => { cancelled = true; clearTimeout(fallbackTimer) }
   }, [])
 
-  const images = slides.length > 0 ? slides : [heroImg]
+  const images = slides
   // +1 for the cloned first slide that enables seamless forward looping
   const totalSlides = images.length > 1 ? images.length + 1 : 1
 
