@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 
-export function useSEO({ title, description }) {
+const SITE_URL = 'https://www.nisrinecatering.com'
+
+export function useSEO({ title, description, path }) {
   useEffect(() => {
     document.title = title
 
@@ -14,5 +16,15 @@ export function useSEO({ title, description }) {
     setMeta('meta[property="og:description"]', description)
     setMeta('meta[name="twitter:title"]', title)
     setMeta('meta[name="twitter:description"]', description)
-  }, [title, description])
+
+    if (path) {
+      let canonical = document.querySelector('link[rel="canonical"]')
+      if (!canonical) {
+        canonical = document.createElement('link')
+        canonical.setAttribute('rel', 'canonical')
+        document.head.appendChild(canonical)
+      }
+      canonical.setAttribute('href', `${SITE_URL}${path}`)
+    }
+  }, [title, description, path])
 }

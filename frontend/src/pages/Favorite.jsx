@@ -187,6 +187,7 @@ function Favorite() {
   useSEO({
     title: "Your Favorites | Nisrine's Catering",
     description: "Your saved favorite dishes from Nisrine's Catering. Add them to your basket and order in a click.",
+    path: '/favorite',
   })
 
   const { favoriteItems, removeFromFavorite } = useFavorite()

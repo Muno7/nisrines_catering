@@ -374,6 +374,7 @@ export default function Menu() {
   useSEO({
     title: "Menu – Fresh Lebanese Dishes | Nisrine's Catering",
     description: "Browse Nisrine's full menu of homemade Lebanese dishes. Plats du jour, family portions, fresh & frozen meals. Order online today.",
+    path: '/menu',
   })
 
   const { favoriteItems } = useFavorite()

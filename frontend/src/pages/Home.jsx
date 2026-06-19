@@ -33,6 +33,7 @@ function isProductAvailable(product) {
 // ============================================================
 const TRANSITION_MS = 1750
 const INTERVAL_MS = 4000
+const FALLBACK_HERO_IMAGE = '/assets/images/catering-hero.jpg'
 
 function HeroSection() {
   const [slides, setSlides] = useState([])
@@ -75,7 +76,7 @@ function HeroSection() {
     return () => { cancelled = true; clearTimeout(fallbackTimer) }
   }, [])
 
-  const images = slides
+  const images = slides.length > 0 ? slides : [FALLBACK_HERO_IMAGE]
   // +1 for the cloned first slide that enables seamless forward looping
   const totalSlides = images.length > 1 ? images.length + 1 : 1
 
@@ -131,8 +132,9 @@ function HeroSection() {
             <img
               key={idx}
               src={src}
-              alt=""
+              alt={`Homemade Lebanese dish from Nisrine's Catering, Beirut${images.length > 1 ? ` – photo ${idx + 1}` : ''}`}
               aria-hidden
+              fetchPriority={idx === 0 ? 'high' : undefined}
               style={{ width: `${100 / totalSlides}%`, height: '100%', objectFit: 'cover', flexShrink: 0 }}
             />
           ))}
@@ -153,7 +155,63 @@ function HeroSection() {
           transition={{ duration: 0.8, delay: 0.12, ease: 'easeOut' }}
         >
           <h1 className="text-4xl md:text-6xl font-bold">Welcome to Nisrine's Catering</h1>
-          <p className="mt-4 text-lg md:text-2xl">All made with love from our kitchen to your table</p>
+          <p className="mt-4 text-lg md:text-2xl">Homemade Lebanese meals, made with love, delivered across Beirut</p>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
+// ============================================================
+// About Section
+// ============================================================
+function AboutSection() {
+  return (
+    <section className="relative px-4 py-16 sm:px-8 lg:px-16 bg-background">
+      <div className="flex flex-col gap-10 max-w-6xl mx-auto lg:flex-row lg:items-center lg:gap-16">
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ type: 'tween', duration: 0.6, ease: 'easeOut' }}
+          className="relative w-full lg:w-1/2"
+        >
+          <div className="relative overflow-hidden rounded-3xl shadow-lg shadow-cta/10 aspect-[4/3] sm:aspect-[16/10]">
+            <img
+              src="/assets/images/catering-hero.jpg"
+              alt="A spread of Nisrine's Catering homemade Lebanese dishes"
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-cta/30 via-transparent to-transparent" />
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ type: 'tween', duration: 0.6, delay: 0.1, ease: 'easeOut' }}
+          className="w-full lg:w-1/2 flex flex-col gap-4"
+        >
+          <span className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Our story</span>
+          <h2 className="text-3xl font-bold sm:text-4xl lg:text-5xl text-accent leading-tight">
+            Genuine Lebanese flavor, made fresh every day
+          </h2>
+          <p className="text-base sm:text-lg text-muted leading-relaxed">
+            Nisrine's Catering brings warm, home-style Lebanese cooking to your table — from
+            everyday family meals to fully catered events. We taste, season, and plate every
+            order the way we would for our own family.
+          </p>
+          <Link
+            to="/catering"
+            className="button-cta group relative inline-flex items-center justify-center self-start mt-2 px-8 py-3 font-medium rounded-full overflow-hidden transition-all duration-300 ease-out hover:scale-105"
+          >
+            <span className="relative">Discover catering</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="relative w-5 h-5 ml-2 -mr-1 transition-transform duration-300 ease-out group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </Link>
         </motion.div>
       </div>
     </section>
@@ -231,7 +289,7 @@ function FeaturesSection() {
           What we offer
         </h2>
         <p className="text-xl sm:text-2xl text-accent leading-relaxed">
-          Home cooked meals made from scratch, delivered to your door
+          Homemade Lebanese meals and catering, delivered to your door in Beirut
         </p>
         <Link
           to="/menu"
@@ -259,15 +317,15 @@ function FeaturesSection() {
               viewport={{ once: true, amount: 0.15 }}
               transition={{ type: 'tween', duration: 0.5, delay: i * 0.06, ease: 'easeOut' }}
               whileHover={{ y: -4, transition: { type: 'tween', duration: 0.25, ease: 'easeOut' } }}
-              className={`feature-card group relative p-6 bg-surface rounded-2xl border border-muted/30 transition-shadow duration-300 sm:hover:shadow-lg ${spanClass}`}
+              className={`feature-card group relative flex flex-col gap-4 p-6 sm:p-7 bg-surface rounded-2xl border border-muted/15 shadow-sm shadow-cta/5 transition-shadow duration-300 hover:shadow-xl hover:shadow-cta/10 ${spanClass}`}
             >
-              <div className="flex items-center gap-4 mb-4">
-                <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 text-accent group-hover:bg-accent group-hover:text-white transition-colors duration-300">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl text-accent font-semibold">{feature.title}</h3>
+              <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/15 to-secondary/10 text-cta transition-all duration-300 group-hover:from-primary group-hover:to-secondary group-hover:text-white group-hover:shadow-md">
+                {feature.icon}
               </div>
-              <p className="text-accent">{feature.desc}</p>
+              <div className="flex flex-col gap-1.5">
+                <h3 className="text-lg sm:text-xl text-accent font-semibold">{feature.title}</h3>
+                <p className="text-sm sm:text-base text-muted leading-relaxed">{feature.desc}</p>
+              </div>
             </MotionTag>
           )
         })}
@@ -431,13 +489,15 @@ function PlatDuJourSection() {
 // ============================================================
 function Home() {
   useSEO({
-    title: "Nisrine's Catering – Fresh Lebanese Meals, Delivery & Catering | Beirut",
-    description: "Order fresh homemade Lebanese meals from Nisrine's Catering. Family portions, weekly meal subscriptions, and full catering services. Delivery or pickup available in Beirut.",
+    title: "Nisrine's Catering – Lebanese Meals & Delivery in Beirut",
+    description: "Order fresh homemade Lebanese meals from Nisrine's Catering. Family portions, meal subscriptions & catering. Delivery or pickup in Beirut.",
+    path: '/',
   })
 
   return (
     <main>
       <HeroSection />
+      <AboutSection />
       <FeaturesSection />
       <PlatDuJourSection />
     </main>

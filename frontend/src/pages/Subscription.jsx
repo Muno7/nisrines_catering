@@ -65,8 +65,9 @@ function PlanTable({ title, plans, status }) {
 
 function Subscription() {
   useSEO({
-    title: "Meal Subscriptions – Weekly & Monthly Plans | Nisrine's Catering",
+    title: "Meal Subscriptions | Nisrine's Catering",
     description: "Subscribe to weekly or monthly homemade Lebanese meal plans. Flexible plans for individuals and families. Delivered to your door in Beirut.",
+    path: '/subscription',
   })
 
   const [personPlans, setPersonPlans] = useState([])

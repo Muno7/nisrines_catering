@@ -9,6 +9,7 @@ function Catering() {
   useSEO({
     title: "Catering Services | Nisrine's Catering",
     description: "Professional catering for events and gatherings. Customised Lebanese menus, fresh homemade food for any occasion in Beirut.",
+    path: '/catering',
   })
 
   const [menus, setMenus] = useState([])

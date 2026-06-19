@@ -1,16 +1,17 @@
 import Home from './pages/Home.jsx'
-import Menu from './pages/Menu.jsx'
-import Order from './pages/Order.jsx'
-import Subscription from './pages/Subscription.jsx'
-import Favorite from './pages/Favorite.jsx'
-import Catering from './pages/Catering.jsx'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { CartProvider } from './context/CartContext.jsx'
 import { FavoriteProvider } from './context/FavoriteContext.jsx'
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { MotionConfig } from 'framer-motion'
+
+const Menu = lazy(() => import('./pages/Menu.jsx'))
+const Order = lazy(() => import('./pages/Order.jsx'))
+const Subscription = lazy(() => import('./pages/Subscription.jsx'))
+const Favorite = lazy(() => import('./pages/Favorite.jsx'))
+const Catering = lazy(() => import('./pages/Catering.jsx'))
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -25,14 +26,16 @@ function App() {
         <FavoriteProvider>
           <ScrollToTop />
           <Navbar />
-          <Routes>
-            <Route index element={<Home/>} />
-            <Route path="/menu" element={<Menu/>} />
-            <Route path="/order" element={<Order/>} />
-            <Route path="/subscription" element={<Subscription/>} />
-            <Route path="/favorite" element={<Favorite/>} />
-            <Route path="/catering" element={<Catering/>} />
-          </Routes>
+          <Suspense fallback={null}>
+            <Routes>
+              <Route index element={<Home/>} />
+              <Route path="/menu" element={<Menu/>} />
+              <Route path="/order" element={<Order/>} />
+              <Route path="/subscription" element={<Subscription/>} />
+              <Route path="/favorite" element={<Favorite/>} />
+              <Route path="/catering" element={<Catering/>} />
+            </Routes>
+          </Suspense>
           <Footer />
         </FavoriteProvider>
       </CartProvider>

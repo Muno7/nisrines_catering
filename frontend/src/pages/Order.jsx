@@ -141,6 +141,7 @@ function Order() {
   useSEO({
     title: "Order Basket | Nisrine's Catering",
     description: "Review your order from Nisrine's Catering and choose pickup or delivery.",
+    path: '/order',
   })
 
   const { cartItems } = useCart()
