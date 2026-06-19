@@ -69,9 +69,7 @@ export default function ProductOverlay({ product, onClose }) {
     setNotification({ isAdding, key: notifKeyRef.current })
   }
 
-  const hasFamilyPortion =
-    typeof product.family === 'number' ||
-    typeof product.price?.family === 'number'
+  const hasFamilyPortion = typeof product.price?.family === 'number'
 
   const cartItem = getCartItem(product.id, portion)
   const price = getPrice(product, portion)

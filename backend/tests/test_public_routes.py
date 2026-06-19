@@ -5,7 +5,7 @@ from app.services import CategoryService
 
 class TestPublicProductApi:
 
-    def test_products_returns_active_products_with_supported_price_shapes(self, client, make_category, make_product):
+    def test_products_returns_active_products_with_price_shape(self, client, make_category, make_product):
         active_category = make_category("Lunch")
         inactive_category = make_category("Hidden")
         CategoryService.set_active(inactive_category, False)
@@ -40,8 +40,8 @@ class TestPublicProductApi:
 
         single = next(item for item in products if item["name"] == "Single price dish")
         family = next(item for item in products if item["name"] == "Family price dish")
-        assert single["priceCents"] == 1200
-        assert "price" not in single
+        assert single["price"] == {"single": 1200, "family": None}
+        assert "priceCents" not in single
         assert single["name_ar"] == "طبق"
         assert single["category"] == "lunch"
         assert family["price"] == {"single": 2000, "family": 3500}

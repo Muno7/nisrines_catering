@@ -276,13 +276,13 @@ class TestProductServiceQueries:
 
         assert {product.id for product in result} == {visible.id}
 
-    def test_product_to_dict_keeps_legacy_and_new_price_formats(self, make_product):
+    def test_product_to_dict_always_uses_nested_price_shape(self, make_product):
         single = make_product(price_single=1200, price_family=None)
         zero_family = make_product(price_single=1300, price_family=0)
         family = make_product(price_single=2000, price_family=3500)
 
-        assert single.to_dict()["priceCents"] == 1200
-        assert zero_family.to_dict()["priceCents"] == 1300
+        assert single.to_dict()["price"] == {"single": 1200, "family": None}
+        assert zero_family.to_dict()["price"] == {"single": 1300, "family": None}
         assert family.to_dict()["price"] == {"single": 2000, "family": 3500}
 
 

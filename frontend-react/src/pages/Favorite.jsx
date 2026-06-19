@@ -213,9 +213,7 @@ function Favorite() {
             ingredients: p.ingredients,
             category: p.category,
             day: p.day,
-            priceCents: typeof p.priceCents === 'number' ? p.priceCents : null,
-            single: p.price?.single ?? null,
-            family: p.price?.family ?? null,
+            price: p.price,
           }))
         )
       } catch {

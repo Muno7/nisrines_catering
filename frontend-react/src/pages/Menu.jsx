@@ -413,9 +413,7 @@ export default function Menu() {
               ingredients: p.ingredients,
               category: p.category,
               day: p.day,
-              priceCents: typeof p.priceCents === 'number' ? p.priceCents : null,
-              single: p.price?.single ?? null,
-              family: p.price?.family ?? null,
+              price: p.price,
             }))
           )
         }
@@ -484,16 +482,15 @@ export default function Menu() {
       .filter(p => !catFilter.size || catFilter.has(p.category))
       .filter(p => {
         if (!portions.size) return true
-        const hasSingle = typeof p.single === 'number' || typeof p.priceCents === 'number'
-        const hasFamily = typeof p.family === 'number'
+        const hasSingle = typeof p.price?.single === 'number'
+        const hasFamily = typeof p.price?.family === 'number'
         return (portions.has('single') && hasSingle) || (portions.has('family') && hasFamily)
       })
       .filter(p => {
         if (!priceMin && !priceMax) return true
         const prices = []
-        if (typeof p.single === 'number') prices.push(p.single)
-        else if (typeof p.priceCents === 'number') prices.push(p.priceCents)
-        if (typeof p.family === 'number') prices.push(p.family)
+        if (typeof p.price?.single === 'number') prices.push(p.price.single)
+        if (typeof p.price?.family === 'number') prices.push(p.price.family)
         if (!prices.length) return false
         let minC = priceMin ? Math.round(Number(priceMin) * 100) : null
         let maxC = priceMax ? Math.round(Number(priceMax) * 100) : null

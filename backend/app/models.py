@@ -112,14 +112,9 @@ class Product(db.Model):
         self.day = (day or "").strip() or None
 
     def to_dict(self) -> dict:
-        """
-        Preserve the public product JSON contract used by the deployed frontend.
-
-        Single-price items still expose `priceCents`; products with a positive
-        family price expose the newer nested `price` shape. Coordinate frontend
-        releases before normalizing this response.
-        """
-        data = {
+        """Public product JSON contract: price is always {single, family}."""
+        family = self.priceFamilyCents if self.priceFamilyCents else None
+        return {
             "id": self.id,
             "name": self.name,
             "name_ar": self.name_ar,
@@ -129,12 +124,8 @@ class Product(db.Model):
             "ingredients": self.ingredients,
             "day": self.day,
             "status": self.status,
+            "price": {"single": self.priceSingleCents, "family": family},
         }
-        if self.priceFamilyCents is not None and self.priceFamilyCents > 0:
-            data["price"] = {"single": self.priceSingleCents, "family": self.priceFamilyCents}
-        else:
-            data["priceCents"] = self.priceSingleCents
-        return data
 
 
 # ---------------------------------------------------------------------------

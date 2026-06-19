@@ -184,11 +184,9 @@ All public routes live under `/api` and return JSON with an `ok` flag.
   creation time.
 - `GET /api/subscriptions`: subscription plans ordered by audience, then days.
 
-Product responses intentionally preserve two price shapes:
-
-- Single-price products return `priceCents`.
-- Products with a positive family price return
-  `price: { "single": ..., "family": ... }`.
+Product responses always use a nested price shape:
+`price: { "single": ..., "family": ... }`, where `family` is `null` when the
+product has no family-size option.
 
 Coordinate frontend changes before renaming fields, changing the `ok/data`
 wrapper, or replacing category slugs with IDs.
