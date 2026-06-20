@@ -1,15 +1,15 @@
 # Nisrine's Catering
 
-> Homemade Lebanese catering and meal delivery service based in Beirut, Lebanon. Offers fresh daily plats du jour, family-portion meals, weekly/monthly meal subscriptions, and custom event catering.
+> Homemade Lebanese & international catering and meal delivery service based in Beirut, Lebanon. Offers plat du jour, pastries, family-portion meals, frozen products, weekly/monthly meal subscriptions, and custom event catering.
 
 ## Key pages
 - [Home](https://www.nisrinecatering.com/): Overview of services — family portions, fresh/frozen prepared meals, subscriptions, catering, delivery or pickup.
-- [Menu](https://www.nisrinecatering.com/menu): Full menu of Lebanese dishes with prices, browsable by category and day.
+- [Menu](https://www.nisrinecatering.com/menu): Full menu of Lebanese and international dishes with prices, browsable by category and day.
 - [Catering](https://www.nisrinecatering.com/catering): Custom catering services for events and gatherings in Beirut.
 - [Subscription](https://www.nisrinecatering.com/subscription): Weekly and monthly meal subscription plans with pricing tables.
 
 ## About
-Nisrine's Catering serves homemade Lebanese and Middle Eastern cuisine, delivering to Beirut, Lebanon. Meals are available in single and family (serves 4) portions, fresh or frozen, with delivery or pickup. Orders are placed online via WhatsApp. Typical meal prices range from $7 to $19.
+Nisrine's Catering serves homemade Lebanese and international cuisine, delivering to Beirut, Lebanon. Menu categories include plat du jour, pastries, catering, and frozen products. Meals are available in single and family (serves 4) portions, fresh or frozen, with delivery or pickup. Orders are placed online via WhatsApp. Typical meal prices range from $7 to $19.
 
 Daily plat du jour (lunch of the day) can only be ordered for same-day delivery until 5pm; after that the next day's plat du jour becomes available. All other menu items can be ordered via WhatsApp at any time.
 

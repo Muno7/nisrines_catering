@@ -1,6 +1,6 @@
 {
   "name": "Nisrine's Catering",
-  "short_name": "Nisrine's",
+  "short_name": "Nisrine's Catering",
   "description": "Fresh homemade Lebanese meals with family portions, weekly subscriptions, and catering services.",
   "start_url": "/",
   "display": "standalone",
@@ -8,14 +8,9 @@
   "theme_color": "#E8822A",
   "icons": [
     {
-      "src": "/assets/icons/logo.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/assets/icons/logo.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "/assets/icons/logo2.jpg",
+      "sizes": "320x320",
+      "type": "image/jpeg"
     }
   ]
 }

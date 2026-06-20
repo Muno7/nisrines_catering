@@ -489,8 +489,8 @@ function PlatDuJourSection() {
 // ============================================================
 function Home() {
   useSEO({
-    title: "Nisrine's Catering – Lebanese Meals & Delivery in Beirut",
-    description: "Order fresh homemade Lebanese meals from Nisrine's Catering. Family portions, meal subscriptions & catering. Delivery or pickup in Beirut.",
+    title: "Nisrine's Catering – Lebanese & International Cuisine, Beirut",
+    description: "Homemade Lebanese & international meals in Beirut — plat du jour, pastries, catering & frozen products. Delivery, pickup, or order via WhatsApp.",
     path: '/',
   })
 
