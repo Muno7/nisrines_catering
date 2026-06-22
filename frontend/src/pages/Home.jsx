@@ -6,7 +6,7 @@ import ProductCard from '../components/ProductCard.jsx'
 import ProductOverlay from '../components/ProductOverlay.jsx'
 import DayConflictModal from '../components/DayConflictModal.jsx'
 import { useSEO } from '../hooks/useSEO.js'
-import { API_BASE_URL, fetchJSON } from '../utils/api.js'
+import { fetchJSON } from '../utils/api.js'
 import { DAY_ORDER, isProductAvailable } from '../utils/days.js'
 
 const MotionLink = motion(Link)
@@ -35,9 +35,7 @@ function HeroSection() {
 
     async function fetchSlideshow() {
       try {
-        const res = await fetch(`${API_BASE_URL}/api/slideshow`)
-        if (!res.ok) throw new Error()
-        const { data } = await res.json()
+        const { data } = await fetchJSON('/api/slideshow')
         if (!cancelled && Array.isArray(data) && data.length > 0) {
           const srcs = data.map(d => d.image).filter(Boolean)
           if (srcs.length > 0) {
