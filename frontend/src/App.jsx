@@ -7,6 +7,7 @@ import { FavoriteProvider } from './context/FavoriteContext.jsx'
 import { LanguageProvider } from './context/LanguageContext.jsx'
 import { lazy, Suspense, useEffect } from 'react'
 import { MotionConfig } from 'framer-motion'
+import { Analytics } from '@vercel/analytics/react'
 
 const Menu = lazy(() => import('./pages/Menu.jsx'))
 const Order = lazy(() => import('./pages/Order.jsx'))
@@ -39,6 +40,7 @@ function App() {
               </Routes>
             </Suspense>
             <Footer />
+            <Analytics />
           </FavoriteProvider>
         </CartProvider>
       </LanguageProvider>
