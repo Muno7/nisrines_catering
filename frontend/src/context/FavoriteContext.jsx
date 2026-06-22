@@ -37,10 +37,8 @@ export function FavoriteProvider({ children }) {
     })
   }
 
-  const totalCount = favoriteItems.length
-
   return (
-    <FavoriteContext.Provider value={{ favoriteItems, totalCount, isFavorite, toggleFavorite, removeFromFavorite }}>
+    <FavoriteContext.Provider value={{ favoriteItems, isFavorite, toggleFavorite, removeFromFavorite }}>
       {children}
     </FavoriteContext.Provider>
   )

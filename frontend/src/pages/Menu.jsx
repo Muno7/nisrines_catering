@@ -5,13 +5,13 @@ import { useCart } from '../context/CartContext'
 import { useFavorite } from '../context/FavoriteContext'
 import SharedProductCard from '../components/ProductCard.jsx'
 import ProductOverlay from '../components/ProductOverlay.jsx'
+import DayConflictModal from '../components/DayConflictModal.jsx'
 import { useSEO } from '../hooks/useSEO.js'
-
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+import { fetchJSON } from '../utils/api.js'
+import { DAY_ORDER, isProductAvailable, capitalize } from '../utils/days.js'
+import { mapProduct } from '../utils/mapProduct.js'
 
 const DAY_OPTIONS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-const DAY_ORDER = Object.fromEntries(DAY_OPTIONS.map((d, i) => [d, i]))
 const DEFAULT_CATEGORY = 'all'
 
 const INITIAL_FILTER = {
@@ -21,55 +21,6 @@ const INITIAL_FILTER = {
   priceMax: '',
   favoritesOnly: false,
   days: new Set(),
-}
-
-// ── Utilities ────────────────────────────────────────────────────────
-
-function isProductAvailable(product) {
-  const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
-  const now = new Date()
-  const currentDay = days[now.getDay()]
-  const currentHour = now.getHours()
-  const pd = product.day
-  if (!pd) return true
-  const pi = days.indexOf(pd)
-  const ci = days.indexOf(currentDay)
-  if (pi < ci) return false
-  if (pi === ci && currentHour >= 17) return false
-  return true
-}
-
-// ── Day Conflict Modal ────────────────────────────────────────────────
-
-function DayConflictModal({ currentDay, productDay, onClose }) {
-  const fmt = d => d.charAt(0).toUpperCase() + d.slice(1)
-  return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
-      <div className="bg-surface rounded-lg shadow-xl max-w-md w-full mx-4 transform scale-95 transition-transform duration-300">
-        <div className="p-6">
-          <div className="flex items-center mb-4">
-            <div className="bg-secondary/10 rounded-full p-3 mr-4">
-              <svg className="text-secondary w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
-              </svg>
-            </div>
-            <h2 className="text-2xl font-bold text-text">Order Day Conflict</h2>
-          </div>
-          <div className="space-y-4 text-muted">
-            <p className="text-lg">This meal is only available for <span className="font-semibold text-text">{fmt(productDay)}</span>.</p>
-            <p className="text-lg">Your basket already contains products for <span className="font-semibold text-text">{fmt(currentDay)}</span>.</p>
-            <p className="text-lg">To order for <span className="font-semibold text-text">{fmt(productDay)}</span>, please place a separate order.</p>
-          </div>
-          <button
-            onClick={onClose}
-            className="mt-6 w-full bg-secondary hover:bg-secondary-hover text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-300 focus:outline-none"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  )
 }
 
 // ── Filter Drawer ─────────────────────────────────────────────────────
@@ -194,7 +145,7 @@ function FilterDrawer({ isOpen, onClose, filterState, onFilterChange, onClear, c
                       checked={filterState.days.has(day)}
                       onChange={e => toggleSet('days', day, e.target.checked)}
                     />
-                    <span>{day.charAt(0).toUpperCase() + day.slice(1)}</span>
+                    <span>{capitalize(day)}</span>
                   </label>
                 ))}
               </div>
@@ -240,7 +191,7 @@ function ActiveFilterChips({ filterState, categories, onRemove }) {
   if (filterState.priceMax) chips.push({ type: 'priceMax', value: filterState.priceMax, label: `Max $${Number(filterState.priceMax).toFixed(2)}` })
   if (filterState.favoritesOnly) chips.push({ type: 'favorites', value: 'favorites', label: 'Favorites' })
   filterState.days.forEach(day => {
-    chips.push({ type: 'day', value: day, label: day.charAt(0).toUpperCase() + day.slice(1) })
+    chips.push({ type: 'day', value: day, label: capitalize(day) })
   })
 
   if (!chips.length) return null
@@ -393,30 +344,15 @@ export default function Menu() {
     async function load() {
       setLoading(true)
       try {
-        const [catRes, prodRes] = await Promise.all([
-          fetch(`${API_BASE_URL}/api/categories`),
-          fetch(`${API_BASE_URL}/api/products`),
+        const [catResult, prodResult] = await Promise.allSettled([
+          fetchJSON('/api/categories'),
+          fetchJSON('/api/products'),
         ])
-        if (catRes.ok) {
-          const { data } = await catRes.json()
-          if (Array.isArray(data)) {
-            setCategories(data.slice().sort((a, b) => a.sort_order - b.sort_order))
-          }
+        if (catResult.status === 'fulfilled' && Array.isArray(catResult.value.data)) {
+          setCategories(catResult.value.data.slice().sort((a, b) => a.sort_order - b.sort_order))
         }
-        if (prodRes.ok) {
-          const { data } = await prodRes.json()
-          setProducts(
-            data.map(p => ({
-              id: p.id,
-              image: p.image,
-              name: p.name,
-              nameAr: p.name_ar || p.nameAr || '',
-              ingredients: p.ingredients,
-              category: p.category,
-              day: p.day,
-              price: p.price,
-            }))
-          )
+        if (prodResult.status === 'fulfilled') {
+          setProducts(prodResult.value.data.map(mapProduct))
         }
       } catch (err) {
         console.error('Failed to load menu data', err)

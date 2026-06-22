@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSEO } from '../hooks/useSEO.js'
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+import { fetchJSON } from '../utils/api.js'
 
 const LOADING = 'loading'
 const EMPTY = 'empty'
@@ -77,9 +76,7 @@ function Subscription() {
   useEffect(() => {
     const load = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/subscriptions`)
-        if (!response.ok) throw new Error(`HTTP ${response.status}`)
-        const { data } = await response.json()
+        const { data } = await fetchJSON('/api/subscriptions')
         const plans = Array.isArray(data) ? data : []
         const byDays = (a, b) => (formatNumber(a?.daysPerMonth) ?? Infinity) - (formatNumber(b?.daysPerMonth) ?? Infinity)
         setPersonPlans(plans.filter(p => p?.audience?.toLowerCase() === 'person').sort(byDays))

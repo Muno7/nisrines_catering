@@ -2,21 +2,16 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext.jsx'
 import { getProductPrice, formatCurrency } from '../utils/pricing.js'
+import { resolveProductImageSrc } from '../utils/imagePlaceholder.js'
+import { fetchJSON } from '../utils/api.js'
 import { useSEO } from '../hooks/useSEO.js'
-
-const API_BASE = import.meta.env.VITE_API_BASE_URL || ''
-
-function getImageSrc(image) {
-  if (!image) return ''
-  if (image.startsWith('http') || image.startsWith('/')) return image
-  return `/assets/images/${image}`
-}
+import QuantityStepper from '../components/QuantityStepper.jsx'
 
 function SkeletonLine() {
   return (
-    <div className="relative bg-surface shadow-[0_0_10px_rgba(0,0,0,0.1)] rounded-[10px] overflow-hidden animate-pulse">
+    <div className="relative bg-surface rounded-2xl overflow-hidden animate-pulse">
       <div className="flex flex-row items-center gap-2 p-2 lg:gap-4">
-        <div className="w-28 h-28 lg:w-40 lg:h-40 bg-muted/30 rounded-[10px] flex-shrink-0" />
+        <div className="w-28 h-28 lg:w-40 lg:h-40 bg-muted/30 rounded-xl flex-shrink-0" />
         <div className="flex flex-col justify-between gap-16 w-full lg:py-2 lg:gap-20">
           <div className="w-full h-4 bg-muted/30 rounded" />
           <div className="flex justify-between items-center gap-4 w-full">
@@ -51,53 +46,34 @@ function CartLine({ item, product }) {
   const { addToCart, removeFromCart } = useCart()
   const price = getProductPrice(product, item.portion) ?? 0
   const name = product?.name ?? 'Item no longer available'
-  const imageSrc = getImageSrc(product?.image)
+  const imageSrc = resolveProductImageSrc(product?.image, name)
 
   return (
-    <div className="relative bg-surface border border-muted/30 rounded-[10px] overflow-hidden transition-all duration-500 sm:hover:-translate-y-1 sm:hover:shadow-lg">
+    <div className="relative bg-surface rounded-2xl overflow-hidden transition-all duration-300 sm:hover:-translate-y-1.5">
       <div className="flex flex-row gap-2 p-2 lg:gap-4">
         <div className="relative flex-shrink-0">
-          {imageSrc ? (
-            <img className="w-28 h-28 lg:w-40 lg:h-40 object-cover rounded-[10px]" src={imageSrc} alt={name} />
-          ) : (
-            <div className="w-28 h-28 lg:w-40 lg:h-40 bg-muted/20 rounded-[10px] flex items-center justify-center text-muted text-xs">No image</div>
-          )}
+          <img className="w-28 h-28 lg:w-40 lg:h-40 object-cover rounded-xl" src={imageSrc} alt={name} />
           {item.day && (
-            <span className="bg-primary absolute left-0 top-0 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md capitalize">
+            <span className="bg-primary absolute left-0 top-0 text-white text-xs font-bold px-2 py-1 rounded-tl-none rounded-br-lg shadow-sm capitalize">
               {item.day}
             </span>
           )}
         </div>
         <div className="flex flex-col justify-between gap-4 w-full lg:py-2 lg:gap-8">
           <div className="flex flex-col gap-1">
-            <h3 className="text-base md:text-xl font-bold line-clamp-2">{name}</h3>
+            <h3 className="text-base md:text-xl font-bold text-accent line-clamp-2">{name}</h3>
             <span className="text-xs text-muted">{item.portion === 'family' ? 'Family of 4' : 'Single'}</span>
           </div>
           <div className="flex justify-between items-center gap-4 w-full">
             <p className="text-lg font-semibold font-numeric">
               <span translate="no">$</span>{formatCurrency(price)}
             </p>
-            <div className="flex justify-between items-center p-[2px] rounded-full bg-primary">
-              <button
-                className="rounded-full bg-surface lg:hover:bg-surface/70 active:bg-white w-7 h-6 flex items-center justify-center"
-                onClick={() => removeFromCart(item.productId, item.portion)}
-                aria-label="Decrease quantity"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="fill-current w-3 h-3">
-                  <path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" />
-                </svg>
-              </button>
-              <span className="text-base font-medium w-9 text-center font-numeric">{item.quantity}</span>
-              <button
-                className="rounded-full bg-surface lg:hover:bg-surface/70 active:bg-white w-7 h-6 flex items-center justify-center"
-                onClick={() => addToCart(item.productId, item.day, item.portion)}
-                aria-label="Increase quantity"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="fill-current w-3 h-3">
-                  <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z" />
-                </svg>
-              </button>
-            </div>
+            <QuantityStepper
+              className="p-[2px]"
+              quantity={item.quantity}
+              onDecrease={() => removeFromCart(item.productId, item.portion)}
+              onIncrease={() => addToCart(item.productId, item.day, item.portion)}
+            />
           </div>
         </div>
       </div>
@@ -155,9 +131,7 @@ function Order() {
     }
     async function fetchProducts() {
       try {
-        const res = await fetch(`${API_BASE}/api/products`)
-        if (!res.ok) throw new Error('Failed to fetch products')
-        const { data } = await res.json()
+        const { data } = await fetchJSON('/api/products')
         setProducts(data)
       } catch {
         // empty/fallback rendering handles the error case

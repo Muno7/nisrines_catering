@@ -2,8 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import './Catering.css'
 import { useHeroReady } from '../utils/useHeroReady.js'
 import { useSEO } from '../hooks/useSEO.js'
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
+import { fetchJSON } from '../utils/api.js'
 
 function Catering() {
   useSEO({
@@ -38,9 +37,7 @@ function Catering() {
   useEffect(() => {
     const fetchMenus = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/api/catering-menus`)
-        if (!res.ok) throw new Error(`HTTP ${res.status}`)
-        const { data } = await res.json()
+        const { data } = await fetchJSON('/api/catering-menus')
         const filtered = (Array.isArray(data) ? data : []).filter(
           (m) => m?.image?.toString().trim()
         )

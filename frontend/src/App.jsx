@@ -14,6 +14,7 @@ const Order = lazy(() => import('./pages/Order.jsx'))
 const Subscription = lazy(() => import('./pages/Subscription.jsx'))
 const Favorite = lazy(() => import('./pages/Favorite.jsx'))
 const Catering = lazy(() => import('./pages/Catering.jsx'))
+const NotFound = lazy(() => import('./pages/NotFound.jsx'))
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -37,6 +38,7 @@ function App() {
                 <Route path="/subscription" element={<Subscription/>} />
                 <Route path="/favorite" element={<Favorite/>} />
                 <Route path="/catering" element={<Catering/>} />
+                <Route path="*" element={<NotFound/>} />
               </Routes>
             </Suspense>
             <Footer />

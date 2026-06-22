@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-export default function BasketNotification({ isAdding, onDone }) {
+export default function BasketNotification({ isAdding, onDone, size = 'md' }) {
   const [phase, setPhase] = useState('entering') // entering → visible → leaving
 
   useEffect(() => {
@@ -16,6 +16,11 @@ export default function BasketNotification({ isAdding, onDone }) {
 
   const bg = isAdding ? '#E8822A' : '#521C0D'
   const iconColor = isAdding ? '#3E160A' : '#E8822A'
+  const isSmall = size === 'sm'
+  const circleSize = isSmall ? 26 : 40
+  const iconSize = isSmall ? 15 : 24
+  const fontSize = isSmall ? 11 : 16
+  const gap = isSmall ? '6px' : '12px'
 
   return (
     <div
@@ -26,7 +31,7 @@ export default function BasketNotification({ isAdding, onDone }) {
         color: iconColor,
         borderRadius: '8px',
         fontFamily: 'system-ui, -apple-system, sans-serif',
-        fontSize: '16px',
+        fontSize: `${fontSize}px`,
         fontWeight: 500,
         textAlign: 'center',
         opacity: phase === 'visible' ? 1 : 0,
@@ -43,15 +48,15 @@ export default function BasketNotification({ isAdding, onDone }) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '12px',
+        gap,
       }}
     >
       <div
         style={{
           backgroundColor: 'white',
           borderRadius: '50%',
-          width: '40px',
-          height: '40px',
+          width: `${circleSize}px`,
+          height: `${circleSize}px`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -60,8 +65,8 @@ export default function BasketNotification({ isAdding, onDone }) {
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
+          width={iconSize}
+          height={iconSize}
           viewBox="0 0 24 24"
           fill={iconColor}
         >

@@ -1,41 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useCart } from '../context/CartContext'
-import { useFavorite } from '../context/FavoriteContext'
 import { useLanguage } from '../context/LanguageContext.jsx'
 import { getProductPrice, formatCurrency } from '../utils/pricing'
 import { resolveProductImageSrc } from '../utils/imagePlaceholder.js'
 import BasketNotification from './BasketNotification.jsx'
-
-function HeartButton({ productId }) {
-  const { isFavorite, toggleFavorite } = useFavorite()
-  const checked = isFavorite(productId)
-
-  return (
-    <label
-      className="z-[3] shadow-sm product-heart-button absolute bg-white rounded-full p-2 top-2 right-2 cursor-pointer select-none transition duration-100"
-      onClick={e => e.stopPropagation()}
-    >
-      <input
-        type="checkbox"
-        className="absolute opacity-0 cursor-pointer h-0 w-0"
-        checked={checked}
-        onChange={() => toggleFavorite(productId)}
-      />
-      <div className="heart-checkmark w-[24px] h-[24px]">
-        <svg viewBox="0 0 256 256">
-          <rect fill="none" height="256" width="256" />
-          <path
-            d="M224.6,51.9a59.5,59.5,0,0,0-43-19.9,60.5,60.5,0,0,0-44,17.6L128,59.1l-7.5-7.4C97.2,28.3,59.2,26.3,35.9,47.4a59.9,59.9,0,0,0-2.3,87l83.1,83.1a15.9,15.9,0,0,0,22.6,0l81-81C243.7,113.2,245.6,75.2,224.6,51.9Z"
-            strokeWidth="20px"
-            stroke="#2a1810"
-            fill="none"
-          />
-        </svg>
-      </div>
-    </label>
-  )
-}
+import HeartButton from './HeartButton.jsx'
+import QuantityStepper from './QuantityStepper.jsx'
 
 function FamilyIcon() {
   return (
@@ -132,11 +103,11 @@ export default function ProductOverlay({ product, onClose }) {
         <div className="flex flex-col bg-surface w-full md:w-1/2 h-[50vh] md:h-full overflow-hidden">
           <div className="flex-grow overflow-y-auto p-4 md:p-6">
             <div className="space-y-4">
-              <span className="text-xl md:text-2xl price-js">
+              <span className="text-base md:text-lg font-medium text-muted price-js">
                 <span>$</span>{price}
               </span>
 
-              <h1 className="text-lg md:text-xl font-bold leading-tight">{displayName}</h1>
+              <h1 className="text-2xl md:text-3xl font-bold text-accent leading-tight">{displayName}</h1>
 
               {hasFamilyPortion && (
                 <div className="portion-container-js flex items-center gap-2">
@@ -170,31 +141,20 @@ export default function ProductOverlay({ product, onClose }) {
           <div className="p-2 border-t border-gray-200 mt-auto">
             <div className="relative w-full h-[46px]">
               {cartItem ? (
-                <div className="h-full bg-primary p-1 flex justify-between items-center rounded-full">
-                  <button
-                    onClick={() => {
-                      triggerNotification(false)
-                      removeFromCart(product.id, portion)
-                    }}
-                    className="h-full w-[25%] rounded-full bg-surface lg:hover:bg-surface/70 transition-all active:bg-white flex items-center justify-center"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 448 512" className="fill-current w-4 h-4">
-                      <path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" />
-                    </svg>
-                  </button>
-                  <span className="overlay-item-quantity-js w-full text-xl font-medium text-center text-white">{cartItem.quantity}</span>
-                  <button
-                    onClick={() => {
-                      const added = addToCart(product.id, product.day || '', portion)
-                      if (added) triggerNotification(true)
-                    }}
-                    className="h-full w-[25%] rounded-full bg-surface lg:hover:bg-surface/70 transition-all active:bg-white flex items-center justify-center"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 448 512" className="fill-current w-4 h-4">
-                      <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z" />
-                    </svg>
-                  </button>
-                </div>
+                <QuantityStepper
+                  size="lg"
+                  className="h-full p-1"
+                  quantityClassName="overlay-item-quantity-js w-full text-xl font-medium text-center text-white"
+                  quantity={cartItem.quantity}
+                  onDecrease={() => {
+                    triggerNotification(false)
+                    removeFromCart(product.id, portion)
+                  }}
+                  onIncrease={() => {
+                    const added = addToCart(product.id, product.day || '', portion)
+                    if (added) triggerNotification(true)
+                  }}
+                />
               ) : (
                 <button
                   onClick={() => {

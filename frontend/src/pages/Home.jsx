@@ -4,29 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useCart } from '../context/CartContext.jsx'
 import ProductCard from '../components/ProductCard.jsx'
 import ProductOverlay from '../components/ProductOverlay.jsx'
+import DayConflictModal from '../components/DayConflictModal.jsx'
 import { useSEO } from '../hooks/useSEO.js'
+import { API_BASE_URL, fetchJSON } from '../utils/api.js'
+import { DAY_ORDER, isProductAvailable } from '../utils/days.js'
 
 const MotionLink = motion(Link)
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
-
-const DAYS_OF_WEEK = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
-const DAY_ORDER = { monday: 0, tuesday: 1, wednesday: 2, thursday: 3, friday: 4, saturday: 5, sunday: 6 }
-
-function isProductAvailable(product) {
-  const productDay = product.day
-  if (!productDay) return true
-
-  const now = new Date()
-  const currentDay = DAYS_OF_WEEK[now.getDay()]
-  const currentHour = now.getHours()
-  const productDayIdx = DAYS_OF_WEEK.indexOf(productDay)
-  const currentDayIdx = DAYS_OF_WEEK.indexOf(currentDay)
-
-  if (productDayIdx < currentDayIdx) return false
-  if (productDayIdx === currentDayIdx && currentHour >= 17) return false
-  return true
-}
 
 // ============================================================
 // Hero Section
@@ -356,56 +339,16 @@ function ProductSkeleton() {
   )
 }
 
-function PlatDuJourCard({ product, onOpen }) {
+function PlatDuJourEmptyState() {
   return (
-    <ProductCard
-      product={product}
-      onOpen={onOpen}
-    />
-  )
-}
-
-function DayConflictModal({ currentDay, productDay, onClose }) {
-  const fmt = d => d.charAt(0).toUpperCase() + d.slice(1)
-
-  useEffect(() => {
-    document.body.style.overflow = 'hidden'
-    return () => { document.body.style.overflow = '' }
-  }, [])
-
-  return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <div className="bg-surface rounded-lg shadow-xl max-w-md w-full mx-4">
-        <div className="p-6">
-          <div className="flex items-center mb-4">
-            <div className="bg-secondary/10 rounded-full p-3 mr-4">
-              <svg className="text-secondary" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
-              </svg>
-            </div>
-            <h2 className="text-2xl font-bold text-text">Order Day Conflict</h2>
-          </div>
-          <div className="space-y-4 text-muted">
-            <p className="text-lg">
-              This meal is only available for{' '}
-              <span className="font-semibold text-text">{fmt(productDay)}</span>.
-            </p>
-            <p className="text-lg">
-              Your basket already contains products for{' '}
-              <span className="font-semibold text-text">{fmt(currentDay)}</span>.
-            </p>
-            <p className="text-lg">
-              To order for <span className="font-semibold text-text">{fmt(productDay)}</span>, please place a separate order.
-            </p>
-          </div>
-          <button
-            onClick={onClose}
-            className="mt-6 w-full bg-secondary hover:bg-secondary-hover text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-300 focus:outline-none"
-          >
-            Close
-          </button>
-        </div>
+    <div className="flex flex-col items-center justify-center gap-3 w-full py-12 px-4 text-center">
+      <div className="w-12 h-12 text-muted">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-full h-full">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 7h18M5 7l1.2 11.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.8L19 7M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" />
+        </svg>
       </div>
+      <p className="text-lg font-semibold text-accent">No plat du jour today</p>
+      <p className="text-sm text-muted max-w-xs">come back tomorrow for fresh plates!</p>
     </div>
   )
 }
@@ -419,9 +362,7 @@ function PlatDuJourSection() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const res = await fetch(`${API_BASE_URL}/api/products`)
-        if (!res.ok) throw new Error()
-        const { data } = await res.json()
+        const { data } = await fetchJSON('/api/products')
 
         const platDuJour = (data ?? [])
           .filter(p => p.category === 'plat-du-jour' && isProductAvailable(p))
@@ -452,16 +393,20 @@ function PlatDuJourSection() {
           <h2 className="text-4xl text-accent">Plat du Jour</h2>
           <p className="font-normal">Note: (salad/yogurt included)</p>
         </div>
-        <div className="products-wrapper overflow-x-auto whitespace-nowrap relative">
-          <div className="products-container inline-flex space-x-2 p-4">
-            {loading
-              ? Array.from({ length: 6 }).map((_, i) => <ProductSkeleton key={i} />)
-              : products.map(product => (
-                  <PlatDuJourCard key={product.id} product={product} onOpen={setSelectedProduct} />
-                ))
-            }
+        {!loading && products.length === 0 ? (
+          <PlatDuJourEmptyState />
+        ) : (
+          <div className="products-wrapper overflow-x-auto whitespace-nowrap relative">
+            <div className="products-container inline-flex space-x-2 p-4">
+              {loading
+                ? Array.from({ length: 6 }).map((_, i) => <ProductSkeleton key={i} />)
+                : products.map(product => (
+                    <ProductCard key={product.id} product={product} onOpen={setSelectedProduct} />
+                  ))
+              }
+            </div>
           </div>
-        </div>
+        )}
         <Link
           to="/menu"
           className="button-cta mx-4 group relative inline-flex items-center justify-center mt-4 px-8 py-3 font-medium rounded-full overflow-hidden transition-all duration-300 ease-out hover:scale-105 lg:max-w-[25%]"

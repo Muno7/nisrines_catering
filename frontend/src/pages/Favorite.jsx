@@ -5,11 +5,13 @@ import { useFavorite } from '../context/FavoriteContext'
 import { useCart } from '../context/CartContext'
 import { getProductPrice, formatCurrency } from '../utils/pricing'
 import { resolveProductImageSrc } from '../utils/imagePlaceholder.js'
+import { fetchJSON } from '../utils/api.js'
+import { mapProduct } from '../utils/mapProduct.js'
 import ProductOverlay from '../components/ProductOverlay.jsx'
 import BasketNotification from '../components/BasketNotification.jsx'
+import DayConflictModal from '../components/DayConflictModal.jsx'
+import QuantityStepper from '../components/QuantityStepper.jsx'
 import { useSEO } from '../hooks/useSEO.js'
-
-const API_BASE = import.meta.env.VITE_API_BASE_URL || ''
 
 function SkeletonCard() {
   return (
@@ -35,8 +37,8 @@ function SkeletonCard() {
 
 function EmptyState() {
   return (
-    <div className="flex flex-col justify-center items-center gap-4 col-span-2 py-16">
-      <div className="w-10 h-10 text-muted">
+    <div className="md:col-span-2 flex flex-col items-center justify-center gap-3 w-full py-16 px-4 text-center">
+      <div className="w-12 h-12 text-muted">
         <svg viewBox="0 0 256 256" className="w-full h-full">
           <rect fill="none" height="256" width="256" />
           <path
@@ -47,41 +49,11 @@ function EmptyState() {
           />
         </svg>
       </div>
-      <p className="text-xl font-bold">Your favorites list is empty!</p>
-      <Link to="/menu" className="button-primary">
+      <p className="text-lg font-semibold text-accent">Your favorites list is empty</p>
+      <p className="text-sm text-muted max-w-xs">Save dishes you love and they'll show up here.</p>
+      <Link to="/menu" className="button-primary mt-2">
         Explore Menu
       </Link>
-    </div>
-  )
-}
-
-function DayConflictModal({ currentDay, productDay, onClose }) {
-  const fmt = d => d.charAt(0).toUpperCase() + d.slice(1)
-  return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
-      <div className="bg-surface rounded-lg shadow-xl max-w-md w-full mx-4">
-        <div className="p-6">
-          <div className="flex items-center mb-4">
-            <div className="bg-secondary/10 rounded-full p-3 mr-4">
-              <svg className="text-secondary w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
-              </svg>
-            </div>
-            <h2 className="text-2xl font-bold text-text">Order Day Conflict</h2>
-          </div>
-          <div className="space-y-4 text-muted">
-            <p className="text-lg">This meal is only available for <span className="font-semibold text-text">{fmt(productDay)}</span>.</p>
-            <p className="text-lg">Your basket already contains products for <span className="font-semibold text-text">{fmt(currentDay)}</span>.</p>
-            <p className="text-lg">To order for <span className="font-semibold text-text">{fmt(productDay)}</span>, please place a separate order.</p>
-          </div>
-          <button
-            onClick={onClose}
-            className="mt-6 w-full bg-secondary hover:bg-secondary-hover text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-300 focus:outline-none"
-          >
-            Close
-          </button>
-        </div>
-      </div>
     </div>
   )
 }
@@ -117,14 +89,15 @@ function FavoriteCard({ product, onRemove, onOpen }) {
               key={notification.key}
               isAdding={notification.isAdding}
               onDone={() => setNotification(null)}
+              size="sm"
             />
           )}
         </div>
         <div className="flex flex-col justify-between gap-4 w-full lg:py-2 lg:gap-8">
-          <h3 className="text-base md:text-xl font-semibold line-clamp-2">{product.name}</h3>
+          <h3 className="text-base md:text-xl font-bold text-accent line-clamp-2">{product.name}</h3>
           <div className="flex justify-between items-center gap-4 w-full">
             <div className="flex items-center gap-2">
-              <p className="text-lg font-semibold">${formatCurrency(price)}</p>
+              <p className="text-sm font-medium text-muted font-numeric"><span translate="no">$</span>{formatCurrency(price)}</p>
               {!cartItem ? (
                 <button
                   className="button-primary h-7 w-24 text-sm flex items-center justify-center"
@@ -137,33 +110,20 @@ function FavoriteCard({ product, onRemove, onOpen }) {
                   Add
                 </button>
               ) : (
-                <div
-                  className="flex justify-between items-center p-0.5 rounded-full bg-primary"
-                  onClick={e => e.stopPropagation()}
-                >
-                  <button
-                    className="rounded-full bg-surface lg:hover:bg-surface/70 active:bg-white w-7 h-6 flex items-center justify-center"
-                    onClick={() => {
+                <div onClick={e => e.stopPropagation()}>
+                  <QuantityStepper
+                    className="p-0.5"
+                    quantityClassName="text-base font-medium w-9 text-center"
+                    quantity={quantity}
+                    onDecrease={() => {
                       triggerNotification(false)
                       removeFromCart(product.id, 'single')
                     }}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="fill-current w-3 h-3">
-                      <path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" />
-                    </svg>
-                  </button>
-                  <span className="text-base font-medium w-9 text-center">{quantity}</span>
-                  <button
-                    className="rounded-full bg-surface lg:hover:bg-surface/70 active:bg-white w-7 h-6 flex items-center justify-center"
-                    onClick={() => {
+                    onIncrease={() => {
                       const added = addToCart(product.id, product.day || null, 'single')
                       if (added) triggerNotification(true)
                     }}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="fill-current w-3 h-3">
-                      <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z" />
-                    </svg>
-                  </button>
+                  />
                 </div>
               )}
             </div>
@@ -203,20 +163,8 @@ function Favorite() {
     }
     async function fetchProducts() {
       try {
-        const res = await fetch(`${API_BASE}/api/products`)
-        if (!res.ok) throw new Error('Failed to fetch products')
-        const { data } = await res.json()
-        setProducts(
-          data.map(p => ({
-            id: p.id,
-            image: p.image,
-            name: p.name,
-            ingredients: p.ingredients,
-            category: p.category,
-            day: p.day,
-            price: p.price,
-          }))
-        )
+        const { data } = await fetchJSON('/api/products')
+        setProducts(data.map(mapProduct))
       } catch {
         // empty state will render on error
       } finally {
@@ -231,28 +179,32 @@ function Favorite() {
   const showEmpty = !loading && favoriteProducts.length === 0
 
   return (
-    <main className="site-main container mx-auto py-6 lg:px-12">
-      <div className="flex flex-col gap-8">
-        <div className="flex flex-col items-center sm:items-start">
-          <h1 className="text-3xl font-bold mb-5 px-2">Your Favorites</h1>
-          <div className="w-full px-2 py-2">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {loading ? (
-                Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
-              ) : showEmpty ? (
-                <EmptyState />
-              ) : (
-                favoriteProducts.map(product => (
-                  <FavoriteCard
-                    key={product.id}
-                    product={product}
-                    onRemove={() => removeFromFavorite(String(product.id))}
-                    onOpen={setSelectedProduct}
-                  />
-                ))
-              )}
-            </div>
-          </div>
+    <main className="site-main">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 pt-8 pb-6 lg:pt-12 lg:pb-10">
+        <header className="mb-6 lg:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-accent">Your Favorites</h1>
+          <p className="mt-1 text-sm text-muted">
+            {favoriteProducts.length > 0
+              ? `${favoriteProducts.length} saved dish${favoriteProducts.length > 1 ? 'es' : ''}`
+              : "Dishes you love, saved for later."}
+          </p>
+        </header>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {loading ? (
+            Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
+          ) : showEmpty ? (
+            <EmptyState />
+          ) : (
+            favoriteProducts.map(product => (
+              <FavoriteCard
+                key={product.id}
+                product={product}
+                onRemove={() => removeFromFavorite(String(product.id))}
+                onOpen={setSelectedProduct}
+              />
+            ))
+          )}
         </div>
       </div>
 
