@@ -122,43 +122,49 @@ function HeroSection() {
   }, [images])
 
   return (
-    <section className="relative h-screen overflow-hidden bg-transparent">
-      <div className={`fixed inset-0 -z-10 overflow-hidden home-hero__media${heroReady ? ' home-hero__media--ready' : ''}`}>
-        <div
-          ref={trackRef}
-          style={{ display: 'flex', width: `${totalSlides * 100}%`, height: '100%' }}
-        >
-          {images.map((src, idx) => (
-            <img
-              key={idx}
-              src={src}
-              alt={`Homemade Lebanese dish from Nisrine's Catering, Beirut${images.length > 1 ? ` – photo ${idx + 1}` : ''}`}
-              aria-hidden
-              fetchPriority={idx === 0 ? 'high' : undefined}
-              style={{ width: `${100 / totalSlides}%`, height: '100%', objectFit: 'cover', flexShrink: 0 }}
-            />
-          ))}
-          {images.length > 1 && (
-            <img
-              src={images[0]}
-              alt=""
-              aria-hidden
-              style={{ width: `${100 / totalSlides}%`, height: '100%', objectFit: 'cover', flexShrink: 0 }}
-            />
-          )}
+    <>
+      <div
+        aria-hidden
+        className={`fixed inset-0 z-[100] bg-background transition-opacity duration-500 ease-out ${heroReady ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+      />
+      <section className="relative h-screen overflow-hidden bg-transparent">
+        <div className={`fixed inset-0 -z-10 overflow-hidden home-hero__media${heroReady ? ' home-hero__media--ready' : ''}`}>
+          <div
+            ref={trackRef}
+            style={{ display: 'flex', width: `${totalSlides * 100}%`, height: '100%' }}
+          >
+            {images.map((src, idx) => (
+              <img
+                key={idx}
+                src={src}
+                alt={`Homemade Lebanese dish from Nisrine's Catering, Beirut${images.length > 1 ? ` – photo ${idx + 1}` : ''}`}
+                aria-hidden
+                fetchPriority={idx === 0 ? 'high' : undefined}
+                style={{ width: `${100 / totalSlides}%`, height: '100%', objectFit: 'cover', flexShrink: 0 }}
+              />
+            ))}
+            {images.length > 1 && (
+              <img
+                src={images[0]}
+                alt=""
+                aria-hidden
+                style={{ width: `${100 / totalSlides}%`, height: '100%', objectFit: 'cover', flexShrink: 0 }}
+              />
+            )}
+          </div>
         </div>
-      </div>
-      <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-center text-white px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          animate={heroReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 }}
-          transition={{ duration: 0.8, delay: 0.12, ease: 'easeOut' }}
-        >
-          <h1 className="text-4xl md:text-6xl font-bold">Welcome to Nisrine's Catering</h1>
-          <p className="mt-4 text-lg md:text-2xl">Homemade Lebanese meals, made with love, delivered across Beirut</p>
-        </motion.div>
-      </div>
-    </section>
+        <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-center text-white px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 32 }}
+            animate={heroReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 }}
+            transition={{ duration: 0.8, delay: 0.12, ease: 'easeOut' }}
+          >
+            <h1 className="text-4xl md:text-6xl font-bold">Welcome to Nisrine's Catering</h1>
+            <p className="mt-4 text-lg md:text-2xl">Homemade Lebanese meals, made with love, delivered across Beirut</p>
+          </motion.div>
+        </div>
+      </section>
+    </>
   )
 }
 
