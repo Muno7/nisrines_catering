@@ -283,7 +283,7 @@ const FEATURES = [
 
 function FeaturesSection() {
   return (
-    <section className="flex flex-col gap-12 relative h-auto px-4 py-16 sm:px-8 lg:px-16 sm:items-center bg-background rounded-t-md">
+    <section className="flex flex-col gap-12 relative h-auto px-4 py-16 sm:px-8 lg:px-16 sm:items-center bg-background">
       <div className="flex flex-col gap-6 sm:items-center max-w-3xl mx-auto text-center">
         <h2 className="text-4xl font-bold sm:text-5xl lg:text-6xl text-accent">
           What we offer
