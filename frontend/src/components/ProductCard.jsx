@@ -1,5 +1,5 @@
 import { useLanguage } from '../context/LanguageContext.jsx'
-import { getProductPrice, formatCurrency } from '../utils/pricing.js'
+import { getProductPrice, formatCurrency, isSoldByDozen } from '../utils/pricing.js'
 import { resolveProductImageSrc } from '../utils/imagePlaceholder.js'
 import HeartButton from './HeartButton.jsx'
 
@@ -7,6 +7,7 @@ export default function ProductCard({ product, onOpen, className, style }) {
   const { language } = useLanguage()
   const imageSrc = resolveProductImageSrc(product.image, product.name)
   const price = getProductPrice(product, 'single')
+  const soldByDozen = isSoldByDozen(product)
   const nameAr = product.nameAr || product.name_ar
   const displayName = language === 'ar' && nameAr ? nameAr : product.name
 
@@ -29,6 +30,11 @@ export default function ProductCard({ product, onOpen, className, style }) {
             {product.day.charAt(0).toUpperCase() + product.day.slice(1)}
           </span>
         )}
+        {soldByDozen && (
+          <span className="absolute bottom-0 right-0 rounded-tl-lg bg-accent px-2 py-1 text-xs font-bold text-white shadow-sm">
+            Sold by dozen
+          </span>
+        )}
       </div>
 
       <HeartButton productId={product.id} />
@@ -36,7 +42,7 @@ export default function ProductCard({ product, onOpen, className, style }) {
       <div className="flex flex-col px-1 gap-1">
         {price !== null && (
           <p className="price-js text-xs font-medium text-muted">
-            <span translate="no">$</span>{formatCurrency(price)}
+            <span translate="no">$</span>{formatCurrency(price)}{soldByDozen && ' / dozen'}
           </p>
         )}
         <div className="h-10 overflow-hidden">

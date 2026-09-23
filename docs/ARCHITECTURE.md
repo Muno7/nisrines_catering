@@ -77,7 +77,7 @@ Only one of them touches a cart:
 
 | | Regular menu | Subscription | Catering |
 |---|---|---|---|
-| What it is | Individual dishes, single or family-of-4 portions; plat-du-jour items are tied to a weekday | Recurring monthly meal packages priced by days/month | Event catering |
+| What it is | Individual dishes, single or family-of-4 portions; products may also be sold by the dozen; plat-du-jour items are tied to a weekday | Recurring monthly meal packages priced by days/month | Event catering |
 | Data | products + categories | plans (`audience`, `daysPerMonth`, 2 prices) | **just images** — photos/scans of menus |
 | Money unit | **integer cents** | **whole dollars** | n/a |
 | Cart | yes | no | no |

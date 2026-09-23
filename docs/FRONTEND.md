@@ -109,7 +109,7 @@ Defaults to `'en'` for any value that isn't exactly `'ar'`. An effect sets `docu
 3. **Pick portion** — `portion` defaults to `'single'`, resets whenever `product.id` changes. The Family toggle renders only when `typeof product.price.family === 'number'`. **The user never picks a day** — the day is a property of the product and rides along into the cart item. No notes, no modifiers.
 4. **Add** — `addToCart` merges into an existing `(productId, portion)` line or appends a new one, then writes `localStorage`.
 5. **Confirm** — if `addToCart` returned `true`, `BasketNotification` animates over the product image for ~1.8s. The navbar badge updates from `totalQuantity`.
-6. **Review** — `/order` joins cart lines against a fresh `/api/products` fetch, computes `subtotal` in cents, allows in-place quantity edits.
+6. **Review** — `/order` joins cart lines against a fresh `/api/products` fetch, computes `subtotal` in cents, allows in-place quantity edits. Products with `order_unit: "dozen"` show `/ dozen` and label the quantity control as dozens.
 7. **Submit** — **there is none.**
 
 > ### Checkout is not implemented
@@ -200,9 +200,9 @@ All seven call `useSEO(...)`.
 
 | Component | Key props | Notes |
 |---|---|---|
-| `ProductCard` | `product`, `onOpen?`, `className?`, `style?` | Tolerates both mapped (`nameAr`) and raw (`name_ar`) shapes. Not clickable without `onOpen`. |
-| `ProductOverlay` | `product`, `onClose` | Portion selector renders only when a family price exists. Locks body scroll. `triggerNotification(true)` fires only when `addToCart` returned `true`. |
-| `QuantityStepper` | `quantity`, `onDecrease`, `onIncrease`, `size?` | Stateless pill. |
+| `ProductCard` | `product`, `onOpen?`, `className?`, `style?` | Tolerates both mapped (`nameAr`) and raw (`name_ar`) shapes. `order_unit: "dozen"` adds a visible badge and `/ dozen` to its price. Not clickable without `onOpen`. |
+| `ProductOverlay` | `product`, `onClose` | Portion selector renders only when a family price exists. Dozen products repeat the 12-piece rule and make the add action explicit. Locks body scroll. `triggerNotification(true)` fires only when `addToCart` returned `true`. |
+| `QuantityStepper` | `quantity`, `onDecrease`, `onIncrease`, `size?`, `unitLabel?` | Stateless pill; `unitLabel` improves its accessible quantity and button labels. |
 | `HeartButton` | `productId`, `size?` | Hidden checkbox + CSS sibling selectors drive fill and the bounce keyframes. `stopPropagation` so it never opens the overlay. The `'lg'` size is currently unused. |
 | `BasketNotification` | `isAdding`, `onDone`, `size?` | 3-phase state machine (`entering`/`visible`/`leaving`), 1500ms + 1800ms timers. **Fully inline styles**, no Tailwind. Remounted via a changing `key` to replay. |
 | `DayConflictModal` | `currentDay`, `productDay`, `onClose` | See the day-conflict section. |
@@ -212,6 +212,10 @@ All seven call `useSEO(...)`.
 | `icons.jsx` | `className` | Ten stateless SVGs. Note Home's `FEATURES` and `Subscription` inline duplicate SVGs rather than importing these. |
 
 ## Utils
+
+`pricing.js` also exposes `isSoldByDozen(product)`, which accepts both raw API
+and mapped product shapes. `mapProduct.js` maps `order_unit` to `orderUnit`,
+defaulting unknown or legacy responses to `each`.
 
 | File | Purpose |
 |---|---|

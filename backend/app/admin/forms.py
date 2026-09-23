@@ -23,6 +23,11 @@ DAY_CHOICES = [
     ("sunday", "Sunday"),
 ]
 
+ORDER_UNIT_CHOICES = [
+    ("each", "Individual item / portion"),
+    ("dozen", "Dozen (12 pieces)"),
+]
+
 
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired(), Length(max=80)])
@@ -72,6 +77,13 @@ class ProductForm(FlaskForm):
         choices=DAY_CHOICES,
         validators=[Optional()],
         default="",
+    )
+
+    order_unit = SelectField(
+        "Selling unit",
+        choices=ORDER_UNIT_CHOICES,
+        validators=[DataRequired()],
+        default="each",
     )
 
     status = SelectField(

@@ -57,6 +57,7 @@ def new_product():
                 category_id=form.category_id.data,
                 ingredients=form.ingredients.data or "",
                 day=form.day.data,
+                order_unit=form.order_unit.data,
                 status=form.status.data or "active",
             )
         except (ValidationError, ConflictError) as e:
@@ -112,6 +113,7 @@ def edit_product(product_id: str):
                 ingredients=form.ingredients.data or "",
                 # Blank day means the product is not assigned to a weekday, we store none instead of "".
                 day=form.day.data or None,
+                order_unit=form.order_unit.data,
                 status=form.status.data,
             )
         except (ValidationError, ConflictError) as e:
@@ -192,6 +194,7 @@ def bulk_products():
             price_single=request.form.get("bulk_price_single", type=int),
             price_family=request.form.get("bulk_price_family", type=int),
             day=(request.form.get("bulk_day") or "").strip().lower() or None,
+            order_unit=(request.form.get("bulk_order_unit") or "").strip().lower() or None,
         )
         flash(f"Bulk updated {updated} products.", "success")
     except ValidationError as e:

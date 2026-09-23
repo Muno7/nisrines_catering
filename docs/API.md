@@ -45,6 +45,7 @@ No query params, no path params, no pagination, no filtering, no sorting control
   "category": "plat-du-jour",
   "ingredients": "chicken, garlic, pickles",
   "day": "monday",
+  "order_unit": "each",
   "status": "active",
   "price": { "single": 850, "family": 1900 }
 }
@@ -54,6 +55,7 @@ No query params, no path params, no pagination, no filtering, no sorting control
 - `price.family` is `null` when there is no family portion. **A stored `0` also serializes as `null`** — `to_dict` uses a truthiness check, not `is None`.
 - `category` is the category **slug**, not its DB id. Renaming a category changes this value on every one of its products.
 - `day` is a lowercase English weekday or `null`. Day-less products are always orderable.
+- `order_unit` is either `"each"` (the default) or `"dozen"`. A dozen price covers 12 pieces; the frontend displays `/ dozen` and labels basket quantities accordingly.
 - `status` is always `"active"` here — the public list filters to active products **in active categories** (both gates must pass).
 - Not exposed: `category_id`, `is_ramadan`, `is_seasonal`, `created_at`, `updated_at`.
 

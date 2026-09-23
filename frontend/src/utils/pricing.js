@@ -13,3 +13,7 @@ export function getProductPrice(product, portion = 'single') {
   if (portion === 'family') return family ?? single
   return single ?? family
 }
+
+export function isSoldByDozen(product) {
+  return product?.orderUnit === 'dozen' || product?.order_unit === 'dozen'
+}

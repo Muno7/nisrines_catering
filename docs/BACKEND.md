@@ -78,7 +78,7 @@ Not configured at all: `SESSION_COOKIE_SECURE`, `HTTPONLY`, `SAMESITE`, `PERMANE
 
 ## Models
 
-All in [app/models.py](../backend/app/models.py). String PKs are `str(uuid.uuid4())`, timestamps default `datetime.utcnow` — **all Python-side**, no `server_default` anywhere.
+All in [app/models.py](../backend/app/models.py). String PKs are `str(uuid.uuid4())`, and timestamps default `datetime.utcnow` in Python. `products.order_unit` is the one exception with a database `server_default` (`"each"`) so the migration can safely backfill and coexist with older application processes during deployment.
 
 ### Product — `products`
 
@@ -93,6 +93,7 @@ All in [app/models.py](../backend/app/models.py). String PKs are `str(uuid.uuid4
 | `category_id` | Integer | no | FK → `categories.id` |
 | `ingredients` | Text | no | |
 | `day` | String(20) | **yes** | lowercase English weekday |
+| `order_unit` | String(20) | no | `each`; `each` or `dozen` |
 | `status` | String(20) | no | `"active"` — enum-in-code `active`/`inactive` |
 | `is_ramadan` | Boolean | no | `False` — **dead column, never read or written** |
 | `is_seasonal` | Boolean | no | `False` — **dead column** |
@@ -209,7 +210,8 @@ Flask-Migrate/Alembic, linear chain, single head. `env.py` and `alembic.ini` are
 | 8 | `b2c3d4e5f6a7` | drop the redundant `products.category` string column |
 | 9 | `c5d6e7f8a9b0` | `priceFamilyCents` → nullable, then `UPDATE … SET NULL WHERE = 0` |
 | 10 | `d1e2f3a4b5c6` | backfill `status` from `is_active`, drop `is_active` |
-| 11 | `e6f7a8b9c0d1` | **HEAD** — assign orphans to an auto-created `uncategorized` category, then `category_id` NOT NULL |
+| 11 | `e6f7a8b9c0d1` | assign orphans to an auto-created `uncategorized` category, then `category_id` NOT NULL |
+| 12 | `e1f2a3b4c5d6` | **HEAD** — add non-null `products.order_unit` with server default `each` |
 
 > ### Do not delete `f2c7f0a4b123`
 >

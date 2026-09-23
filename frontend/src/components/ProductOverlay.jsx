@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useCart } from '../context/CartContext'
 import { useLanguage } from '../context/LanguageContext.jsx'
-import { getProductPrice, formatCurrency } from '../utils/pricing'
+import { getProductPrice, formatCurrency, isSoldByDozen } from '../utils/pricing'
 import { resolveProductImageSrc } from '../utils/imagePlaceholder.js'
 import BasketNotification from './BasketNotification.jsx'
 import HeartButton from './HeartButton.jsx'
@@ -45,6 +45,7 @@ export default function ProductOverlay({ product, onClose }) {
   }
 
   const hasFamilyPortion = typeof product.price?.family === 'number'
+  const soldByDozen = isSoldByDozen(product)
 
   const cartItem = getCartItem(product.id, portion)
   const price = getPrice(product, portion)
@@ -104,8 +105,14 @@ export default function ProductOverlay({ product, onClose }) {
           <div className="flex-grow overflow-y-auto p-4 md:p-6">
             <div className="space-y-4">
               <span className="text-base md:text-lg font-medium text-muted price-js">
-                <span>$</span>{price}
+                <span>$</span>{price}{soldByDozen && ' / dozen'}
               </span>
+
+              {soldByDozen && (
+                <p className="rounded-lg border border-primary/30 bg-primary/10 px-3 py-2 text-sm font-medium text-accent">
+                  Sold by the dozen (12 pieces)
+                </p>
+              )}
 
               <h1 className="text-2xl md:text-3xl font-bold text-accent leading-tight">{displayName}</h1>
 
@@ -163,7 +170,7 @@ export default function ProductOverlay({ product, onClose }) {
                   }}
                   className="overlay-add-button-js flex w-full h-full text-sm items-center justify-center button-primary transition-opacity duration-300"
                 >
-                  Add to Basket
+                  {soldByDozen ? 'Add 1 dozen to Basket' : 'Add to Basket'}
                 </button>
               )}
             </div>

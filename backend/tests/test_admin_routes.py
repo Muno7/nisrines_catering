@@ -195,6 +195,17 @@ class TestProductRoutes:
         assert response.status_code == 200
         assert b"bulk updated" in response.data.lower()
 
+    def test_bulk_update_product_order_unit(self, logged_in_client, product, db):
+        response = logged_in_client.post(
+            "/admin/products/bulk",
+            data={"product_ids": [product.id], "bulk_order_unit": "dozen"},
+            follow_redirects=True,
+        )
+
+        db.session.refresh(product)
+        assert response.status_code == 200
+        assert product.order_unit == "dozen"
+
 
 # ---------------------------------------------------------------------------
 # Category routes

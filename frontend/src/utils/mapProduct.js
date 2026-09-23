@@ -7,6 +7,7 @@ export function mapProduct(p) {
     ingredients: p.ingredients,
     category: p.category,
     day: p.day,
+    orderUnit: p.order_unit === 'dozen' ? 'dozen' : 'each',
     price: p.price,
   }
 }

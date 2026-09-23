@@ -140,6 +140,7 @@ class TestProductServiceQueries:
             category_id=product.category_id,
             ingredients=product.ingredients,
             day=product.day,
+            order_unit=product.order_unit,
             status=product.status,
         )
 
@@ -159,6 +160,7 @@ class TestProductServiceQueries:
                 category_id=product.category_id,
                 ingredients=product.ingredients,
                 day=product.day,
+                order_unit=product.order_unit,
                 status=product.status,
             )
 
@@ -176,6 +178,7 @@ class TestProductServiceQueries:
                 category_id=None,
                 ingredients=product.ingredients,
                 day=product.day,
+                order_unit=product.order_unit,
                 status=product.status,
             )
 

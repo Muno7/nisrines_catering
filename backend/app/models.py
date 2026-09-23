@@ -57,6 +57,7 @@ class Product(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=False)
     ingredients = db.Column(db.Text, nullable=False)
     day = db.Column(db.String(20), nullable=True)
+    order_unit = db.Column(db.String(20), default="each", nullable=False)
     status = db.Column(db.String(20), default="active", nullable=False)
     is_ramadan = db.Column(db.Boolean, default=False, nullable=False)
     is_seasonal = db.Column(db.Boolean, default=False, nullable=False)
@@ -111,6 +112,11 @@ class Product(db.Model):
     def set_day(self, day: str | None) -> None:
         self.day = (day or "").strip() or None
 
+    def set_order_unit(self, order_unit: str) -> None:
+        if order_unit not in {"each", "dozen"}:
+            raise ValidationError("Order unit must be 'each' or 'dozen'.")
+        self.order_unit = order_unit
+
     def to_dict(self) -> dict:
         """Public product JSON contract: price is always {single, family}."""
         family = self.priceFamilyCents if self.priceFamilyCents else None
@@ -123,6 +129,7 @@ class Product(db.Model):
             "category": self.category_rel.slug if self.category_rel else None,
             "ingredients": self.ingredients,
             "day": self.day,
+            "order_unit": self.order_unit,
             "status": self.status,
             "price": {"single": self.priceSingleCents, "family": family},
         }

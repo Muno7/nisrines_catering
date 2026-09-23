@@ -43,7 +43,7 @@ Flash categories in use: `success`, `danger`, `warning`, `info`.
 | Form | Fields |
 |---|---|
 | `LoginForm` | `username` (max 80), `password` |
-| `ProductForm` | `name`, `name_ar` (optional), `priceSingleCents` (`NumberRange(min=0)`), `priceFamilyCents` (optional), `category_id` (`SelectField(coerce=int)`, `NumberRange(min=1)` rejects the `0` placeholder), `ingredients`, `day`, `status`, `image` (**no `FileAllowed`** — type checking happens entirely in `s3.upload_file`) |
+| `ProductForm` | `name`, `name_ar` (optional), `priceSingleCents` (`NumberRange(min=0)`), `priceFamilyCents` (optional), `category_id` (`SelectField(coerce=int)`, `NumberRange(min=1)` rejects the `0` placeholder), `ingredients`, `day`, `order_unit` (`each` / `dozen`), `status`, `image` (**no `FileAllowed`** — type checking happens entirely in `s3.upload_file`) |
 | `SubscriptionPlanForm` | `audience`, `days_per_month` (min 1), `price_plat_du_jour`, `price_with_salad` |
 | `SlideshowForm` / `CateringMenuForm` | `images` (`MultipleFileField`) |
 

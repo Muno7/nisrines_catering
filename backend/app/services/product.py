@@ -45,6 +45,7 @@ class ProductService:
         category_id: int,
         ingredients: str = "",
         day: str | None = None,
+        order_unit: str = "each",
         status: str = "active",
     ) -> Product:
         product = Product()
@@ -55,6 +56,7 @@ class ProductService:
         product.set_category(ProductService._require_category_id(category_id))
         product.set_ingredients(ingredients)
         product.set_day(day)
+        product.set_order_unit(order_unit)
         product.set_status(status)
         product.image = image
 
@@ -78,6 +80,7 @@ class ProductService:
         category_id: int,
         ingredients: str,
         day: str | None,
+        order_unit: str,
         status: str,
     ) -> Product:
         product.set_name(name)
@@ -88,6 +91,7 @@ class ProductService:
         product.set_category(ProductService._require_category_id(category_id))
         product.set_ingredients(ingredients)
         product.set_day(day)
+        product.set_order_unit(order_unit)
         product.set_status(status)
 
         try:
@@ -120,6 +124,7 @@ class ProductService:
         copy.set_category(product.category_id)
         copy.set_ingredients(product.ingredients)
         copy.set_day(product.day)
+        copy.set_order_unit(product.order_unit)
         copy.set_status("inactive")
         copy.image = product.image
 
@@ -171,6 +176,7 @@ class ProductService:
         price_single: int | None = None,
         price_family: int | None = None,
         day: str | None = None,
+        order_unit: str | None = None,
     ) -> int:
         updated = 0
         products = Product.query.filter(Product.id.in_(product_ids)).all()
@@ -189,6 +195,8 @@ class ProductService:
                     product.set_day(None)
                 else:
                     product.set_day(day)
+            if order_unit in {"each", "dozen"}:
+                product.set_order_unit(order_unit)
             updated += 1
 
         try:

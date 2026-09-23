@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext.jsx'
-import { getProductPrice, formatCurrency } from '../utils/pricing.js'
+import { getProductPrice, formatCurrency, isSoldByDozen } from '../utils/pricing.js'
 import { resolveProductImageSrc } from '../utils/imagePlaceholder.js'
 import { fetchJSON } from '../utils/api.js'
 import { useSEO } from '../hooks/useSEO.js'
@@ -47,6 +47,7 @@ function CartLine({ item, product }) {
   const price = getProductPrice(product, item.portion) ?? 0
   const name = product?.name ?? 'Item no longer available'
   const imageSrc = resolveProductImageSrc(product?.image, name)
+  const soldByDozen = isSoldByDozen(product)
 
   return (
     <div className="relative bg-surface rounded-2xl overflow-hidden transition-all duration-300 sm:hover:-translate-y-1.5">
@@ -62,18 +63,24 @@ function CartLine({ item, product }) {
         <div className="flex flex-col justify-between gap-4 w-full lg:py-2 lg:gap-8">
           <div className="flex flex-col gap-1">
             <h3 className="text-base md:text-xl font-bold text-accent line-clamp-2">{name}</h3>
-            <span className="text-xs text-muted">{item.portion === 'family' ? 'Family of 4' : 'Single'}</span>
+            <span className="text-xs text-muted">
+              {item.portion === 'family' ? 'Family of 4' : 'Single'}{soldByDozen && ' · Sold by the dozen'}
+            </span>
           </div>
           <div className="flex justify-between items-center gap-4 w-full">
             <p className="text-lg font-semibold font-numeric">
-              <span translate="no">$</span>{formatCurrency(price)}
+              <span translate="no">$</span>{formatCurrency(price)}{soldByDozen && ' / dozen'}
             </p>
-            <QuantityStepper
-              className="p-[2px]"
-              quantity={item.quantity}
-              onDecrease={() => removeFromCart(item.productId, item.portion)}
-              onIncrease={() => addToCart(item.productId, item.day, item.portion)}
-            />
+            <div className="flex flex-col items-end gap-1">
+              <QuantityStepper
+                className="p-[2px]"
+                quantity={item.quantity}
+                unitLabel={soldByDozen ? 'dozen' : 'item'}
+                onDecrease={() => removeFromCart(item.productId, item.portion)}
+                onIncrease={() => addToCart(item.productId, item.day, item.portion)}
+              />
+              {soldByDozen && <span className="text-[11px] font-medium text-muted">Quantity in dozens</span>}
+            </div>
           </div>
         </div>
       </div>

@@ -154,7 +154,28 @@ class TestProductService:
         assert p.id is not None
         assert p.name == "Grilled chicken"
         assert p.priceSingleCents == 1500
+        assert p.order_unit == "each"
         assert p.status == "active"
+
+    def test_create_product_sold_by_dozen(self, db):
+        cat = self._make_category()
+        p = ProductService.create(
+            name="Mini sandwiches",
+            price_single=2400,
+            category_id=cat.id,
+            order_unit="dozen",
+        )
+        assert p.order_unit == "dozen"
+
+    def test_create_product_invalid_order_unit_raises(self, db):
+        cat = self._make_category()
+        with pytest.raises(ValidationError, match="Order unit"):
+            ProductService.create(
+                name="Mini sandwiches",
+                price_single=2400,
+                category_id=cat.id,
+                order_unit="box",
+            )
 
     def test_create_product_blank_name_raises(self, db):
         cat = self._make_category()
@@ -207,10 +228,12 @@ class TestProductService:
             category_id=p.category_id,
             ingredients=p.ingredients,
             day=p.day,
+            order_unit="dozen",
             status=p.status,
         )
         assert p.name == "Fish"
         assert p.priceSingleCents == 2000
+        assert p.order_unit == "dozen"
 
     def test_update_blank_name_raises(self, db):
         cat = self._make_category()
@@ -226,6 +249,7 @@ class TestProductService:
                 category_id=p.category_id,
                 ingredients=p.ingredients,
                 day=p.day,
+                order_unit=p.order_unit,
                 status=p.status,
             )
 
@@ -243,11 +267,12 @@ class TestProductService:
 
     def test_duplicate_product(self, db):
         cat = self._make_category()
-        p = ProductService.create(name="Chicken", price_single=1000, category_id=cat.id)
+        p = ProductService.create(name="Mini sandwiches", price_single=1000, category_id=cat.id, order_unit="dozen")
         copy = ProductService.duplicate(p)
         assert copy.id != p.id
-        assert copy.name == "Chicken (copy)"
+        assert copy.name == "Mini sandwiches (copy)"
         assert copy.status == "inactive"
+        assert copy.order_unit == "dozen"
 
     def test_delete_product(self, db):
         cat = self._make_category()

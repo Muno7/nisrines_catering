@@ -28,6 +28,7 @@ dist-ssr
 
 # Python backend
 backend/.venv/
+backend/.venv*/
 backend/venv/
 backend/app/venv/
 backend/.env

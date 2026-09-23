@@ -80,6 +80,12 @@
       ) }}
 
       {{ forms.render_form_field(form.day, show_inline_error=true) }}
+      {{ forms.render_form_field(
+        form.order_unit,
+        label_note="Shown to customers beside the price",
+        show_inline_error=true,
+        required=true
+      ) }}
       {{ forms.render_form_field(form.status, show_inline_error=true, required=true) }}
 
       {% call forms.render_form_field(form.image, label_note="Optional", class="file-input") %}

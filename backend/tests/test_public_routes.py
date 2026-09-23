@@ -23,6 +23,7 @@ class TestPublicProductApi:
             price_single=2000,
             price_family=3500,
             category=active_category,
+            order_unit="dozen",
         )
         make_product(name="Inactive Dish", status="inactive", category=active_category)
         make_product(name="Hidden Category Dish", category=inactive_category)
@@ -44,9 +45,11 @@ class TestPublicProductApi:
         assert "priceCents" not in single
         assert single["name_ar"] == "طبق"
         assert single["category"] == "lunch"
+        assert single["order_unit"] == "each"
         assert family["price"] == {"single": 2000, "family": 3500}
         assert "priceCents" not in family
         assert family["category"] == "lunch"
+        assert family["order_unit"] == "dozen"
 
     def test_products_empty_database_returns_empty_list(self, client, db):
         response = client.get("/api/products")

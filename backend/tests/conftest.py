@@ -104,6 +104,7 @@ def make_product(db, make_category):
             "category_id": category_id,
             "ingredients": "salt, pepper",
             "day": None,
+            "order_unit": "each",
             "status": "active",
         }
         values.update(overrides)
@@ -174,6 +175,7 @@ def product_form_data(make_category):
             "category_id": category_id,
             "ingredients": "salt, pepper",
             "day": "",
+            "order_unit": "each",
             "status": "active",
         }
         data.update(overrides)

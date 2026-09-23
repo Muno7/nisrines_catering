@@ -139,6 +139,9 @@
                   <div class="row-title">{{ p.priceSingleCents|money_cents }}</div>
                   <div class="muted">Single price</div>
                 {% endif %}
+                {% if p.order_unit == 'dozen' %}
+                  <div class="badge badge-neutral">Per dozen</div>
+                {% endif %}
               </td>
               {% set current_status = p.status or ('active' if p.is_active else 'inactive') %}
               <td>
@@ -181,6 +184,12 @@
             <option value="saturday">Saturday</option>
             <option value="sunday">Sunday</option>
             <option value="clear">Clear day</option>
+          </select>
+          <label class="sr-only" for="bulk_order_unit">Bulk selling unit</label>
+          <select id="bulk_order_unit" name="bulk_order_unit">
+            <option value="">Selling unit</option>
+            <option value="each">Individual item / portion</option>
+            <option value="dozen">Dozen (12 pieces)</option>
           </select>
           <label class="sr-only" for="bulk_price_single">Bulk single price in cents</label>
           <input id="bulk_price_single" type="number" name="bulk_price_single" min="0" step="1" placeholder="Single price (cents)">
