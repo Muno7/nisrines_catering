@@ -29,6 +29,11 @@ def create_app(config_object: type[BaseConfig] = DevelopmentConfig) -> Flask:
     app.register_blueprint(admin_bp, url_prefix="/admin")
     app.register_blueprint(public_bp, url_prefix="/api")
 
+    @app.get("/health")
+    def health():
+        """Liveness check that does not require a database query."""
+        return jsonify({"ok": True})
+
     @app.errorhandler(404)
     def not_found(e):
         if request.path.startswith("/api/"):

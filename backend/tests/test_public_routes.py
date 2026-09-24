@@ -5,6 +5,12 @@ from app.services import CategoryService
 
 class TestPublicProductApi:
 
+    def test_health_returns_ok(self, client, db):
+        response = client.get("/health")
+
+        assert response.status_code == 200
+        assert response.get_json() == {"ok": True}
+
     def test_products_returns_active_products_with_price_shape(self, client, make_category, make_product):
         active_category = make_category("Lunch")
         inactive_category = make_category("Hidden")
