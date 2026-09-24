@@ -1,7 +1,0 @@
-[project]
-name = "nisrines-catering-backend"
-version = "1.0.0"
-requires-python = ">=3.12,<3.13"
-
-[tool.vercel]
-entrypoint = "run:app"
